@@ -1,0 +1,27 @@
+{
+  "preset": "A3_ADX30",
+  "params": {
+    "atr_stop_multiplier": 1.5,
+    "reward_risk_ratio": 2.0,
+    "mt_donchian_length": 50,
+    "lt_adx_threshold": 30.0,
+    "lt_sma_short": 50,
+    "lt_sma_long": 200
+  },
+  "pair": "USD_JPY",
+  "elapsed_sec": 342.50312328338623,
+  "n_trades": 31,
+  "n_wins": 5,
+  "n_losses": 26,
+  "win_rate": 16.129032258064516,
+  "profit_factor": 0.12920230823840848,
+  "sharpe_monthly": -1.0820677631430082,
+  "expectancy_jpy": -428.19470046079243,
+  "max_dd_jpy": 13797.035714284983,
+  "max_dd_pct": 1.3797035714284982,
+  "max_consecutive_losses": 14,
+  "payoff_ratio": 0.6718520028397241,
+  "max_margin_usage_pct": 0.632656,
+  "weak_breakout_exclusion_pct": 100.0,
+  "total_pnl": -13274.035714284983
+}

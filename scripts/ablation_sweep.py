@@ -3,16 +3,18 @@
 USD/JPY 2024 で 1 プリセットずつ実行し、ベース基準 (前回結果) と比較.
 
 プリセット定義:
-  Base (前回結果): SL=1.0 ATR, TP=2R, Donchian=20, ADX=20
-  A1_SL_TP: SL=1.5 ATR, TP=3R (RR 1:2 維持), Donchian=20, ADX=20
-  A2_Donchian50: SL=1.0 ATR, TP=2R, Donchian=50, ADX=20
-  A1_A2_combined: SL=1.5 ATR, TP=3R, Donchian=50, ADX=20
+  Base (前回結果):   SL=1.0 ATR, TP=2R, Donchian=20, ADX=20, SMA 20/50
+  A1_SL_TP:          SL=1.5 ATR, TP=3R (RR 1:2 維持), Donchian=20, ADX=20, SMA 20/50
+  A2_Donchian50:     SL=1.0 ATR, TP=2R, Donchian=50, ADX=20, SMA 20/50
+  A1_A2_combined:    SL=1.5 ATR, TP=3R, Donchian=50, ADX=20, SMA 20/50
+  A3_ADX30:          A1+A2 + ADX 30 + LT SMA 50/200 (長期トレンドフィルター強化)
 
 Usage:
     # 1 プリセットだけ実行 (約 9 分)
     python scripts/ablation_sweep.py --preset A1_SL_TP
+    python scripts/ablation_sweep.py --preset A3_ADX30
 
-    # まとめて 3 プリセット連続実行 (約 27 分)
+    # まとめて A1/A2/A1+A2 を連続実行 (約 27 分)
     python scripts/ablation_sweep.py --all
 """
 
@@ -81,24 +83,41 @@ PRESETS: dict[str, dict] = {
         "reward_risk_ratio": 2.0,
         "mt_donchian_length": 20,
         "lt_adx_threshold": 20.0,
+        "lt_sma_short": 20,
+        "lt_sma_long": 50,
     },
     "A1_SL_TP": {
         "atr_stop_multiplier": 1.5,
         "reward_risk_ratio": 2.0,  # TP = 1.5 * 2 = 3 ATR
         "mt_donchian_length": 20,
         "lt_adx_threshold": 20.0,
+        "lt_sma_short": 20,
+        "lt_sma_long": 50,
     },
     "A2_Donchian50": {
         "atr_stop_multiplier": 1.0,
         "reward_risk_ratio": 2.0,
         "mt_donchian_length": 50,
         "lt_adx_threshold": 20.0,
+        "lt_sma_short": 20,
+        "lt_sma_long": 50,
     },
     "A1_A2_combined": {
         "atr_stop_multiplier": 1.5,
         "reward_risk_ratio": 2.0,
         "mt_donchian_length": 50,
         "lt_adx_threshold": 20.0,
+        "lt_sma_short": 20,
+        "lt_sma_long": 50,
+    },
+    # A3: A1+A2 をベースに、ADX 30 + 50/200 SMA で長期トレンドフィルター強化
+    "A3_ADX30": {
+        "atr_stop_multiplier": 1.5,
+        "reward_risk_ratio": 2.0,  # TP = 1.5 * 2 = 3 ATR
+        "mt_donchian_length": 50,
+        "lt_adx_threshold": 30.0,
+        "lt_sma_short": 50,
+        "lt_sma_long": 200,
     },
 }
 
@@ -119,8 +138,8 @@ def run_preset(preset_name: str, params: dict, symbol: str = "USD_JPY") -> dict:
         max_dd_pause_threshold_pct=50.0,
     )
     mtf_config = MTFConfig(
-        lt_sma_short=20,
-        lt_sma_long=50,
+        lt_sma_short=params["lt_sma_short"],
+        lt_sma_long=params["lt_sma_long"],
         lt_adx_threshold=params["lt_adx_threshold"],
         mt_donchian_length=params["mt_donchian_length"],
         mt_atr_length=14,
@@ -214,7 +233,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="USD/JPY 2024 パラメータ・アブレーション")
     parser.add_argument(
         "--preset",
-        choices=["A1_SL_TP", "A2_Donchian50", "A1_A2_combined"],
+        choices=["A1_SL_TP", "A2_Donchian50", "A1_A2_combined", "A3_ADX30"],
         help="1 プリセットだけ実行 (約 9 分)",
     )
     parser.add_argument(
@@ -237,7 +256,7 @@ def main() -> int:
     # レポートモード: 既存結果だけ表示
     if args.report:
         existing = load_results(per_preset_dir)
-        all_results = [BASE_RESULT] + [existing[k] for k in ["A1_SL_TP", "A2_Donchian50", "A1_A2_combined"] if k in existing]
+        all_results = [BASE_RESULT] + [existing[k] for k in ["A1_SL_TP", "A2_Donchian50", "A1_A2_combined", "A3_ADX30"] if k in existing]
         print_comparison(all_results)
         return 0
 
@@ -272,7 +291,7 @@ def main() -> int:
 
     # 統合ファイル + 比較表を更新
     existing = load_results(per_preset_dir)
-    all_results = [BASE_RESULT] + [existing[k] for k in ["A1_SL_TP", "A2_Donchian50", "A1_A2_combined"] if k in existing]
+    all_results = [BASE_RESULT] + [existing[k] for k in ["A1_SL_TP", "A2_Donchian50", "A1_A2_combined", "A3_ADX30"] if k in existing]
     combined = output_dir / "ablation-sweep-USD_JPY-2024.json"
     combined.write_text(
         json.dumps({
