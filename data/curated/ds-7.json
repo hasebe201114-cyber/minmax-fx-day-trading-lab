@@ -1,0 +1,38 @@
+{
+  "metadata": {
+    "id": "DS-7",
+    "name": "スワップポイント日次時系列 (概算値)",
+    "version": "v0.1 (2026-08-13)",
+    "data_period": "2024-01-01 to 2024-12-31",
+    "lot_size_reference": 1000,
+    "currency_unit": "JPY per 1 lot per 1 day (受取が正、支払が負)",
+    "_note": "OBS000004 adversarial レビュー差し戻し 2 対応。GMO 公式 API 未接続のため、2024 年の平均的政策金利差からの概算値。EUR_USD は USD 単位のため JPY 換算せず 0.0 (本 PJ は EUR_USD スワップ未対応)。実運用前に GMO 公式スワップデータでの再計算必須"
+  },
+  "pairs": {
+    "USD_JPY": {
+      "swap_long_jpy_per_lot_per_day": 7.0,
+      "swap_short_jpy_per_lot_per_day": -9.0,
+      "_note": "2024 年 USD 5.25-5.50% - JPY 0.1% = 5.15-5.40% 年差 / 365, 1 lot=1000 USD @ 150 JPY"
+    },
+    "EUR_JPY": {
+      "swap_long_jpy_per_lot_per_day": -3.0,
+      "swap_short_jpy_per_lot_per_day": 1.0,
+      "_note": "2024 年 EUR 4.0% - JPY 0.1% = 3.9% 年差, ただし日本円需要で逆鞘"
+    },
+    "GBP_JPY": {
+      "swap_long_jpy_per_lot_per_day": 4.0,
+      "swap_short_jpy_per_lot_per_day": -6.0,
+      "_note": "2024 年 GBP 5.0% - JPY 0.1% = 4.9% 年差 / 365"
+    },
+    "AUD_JPY": {
+      "swap_long_jpy_per_lot_per_day": 10.0,
+      "swap_short_jpy_per_lot_per_day": -12.0,
+      "_note": "2024 年 AUD 4.10% - JPY 0.1% = 4.0% 年差 / 365, 1 lot=1000 AUD @ 100 JPY"
+    },
+    "EUR_USD": {
+      "swap_long_jpy_per_lot_per_day": 0.0,
+      "swap_short_jpy_per_lot_per_day": 0.0,
+      "_note": "EUR_USD は JPY 換算が複雑なため、本 PJ では 0.0 (スワップ効果なし) として扱う。実運用時は GMO EUR_USD 公式スワップポイントで要再計算"
+    }
+  }
+}

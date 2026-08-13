@@ -43,10 +43,12 @@ class Trade:
     size: int = 0          # 通貨単位
     stop_loss: float = 0.0
     take_profit: float = 0.0
-    pnl: float = 0.0        # 確定損益
-    pnl_pips: float = 0.0  # 損益 (pips)
+    pnl: float = 0.0        # 確定損益 (価格差分 + スワップ)
+    pnl_pips: float = 0.0  # 損益 (pips, 価格差分のみ)
+    swap_pnl: float = 0.0  # スワップ損益 (JPY, v2.1 OBS000004 差し戻し 2 で追加)
+    hold_days: int = 0     # 保有日数 (スワップ計算用)
     exit_reason: str = ""  # "TP" / "SL" / "REVERSE" / "WEEKEND" / "END"
-    entry_conditions: Optional[dict[str, bool]] = None  # 5 条件 AND の成立状況
+    entry_conditions: Optional[dict[str, bool]] = None  # 4 条件 AND の成立状況 (v2.1 で MT-3 恒久フォールバック)
     lt_direction: str = ""  # エントリー時の LT 方向
     sr_level_price: float = 0.0  # エントリー時の S/R ライン価格（あれば）
 
@@ -97,7 +99,7 @@ def calc_pnl(
     side: str,
     is_jpy_pair: bool,
 ) -> tuple[float, float]:
-    """損益を計算.
+    """損益を計算 (価格差分のみ、スワップは含まない).
 
     Args:
         entry_price: エントリー価格.
@@ -124,6 +126,37 @@ def calc_pnl(
     return pnl_jpy, pnl_pips
 
 
+def calc_swap(
+    side: str,
+    size: int,
+    lot_size: int,
+    hold_days: int,
+    swap_long_jpy_per_lot_per_day: float,
+    swap_short_jpy_per_lot_per_day: float,
+) -> float:
+    """スワップ損益を計算 (JPY).
+
+    Args:
+        side: "BUY" / "SELL".
+        size: 通貨単位.
+        lot_size: 1 ロットあたりの通貨単位.
+        hold_days: 保有日数.
+        swap_long_jpy_per_lot_per_day: ロング 1 ロット 1 日あたりスワップ (JPY, 受取が正).
+        swap_short_jpy_per_lot_per_day: ショート 1 ロット 1 日あたりスワップ (JPY, 受取が正).
+
+    Returns:
+        スワップ損益 (JPY).
+    """
+    if hold_days <= 0:
+        return 0.0
+    lots = size / lot_size if lot_size > 0 else 0
+    if side == "BUY":
+        per_day = swap_long_jpy_per_lot_per_day
+    else:
+        per_day = swap_short_jpy_per_lot_per_day
+    return per_day * lots * hold_days
+
+
 @dataclass
 class SimulatorConfig:
     """シミュレータ設定."""
@@ -136,6 +169,10 @@ class SimulatorConfig:
     weekend_close: bool = True              # 土曜 06:00 JST までに全決済
     max_hold_days: int = 20
     max_dd_pause_threshold_pct: float = 50.0  # DD が証拠金の 50% で停止
+    # スワップ (v2.1 OBS000004 差し戻し 2 で追加)
+    # 0.0 = スワップなし (デフォルト、後方互換)
+    swap_long_jpy_per_lot_per_day: float = 0.0
+    swap_short_jpy_per_lot_per_day: float = 0.0
 
 
 def open_long(
@@ -213,10 +250,23 @@ def close_long(
     )
     state.long_trade.exit_time = exit_time
     state.long_trade.exit_price = fill_price
-    state.long_trade.pnl = pnl_jpy
     state.long_trade.pnl_pips = pnl_pips
     state.long_trade.exit_reason = reason
-    state.cash += pnl_jpy
+    # v2.1: スワップ計算
+    hold_days = max(1, (exit_time - state.long_trade.entry_time).days) if state.long_trade.entry_time is not None else 0
+    state.long_trade.hold_days = hold_days
+    swap_pnl = calc_swap(
+        side="BUY",
+        size=state.long_trade.size,
+        lot_size=config.lot_size,
+        hold_days=hold_days,
+        swap_long_jpy_per_lot_per_day=config.swap_long_jpy_per_lot_per_day,
+        swap_short_jpy_per_lot_per_day=config.swap_short_jpy_per_lot_per_day,
+    )
+    state.long_trade.swap_pnl = swap_pnl
+    total_pnl = pnl_jpy + swap_pnl
+    state.long_trade.pnl = total_pnl
+    state.cash += total_pnl
     state.total_trades += 1
     if pnl_jpy > 0:
         state.win_trades += 1
@@ -252,10 +302,23 @@ def close_short(
     )
     state.short_trade.exit_time = exit_time
     state.short_trade.exit_price = fill_price
-    state.short_trade.pnl = pnl_jpy
     state.short_trade.pnl_pips = pnl_pips
     state.short_trade.exit_reason = reason
-    state.cash += pnl_jpy
+    # v2.1: スワップ計算
+    hold_days = max(1, (exit_time - state.short_trade.entry_time).days) if state.short_trade.entry_time is not None else 0
+    state.short_trade.hold_days = hold_days
+    swap_pnl = calc_swap(
+        side="SELL",
+        size=state.short_trade.size,
+        lot_size=config.lot_size,
+        hold_days=hold_days,
+        swap_long_jpy_per_lot_per_day=config.swap_long_jpy_per_lot_per_day,
+        swap_short_jpy_per_lot_per_day=config.swap_short_jpy_per_lot_per_day,
+    )
+    state.short_trade.swap_pnl = swap_pnl
+    total_pnl = pnl_jpy + swap_pnl
+    state.short_trade.pnl = total_pnl
+    state.cash += total_pnl
     state.total_trades += 1
     if pnl_jpy > 0:
         state.win_trades += 1

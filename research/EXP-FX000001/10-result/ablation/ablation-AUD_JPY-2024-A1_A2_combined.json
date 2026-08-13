@@ -6,22 +6,23 @@
     "mt_donchian_length": 50,
     "lt_adx_threshold": 20.0,
     "lt_sma_short": 20,
-    "lt_sma_long": 50
+    "lt_sma_long": 50,
+    "pb_min_depth_atr": 0.0
   },
   "pair": "AUD_JPY",
-  "elapsed_sec": 542.5366501808167,
+  "elapsed_sec": 541.0774719715118,
   "n_trades": 54,
   "n_wins": 28,
   "n_losses": 26,
   "win_rate": 51.85185185185185,
-  "profit_factor": 1.955824311112835,
-  "sharpe_monthly": 1.7554338378568557,
-  "expectancy_jpy": 104.7500000000091,
-  "max_dd_jpy": 3390.2500000001164,
-  "max_dd_pct": 0.26018571428572757,
+  "profit_factor": 1.9939582191364786,
+  "sharpe_monthly": 1.799070415309414,
+  "expectancy_jpy": 107.93518518519429,
+  "max_dd_jpy": 3384.2500000001164,
+  "max_dd_pct": 0.2583857142857276,
   "max_consecutive_losses": 3,
-  "payoff_ratio": 1.8161225746047753,
+  "payoff_ratio": 1.4793883561335164,
   "max_margin_usage_pct": 0.43666,
   "weak_breakout_exclusion_pct": 100.0,
-  "total_pnl": 5656.499999999884
+  "total_pnl": 5828.499999999884
 }

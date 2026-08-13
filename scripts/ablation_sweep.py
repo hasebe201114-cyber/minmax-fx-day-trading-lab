@@ -148,11 +148,37 @@ PRESETS: dict[str, dict] = {
 }
 
 
+def load_swap_from_ds7(symbol: str) -> tuple[float, float]:
+    """DS-7 から指定通貨のスワップ日次値 (JPY/lot/day) を取得.
+
+    Returns:
+        (swap_long_jpy_per_lot_per_day, swap_short_jpy_per_lot_per_day).
+        DS-7 未取得時は (0.0, 0.0) (スワップなし、後方互換).
+    """
+    ds7_path = ROOT / "data" / "curated" / "ds-7.json"
+    if not ds7_path.exists():
+        return 0.0, 0.0
+    try:
+        with ds7_path.open(encoding="utf-8") as f:
+            ds7 = json.load(f)
+        pair_data = ds7.get("pairs", {}).get(symbol)
+        if pair_data is None:
+            return 0.0, 0.0
+        return float(pair_data.get("swap_long_jpy_per_lot_per_day", 0.0)), float(pair_data.get("swap_short_jpy_per_lot_per_day", 0.0))
+    except (json.JSONDecodeError, KeyError, ValueError):
+        return 0.0, 0.0
+
+
 def run_preset(preset_name: str, params: dict, symbol: str = "USD_JPY") -> dict:
     """1 プリセット実行."""
     print(f"\n{'=' * 70}")
     print(f"[{preset_name}] バックテスト実行中... パラメータ: {params}")
     print(f"{'=' * 70}")
+
+    # v2.1: DS-7 からスワップ日次値を取得
+    swap_long, swap_short = load_swap_from_ds7(symbol)
+    if swap_long != 0.0 or swap_short != 0.0:
+        print(f"  [スワップ] DS-7 適用: long={swap_long:+.1f} JPY/lot/day, short={swap_short:+.1f} JPY/lot/day")
 
     sim_config = SimulatorConfig(
         initial_cash_jpy=1_000_000.0,
@@ -162,6 +188,8 @@ def run_preset(preset_name: str, params: dict, symbol: str = "USD_JPY") -> dict:
         is_jpy_pair=True,
         weekend_close=True,
         max_dd_pause_threshold_pct=50.0,
+        swap_long_jpy_per_lot_per_day=swap_long,
+        swap_short_jpy_per_lot_per_day=swap_short,
     )
     mtf_config = MTFConfig(
         lt_sma_short=params["lt_sma_short"],
