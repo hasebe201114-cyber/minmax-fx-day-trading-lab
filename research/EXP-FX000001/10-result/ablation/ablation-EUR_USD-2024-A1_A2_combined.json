@@ -1,0 +1,27 @@
+{
+  "preset": "A1_A2_combined",
+  "params": {
+    "atr_stop_multiplier": 1.5,
+    "reward_risk_ratio": 2.0,
+    "mt_donchian_length": 50,
+    "lt_adx_threshold": 20.0,
+    "lt_sma_short": 20,
+    "lt_sma_long": 50
+  },
+  "pair": "EUR_USD",
+  "elapsed_sec": 482.07775020599365,
+  "n_trades": 49,
+  "n_wins": 0,
+  "n_losses": 49,
+  "win_rate": 0.0,
+  "profit_factor": 0.0,
+  "sharpe_monthly": -1.8971508409290148,
+  "expectancy_jpy": -17.75095481049519,
+  "max_dd_jpy": 869.7967857146868,
+  "max_dd_pct": 0.08697967857146868,
+  "max_consecutive_losses": 49,
+  "payoff_ratio": 0.0,
+  "max_margin_usage_pct": 0.00448232,
+  "weak_breakout_exclusion_pct": 100.0,
+  "total_pnl": -869.7967857146868
+}
