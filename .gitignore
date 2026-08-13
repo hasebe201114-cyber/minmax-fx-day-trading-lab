@@ -16,6 +16,7 @@ build/
 .analyze_output.txt
 .smoke_output.txt
 .push_output.txt
+.pair_pivot_*.txt
 
 # Python
 __pycache__/

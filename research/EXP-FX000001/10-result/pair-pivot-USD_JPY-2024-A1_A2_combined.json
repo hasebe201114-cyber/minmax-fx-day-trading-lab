@@ -1,0 +1,120 @@
+{
+  "generated_at": "2026-08-13T20:57:30.033617",
+  "preset": "A1_A2_combined",
+  "data_period": "2024-01-01 to 2024-12-31",
+  "pairs": [
+    "USD_JPY",
+    "EUR_JPY",
+    "GBP_JPY",
+    "AUD_JPY",
+    "EUR_USD"
+  ],
+  "results": [
+    {
+      "pair": "USD_JPY",
+      "preset": "A1_A2_combined",
+      "params": {
+        "atr_stop_multiplier": 1.5,
+        "reward_risk_ratio": 2.0,
+        "mt_donchian_length": 50,
+        "lt_adx_threshold": 20.0
+      },
+      "elapsed_sec": 544.2830197811127,
+      "n_trades": 58,
+      "n_wins": 14,
+      "n_losses": 44,
+      "win_rate": 24.137931034482758,
+      "profit_factor": 0.326568291347454,
+      "sharpe_monthly": -2.8786914885844883,
+      "expectancy_jpy": -327.91687192114443,
+      "max_dd_jpy": 19738.607142855646,
+      "max_dd_pct": 1.916939285714121,
+      "max_consecutive_losses": 15,
+      "payoff_ratio": 1.0263574870919983,
+      "max_margin_usage_pct": 0.647772,
+      "weak_breakout_exclusion_pct": 100.0,
+      "total_pnl": -19019.178571426542
+    },
+    {
+      "pair": "EUR_JPY",
+      "preset": "A1_A2_combined",
+      "params": {
+        "atr_stop_multiplier": 1.5,
+        "reward_risk_ratio": 2.0,
+        "mt_donchian_length": 50,
+        "lt_adx_threshold": 20.0,
+        "lt_sma_short": 20,
+        "lt_sma_long": 50
+      },
+      "elapsed_sec": 686.2113633155823,
+      "n_trades": 70,
+      "n_wins": 27,
+      "n_losses": 43,
+      "win_rate": 38.57142857142858,
+      "profit_factor": 0.8268775393415517,
+      "sharpe_monthly": -0.3452677354155416,
+      "expectancy_jpy": -52.63214285710376,
+      "max_dd_jpy": 15546.71428571269,
+      "max_dd_pct": 1.1493249999998136,
+      "max_consecutive_losses": 12,
+      "payoff_ratio": 1.3168790441365452,
+      "max_margin_usage_pct": 0.701276,
+      "weak_breakout_exclusion_pct": 100.0,
+      "total_pnl": -3684.2499999976717
+    },
+    {
+      "pair": "GBP_JPY",
+      "preset": "A1_A2_combined",
+      "params": {
+        "atr_stop_multiplier": 1.5,
+        "reward_risk_ratio": 2.0,
+        "mt_donchian_length": 50,
+        "lt_adx_threshold": 20.0,
+        "lt_sma_short": 20,
+        "lt_sma_long": 50
+      },
+      "elapsed_sec": 547.8088002204895,
+      "n_trades": 57,
+      "n_wins": 24,
+      "n_losses": 33,
+      "win_rate": 42.10526315789473,
+      "profit_factor": 1.1185773998164386,
+      "sharpe_monthly": 0.22357433213756797,
+      "expectancy_jpy": 29.84398496244461,
+      "max_dd_jpy": 6223.321428570547,
+      "max_dd_pct": 0.4677928571427823,
+      "max_consecutive_losses": 5,
+      "payoff_ratio": 1.5380439247476032,
+      "max_margin_usage_pct": 0.8316520000000001,
+      "weak_breakout_exclusion_pct": 100.0,
+      "total_pnl": 1701.1071428583236
+    },
+    {
+      "pair": "AUD_JPY",
+      "preset": "A1_A2_combined",
+      "params": {
+        "atr_stop_multiplier": 1.5,
+        "reward_risk_ratio": 2.0,
+        "mt_donchian_length": 50,
+        "lt_adx_threshold": 20.0,
+        "lt_sma_short": 20,
+        "lt_sma_long": 50
+      },
+      "elapsed_sec": 542.5366501808167,
+      "n_trades": 54,
+      "n_wins": 28,
+      "n_losses": 26,
+      "win_rate": 51.85185185185185,
+      "profit_factor": 1.955824311112835,
+      "sharpe_monthly": 1.7554338378568557,
+      "expectancy_jpy": 104.7500000000091,
+      "max_dd_jpy": 3390.2500000001164,
+      "max_dd_pct": 0.26018571428572757,
+      "max_consecutive_losses": 3,
+      "payoff_ratio": 1.8161225746047753,
+      "max_margin_usage_pct": 0.43666,
+      "weak_breakout_exclusion_pct": 100.0,
+      "total_pnl": 5656.499999999884
+    }
+  ]
+}

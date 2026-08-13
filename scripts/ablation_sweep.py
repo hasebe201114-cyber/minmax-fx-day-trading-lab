@@ -10,12 +10,21 @@ USD/JPY 2024 で 1 プリセットずつ実行し、ベース基準 (前回結�
   A3_ADX30:          A1+A2 + ADX 30 + LT SMA 50/200 (長期トレンドフィルター強化)
 
 Usage:
-    # 1 プリセットだけ実行 (約 9 分)
+    # 1 プリセットだけ実行 (約 9 分, デフォルト USD_JPY)
     python scripts/ablation_sweep.py --preset A1_SL_TP
     python scripts/ablation_sweep.py --preset A3_ADX30
 
+    # 通貨ピボット (B1): 5 通貨 × A1_A2_combined (約 45 分)
+    python scripts/ablation_sweep.py --preset A1_A2_combined --pair EUR_JPY
+    python scripts/ablation_sweep.py --preset A1_A2_combined --pair GBP_JPY
+    python scripts/ablation_sweep.py --preset A1_A2_combined --pair AUD_JPY
+    python scripts/ablation_sweep.py --preset A1_A2_combined --pair EUR_USD
+
     # まとめて A1/A2/A1+A2 を連続実行 (約 27 分)
     python scripts/ablation_sweep.py --all
+
+    # 通貨別レポート (バックテスト実行なし)
+    python scripts/ablation_sweep.py --report --pair USD_JPY
 """
 
 from __future__ import annotations
@@ -216,12 +225,12 @@ BASE_RESULT = {
 }
 
 
-def load_results(per_preset_dir: Path) -> dict:
-    """既存結果 (per-preset JSON) を読み込み."""
+def load_results(per_preset_dir: Path, pair: str = "USD_JPY") -> dict:
+    """既存結果 (per-preset JSON) を読み込み (通貨別)."""
     if not per_preset_dir.exists():
         return {}
     out = {}
-    for p in per_preset_dir.glob("ablation-USD_JPY-2024-*.json"):
+    for p in per_preset_dir.glob(f"ablation-{pair}-2024-*.json"):
         with p.open(encoding="utf-8") as f:
             r = json.load(f)
         out[r["preset"]] = r
@@ -235,6 +244,12 @@ def main() -> int:
         "--preset",
         choices=["A1_SL_TP", "A2_Donchian50", "A1_A2_combined", "A3_ADX30"],
         help="1 プリセットだけ実行 (約 9 分)",
+    )
+    parser.add_argument(
+        "--pair",
+        choices=["USD_JPY", "EUR_JPY", "GBP_JPY", "AUD_JPY", "EUR_USD"],
+        default="USD_JPY",
+        help="対象通貨ペア (デフォルト: USD_JPY)",
     )
     parser.add_argument(
         "--all",
@@ -255,9 +270,11 @@ def main() -> int:
 
     # レポートモード: 既存結果だけ表示
     if args.report:
-        existing = load_results(per_preset_dir)
-        all_results = [BASE_RESULT] + [existing[k] for k in ["A1_SL_TP", "A2_Donchian50", "A1_A2_combined", "A3_ADX30"] if k in existing]
-        print_comparison(all_results)
+        existing = load_results(per_preset_dir, args.pair)
+        # USD_JPY のみ Base を含む
+        base = BASE_RESULT if args.pair == "USD_JPY" else None
+        all_results = ([base] if base else []) + [existing[k] for k in ["A1_SL_TP", "A2_Donchian50", "A1_A2_combined", "A3_ADX30"] if k in existing]
+        print_comparison(all_results, args.pair)
         return 0
 
     # 実行対象プリセット
@@ -270,7 +287,7 @@ def main() -> int:
         return 1
 
     print("=" * 70)
-    print("パラメータ・アブレーション分析 (USD/JPY 2024)")
+    print(f"パラメータ・アブレーション分析 ({args.pair} 2024)")
     print("=" * 70)
     print(f"実行対象: {target_presets}")
     print(f"推定時間: {len(target_presets) * 9} 分 (1 プリセット約 9 分)")
@@ -278,8 +295,8 @@ def main() -> int:
     overall_start = time.time()
     for preset_name in target_presets:
         params = PRESETS[preset_name]
-        result = run_preset(preset_name, params)
-        per_file = per_preset_dir / f"ablation-USD_JPY-2024-{preset_name}.json"
+        result = run_preset(preset_name, params, symbol=args.pair)
+        per_file = per_preset_dir / f"ablation-{args.pair}-2024-{preset_name}.json"
         per_file.write_text(
             json.dumps(result, indent=2, ensure_ascii=False, default=str),
             encoding="utf-8",
@@ -290,31 +307,32 @@ def main() -> int:
     print(f"\n[実行時間]: {overall_elapsed / 60:.1f} 分")
 
     # 統合ファイル + 比較表を更新
-    existing = load_results(per_preset_dir)
-    all_results = [BASE_RESULT] + [existing[k] for k in ["A1_SL_TP", "A2_Donchian50", "A1_A2_combined", "A3_ADX30"] if k in existing]
-    combined = output_dir / "ablation-sweep-USD_JPY-2024.json"
+    existing = load_results(per_preset_dir, args.pair)
+    base = BASE_RESULT if args.pair == "USD_JPY" else None
+    all_results = ([base] if base else []) + [existing[k] for k in ["A1_SL_TP", "A2_Donchian50", "A1_A2_combined", "A3_ADX30"] if k in existing]
+    combined = output_dir / f"ablation-sweep-{args.pair}-2024.json"
     combined.write_text(
         json.dumps({
             "generated_at": datetime.now().isoformat(),
             "data_period": "2024-01-01 to 2024-12-31",
-            "pair": "USD_JPY",
+            "pair": args.pair,
             "presets": PRESETS,
             "results": all_results,
         }, indent=2, ensure_ascii=False, default=str),
         encoding="utf-8",
     )
     print(f"[統合ファイル]: {combined}")
-    print_comparison(all_results)
+    print_comparison(all_results, args.pair)
     return 0
 
 
-def print_comparison(results: list) -> None:
-    """比較表 + Base 改善度を出力."""
+def print_comparison(results: list, pair: str = "USD_JPY") -> None:
+    """比較表 + Base 改善度を出力 (通貨別)."""
     if not results:
         print("(結果なし)")
         return
     print(f"\n{'=' * 78}")
-    print("アブレーション結果比較 (USD/JPY 2024)")
+    print(f"アブレーション結果比較 ({pair} 2024)")
     print(f"{'=' * 78}")
     print(
         f"{'プリセット':<20} {'n_trades':>8} {'勝率':>6} {'PF':>6} {'シャープ':>8} "

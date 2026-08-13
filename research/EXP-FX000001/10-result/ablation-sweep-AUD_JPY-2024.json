@@ -1,0 +1,76 @@
+{
+  "generated_at": "2026-08-13T20:56:23.089285",
+  "data_period": "2024-01-01 to 2024-12-31",
+  "pair": "AUD_JPY",
+  "presets": {
+    "Base": {
+      "atr_stop_multiplier": 1.0,
+      "reward_risk_ratio": 2.0,
+      "mt_donchian_length": 20,
+      "lt_adx_threshold": 20.0,
+      "lt_sma_short": 20,
+      "lt_sma_long": 50
+    },
+    "A1_SL_TP": {
+      "atr_stop_multiplier": 1.5,
+      "reward_risk_ratio": 2.0,
+      "mt_donchian_length": 20,
+      "lt_adx_threshold": 20.0,
+      "lt_sma_short": 20,
+      "lt_sma_long": 50
+    },
+    "A2_Donchian50": {
+      "atr_stop_multiplier": 1.0,
+      "reward_risk_ratio": 2.0,
+      "mt_donchian_length": 50,
+      "lt_adx_threshold": 20.0,
+      "lt_sma_short": 20,
+      "lt_sma_long": 50
+    },
+    "A1_A2_combined": {
+      "atr_stop_multiplier": 1.5,
+      "reward_risk_ratio": 2.0,
+      "mt_donchian_length": 50,
+      "lt_adx_threshold": 20.0,
+      "lt_sma_short": 20,
+      "lt_sma_long": 50
+    },
+    "A3_ADX30": {
+      "atr_stop_multiplier": 1.5,
+      "reward_risk_ratio": 2.0,
+      "mt_donchian_length": 50,
+      "lt_adx_threshold": 30.0,
+      "lt_sma_short": 50,
+      "lt_sma_long": 200
+    }
+  },
+  "results": [
+    {
+      "preset": "A1_A2_combined",
+      "params": {
+        "atr_stop_multiplier": 1.5,
+        "reward_risk_ratio": 2.0,
+        "mt_donchian_length": 50,
+        "lt_adx_threshold": 20.0,
+        "lt_sma_short": 20,
+        "lt_sma_long": 50
+      },
+      "pair": "AUD_JPY",
+      "elapsed_sec": 542.5366501808167,
+      "n_trades": 54,
+      "n_wins": 28,
+      "n_losses": 26,
+      "win_rate": 51.85185185185185,
+      "profit_factor": 1.955824311112835,
+      "sharpe_monthly": 1.7554338378568557,
+      "expectancy_jpy": 104.7500000000091,
+      "max_dd_jpy": 3390.2500000001164,
+      "max_dd_pct": 0.26018571428572757,
+      "max_consecutive_losses": 3,
+      "payoff_ratio": 1.8161225746047753,
+      "max_margin_usage_pct": 0.43666,
+      "weak_breakout_exclusion_pct": 100.0,
+      "total_pnl": 5656.499999999884
+    }
+  ]
+}
