@@ -8,11 +8,13 @@ USD/JPY 2024 で 1 プリセットずつ実行し、ベース基準 (前回結�
   A2_Donchian50:     SL=1.0 ATR, TP=2R, Donchian=50, ADX=20, SMA 20/50
   A1_A2_combined:    SL=1.5 ATR, TP=3R, Donchian=50, ADX=20, SMA 20/50
   A3_ADX30:          A1+A2 + ADX 30 + LT SMA 50/200 (長期トレンドフィルター強化)
+  A4_PullbackDepth:  A1+A2 + ST プルバック深さ 0.5 ATR 以上 (浅いノイズプルバック排除)
 
 Usage:
     # 1 プリセットだけ実行 (約 9 分, デフォルト USD_JPY)
     python scripts/ablation_sweep.py --preset A1_SL_TP
     python scripts/ablation_sweep.py --preset A3_ADX30
+    python scripts/ablation_sweep.py --preset A4_PullbackDepth
 
     # 通貨ピボット (B1): 5 通貨 × A1_A2_combined (約 45 分)
     python scripts/ablation_sweep.py --preset A1_A2_combined --pair EUR_JPY
@@ -94,6 +96,7 @@ PRESETS: dict[str, dict] = {
         "lt_adx_threshold": 20.0,
         "lt_sma_short": 20,
         "lt_sma_long": 50,
+        "pb_min_depth_atr": 0.0,
     },
     "A1_SL_TP": {
         "atr_stop_multiplier": 1.5,
@@ -102,6 +105,7 @@ PRESETS: dict[str, dict] = {
         "lt_adx_threshold": 20.0,
         "lt_sma_short": 20,
         "lt_sma_long": 50,
+        "pb_min_depth_atr": 0.0,
     },
     "A2_Donchian50": {
         "atr_stop_multiplier": 1.0,
@@ -110,6 +114,7 @@ PRESETS: dict[str, dict] = {
         "lt_adx_threshold": 20.0,
         "lt_sma_short": 20,
         "lt_sma_long": 50,
+        "pb_min_depth_atr": 0.0,
     },
     "A1_A2_combined": {
         "atr_stop_multiplier": 1.5,
@@ -118,6 +123,7 @@ PRESETS: dict[str, dict] = {
         "lt_adx_threshold": 20.0,
         "lt_sma_short": 20,
         "lt_sma_long": 50,
+        "pb_min_depth_atr": 0.0,
     },
     # A3: A1+A2 をベースに、ADX 30 + 50/200 SMA で長期トレンドフィルター強化
     "A3_ADX30": {
@@ -127,6 +133,17 @@ PRESETS: dict[str, dict] = {
         "lt_adx_threshold": 30.0,
         "lt_sma_short": 50,
         "lt_sma_long": 200,
+        "pb_min_depth_atr": 0.0,
+    },
+    # A4: A1+A2 をベースに、ST プルバック深さ 0.5 ATR 以上必須で浅いノイズプルバックを排除
+    "A4_PullbackDepth": {
+        "atr_stop_multiplier": 1.5,
+        "reward_risk_ratio": 2.0,  # TP = 1.5 * 2 = 3 ATR
+        "mt_donchian_length": 50,
+        "lt_adx_threshold": 20.0,
+        "lt_sma_short": 20,
+        "lt_sma_long": 50,
+        "pb_min_depth_atr": 0.5,  # breakout_level から 0.5 ATR 以上深く戻る
     },
 }
 
@@ -157,6 +174,7 @@ def run_preset(preset_name: str, params: dict, symbol: str = "USD_JPY") -> dict:
         sr_fractal_window=5,
         atr_stop_multiplier=params["atr_stop_multiplier"],
         reward_risk_ratio=params["reward_risk_ratio"],
+        pb_min_depth_atr=params.get("pb_min_depth_atr", 0.0),
     )
 
     m5_df = load_ohlcv_from_ds1(symbol)
@@ -242,7 +260,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="USD/JPY 2024 パラメータ・アブレーション")
     parser.add_argument(
         "--preset",
-        choices=["A1_SL_TP", "A2_Donchian50", "A1_A2_combined", "A3_ADX30"],
+        choices=["A1_SL_TP", "A2_Donchian50", "A1_A2_combined", "A3_ADX30", "A4_PullbackDepth"],
         help="1 プリセットだけ実行 (約 9 分)",
     )
     parser.add_argument(
@@ -273,7 +291,7 @@ def main() -> int:
         existing = load_results(per_preset_dir, args.pair)
         # USD_JPY のみ Base を含む
         base = BASE_RESULT if args.pair == "USD_JPY" else None
-        all_results = ([base] if base else []) + [existing[k] for k in ["A1_SL_TP", "A2_Donchian50", "A1_A2_combined", "A3_ADX30"] if k in existing]
+        all_results = ([base] if base else []) + [existing[k] for k in ["A1_SL_TP", "A2_Donchian50", "A1_A2_combined", "A3_ADX30", "A4_PullbackDepth"] if k in existing]
         print_comparison(all_results, args.pair)
         return 0
 

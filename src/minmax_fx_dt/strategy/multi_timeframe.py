@@ -60,6 +60,9 @@ class MTFConfig:
     sr_strength_threshold: float = 0.5
     atr_stop_multiplier: float = 1.0
     reward_risk_ratio: float = 2.0
+    # プルバック深さ (A4): breakout_level から min_depth_atr × ATR 以上離れたら「深いプルバック」と判定
+    # 0.0 = 制約なし (デフォルト、後方互換)
+    pb_min_depth_atr: float = 0.0
 
 
 def detect_pullback(
@@ -69,10 +72,13 @@ def detect_pullback(
     breakout_level: float,
     direction: str,
     atr_value: float,
+    min_depth_atr: float = 0.0,
 ) -> PullbackSignal:
     """ST レイヤで戻り確認シグナルを検出 (M15/M5).
 
     シンプルな実装: 直近 N 本で breakout level まで戻って反発したことを確認.
+    A4 拡張: `min_depth_atr` オプションで「浅いプルバック (= ノイズ)」を排除.
+    breakout_level から min_depth_atr × ATR 以上離れたら「深いプルバック」と判定.
 
     Args:
         st_high: ST 高値系列.
@@ -81,6 +87,7 @@ def detect_pullback(
         breakout_level: ブレイクレベル.
         direction: "UP" / "DOWN".
         atr_value: ATR (H4 基準).
+        min_depth_atr: 最小プルバック深さ (単位: ATR). 0.0 = 制約なし.
 
     Returns:
         PullbackSignal.
@@ -94,10 +101,17 @@ def detect_pullback(
     recent_low = st_low.iloc[-last_n:]
 
     pin_threshold = atr_value * 0.5
+    depth_threshold = min_depth_atr * atr_value  # 0.0 なら制約なし
 
     if direction == "UP":
         # ブル・ピンバー: 直近のいずれかで breakout level に戻り、長い下髭
         returned_to_level = (recent_low <= breakout_level + pin_threshold).any()
+        # 深いプルバック: breakout_level から下に depth_threshold 以上離れた安値が存在
+        deep_pullback = (
+            (recent_low <= breakout_level - depth_threshold).any()
+            if depth_threshold > 0
+            else True
+        )
         last_bar = st_close.iloc[-1]
         last_low = st_low.iloc[-1]
         last_high = st_high.iloc[-1]
@@ -105,7 +119,7 @@ def detect_pullback(
         lower_wick = min(last_bar, recent_close.iloc[-2] if len(recent_close) >= 2 else last_bar) - last_low
         pin_bar = lower_wick > body_size and lower_wick > pin_threshold
 
-        if returned_to_level and last_bar > breakout_level:
+        if returned_to_level and deep_pullback and last_bar > breakout_level:
             return PullbackSignal(
                 confirmed=True,
                 pattern="PIN_BAR" if pin_bar else "RETURN_OK",
@@ -114,13 +128,19 @@ def detect_pullback(
 
     elif direction == "DOWN":
         returned_to_level = (recent_high >= breakout_level - pin_threshold).any()
+        # 深いプルバック: breakout_level から上に depth_threshold 以上離れた高値が存在
+        deep_pullback = (
+            (recent_high >= breakout_level + depth_threshold).any()
+            if depth_threshold > 0
+            else True
+        )
         last_bar = st_close.iloc[-1]
         last_high = st_high.iloc[-1]
         body_size = abs(last_bar - recent_close.iloc[-2]) if len(recent_close) >= 2 else 0
         upper_wick = last_high - max(last_bar, recent_close.iloc[-2] if len(recent_close) >= 2 else last_bar)
         pin_bar = upper_wick > body_size and upper_wick > pin_threshold
 
-        if returned_to_level and last_bar < breakout_level:
+        if returned_to_level and deep_pullback and last_bar < breakout_level:
             return PullbackSignal(
                 confirmed=True,
                 pattern="PIN_BAR" if pin_bar else "RETURN_OK",
@@ -231,6 +251,7 @@ def evaluate_mtf(
             breakout_level=engine.last_breakout_level,
             direction=direction,
             atr_value=last_atr,
+            min_depth_atr=config.pb_min_depth_atr,
         )
         engine.update_pullback(pullback)
 

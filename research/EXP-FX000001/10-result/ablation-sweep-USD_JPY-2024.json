@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-13T20:04:09.418503",
+  "generated_at": "2026-08-13T22:02:38.470733",
   "data_period": "2024-01-01 to 2024-12-31",
   "pair": "USD_JPY",
   "presets": {
@@ -9,7 +9,8 @@
       "mt_donchian_length": 20,
       "lt_adx_threshold": 20.0,
       "lt_sma_short": 20,
-      "lt_sma_long": 50
+      "lt_sma_long": 50,
+      "pb_min_depth_atr": 0.0
     },
     "A1_SL_TP": {
       "atr_stop_multiplier": 1.5,
@@ -17,7 +18,8 @@
       "mt_donchian_length": 20,
       "lt_adx_threshold": 20.0,
       "lt_sma_short": 20,
-      "lt_sma_long": 50
+      "lt_sma_long": 50,
+      "pb_min_depth_atr": 0.0
     },
     "A2_Donchian50": {
       "atr_stop_multiplier": 1.0,
@@ -25,7 +27,8 @@
       "mt_donchian_length": 50,
       "lt_adx_threshold": 20.0,
       "lt_sma_short": 20,
-      "lt_sma_long": 50
+      "lt_sma_long": 50,
+      "pb_min_depth_atr": 0.0
     },
     "A1_A2_combined": {
       "atr_stop_multiplier": 1.5,
@@ -33,7 +36,8 @@
       "mt_donchian_length": 50,
       "lt_adx_threshold": 20.0,
       "lt_sma_short": 20,
-      "lt_sma_long": 50
+      "lt_sma_long": 50,
+      "pb_min_depth_atr": 0.0
     },
     "A3_ADX30": {
       "atr_stop_multiplier": 1.5,
@@ -41,7 +45,17 @@
       "mt_donchian_length": 50,
       "lt_adx_threshold": 30.0,
       "lt_sma_short": 50,
-      "lt_sma_long": 200
+      "lt_sma_long": 200,
+      "pb_min_depth_atr": 0.0
+    },
+    "A4_PullbackDepth": {
+      "atr_stop_multiplier": 1.5,
+      "reward_risk_ratio": 2.0,
+      "mt_donchian_length": 50,
+      "lt_adx_threshold": 20.0,
+      "lt_sma_short": 20,
+      "lt_sma_long": 50,
+      "pb_min_depth_atr": 0.5
     }
   },
   "results": [
@@ -53,7 +67,8 @@
         "mt_donchian_length": 20,
         "lt_adx_threshold": 20.0,
         "lt_sma_short": 20,
-        "lt_sma_long": 50
+        "lt_sma_long": 50,
+        "pb_min_depth_atr": 0.0
       },
       "pair": "USD_JPY",
       "elapsed_sec": 538.58,

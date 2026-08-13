@@ -1,0 +1,28 @@
+{
+  "preset": "A4_PullbackDepth",
+  "params": {
+    "atr_stop_multiplier": 1.5,
+    "reward_risk_ratio": 2.0,
+    "mt_donchian_length": 50,
+    "lt_adx_threshold": 20.0,
+    "lt_sma_short": 20,
+    "lt_sma_long": 50,
+    "pb_min_depth_atr": 0.5
+  },
+  "pair": "USD_JPY",
+  "elapsed_sec": 552.5000259876251,
+  "n_trades": 33,
+  "n_wins": 6,
+  "n_losses": 27,
+  "win_rate": 18.181818181818183,
+  "profit_factor": 0.2586108966337715,
+  "sharpe_monthly": -3.707310501864064,
+  "expectancy_jpy": -361.63419913416107,
+  "max_dd_jpy": 11933.928571427474,
+  "max_dd_pct": 1.1933928571427472,
+  "max_consecutive_losses": 13,
+  "payoff_ratio": 1.1637490348519717,
+  "max_margin_usage_pct": 0.647772,
+  "weak_breakout_exclusion_pct": 100.0,
+  "total_pnl": -11933.928571427474
+}
