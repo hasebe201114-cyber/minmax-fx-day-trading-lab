@@ -1,0 +1,8 @@
+numpy>=1.26
+pandas>=2.1
+scipy>=1.11
+pandas-ta>=0.3.14b0
+requests>=2.31
+pyyaml>=6.0
+python-dotenv>=1.0
+structlog>=24.1

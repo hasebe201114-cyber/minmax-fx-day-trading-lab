@@ -1,0 +1,83 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "minmax-fx-day-trading-lab"
+version = "0.1.0"
+description = "FX mid-term swing strategy validation lab - minmax team (range breakout pullback, 5 currencies, both-sides trading, multi-timeframe)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+  {name = "Atsushi Hasebe"},
+]
+keywords = ["fx", "trading", "quant", "forex", "backtesting", "gmo-coin", "multi-timeframe", "range-breakout"]
+
+# 親PJ (minmax-trading-pilot) から流用 + 本PJ固有の追加
+dependencies = [
+  "numpy>=1.26",
+  "pandas>=2.1",
+  "scipy>=1.11",
+  "pandas-ta>=0.3.14b0",
+  "requests>=2.31",
+  "pyyaml>=6.0",
+  "python-dotenv>=1.0",
+  "structlog>=24.1",
+]
+
+[project.optional-dependencies]
+backtest = [
+  "backtrader>=1.9.78",
+  "vectorbt>=0.26",
+  "optuna>=3.6",
+]
+ml = [
+  "scikit-learn>=1.4",
+]
+dev = [
+  "pytest>=8.0",
+  "pytest-cov>=4.1",
+  "ruff>=0.4",
+  "mypy>=1.9",
+  "black>=24.1",
+  "ipython>=8.0",
+  "jupyter>=1.0",
+  "notebook>=7.0",
+]
+dashboard = [
+  "streamlit>=1.32",
+]
+
+[project.urls]
+Repository = "https://github.com/hasebe201114-cyber/minmax-fx-day-trading-lab"
+Parent = "https://github.com/hasebe201114-cyber/minmax-trading-pilot"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "C4", "SIM"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra -q"
+filterwarnings = [
+  "ignore::DeprecationWarning",
+]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]

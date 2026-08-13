@@ -1,0 +1,3 @@
+# このファイルはディレクトリ構造の保持用。
+# scripts/ 配下の実装は `scripts/data/*.ts`, `scripts/exp/*.ts` に置く。
+# 詳細な運用ルールは `research/_templates/result.readme.md` を参照。

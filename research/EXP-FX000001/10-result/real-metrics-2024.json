@@ -1,0 +1,35 @@
+{
+  "generated_at": "2026-08-13T17:15:43.320464",
+  "data_period": "2024-01-01 to 2024-12-31",
+  "n_pairs": 1,
+  "total_bars_per_pair": 74232,
+  "results": [
+    {
+      "pair": "USD_JPY",
+      "metrics": {
+        "sharpe_monthly": -3.8762,
+        "sharpe_yearly": -0.6116,
+        "profit_factor_monthly": 0.2448,
+        "profit_factor_yearly": 0.2448,
+        "expectancy_jpy": -270.06,
+        "max_dd_jpy": 36924.0,
+        "max_dd_monthly_pct": 3.5765,
+        "max_dd_yearly_pct": 3.5765,
+        "max_consecutive_losses": 17,
+        "payoff_ratio": 1.3465,
+        "spread_round_trip_jpy": 60.0,
+        "edge_per_trade_jpy": -270.06,
+        "backtest_forward_divergence_pct": 0.0,
+        "max_margin_usage_pct": 0.6478,
+        "weak_breakout_exclusion_pct": 100.0,
+        "n_trades": 130,
+        "n_wins": 20,
+        "n_losses": 110,
+        "win_rate": 15.3846,
+        "period_start": "2024-01-02T07:00:00+09:00",
+        "period_end": "2025-01-01T05:45:00+09:00"
+      },
+      "elapsed_sec": 536.2964766025543
+    }
+  ]
+}

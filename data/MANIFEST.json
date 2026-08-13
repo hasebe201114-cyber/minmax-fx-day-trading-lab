@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "project": "minmax-fx-day-trading-lab",
+  "generated_at": "2026-08-13T17:05:49.218266",
+  "datasets": [
+    {
+      "id": "DS-1",
+      "name": "OHLCV",
+      "source": "GMO Coin 外国為替FX Public API (/v1/klines)",
+      "fetched_at": "2026-08-13T17:05:49.218251",
+      "interval": "5min",
+      "n_pairs": 1,
+      "total_bars": 74232,
+      "files": [
+        "data\\raw\\ds-1\\ohlcv_EUR_USD_5min_20240101_20241231.csv"
+      ]
+    }
+  ]
+}

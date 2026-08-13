@@ -1,0 +1,48 @@
+node_modules/
+.env
+.env.local
+.env.*.local
+dist/
+build/
+.DS_Store
+*.log
+# 例外: research/EXP-FX*/10-result/run.log と result.readme.md の規約により追跡必須
+!research/**/10-result/run.log
+.obsidian/
+
+# 一時ログ (バックグラウンドバックテスト出力)
+.ablation_*.txt
+.ablation_output.txt
+.analyze_output.txt
+.smoke_output.txt
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+.ipynb_checkpoints/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 作業用スクリプト (デバッグ / スモーク / 一時流用コード)
+scripts/.tmp_*.py
+scripts/.tmp_reuse/
+scripts/.debug_*.py
+scripts/.smoke_*.py
+scripts/.aggregate_*.py
+scripts/.check_*.py

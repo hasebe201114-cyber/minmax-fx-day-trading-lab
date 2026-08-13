@@ -1,0 +1,25 @@
+{
+  "preset": "A1_A2_combined",
+  "params": {
+    "atr_stop_multiplier": 1.5,
+    "reward_risk_ratio": 2.0,
+    "mt_donchian_length": 50,
+    "lt_adx_threshold": 20.0
+  },
+  "pair": "USD_JPY",
+  "elapsed_sec": 544.2830197811127,
+  "n_trades": 58,
+  "n_wins": 14,
+  "n_losses": 44,
+  "win_rate": 24.137931034482758,
+  "profit_factor": 0.326568291347454,
+  "sharpe_monthly": -2.8786914885844883,
+  "expectancy_jpy": -327.91687192114443,
+  "max_dd_jpy": 19738.607142855646,
+  "max_dd_pct": 1.916939285714121,
+  "max_consecutive_losses": 15,
+  "payoff_ratio": 1.0263574870919983,
+  "max_margin_usage_pct": 0.647772,
+  "weak_breakout_exclusion_pct": 100.0,
+  "total_pnl": -19019.178571426542
+}

@@ -1,0 +1,25 @@
+{
+  "preset": "A1_SL_TP",
+  "params": {
+    "atr_stop_multiplier": 1.5,
+    "reward_risk_ratio": 2.0,
+    "mt_donchian_length": 20,
+    "lt_adx_threshold": 20.0
+  },
+  "pair": "USD_JPY",
+  "elapsed_sec": 539.8641123771667,
+  "n_trades": 76,
+  "n_wins": 19,
+  "n_losses": 57,
+  "win_rate": 25.0,
+  "profit_factor": 0.4352275695896815,
+  "sharpe_monthly": -2.1747704222012465,
+  "expectancy_jpy": -295.6358082706395,
+  "max_dd_jpy": 26572.32142856985,
+  "max_dd_pct": 2.3941107142855413,
+  "max_consecutive_losses": 14,
+  "payoff_ratio": 1.3056827087690446,
+  "max_margin_usage_pct": 0.647772,
+  "weak_breakout_exclusion_pct": 100.0,
+  "total_pnl": -22468.321428569383
+}
