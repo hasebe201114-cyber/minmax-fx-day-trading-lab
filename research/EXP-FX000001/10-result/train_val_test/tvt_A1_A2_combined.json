@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-08-14T11:50:45.134477",
+  "generated_at": "2026-08-14T07:33:40.278677",
   "preset": "A1_A2_combined",
   "n_cells_total": 15,
-  "n_cells_completed": 14,
+  "n_cells_completed": 15,
   "periods_definition": {
     "train": "2020-01-01 - 2022-12-31",
     "validation": "2023-01-01 - 2024-06-30",
@@ -474,6 +474,44 @@
       }
     },
     "EUR_USD": {
+      "train": {
+        "metrics": {
+          "sharpe_monthly": -2.5999,
+          "sharpe_yearly": -0.5694,
+          "profit_factor_monthly": 0.1859,
+          "profit_factor_yearly": 0.1859,
+          "expectancy_jpy": -307.72,
+          "max_dd_jpy": 94905.64,
+          "max_dd_monthly_pct": 8.5058,
+          "max_dd_yearly_pct": 8.5058,
+          "max_consecutive_losses": 29,
+          "payoff_ratio": 1.0031,
+          "spread_round_trip_jpy": 60.0,
+          "edge_per_trade_jpy": -307.72,
+          "backtest_forward_divergence_pct": 0.0,
+          "max_margin_usage_pct": 0.0049,
+          "weak_breakout_exclusion_pct": 100.0,
+          "n_trades": 307,
+          "n_wins": 48,
+          "n_losses": 259,
+          "win_rate": 15.6352,
+          "period_start": "2020-01-01T00:00:00",
+          "period_end": "2022-12-31T00:00:00"
+        },
+        "kpi_pass": {
+          "K1m_sharpe_ge_0.4": false,
+          "K1m_pf_ge_1.2": false,
+          "K1m_expectancy_pos": false,
+          "K2m_dd_monthly_le_10": true,
+          "K2m_dd_yearly_le_20": true,
+          "K3m_max_consec_le_5": false,
+          "K4m_payoff_ge_1.5": false,
+          "K7m_margin_le_30": true,
+          "weak_breakout_ge_30": true
+        },
+        "kpi_pass_count": 4,
+        "elapsed_sec": 2405.30744433403
+      },
       "validation": {
         "metrics": {
           "sharpe_monthly": -1.5762,
@@ -557,9 +595,7 @@
     "EUR_JPY": "[WARN] Train 劣化 (半減以下)",
     "GBP_JPY": "[WARN] 混合",
     "AUD_JPY": "[WARN] Train 劣化 (半減以下)",
-    "EUR_USD": "[WARN] Train 欠 (Val/Test のみ)"
+    "EUR_USD": "[WARN] Train 劣化 (半減以下)"
   },
-  "missing_cells": [
-    "EUR_USD/train"
-  ]
+  "missing_cells": []
 }
