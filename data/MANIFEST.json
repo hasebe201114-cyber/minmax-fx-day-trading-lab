@@ -1,19 +1,68 @@
 {
   "schema_version": "1.0",
   "project": "minmax-fx-day-trading-lab",
-  "generated_at": "2026-08-13T17:05:49.218266",
+  "generated_at": "2026-08-15T06:48:00+09:00",
+  "phase_minus_1": {
+    "completed_at": "2026-08-15",
+    "owner": "Mavis",
+    "trigger": "OBS000008 Phase -1 / OBS000007 §8 (TVT 入力データ再現不能)",
+    "backup_file": "data/curated/ds-1.json.bak_20260815",
+    "result": "5 通貨 × 2020-01-01 〜 2026-01-01 (実質 2025-12-31) に拡張",
+    "total_bars": 2238752,
+    "mtf_cache": "20 parquet files (5 通貨 × M5/M15/H4/D1), 59.4 MB"
+  },
   "datasets": [
     {
       "id": "DS-1",
-      "name": "OHLCV",
-      "source": "GMO Coin 外国為替FX Public API (/v1/klines)",
-      "fetched_at": "2026-08-13T17:05:49.218251",
+      "name": "OHLCV (5 通貨 × 2020-2025 全期間)",
+      "source": "dukascopy (2020-01-01 〜 2024-06-30) + GMO Coin 外国為替FX Public API /v1/klines (2024-07-01 〜 2025-12-31)",
+      "fetched_at_aggregated": "2026-08-15T06:47:34+09:00",
       "interval": "5min",
-      "n_pairs": 1,
-      "total_bars": 74232,
-      "files": [
-        "data\\raw\\ds-1\\ohlcv_EUR_USD_5min_20240101_20241231.csv"
+      "n_pairs": 5,
+      "total_bars": 2238752,
+      "pairs": {
+        "USD_JPY": {"n_bars": 447932, "start": "2020-01-01T00:00:00+09:00", "end": "2026-01-01T05:55:00+09:00"},
+        "EUR_JPY": {"n_bars": 447600, "start": "2020-01-01T00:00:00+09:00", "end": "2026-01-01T05:55:00+09:00"},
+        "GBP_JPY": {"n_bars": 447466, "start": "2020-01-01T00:00:00+09:00", "end": "2026-01-01T05:55:00+09:00"},
+        "AUD_JPY": {"n_bars": 447827, "start": "2020-01-01T00:00:00+09:00", "end": "2026-01-01T05:55:00+09:00"},
+        "EUR_USD": {"n_bars": 447927, "start": "2020-01-01T00:00:00+09:00", "end": "2026-01-01T05:55:00+09:00"}
+      },
+      "raw_files": [
+        "data/raw/ds-1/ohlcv_USD_JPY_5min_20200101_20240630_dukascopy.csv",
+        "data/raw/ds-1/ohlcv_USD_JPY_5min_20240101_20241231.csv",
+        "data/raw/ds-1/ohlcv_USD_JPY_5min_20240102_20240104.csv",
+        "data/raw/ds-1/ohlcv_USD_JPY_5min_20240701_20251231_gmo.csv",
+        "data/raw/ds-1/ohlcv_EUR_JPY_5min_20200101_20240630_dukascopy.csv",
+        "data/raw/ds-1/ohlcv_EUR_JPY_5min_20240101_20241231.csv",
+        "data/raw/ds-1/ohlcv_EUR_JPY_5min_20240701_20251231_gmo.csv",
+        "data/raw/ds-1/ohlcv_GBP_JPY_5min_20200101_20240630_dukascopy.csv",
+        "data/raw/ds-1/ohlcv_GBP_JPY_5min_20240101_20241231.csv",
+        "data/raw/ds-1/ohlcv_GBP_JPY_5min_20240701_20251231_gmo.csv",
+        "data/raw/ds-1/ohlcv_AUD_JPY_5min_20200101_20240630_dukascopy.csv",
+        "data/raw/ds-1/ohlcv_AUD_JPY_5min_20240101_20241231.csv",
+        "data/raw/ds-1/ohlcv_AUD_JPY_5min_20240701_20251231_gmo.csv",
+        "data/raw/ds-1/ohlcv_EUR_USD_5min_20200101_20240630_dukascopy.csv",
+        "data/raw/ds-1/ohlcv_EUR_USD_5min_20240101_20241231.csv",
+        "data/raw/ds-1/ohlcv_EUR_USD_5min_20240701_20251231_gmo.csv"
+      ],
+      "curated_file": "data/curated/ds-1.json",
+      "mtf_cache_dir": "data/curated/mtf_cache/",
+      "notes": [
+        "集約時、同一通貨の複数ファイル (dukascopy + 既存 2024 + GMO 2024-2025) を concat + drop_duplicates(keep='last') で結合",
+        "M5 バーの end は一部翌日にまたがる (例: 2026-01-01T05:55 = 2025-12-31 の最終バー+α)",
+        "USD_JPY には ohlcv_USD_JPY_5min_20240102_20240104.csv (49KB, 2日分) が含まれる",
+        "OBS000003 §6 と整合 (5 通貨 × M5 足、Train/Val/Test 期間対応)"
       ]
+    },
+    {
+      "id": "DS-7",
+      "name": "スワップポイント日次値 (概算)",
+      "version": "v0.1 (2026-08-13)",
+      "data_period": "2024-01-01 to 2024-12-31",
+      "lot_size_reference": 1000,
+      "currency_unit": "JPY per 1 lot per 1 day (受取が正、支払が負)",
+      "file": "data/curated/ds-7.json",
+      "notes": "OBS000004 差し戻し 2 対応。GMO 公式 API 未接続のため概算値。EUR_USD は USD 単位のため 0.0 (本 PJ は EUR_USD スワップ未対応)。実運用前に GMO 公式スワップデータでの再計算必須。"
     }
   ]
 }

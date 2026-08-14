@@ -48,3 +48,17 @@ scripts/.debug_*.py
 scripts/.smoke_*.py
 scripts/.aggregate_*.py
 scripts/.check_*.py
+
+# 大容量データファイル (Phase -1 2026-08-15 で追加, OBS000008 §4 / OBS000007 §8 対応)
+# data/raw/ds-1/ と data/curated/ds-1.json, mtf_cache/ は集約スクリプト + precompute_mtf.py で再現可能
+# バックアップファイルも除外 (集約再生成可能)
+data/raw/ds-1/
+data/raw/ds-7/
+data/curated/ds-*.json
+data/curated/ds-1.json.bak_*
+data/curated/mtf_cache/
+# DS-7 スワップ概算値のみ管理対象 (1 KB, 集約スクリプトで再生成困難)
+!data/curated/ds-7.json
+# 派生 parquet (mtf_cache 配下) は念のため個別指定
+data/curated/mtf_cache/*.parquet
+data/curated/mtf_cache/*.pkl
