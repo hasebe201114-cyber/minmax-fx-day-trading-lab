@@ -55,3 +55,7 @@ scripts/.check_*.py
 # `python scripts/data/fetch_ds1_ohlcv.py --all-pairs --start <start> --end <end>`
 # を再実行するか、fetch_ds1_ohlcv.aggregate_to_json() を直接呼んで再生成する。
 data/curated/ds-1.json
+
+# MTF プリコンピュートキャッシュ: pickle (バイナリ・Python バージョン依存) のため
+# 追跡対象外。`python scripts/precompute_mtf.py` で ds-1.json から数秒で再生成可能。
+data/curated/mtf_cache/
