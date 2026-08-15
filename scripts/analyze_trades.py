@@ -72,6 +72,30 @@ def analyze_trades(trades: list[Trade]) -> dict:
     if not trades:
         return {"n_trades": 0}
 
+    # 保有期間分布 (OBS000007 差し戻し7: spec の中期スイング「数日〜数週間」に
+    # 実際の保有期間が近づいたかを確認するための集計)
+    hold_hours: list[float] = []
+    for t in trades:
+        if t.entry_time is None or t.exit_time is None:
+            continue
+        hold_hours.append((t.exit_time - t.entry_time).total_seconds() / 3600.0)
+    if hold_hours:
+        hold_hours_arr = np.array(hold_hours)
+        hold_period = {
+            "n": len(hold_hours_arr),
+            "median_hours": float(np.median(hold_hours_arr)),
+            "mean_hours": float(np.mean(hold_hours_arr)),
+            "min_hours": float(np.min(hold_hours_arr)),
+            "max_hours": float(np.max(hold_hours_arr)),
+            "p25_hours": float(np.percentile(hold_hours_arr, 25)),
+            "p75_hours": float(np.percentile(hold_hours_arr, 75)),
+            "n_under_1day": int(np.sum(hold_hours_arr <= 24)),
+            "n_1_to_7days": int(np.sum((hold_hours_arr > 24) & (hold_hours_arr <= 168))),
+            "n_over_7days": int(np.sum(hold_hours_arr > 168)),
+        }
+    else:
+        hold_period = {"n": 0}
+
     # 決済条件別
     by_exit_reason: dict[str, dict] = {}
     for t in trades:
@@ -183,6 +207,7 @@ def analyze_trades(trades: list[Trade]) -> dict:
 
     return {
         "n_trades": len(trades),
+        "hold_period": hold_period,
         "by_exit_reason": by_exit_reason,
         "by_side": by_side,
         "by_cond_pattern": by_cond_pattern,
@@ -289,6 +314,22 @@ def main() -> int:
         print(f"  {reason:<10} {d['count']:>6} {d['wins']:>4} {d['losses']:>4} {winrate:>6.1f}% {d['total_pnl']:>+12,.0f} {avg_pnl:>+10,.0f}")
 
     print("\n" + "=" * 70)
+    print("[3.5. 保有期間分布 (OBS000007 差し戻し7: spec の中期スイング「数日〜数週間」との比較)]")
+    print("=" * 70)
+    hp = analysis["hold_period"]
+    if hp.get("n", 0) > 0:
+        print(f"  件数: {hp['n']}")
+        print(f"  中央値: {hp['median_hours']:.1f} 時間 ({hp['median_hours']/24:.2f} 日)")
+        print(f"  平均値: {hp['mean_hours']:.1f} 時間 ({hp['mean_hours']/24:.2f} 日)")
+        print(f"  25%分位 - 75%分位: {hp['p25_hours']:.1f} - {hp['p75_hours']:.1f} 時間")
+        print(f"  最小 - 最大: {hp['min_hours']:.1f} - {hp['max_hours']:.1f} 時間")
+        print(f"  内訳: 1日以内 {hp['n_under_1day']} 件 / 1-7日 {hp['n_1_to_7days']} 件 / 7日超 {hp['n_over_7days']} 件")
+        spec_ok = hp['median_hours'] >= 24
+        print(f"  spec 判定 (中期スイング「数日〜数週間」に近づいたか): {'○ 中央値1日以上' if spec_ok else '× 中央値1日未満、依然スキャルピング域'}")
+    else:
+        print("  トレードなし")
+
+    print("\n" + "=" * 70)
     print("[4. 勝ち負け集計]")
     print("=" * 70)
     n_trades = analysis["n_trades"]
@@ -323,6 +364,18 @@ def main() -> int:
     for month in sorted(analysis["by_month"].keys()):
         d = analysis["by_month"][month]
         print(f"  {month:<10} {d['count']:>6} {d['wins']:>4} {d['losses']:>4} {d['total_pnl']:>+12,.0f}")
+
+    # 分析サマリ JSON 保存 (OBS000007 差し戻し7 の正式記録用)
+    summary_dir = ROOT / "research" / "EXP-FX000001" / "10-result"
+    summary_dir.mkdir(parents=True, exist_ok=True)
+    summary_file = summary_dir / f"trade-analysis-{args.pair}-2024.json"
+    summary_file.write_text(json.dumps({
+        "generated_at": datetime.now().isoformat(),
+        "pair": args.pair,
+        "note": "OBS000007 差し戻し7 (先読み・ステートマシン修正後の保有期間・SL/TP内訳の正式記録)",
+        "analysis": analysis,
+    }, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
+    print(f"\n[分析サマリ保存]: {summary_file}")
 
     # trade history JSON 保存
     if args.save_trades:

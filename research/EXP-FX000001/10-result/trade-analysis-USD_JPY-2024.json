@@ -1,0 +1,173 @@
+{
+  "generated_at": "2026-08-15T01:48:31.524916",
+  "pair": "USD_JPY",
+  "note": "OBS000007 差し戻し7 (先読み・ステートマシン修正後の保有期間・SL/TP内訳の正式記録)",
+  "analysis": {
+    "n_trades": 17,
+    "hold_period": {
+      "n": 17,
+      "median_hours": 6.5,
+      "mean_hours": 11.426470588235293,
+      "min_hours": 1.0,
+      "max_hours": 47.0,
+      "p25_hours": 4.75,
+      "p75_hours": 16.0,
+      "n_under_1day": 16,
+      "n_1_to_7days": 1,
+      "n_over_7days": 0
+    },
+    "by_exit_reason": {
+      "TP": {
+        "count": 2,
+        "wins": 2,
+        "losses": 0,
+        "total_pnl": 1340.0000000000887,
+        "total_pips": 134.00000000000887
+      },
+      "SL": {
+        "count": 14,
+        "wins": 0,
+        "losses": 14,
+        "total_pnl": -7536.7142857138,
+        "total_pips": -753.6714285713799
+      },
+      "WEEKEND": {
+        "count": 1,
+        "wins": 0,
+        "losses": 1,
+        "total_pnl": -154.9999999999443,
+        "total_pips": -15.49999999999443
+      }
+    },
+    "by_side": {
+      "BUY": {
+        "count": 12,
+        "wins": 2,
+        "losses": 10,
+        "total_pnl": -2815.3571428566975,
+        "total_pips": -281.53571428566977
+      },
+      "SELL": {
+        "count": 5,
+        "wins": 0,
+        "losses": 5,
+        "total_pnl": -3536.357142856957,
+        "total_pips": -353.6357142856957
+      }
+    },
+    "by_cond_pattern": {
+      "11111": {
+        "count": 17,
+        "wins": 2,
+        "losses": 15,
+        "total_pnl": -6351.714285713654
+      }
+    },
+    "by_lt_direction": {
+      "UP": {
+        "count": 12,
+        "wins": 2,
+        "losses": 10,
+        "total_pnl": -2815.3571428566975
+      },
+      "DOWN": {
+        "count": 5,
+        "wins": 0,
+        "losses": 5,
+        "total_pnl": -3536.357142856957
+      }
+    },
+    "by_condition_pass_rate": {
+      "1_lt_direction": {
+        "pass": 17,
+        "fail": 0,
+        "wins_when_pass": 2,
+        "losses_when_pass": 15
+      },
+      "2_mt1_breakout": {
+        "pass": 17,
+        "fail": 0,
+        "wins_when_pass": 2,
+        "losses_when_pass": 15
+      },
+      "3_mt2_sr_line": {
+        "pass": 17,
+        "fail": 0,
+        "wins_when_pass": 2,
+        "losses_when_pass": 15
+      },
+      "4_mt3_orderbook": {
+        "pass": 17,
+        "fail": 0,
+        "wins_when_pass": 2,
+        "losses_when_pass": 15
+      },
+      "5_st_pullback": {
+        "pass": 17,
+        "fail": 0,
+        "wins_when_pass": 2,
+        "losses_when_pass": 15
+      }
+    },
+    "max_consecutive_wins": 1,
+    "max_consecutive_losses": 13,
+    "by_month": {
+      "2024-03": {
+        "count": 1,
+        "wins": 1,
+        "losses": 0,
+        "total_pnl": 775.4285714286198
+      },
+      "2024-04": {
+        "count": 3,
+        "wins": 1,
+        "losses": 2,
+        "total_pnl": -38.35714285705194
+      },
+      "2024-05": {
+        "count": 2,
+        "wins": 0,
+        "losses": 2,
+        "total_pnl": -555.214285714186
+      },
+      "2024-06": {
+        "count": 1,
+        "wins": 0,
+        "losses": 1,
+        "total_pnl": -533.9999999999634
+      },
+      "2024-07": {
+        "count": 2,
+        "wins": 0,
+        "losses": 2,
+        "total_pnl": -1090.214285714211
+      },
+      "2024-08": {
+        "count": 2,
+        "wins": 0,
+        "losses": 2,
+        "total_pnl": -1491.4285714284858
+      },
+      "2024-09": {
+        "count": 2,
+        "wins": 0,
+        "losses": 2,
+        "total_pnl": -1333.4285714284988
+      },
+      "2024-10": {
+        "count": 2,
+        "wins": 0,
+        "losses": 2,
+        "total_pnl": -940.642857142791
+      },
+      "2024-11": {
+        "count": 2,
+        "wins": 0,
+        "losses": 2,
+        "total_pnl": -1143.8571428570867
+      }
+    },
+    "total_pnl": -6351.714285713654,
+    "total_pips": -635.1714285713655
+  }
+}

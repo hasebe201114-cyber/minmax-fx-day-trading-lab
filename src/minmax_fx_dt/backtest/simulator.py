@@ -175,6 +175,23 @@ class SimulatorConfig:
     swap_short_jpy_per_lot_per_day: float = 0.0
 
 
+def spread_round_trip_cost_jpy(config: SimulatorConfig) -> float:
+    """スプレッド往復コスト (JPY / 1トレード) を SimulatorConfig の実際の設定値から算出.
+
+    OBS000007 独立監査 B6: 旧実装は `spread_round_trip_jpy=60.0` を
+    全通貨ペア共通でハードコードしており (metrics.py の呼び出し元)、
+    is_jpy_pair 修正で spread_pips を通貨別にしたにもかかわらず、
+    K5m (スプレッド往復コスト比較) はその変更を反映していなかった。
+    open_long/open_short/close_long/close_short の実装 (エントリー・
+    エグジットの双方で spread_pips 全額を課金) と整合する値を返す。
+    """
+    pip_value = 0.01 if config.is_jpy_pair else 0.0001
+    jpy_rate = 1.0 if config.is_jpy_pair else 150.0
+    # エントリー時 + エグジット時に spread_pips 全額ずつ課金される実装のため、
+    # 往復コスト = 2 x spread_pips
+    return 2.0 * config.spread_pips * pip_value * config.lot_size * jpy_rate
+
+
 def open_long(
     state: PortfolioState,
     config: SimulatorConfig,
@@ -362,15 +379,22 @@ def margin_usage_pct(
 ) -> float:
     """証拠金消費率 (% of initial cash).
 
-    必要証拠金 = 通貨単位 × 価格 / レバレッジ.
-    両建て時は max(必要証拠金_long, 必要証拠金_short) で計算 (JPY ペア想定).
+    必要証拠金 = 通貨単位 × 価格 / レバレッジ (JPY 換算).
+    両建て時は max(必要証拠金_long, 必要証拠金_short) で計算。
+
+    OBS000007 独立監査 B7: 旧実装は is_jpy_pair を受け取りながら未使用で、
+    非 JPY ペア (例: EUR/USD) では `size × price` が USD 建てのまま
+    `initial_cash` (JPY) と比較されており、証拠金消費率が実質 150 分の1
+    程度に過小評価されていた。calc_pnl と同じ簡略化 (150.0 固定) で
+    JPY 換算する。
     """
+    jpy_rate = 1.0 if is_jpy_pair else 150.0
     long_margin = 0.0
     short_margin = 0.0
     if state.long_trade is not None:
-        long_margin = state.long_trade.size * current_price / leverage
+        long_margin = state.long_trade.size * current_price / leverage * jpy_rate
     if state.short_trade is not None:
-        short_margin = state.short_trade.size * current_price / leverage
+        short_margin = state.short_trade.size * current_price / leverage * jpy_rate
     used = max(long_margin, short_margin) if (state.long_trade and state.short_trade) else (long_margin + short_margin)
     return (used / state.initial_cash) * 100.0
 
@@ -457,6 +481,7 @@ __all__ = [
     "Trade",
     "PortfolioState",
     "SimulatorConfig",
+    "spread_round_trip_cost_jpy",
     "apply_slippage",
     "calc_pnl",
     "open_long",

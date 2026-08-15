@@ -34,6 +34,7 @@ from minmax_fx_dt.backtest.simulator import (
     maybe_force_weekend_close,
     open_long,
     open_short,
+    spread_round_trip_cost_jpy,
     update_equity,
 )
 from minmax_fx_dt.strategy.range_breakout import State
@@ -60,6 +61,26 @@ def _slice_by_period(
     if not isinstance(df.index, pd.DatetimeIndex):
         raise ValueError("DataFrame index must be DatetimeIndex")
     return df.loc[(df.index >= start) & (df.index <= end)]
+
+
+def last_confirmed_bar_ts(index: pd.DatetimeIndex, ts: pd.Timestamp) -> Optional[pd.Timestamp]:
+    """時刻 ts の時点で「確定済み」な最後のバーの時刻を返す (OBS000007 チェック #2).
+
+    index は左ラベル (バー開始時刻) の上位足インデックス (H4 や D1 など)。
+    ts を含む進行中バー (index の中で ts 以下の最大値) はまだ確定していないため、
+    その 1 本前 (index の中で「ts を含む進行中バーの開始時刻」未満の最大値) を返す。
+    確定済みバーが 1 本も無い場合は None。
+
+    例: index = [00:00, 04:00, 08:00] (H4), ts = 05:15 の場合、
+        進行中バーは 04:00 (05:15 を含む)。確定済みの最後のバーは 00:00。
+    """
+    current_idx = index[index <= ts]
+    if len(current_idx) == 0:
+        return None
+    confirmed_idx = index[index < current_idx[-1]]
+    if len(confirmed_idx) == 0:
+        return None
+    return confirmed_idx[-1]
 
 
 def run_backtest(
@@ -112,6 +133,7 @@ def run_backtest(
     weak_breakout_signals = 0
     weak_breakout_blocked = 0
     max_margin_pct = 0.0
+    signals_dropped_position_open = 0  # OBS000007 独立監査 B2
 
     # ST バーを時系列で処理
     last_mt_result = None
@@ -156,19 +178,12 @@ def run_backtest(
         # 4. 確定済みバーのみで MTF 評価 (walk-forward、未確定バーの除外)
         # OBS000007 チェック #2: st_ts が含まれる H4/D1 バーはまだ確定していないため、
         # LT/MT の判定には「1 本前まで」の確定済みバーのみを使う。
-        current_h4_idx = mt_ohlcv.index[mt_ohlcv.index <= st_ts]
-        current_d1_idx = lt_ohlcv.index[lt_ohlcv.index <= st_ts]
-        if len(current_h4_idx) == 0 or len(current_d1_idx) == 0:
-            update_equity(state, st_close, st_ts, sim_config.is_jpy_pair)
-            continue
-        confirmed_h4_idx = mt_ohlcv.index[mt_ohlcv.index < current_h4_idx[-1]]
-        confirmed_d1_idx = lt_ohlcv.index[lt_ohlcv.index < current_d1_idx[-1]]
-        if len(confirmed_h4_idx) == 0 or len(confirmed_d1_idx) == 0:
+        confirmed_h4_ts = last_confirmed_bar_ts(mt_ohlcv.index, st_ts)
+        confirmed_d1_ts = last_confirmed_bar_ts(lt_ohlcv.index, st_ts)
+        if confirmed_h4_ts is None or confirmed_d1_ts is None:
             # まだ 1 本も確定済みバーがない (バックテスト開始直後)
             update_equity(state, st_close, st_ts, sim_config.is_jpy_pair)
             continue
-        confirmed_h4_ts = confirmed_h4_idx[-1]
-        confirmed_d1_ts = confirmed_d1_idx[-1]
 
         try:
             lt_slice = lt_ohlcv.loc[lt_ohlcv.index <= confirmed_d1_ts]
@@ -271,6 +286,16 @@ def run_backtest(
                 weak_breakout_signals += 1
                 if not sig.should_enter:
                     weak_breakout_blocked += 1
+            # OBS000007 独立監査 B2: should_enter=True だが同方向に既存ポジションを
+            # 保有中のため実際には建てられなかったケース。エンジンの状態はこの時点で
+            # 既に PULLBACK_CONFIRMED に進んでしまっており (check_entry_conditions 内)、
+            # シグナルは黙って破棄される。信号を抑制する設計変更はステートマシンの
+            # 意味論に踏み込むため、現段階では「カウントして可視化する」方針を採る。
+            if sig.should_enter and (
+                (state.position_side == PositionSide.LONG and sig.side == "BUY")
+                or (state.position_side == PositionSide.SHORT and sig.side == "SELL")
+            ):
+                signals_dropped_position_open += 1
 
         # 7. 証拠金消費率追跡
         m_pct = margin_usage_pct(state, st_close, sim_config.is_jpy_pair)
@@ -287,10 +312,11 @@ def run_backtest(
 
     metrics = compute_metrics(
         state,
-        spread_round_trip_jpy=60.0,
+        spread_round_trip_jpy=spread_round_trip_cost_jpy(sim_config),
         weak_breakout_signals=weak_breakout_signals,
         weak_breakout_blocked=weak_breakout_blocked,
         max_margin_usage_pct=max_margin_pct,
+        signals_dropped_position_open=signals_dropped_position_open,
     )
 
     return BacktestResult(
@@ -303,4 +329,4 @@ def run_backtest(
     )
 
 
-__all__ = ["BacktestResult", "run_backtest", "to_dict"]
+__all__ = ["BacktestResult", "run_backtest", "to_dict", "last_confirmed_bar_ts"]

@@ -52,6 +52,11 @@ class BacktestMetrics:
 
     # v2 拡張
     weak_breakout_exclusion_pct: float  # 弱いブレイクの排除率
+    # OBS000007 独立監査 B2: エンジンが should_enter=True と判定したが、
+    # 既に同方向ポジションを保有中で実際には建てられなかった (=シグナルが
+    # 黙って破棄された) 件数。エンジンの状態はこの時点で PULLBACK_CONFIRMED
+    # に進んでしまうため、保有期間が長期化すると見えない機会損失になりうる。
+    signals_dropped_position_open: int
     n_trades: int
     n_wins: int
     n_losses: int
@@ -161,6 +166,7 @@ def compute_metrics(
     weak_breakout_blocked: int = 0,
     backtest_forward_divergence_pct: float = 0.0,
     max_margin_usage_pct: float = 0.0,
+    signals_dropped_position_open: int = 0,
 ) -> BacktestMetrics:
     """バックテストの総合 KPI を計算.
 
@@ -171,6 +177,7 @@ def compute_metrics(
         weak_breakout_blocked: 弱いブレイクでブロックされた数.
         backtest_forward_divergence_pct: BT/FT 乖離率 (フォワード時のみ).
         max_margin_usage_pct: 両建て状態の最大証拠金消費率.
+        signals_dropped_position_open: 既存ポジションと同方向のため破棄されたシグナル数 (OBS000007 B2)。
 
     Returns:
         BacktestMetrics.
@@ -246,6 +253,7 @@ def compute_metrics(
         backtest_forward_divergence_pct=backtest_forward_divergence_pct,
         max_margin_usage_pct=margin_pct,
         weak_breakout_exclusion_pct=we,
+        signals_dropped_position_open=signals_dropped_position_open,
         n_trades=len(pnls),
         n_wins=state.win_trades,
         n_losses=state.loss_trades,
@@ -274,6 +282,7 @@ def to_dict(m: BacktestMetrics) -> dict:
         "backtest_forward_divergence_pct": round(m.backtest_forward_divergence_pct, 4),
         "max_margin_usage_pct": round(m.max_margin_usage_pct, 4),
         "weak_breakout_exclusion_pct": round(m.weak_breakout_exclusion_pct, 4),
+        "signals_dropped_position_open": m.signals_dropped_position_open,
         "n_trades": m.n_trades,
         "n_wins": m.n_wins,
         "n_losses": m.n_losses,
