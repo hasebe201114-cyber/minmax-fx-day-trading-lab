@@ -48,3 +48,10 @@ scripts/.debug_*.py
 scripts/.smoke_*.py
 scripts/.aggregate_*.py
 scripts/.check_*.py
+
+# DS-1 集約 JSON (2026-08-15〜): データ期間拡大 (2023-11〜) により
+# 184MB超となり GitHub の 100MB 上限を超過するため追跡対象外とした。
+# data/raw/ds-1/*.csv (個別ファイルは 100MB 未満、こちらは git 管理下) から
+# `python scripts/data/fetch_ds1_ohlcv.py --all-pairs --start <start> --end <end>`
+# を再実行するか、fetch_ds1_ohlcv.aggregate_to_json() を直接呼んで再生成する。
+data/curated/ds-1.json
