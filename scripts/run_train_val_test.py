@@ -125,6 +125,43 @@ PRESETS = {
         "lt_sma_short": 50,
         "lt_sma_long": 200,
     },
+    # OBS000005/00-spec.md v2.3「改善ループの停止条件」に基づく残り3試行枠。
+    # 司令塔判断(2026-08-15、統計的有意性なしへの対応方針②選択)を受け、
+    # A1_A2_combined を土台にエントリー条件を1軸ずつ緩和した候補。
+    # Train期間のみで評価し、validation/testには絞り込み後に1度だけ触れる
+    # (spec v2.3 の逐次探索プロトコル)。
+    "B1_LooseSR": {
+        # MT-2 (S/Rライン) の最小接触回数を3→2に緩和。ATRベースの許容誤差
+        # (OBS000007で修正したバグ)自体は変更せず、S/Rラインと認定される
+        # 価格帯を増やす方向で頻度を上げる。
+        "atr_stop_multiplier": 1.5,
+        "reward_risk_ratio": 3.0,
+        "mt_donchian_length": 50,
+        "lt_adx_threshold": 20.0,
+        "lt_sma_short": 20,
+        "lt_sma_long": 50,
+        "sr_min_touches": 2,
+    },
+    "B2_ShortDonchian": {
+        # MT-1 (レンジブレイク) のDonchian期間を50→20に短縮。ブレイク判定の
+        # 参照レンジを短くし、ブレイクそのものの検出頻度を上げる。
+        "atr_stop_multiplier": 1.5,
+        "reward_risk_ratio": 3.0,
+        "mt_donchian_length": 20,
+        "lt_adx_threshold": 20.0,
+        "lt_sma_short": 20,
+        "lt_sma_long": 50,
+    },
+    "B3_LowerADX": {
+        # LT (長期方向)のADX閾値を20→15に緩和。トレンド強度フィルターを
+        # 通過しやすくし、LT条件でのシグナル排除を減らす。
+        "atr_stop_multiplier": 1.5,
+        "reward_risk_ratio": 3.0,
+        "mt_donchian_length": 50,
+        "lt_adx_threshold": 15.0,
+        "lt_sma_short": 20,
+        "lt_sma_long": 50,
+    },
 }
 
 # 通貨別スプレッド (spec §コスト前提)
@@ -259,9 +296,12 @@ def run_one(symbol: str, preset_name: str, periods: dict = None) -> dict:
         lt_adx_threshold=preset["lt_adx_threshold"],
         mt_donchian_length=preset["mt_donchian_length"],
         mt_atr_length=14,
-        sr_min_touches=3,
-        sr_cluster_threshold_pct=0.5,
-        sr_fractal_window=5,
+        # OBS000005/00-spec.md v2.3 差し戻し2 対応: エントリー条件緩和候補
+        # (B1_LooseSR 等) が sr_min_touches 等を上書きできるよう preset から
+        # 読み取る。未指定の既存プリセットは従来通りの既定値のまま。
+        sr_min_touches=preset.get("sr_min_touches", 3),
+        sr_cluster_threshold_pct=preset.get("sr_cluster_threshold_pct", 0.5),
+        sr_fractal_window=preset.get("sr_fractal_window", 5),
     )
 
     period_results = {}
