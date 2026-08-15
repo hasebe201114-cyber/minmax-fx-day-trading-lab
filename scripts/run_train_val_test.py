@@ -35,7 +35,9 @@ import pandas as pd
 import pickle
 
 from minmax_fx_dt.backtest import run_backtest, to_dict
+from minmax_fx_dt.backtest.permutation import DEFAULT_N_PERMUTATIONS, permutation_test
 from minmax_fx_dt.backtest.simulator import SimulatorConfig
+from minmax_fx_dt.decision.criteria import Stats, evaluate_kpis, kpi_pass_summary
 from minmax_fx_dt.strategy.multi_timeframe import MTFConfig
 
 # MTF キャッシュ (precompute_mtf.py で生成)
@@ -177,33 +179,42 @@ def filter_period(df: pd.DataFrame, start: str, end: str) -> pd.DataFrame:
     return df[(df.index >= start) & (df.index <= end)]
 
 
-def evaluate_kpis(metrics: dict) -> dict:
-    """spec で固定された K1m〜K7m 評価基準.
+# OBS000005 差し戻し1 (独立監査追記2 で明記): 判定は自前再実装ではなく
+# src/minmax_fx_dt/decision/criteria.py の evaluate_kpis() を経由する。
+# K5m・K6m・min_n_trades・permutation_p_value を含む spec 記載の全ゲートを
+# コード化された単一の判定基準で評価するため (旧実装は 9 ゲートのみで
+# この 4 項目が丸ごと欠落していた)。
 
-    Returns:
-        dict: 各 KPI の合否
-    """
-    sharpe = metrics.get("sharpe_monthly", float("nan"))
-    pf = metrics.get("profit_factor_monthly", float("nan"))
-    expectancy = metrics.get("expectancy_jpy", float("nan"))
-    max_dd_monthly = metrics.get("max_dd_monthly_pct", float("nan"))
-    max_dd_yearly = metrics.get("max_dd_yearly_pct", float("nan"))
-    payoff = metrics.get("payoff_ratio", float("nan"))
-    max_consec = metrics.get("max_consecutive_losses", 999)
-    margin = metrics.get("max_margin_usage_pct", float("nan"))
-    weak_breakout = metrics.get("weak_breakout_exclusion_pct", float("nan"))
 
-    return {
-        "K1m_sharpe_ge_0.4":     sharpe >= 0.4,
-        "K1m_pf_ge_1.2":         pf >= 1.2,
-        "K1m_expectancy_pos":    expectancy > 0,
-        "K2m_dd_monthly_le_10":  max_dd_monthly <= 10.0,
-        "K2m_dd_yearly_le_20":   max_dd_yearly <= 20.0,
-        "K3m_max_consec_le_5":   max_consec <= 5,
-        "K4m_payoff_ge_1.5":     payoff >= 1.5,
-        "K7m_margin_le_30":      margin <= 30.0,
-        "weak_breakout_ge_30":   weak_breakout >= 30.0,
+def build_stats(
+    m_dict: dict,
+    *,
+    perm_p_value: float | None,
+) -> Stats:
+    """BacktestMetrics.to_dict() の出力から decision.criteria.Stats を構築."""
+    stats: Stats = {
+        "strategy_id": "SYS-FX007",
+        "n_trades": m_dict["n_trades"],
+        "sharpe_monthly": m_dict["sharpe_monthly"],
+        "profit_factor_monthly": m_dict["profit_factor_monthly"],
+        "expectancy_jpy": m_dict["expectancy_jpy"],
+        "max_dd_monthly_pct": m_dict["max_dd_monthly_pct"],
+        "max_dd_yearly_pct": m_dict["max_dd_yearly_pct"],
+        "payoff_ratio": m_dict["payoff_ratio"],
+        "max_consecutive_losses": m_dict["max_consecutive_losses"],
+        "edge_per_trade_jpy": m_dict["edge_per_trade_jpy"],
+        "spread_round_trip_jpy": m_dict["spread_round_trip_jpy"],
+        "max_margin_usage_pct": m_dict["max_margin_usage_pct"],
+        "weak_breakout_exclusion_pct": m_dict["weak_breakout_exclusion_pct"],
+        # K6m: このスクリプトは train/val/test の各期間を独立にバックテストする
+        # だけで、フォワードテスト(実運用)との比較は行っていないため判定対象外。
+        "backtest_forward_divergence_pct": None,
+        "permutation_p_value": perm_p_value,
+        # 両建てロジックは runner.py に未統合 (PJ000003 既知の制約)。
+        # margin usage は単一ポジションの値のため K7m は判定対象外として扱う。
+        "hedging_enabled": False,
     }
+    return stats
 
 
 def run_one(symbol: str, preset_name: str, periods: dict = None) -> dict:
@@ -286,20 +297,41 @@ def run_one(symbol: str, preset_name: str, periods: dict = None) -> dict:
         )
         elapsed = time.time() - t0
         m_dict = to_dict(result.metrics)
-        kpis = evaluate_kpis(m_dict)
-        n_pass = sum(1 for v in kpis.values() if v)
+
+        trade_pnls = [t.pnl for t in result.state.trade_history]
+        perm_result = permutation_test(trade_pnls, n_permutations=DEFAULT_N_PERMUTATIONS)
+
+        stats = build_stats(m_dict, perm_p_value=perm_result.p_value if trade_pnls else None)
+        kpi_evals = evaluate_kpis(stats)
+        summary = kpi_pass_summary(kpi_evals)
 
         print(f"  [{period_name}] {start} - {end} ({elapsed:.1f}秒)")
         print(f"    trades={m_dict['n_trades']:>4}  sharpe={m_dict['sharpe_monthly']:>7.3f}  PF={m_dict['profit_factor_monthly']:>5.2f}  "
               f"DD(m)={m_dict['max_dd_monthly_pct']:>5.2f}%  consec={m_dict['max_consecutive_losses']:>2}  "
-              f"KPI pass={n_pass}/9")
+              f"perm_p={perm_result.p_value:>5.3f}  "
+              f"KPI pass={summary['pass']}/{summary['applicable']} (対象外{summary['not_applicable']})")
 
         period_results[period_name] = {
             "start": start,
             "end": end,
             "metrics": m_dict,
-            "kpi_pass": kpis,
-            "kpi_pass_count": n_pass,
+            "kpi_evals": [
+                {
+                    "metric": e.metric,
+                    "observed": e.observed,
+                    "threshold": e.threshold,
+                    "pass": e.pass_,
+                    "applicable": e.applicable,
+                    "note": e.note,
+                }
+                for e in kpi_evals
+            ],
+            "kpi_summary": summary,
+            "permutation_test": perm_result.to_dict(),
+            # OBS000005 追記2 差し戻し (成果物の再現可能性): permutation test や
+            # 事後の再集計を、フルバックテストを再実行せずに行えるようトレード毎の
+            # 損益を保存しておく。
+            "trade_pnls": trade_pnls,
             "elapsed_sec": elapsed,
         }
 
@@ -356,13 +388,15 @@ def main() -> int:
     print(f"\n{'=' * 70}")
     print(f"全 {len(all_results)} 通貨のサマリ (preset={args.preset}, period={list(selected_periods.keys())})")
     print(f"{'=' * 70}")
-    print(f"{'Pair':<10} {'Period':<12} {'trades':>6} {'sharpe':>7} {'PF':>6} {'DD(m)%':>7} {'consec':>6} {'pass':>5}")
+    print(f"{'Pair':<10} {'Period':<12} {'trades':>6} {'sharpe':>7} {'PF':>6} {'DD(m)%':>7} {'consec':>6} {'perm_p':>7} {'pass':>7}")
     for r in all_results:
         for period_name, pr in r["periods"].items():
             m = pr["metrics"]
+            s = pr["kpi_summary"]
+            perm_p = pr["permutation_test"]["p_value"]
             print(f"  {r['pair']:<10} {period_name:<12} {m['n_trades']:>6} {m['sharpe_monthly']:>7.3f} "
                   f"{m['profit_factor_monthly']:>6.2f} {m['max_dd_monthly_pct']:>7.2f} "
-                  f"{m['max_consecutive_losses']:>6} {pr['kpi_pass_count']:>5}")
+                  f"{m['max_consecutive_losses']:>6} {perm_p:>7.3f} {s['pass']:>3}/{s['applicable']:<3}")
 
     # JSON 出力
     out_dir = ROOT / "research" / "EXP-FX000001" / "10-result" / "train_val_test"
@@ -382,8 +416,9 @@ def main() -> int:
                         "period": period_name,
                         "period_range": pr["start"] + " - " + pr["end"],
                         "metrics": pr["metrics"],
-                        "kpi_pass": pr["kpi_pass"],
-                        "kpi_pass_count": pr["kpi_pass_count"],
+                        "kpi_evals": pr["kpi_evals"],
+                        "kpi_summary": pr["kpi_summary"],
+                        "permutation_test": pr["permutation_test"],
                         "elapsed_sec": pr["elapsed_sec"],
                     }, indent=2, ensure_ascii=False, default=str),
                     encoding="utf-8",

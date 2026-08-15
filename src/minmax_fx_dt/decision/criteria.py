@@ -91,26 +91,42 @@ class KPIEvaluation:
     threshold: float
     pass_: bool
     note: str = ""
+    # OBS000005 差し戻し1 対応: バックテストのみでは判定不能な指標 (K6m: フォワード
+    # 未実施, K7m: 両建てロジック未統合, permutation: 未実行) を「不合格」ではなく
+    # 「判定対象外」として扱うためのフラグ。evaluate() の failed_kpis 集計からは除外する。
+    applicable: bool = True
 
 
 class Stats(TypedDict, total=False):
-    """撤退判定に必要な統計量 (SYS-FX007 用に拡張)."""
+    """撤退判定に必要な統計量 (SYS-FX007 用に拡張).
+
+    K1m〜K7m 評価用のフィールド名は backtest.metrics.to_dict() の出力キーに
+    合わせてある (OBS000005 差し戻し1: 判定エンジンをバックテストパイプラインに
+    直結できるようにするため)。
+    """
 
     strategy_id: str  # 例: "SYS-FX007"
     n_days: int
     n_trades: int
-    sharpe: float
-    max_dd: float  # 口座 % で記録
+    sharpe: float  # Day30/60/90 判定用の総合シャープ (通常は sharpe_monthly と同値)
+    max_dd: float  # Day30/60/90 判定表示用 (口座 %)
     regime: str  # "TREND" / "RANGE" / "RANGE_WARN" / "INSUFFICIENT_DATA"
-    # v2 拡張: 多 KPI
-    profit_factor: float
+    # K1m〜K7m + 統計的有意性 (backtest.metrics.to_dict() のフィールド名に合わせる)
+    sharpe_monthly: float
+    profit_factor_monthly: float
+    expectancy_jpy: float
+    max_dd_monthly_pct: float
+    max_dd_yearly_pct: float
     payoff_ratio: float
     max_consecutive_losses: int
+    edge_per_trade_jpy: float
+    spread_round_trip_jpy: float
     max_margin_usage_pct: float
     weak_breakout_exclusion_pct: float
-    backtest_forward_divergence_pct: float
-    permutation_p_value: float
+    backtest_forward_divergence_pct: float | None  # フォワード未実施なら None (K6m 判定対象外)
+    permutation_p_value: float | None  # permutation test 未実行なら None (判定対象外)
     n_trades_per_currency: dict[str, int]  # 通貨別取引数
+    hedging_enabled: bool  # 両建てロジックが実際に稼働したか (K7m の有効性判定用)
 
 
 def load_regime() -> str:
@@ -130,7 +146,14 @@ def is_range_regime(regime: str) -> bool:
 
 
 def evaluate_kpis(stats: Stats) -> list[KPIEvaluation]:
-    """K1m〜K7m 評価 (本PJ固有)."""
+    """K1m〜K7m + 統計的有意性 評価 (本PJ固有).
+
+    OBS000005 差し戻し1 (独立監査追記2 での明記事項): K5m・K6m・min_n_trades・
+    permutation_p_value を含む spec 記載の全ゲートを評価する。バックテストのみ
+    では原理的に判定できない指標 (K6m: フォワード比較, K7m: 両建て未統合時,
+    permutation: 未実行時) は `applicable=False` として「判定対象外」を明示し、
+    黙って pass 扱いにしない。
+    """
     strategy_id = stats.get("strategy_id", "")
     thresholds = KPI_THRESHOLDS.get(strategy_id)
     if not thresholds:
@@ -139,7 +162,7 @@ def evaluate_kpis(stats: Stats) -> list[KPIEvaluation]:
     evals: list[KPIEvaluation] = []
 
     # K1m: 月次 Sharpe
-    sharpe = float(stats.get("sharpe", 0.0))
+    sharpe = float(stats.get("sharpe_monthly", stats.get("sharpe", 0.0)))
     evals.append(
         KPIEvaluation(
             "K1m_sharpe",
@@ -150,7 +173,7 @@ def evaluate_kpis(stats: Stats) -> list[KPIEvaluation]:
     )
 
     # K1m: 月次 PF
-    pf = float(stats.get("profit_factor", 0.0))
+    pf = float(stats.get("profit_factor_monthly", 0.0))
     evals.append(
         KPIEvaluation(
             "K1m_pf",
@@ -160,14 +183,38 @@ def evaluate_kpis(stats: Stats) -> list[KPIEvaluation]:
         )
     )
 
+    # K1m: 月次期待値 > 0円
+    expectancy = float(stats.get("expectancy_jpy", 0.0))
+    evals.append(
+        KPIEvaluation(
+            "K1m_expectancy",
+            expectancy,
+            0.0,
+            expectancy > 0.0,
+            "1トレードあたり期待値(円)",
+        )
+    )
+
     # K2m: 月間 DD
-    max_dd = float(stats.get("max_dd", 0.0))
+    max_dd_m = abs(float(stats.get("max_dd_monthly_pct", stats.get("max_dd", 0.0))))
     evals.append(
         KPIEvaluation(
             "K2m_dd_monthly",
-            abs(max_dd),
+            max_dd_m,
             thresholds["max_dd_monthly_pct"],
-            abs(max_dd) <= thresholds["max_dd_monthly_pct"],
+            max_dd_m <= thresholds["max_dd_monthly_pct"],
+            "証拠金 % に対する比率",
+        )
+    )
+
+    # K2m: 年間 DD
+    max_dd_y = abs(float(stats.get("max_dd_yearly_pct", max_dd_m)))
+    evals.append(
+        KPIEvaluation(
+            "K2m_dd_yearly",
+            max_dd_y,
+            thresholds["max_dd_yearly_pct"],
+            max_dd_y <= thresholds["max_dd_yearly_pct"],
             "証拠金 % に対する比率",
         )
     )
@@ -194,16 +241,78 @@ def evaluate_kpis(stats: Stats) -> list[KPIEvaluation]:
         )
     )
 
-    # K7m: 両建て証拠金消費率
-    margin = float(stats.get("max_margin_usage_pct", 100.0))
-    evals.append(
-        KPIEvaluation(
-            "K7m_margin_usage",
-            margin,
-            thresholds["max_margin_usage_pct"],
-            margin <= thresholds["max_margin_usage_pct"],
+    # K5m: 1トレード期待値 > スプレッド往復コスト × 3
+    edge = float(stats.get("edge_per_trade_jpy", stats.get("expectancy_jpy", 0.0)))
+    spread_rt = float(stats.get("spread_round_trip_jpy", 0.0))
+    if spread_rt > 0:
+        multiple = edge / spread_rt
+        evals.append(
+            KPIEvaluation(
+                "K5m_spread_cost_multiple",
+                multiple,
+                thresholds["spread_cost_multiple"],
+                multiple >= thresholds["spread_cost_multiple"],
+                f"edge={edge:.1f}円 / spread往復={spread_rt:.1f}円",
+            )
         )
-    )
+    else:
+        evals.append(
+            KPIEvaluation(
+                "K5m_spread_cost_multiple",
+                0.0,
+                thresholds["spread_cost_multiple"],
+                False,
+                "spread_round_trip_jpy 未提供のため判定対象外",
+                applicable=False,
+            )
+        )
+
+    # K6m: バックテスト ↔ フォワードテスト乖離率 (フォワード未実施なら判定対象外)
+    bt_ft = stats.get("backtest_forward_divergence_pct")
+    if bt_ft is None:
+        evals.append(
+            KPIEvaluation(
+                "K6m_bt_ft_divergence",
+                float("nan"),
+                thresholds["backtest_forward_divergence_pct"],
+                False,
+                "フォワードテスト未実施のため判定対象外",
+                applicable=False,
+            )
+        )
+    else:
+        bt_ft = float(bt_ft)
+        evals.append(
+            KPIEvaluation(
+                "K6m_bt_ft_divergence",
+                bt_ft,
+                thresholds["backtest_forward_divergence_pct"],
+                bt_ft <= thresholds["backtest_forward_divergence_pct"],
+            )
+        )
+
+    # K7m: 両建て証拠金消費率 (両建てロジック未統合の間は「判定対象外」)
+    margin = float(stats.get("max_margin_usage_pct", 0.0))
+    if stats.get("hedging_enabled"):
+        evals.append(
+            KPIEvaluation(
+                "K7m_margin_usage",
+                margin,
+                thresholds["max_margin_usage_pct"],
+                margin <= thresholds["max_margin_usage_pct"],
+            )
+        )
+    else:
+        evals.append(
+            KPIEvaluation(
+                "K7m_margin_usage",
+                margin,
+                thresholds["max_margin_usage_pct"],
+                margin <= thresholds["max_margin_usage_pct"],
+                "両建てロジック未統合のため単一ポジションの証拠金比率のみ。K7m の意図（両建て時消費率）は未検証",
+                applicable=False,
+            )
+        )
 
     # v2 拡張: 弱いブレイク排除率
     we = float(stats.get("weak_breakout_exclusion_pct", 0.0))
@@ -216,7 +325,59 @@ def evaluate_kpis(stats: Stats) -> list[KPIEvaluation]:
         )
     )
 
+    # 統計的有意性: 有効サンプル数
+    n_trades = int(stats.get("n_trades", 0))
+    evals.append(
+        KPIEvaluation(
+            "min_n_trades",
+            float(n_trades),
+            thresholds["min_n_trades"],
+            n_trades >= thresholds["min_n_trades"],
+        )
+    )
+
+    # 統計的有意性: permutation p 値 (未実行なら判定対象外)
+    p_value = stats.get("permutation_p_value")
+    if p_value is None:
+        evals.append(
+            KPIEvaluation(
+                "permutation_p_value",
+                float("nan"),
+                thresholds["permutation_p_value"],
+                False,
+                "permutation test 未実行のため判定対象外",
+                applicable=False,
+            )
+        )
+    else:
+        p_value = float(p_value)
+        evals.append(
+            KPIEvaluation(
+                "permutation_p_value",
+                p_value,
+                thresholds["permutation_p_value"],
+                p_value < thresholds["permutation_p_value"],
+            )
+        )
+
     return evals
+
+
+def kpi_pass_summary(evals: list[KPIEvaluation]) -> dict:
+    """KPI 評価一覧を件数集計に変換 (判定対象外は分母・分子から除外して明示)."""
+    applicable = [e for e in evals if e.applicable]
+    not_applicable = [e for e in evals if not e.applicable]
+    passed = [e for e in applicable if e.pass_]
+    return {
+        "total": len(evals),
+        "applicable": len(applicable),
+        "not_applicable": len(not_applicable),
+        "not_applicable_metrics": [e.metric for e in not_applicable],
+        "pass": len(passed),
+        "fail": len(applicable) - len(passed),
+        "fail_metrics": [e.metric for e in applicable if not e.pass_],
+        "all_applicable_pass": len(passed) == len(applicable) and len(applicable) > 0,
+    }
 
 
 def evaluate(stats: Stats) -> tuple[Verdict, str]:
@@ -245,7 +406,8 @@ def evaluate(stats: Stats) -> tuple[Verdict, str]:
 
     # K1m〜K7m 評価
     kpi_evals = evaluate_kpis(stats)
-    failed_kpis = [e.metric for e in kpi_evals if not e.pass_]
+    # 判定対象外 (applicable=False) の指標は不合格扱いにしない (OBS000005 差し戻し1)
+    failed_kpis = [e.metric for e in kpi_evals if e.applicable and not e.pass_]
 
     # Day 30 まで: 短期撤退閾値
     if n_days < 30:
@@ -327,11 +489,17 @@ def main() -> int:
             "n_days": 25,
             "n_trades": 5,
             "sharpe": -0.6,
+            "sharpe_monthly": -0.6,
             "max_dd": 8.0,
+            "max_dd_monthly_pct": 8.0,
+            "max_dd_yearly_pct": 8.0,
             "regime": "TREND",
-            "profit_factor": 1.3,
+            "profit_factor_monthly": 1.3,
+            "expectancy_jpy": 50.0,
             "payoff_ratio": 1.8,
             "max_consecutive_losses": 3,
+            "edge_per_trade_jpy": 50.0,
+            "spread_round_trip_jpy": 20.0,
             "max_margin_usage_pct": 15.0,
             "weak_breakout_exclusion_pct": 35.0,
         },
@@ -340,24 +508,37 @@ def main() -> int:
             "n_days": 95,
             "n_trades": 80,
             "sharpe": 0.5,
+            "sharpe_monthly": 0.5,
             "max_dd": 7.0,
+            "max_dd_monthly_pct": 7.0,
+            "max_dd_yearly_pct": 12.0,
             "regime": "TREND",
-            "profit_factor": 1.4,
+            "profit_factor_monthly": 1.4,
+            "expectancy_jpy": 120.0,
             "payoff_ratio": 2.0,
             "max_consecutive_losses": 4,
+            "edge_per_trade_jpy": 120.0,
+            "spread_round_trip_jpy": 20.0,
             "max_margin_usage_pct": 22.0,
             "weak_breakout_exclusion_pct": 40.0,
+            "permutation_p_value": 0.02,
         },
         {
             "strategy_id": "SYS-FX007",
             "n_days": 95,
             "n_trades": 2,
             "sharpe": 0.3,
+            "sharpe_monthly": 0.3,
             "max_dd": 5.0,
+            "max_dd_monthly_pct": 5.0,
+            "max_dd_yearly_pct": 5.0,
             "regime": "TREND",
-            "profit_factor": 1.1,
+            "profit_factor_monthly": 1.1,
+            "expectancy_jpy": 10.0,
             "payoff_ratio": 1.5,
             "max_consecutive_losses": 2,
+            "edge_per_trade_jpy": 10.0,
+            "spread_round_trip_jpy": 20.0,
             "max_margin_usage_pct": 10.0,
             "weak_breakout_exclusion_pct": 30.0,
         },

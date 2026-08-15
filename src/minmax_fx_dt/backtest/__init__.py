@@ -31,6 +31,7 @@ from minmax_fx_dt.backtest.metrics import (
     to_dict,
 )
 from minmax_fx_dt.backtest.runner import BacktestResult, run_backtest
+from minmax_fx_dt.backtest.permutation import PermutationTestResult, permutation_test
 
 __all__ = [
     # simulator
@@ -43,4 +44,6 @@ __all__ = [
     "monthly_sharpe", "profit_factor", "max_drawdown", "payoff_ratio",
     # runner
     "BacktestResult", "run_backtest",
+    # permutation
+    "PermutationTestResult", "permutation_test",
 ]
