@@ -459,6 +459,7 @@ def main() -> int:
                         "kpi_evals": pr["kpi_evals"],
                         "kpi_summary": pr["kpi_summary"],
                         "permutation_test": pr["permutation_test"],
+                        "trade_pnls": pr["trade_pnls"],
                         "elapsed_sec": pr["elapsed_sec"],
                     }, indent=2, ensure_ascii=False, default=str),
                     encoding="utf-8",
