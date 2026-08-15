@@ -194,6 +194,22 @@ class RangeBreakoutEngine:
                 self.pullback_signal = None
                 self.orderbook_signal = None
 
+        elif self.state == State.PULLBACK_CONFIRMED:
+            # エントリー済み (OBS000007 修正で判明: この分岐が無いとエンジンが
+            # PULLBACK_CONFIRMED に永久固着し、以後一切エントリーできなくなる)。
+            # 次のセットアップを探すため、レンジに戻れば RANGE_FORMING に復帰、
+            # レンジ外に留まるならトレンド継続とみなして TREND_UP/DOWN へ進める。
+            if self.range_info.lower <= close <= self.range_info.upper:
+                self.state = State.RANGE_FORMING
+                self.last_breakout_level = None
+                self.last_breakout_side = None
+                self.pullback_signal = None
+                self.orderbook_signal = None
+            else:
+                self.state = (
+                    State.TREND_UP if self.last_breakout_side == "UP" else State.TREND_DOWN
+                )
+
         # 変化なしなら no-op
         if self.state != prev_state:
             # 状態変化時のログ用
@@ -259,10 +275,18 @@ class RangeBreakoutEngine:
         )
 
         # 条件 3: MT-2 S/R ライン
+        # 許容誤差は ATR 連動 (OBS000001 C7: "ATR 0.5% 以内の接触" = 0.5 x ATR の意図)。
+        # 旧実装は price * 0.5% (USD/JPY で約 75 pips = ATR の約 1.5 倍) と広すぎ、
+        # ほぼ常に成立していた (OBS000007 チェック #4)。
         if self.last_breakout_level is not None and self.sr_levels:
             nearest = find_nearest_sr(self.last_breakout_level, self.sr_levels)
             if nearest is not None:
-                tolerance = nearest.price * 0.005  # 0.5% 以内
+                atr_for_tolerance = self.range_info.atr if self.range_info is not None else None
+                tolerance = (
+                    atr_for_tolerance * 0.5
+                    if atr_for_tolerance is not None and atr_for_tolerance > 0
+                    else nearest.price * 0.005
+                )
                 conditions["3_mt2_sr_line"] = (
                     abs(nearest.price - self.last_breakout_level) <= tolerance
                     and nearest.strength >= self.sr_strength_threshold

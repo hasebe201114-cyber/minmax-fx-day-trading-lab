@@ -101,7 +101,14 @@ def fetch_pair(
 
     if not dfs:
         print(f"  [NG] {symbol}: データ取得できず")
-        return {"symbol": symbol, "n_days_success": 0, "n_days_fail": fail_days, "n_days_no_data": no_data_days, "n_bars": 0}
+        return {
+            "symbol": symbol,
+            "n_days_success": 0,
+            "n_days_fail": fail_days,
+            "n_days_no_data": no_data_days,
+            "n_bars": 0,
+            "file": None,
+        }
 
     combined = pd.concat(dfs).sort_index()
     combined = combined[~combined.index.duplicated(keep="first")]
@@ -218,7 +225,7 @@ def main() -> int:
         "interval": args.interval,
         "n_pairs": len(results),
         "total_bars": total_bars,
-        "files": [r["file"] for r in results],
+        "files": [r["file"] for r in results if r.get("file")],
     })
     manifest["generated_at"] = datetime.now().isoformat()
     manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")

@@ -114,68 +114,75 @@ def run_backtest(
     max_margin_pct = 0.0
 
     # ST バーを時系列で処理
-    last_mt_bar_ts: Optional[pd.Timestamp] = None
     last_mt_result = None
-    last_h4_index: Optional[pd.Timestamp] = None
-    last_h4_high = last_h4_low = last_h4_close = None
+    engine = None  # RangeBreakoutEngine をバーをまたいで永続化する (OBS000007 チェック #3)
+    last_processed_h4_ts: Optional[pd.Timestamp] = None  # 直近に process_h4_bar 済みの確定 H4 バー
 
-    # 簡略化のため、ST の各バーで:
-    # 1. 最新の H4 バーに更新があれば RangeBreakoutEngine を駆動
-    # 2. 直近 N 本の ST でプルバック確認
-    # 3. エントリー判定 → シミュレータ
-    # 4. 週末強制クローズ
-    # 5. エクイティ更新
+    # 各 ST バーで:
+    # 1. 週末強制クローズ
+    # 2. SL / TP チェック (このバー自身の高安のみを使用、先読みなし)
+    # 3. 確定済みバーのみで MTF 評価 (未確定の進行中 H4/D1 バーは除外)
+    # 4. 新たに 1 本確定した H4 バーがあれば、その回のみステートマシンを駆動
+    # 5. エントリー判定 → シミュレータ
+    # 6. エクイティ更新
 
-    # H4 → ST のマッピング (H4 バーが属する時刻範囲の ST バーを紐付け)
     mt_ohlcv = mt_ohlcv.copy()
     if not isinstance(mt_ohlcv.index, pd.DatetimeIndex):
         raise ValueError("mt_ohlcv.index must be DatetimeIndex")
-    mt_ohlcv["bar_id"] = mt_ohlcv.index
+    if not isinstance(lt_ohlcv.index, pd.DatetimeIndex):
+        raise ValueError("lt_ohlcv.index must be DatetimeIndex")
 
     for st_ts, st_row in st_ohlcv.iterrows():
         st_high = float(st_row["high"])
         st_low = float(st_row["low"])
         st_close = float(st_row["close"])
 
-        # 1. 対応する H4 バーを特定 (直近の H4)
-        current_h4_idx = mt_ohlcv.index[mt_ohlcv.index <= st_ts]
-        if len(current_h4_idx) == 0:
-            update_equity(state, st_close, st_ts, sim_config.is_jpy_pair)
-            continue
-        current_h4_ts = current_h4_idx[-1]
-        if current_h4_ts != last_h4_index:
-            # H4 バー切替
-            last_h4_index = current_h4_ts
-            h4_row = mt_ohlcv.loc[current_h4_ts]
-            last_h4_high = float(h4_row["high"])
-            last_h4_low = float(h4_row["low"])
-            last_h4_close = float(h4_row["close"])
-
-        # 2. 週末強制クローズ
+        # 1. 週末強制クローズ
         maybe_force_weekend_close(state, sim_config, st_ts, st_close)
 
-        # 3. SL / TP チェック
-        if last_h4_high is not None and last_h4_low is not None:
-            check_stop_loss_take_profit(
-                state, sim_config,
-                high=last_h4_high, low=last_h4_low,
-                timestamp=st_ts,
-            )
+        # 2. SL / TP チェック: 進行中 H4 バーの確定高安 (最大 4 時間先の情報) ではなく、
+        # このバー自身の高安のみを使う (OBS000007 チェック #1、先読みバグの修正)
+        check_stop_loss_take_profit(
+            state, sim_config,
+            high=st_high, low=st_low,
+            timestamp=st_ts,
+        )
 
-        # 4. DD 停止判定
+        # 3. DD 停止判定
         if is_dd_paused(state, sim_config):
             update_equity(state, st_close, st_ts, sim_config.is_jpy_pair)
             continue
 
-        # 5. MTF 評価: その時点までのデータにスライスして渡す (walk-forward)
-        # これが無いと Donchian upper がトレンド最高値に張り付き、ブレイクが検出されない
+        # 4. 確定済みバーのみで MTF 評価 (walk-forward、未確定バーの除外)
+        # OBS000007 チェック #2: st_ts が含まれる H4/D1 バーはまだ確定していないため、
+        # LT/MT の判定には「1 本前まで」の確定済みバーのみを使う。
+        current_h4_idx = mt_ohlcv.index[mt_ohlcv.index <= st_ts]
+        current_d1_idx = lt_ohlcv.index[lt_ohlcv.index <= st_ts]
+        if len(current_h4_idx) == 0 or len(current_d1_idx) == 0:
+            update_equity(state, st_close, st_ts, sim_config.is_jpy_pair)
+            continue
+        confirmed_h4_idx = mt_ohlcv.index[mt_ohlcv.index < current_h4_idx[-1]]
+        confirmed_d1_idx = lt_ohlcv.index[lt_ohlcv.index < current_d1_idx[-1]]
+        if len(confirmed_h4_idx) == 0 or len(confirmed_d1_idx) == 0:
+            # まだ 1 本も確定済みバーがない (バックテスト開始直後)
+            update_equity(state, st_close, st_ts, sim_config.is_jpy_pair)
+            continue
+        confirmed_h4_ts = confirmed_h4_idx[-1]
+        confirmed_d1_ts = confirmed_d1_idx[-1]
+
         try:
-            lt_slice = lt_ohlcv.loc[lt_ohlcv.index <= st_ts]
-            mt_slice = mt_ohlcv.loc[mt_ohlcv.index <= st_ts]
+            lt_slice = lt_ohlcv.loc[lt_ohlcv.index <= confirmed_d1_ts]
+            mt_slice = mt_ohlcv.loc[mt_ohlcv.index <= confirmed_h4_ts]
             st_slice = st_ohlcv.loc[st_ohlcv.index <= st_ts]
             if len(lt_slice) < mtf_config.lt_sma_long or len(mt_slice) < mtf_config.mt_donchian_length:
                 update_equity(state, st_close, st_ts, sim_config.is_jpy_pair)
                 continue
+
+            # 新たに 1 本確定した H4 バーがある場合のみステートマシンを駆動する
+            # (同じ確定バーに対して繰り返し process_h4_bar すると、実際には新しい
+            # 確定バーがないのに RANGE_BREAKOUT_* → TREND_* へ誤って進んでしまう)
+            is_new_h4_bar = confirmed_h4_ts != last_processed_h4_ts
+
             result = evaluate_mtf(
                 lt_high=lt_slice["high"],
                 lt_low=lt_slice["low"],
@@ -187,10 +194,16 @@ def run_backtest(
                 st_low=st_slice["low"],
                 st_close=st_slice["close"],
                 config=mtf_config,
+                engine=engine,
+                process_h4=is_new_h4_bar,
             )
         except Exception:
             update_equity(state, st_close, st_ts, sim_config.is_jpy_pair)
             continue
+
+        engine = result.engine  # ステートマシンを次のバーへ永続化
+        if is_new_h4_bar:
+            last_processed_h4_ts = confirmed_h4_ts
 
         last_mt_result = result
         sig = result.entry_signal

@@ -174,15 +174,26 @@ def evaluate_mtf(
     *,
     orderbook_signal: OrderBookSignal | None = None,
     config: MTFConfig | None = None,
+    engine: RangeBreakoutEngine | None = None,
+    process_h4: bool = True,
 ) -> MTFResult:
     """マルチタイムフレーム評価を実行.
 
     Args:
-        lt_high/low/close: 長期足 (D1 / W1) の OHLC.
-        mt_high/low/close: 中期足 (H4 / H1) の OHLC.
-        st_high/low/close: 短期足 (M15 / M5) の OHLC.
+        lt_high/low/close: 長期足 (D1 / W1) の OHLC。呼び出し側は確定済み
+            (未確定の進行中バーを含まない) バーのみを渡すこと (OBS000007 チェック #2)。
+        mt_high/low/close: 中期足 (H4 / H1) の OHLC。同上、確定済みバーのみ。
+        st_high/low/close: 短期足 (M15 / M5) の OHLC。
         orderbook_signal: 注文板 / センチメントシグナル (オプション).
         config: MTF 設定 (None ならデフォルト).
+        engine: 既存の RangeBreakoutEngine (バーをまたいで永続化する場合に渡す)。
+            None の場合は新規生成する (後方互換、単発評価用)。
+            OBS000007 チェック #3: 呼び出しのたびに新規生成するとステートマシンが
+            機能しない (RANGE_BREAKOUT_UP 等の状態が保持されない) ため、
+            バックテストループ側で 1 つの engine を使い回すことを想定する。
+        process_h4: True の場合のみ engine.process_h4_bar() を呼ぶ。
+            確定済み H4 バーが新たに1本確定したタイミングでのみ True にし、
+            同一の確定バーに対して重複して状態遷移させないようにする。
 
     Returns:
         MTFResult (エンジン、エントリーシグナル、LT 方向、S/R 本数、タイムスタンプ).
@@ -226,22 +237,32 @@ def evaluate_mtf(
         lookback_days=config.sr_lookback_days,
     )
 
-    # 3. エンジン初期化 + 更新
-    engine = RangeBreakoutEngine(
-        sr_levels=sr_levels,
-        lt_direction=lt_direction,
-        sr_strength_threshold=config.sr_strength_threshold,
-        atr_stop_multiplier=config.atr_stop_multiplier,
-        reward_risk_ratio=config.reward_risk_ratio,
-    )
+    # 3. エンジン初期化 (初回のみ) または既存エンジンの更新
+    # OBS000007 チェック #3: engine を毎回新規生成するとステートマシンが機能しない。
+    # engine が渡されていればそれを再利用し、S/R・LT方向・レンジ情報だけ更新する。
+    if engine is None:
+        engine = RangeBreakoutEngine(
+            sr_levels=sr_levels,
+            lt_direction=lt_direction,
+            sr_strength_threshold=config.sr_strength_threshold,
+            atr_stop_multiplier=config.atr_stop_multiplier,
+            reward_risk_ratio=config.reward_risk_ratio,
+        )
+    else:
+        engine.sr_levels = sr_levels
+        engine.lt_direction = lt_direction
     engine.update_range(last_dc_upper, last_dc_lower, last_atr, last_mt_ts)
     engine.update_orderbook(orderbook_signal or OrderBookSignal(
         available=False, buy_thickness_ratio=1.0, sentiment_long_pct=50.0, passes=True
     ))
 
-    # 4. 最後の H4 バーでステートマシン駆動
+    # 4. 確定済み H4 バーが新たに1本確定したタイミングでのみステートマシン駆動。
+    # OBS000007 チェック #3: 同一の確定バーに対して process_h4_bar を繰り返し呼ぶと、
+    # RANGE_BREAKOUT_UP/DOWN が (実際には新しい確定バーがないのに) TREND_UP/DOWN へ
+    # 誤って進んでしまう。process_h4=False の場合は呼び出し側が既に処理済みとみなす。
     last_mt_close = float(mt_close.iloc[-1])
-    engine.process_h4_bar(close=last_mt_close, timestamp=last_mt_ts)
+    if process_h4:
+        engine.process_h4_bar(close=last_mt_close, timestamp=last_mt_ts)
 
     # 5. ST 戻り確認
     if engine.last_breakout_level is not None and engine.last_breakout_side is not None:

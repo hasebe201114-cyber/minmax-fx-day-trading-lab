@@ -50,6 +50,15 @@ from minmax_fx_dt.backtest.metrics import BacktestMetrics
 from minmax_fx_dt.backtest.simulator import SimulatorConfig
 from minmax_fx_dt.strategy.multi_timeframe import MTFConfig
 
+# 通貨別スプレッド (spec §コスト前提、run_train_val_test.py と同一値)
+SPREAD_PIPS = {
+    "USD_JPY": 0.3,
+    "EUR_JPY": 0.5,
+    "GBP_JPY": 0.7,
+    "AUD_JPY": 0.6,
+    "EUR_USD": 0.3,
+}
+
 
 def load_ohlcv_from_ds1(symbol: str) -> pd.DataFrame:
     """DS-1 JSON から指定通貨の OHLCV を読み込み."""
@@ -180,12 +189,15 @@ def run_preset(preset_name: str, params: dict, symbol: str = "USD_JPY") -> dict:
     if swap_long != 0.0 or swap_short != 0.0:
         print(f"  [スワップ] DS-7 適用: long={swap_long:+.1f} JPY/lot/day, short={swap_short:+.1f} JPY/lot/day")
 
+    # OBS000007 チェック #5: is_jpy_pair=True の全ペア共通ハードコードを修正。
+    # EUR/USD で pip 換算が 100 倍狂い (0.0001 が正しいところ 0.01 として計算) 、
+    # スプレッド/スリッページが実質 30-50 pips 相当に膨張していたバグ。
     sim_config = SimulatorConfig(
         initial_cash_jpy=1_000_000.0,
         lot_size=1_000,
-        spread_pips=0.3,
+        spread_pips=SPREAD_PIPS.get(symbol, 0.3),
         slippage_pips=0.5,
-        is_jpy_pair=True,
+        is_jpy_pair="JPY" in symbol,
         weekend_close=True,
         max_dd_pause_threshold_pct=50.0,
         swap_long_jpy_per_lot_per_day=swap_long,

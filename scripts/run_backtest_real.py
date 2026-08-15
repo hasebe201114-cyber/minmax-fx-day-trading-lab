@@ -91,15 +91,14 @@ def main() -> int:
     else:
         targets = pairs  # デフォルトは全部
 
-    sim_config = SimulatorConfig(
-        initial_cash_jpy=1_000_000.0,
-        lot_size=1_000,
-        spread_pips=0.3,
-        slippage_pips=0.5,
-        is_jpy_pair=True,
-        weekend_close=True,
-        max_dd_pause_threshold_pct=50.0,
-    )
+    # 通貨別スプレッド (spec §コスト前提)
+    spread_pips_by_pair = {
+        "USD_JPY": 0.3,
+        "EUR_JPY": 0.5,
+        "GBP_JPY": 0.7,
+        "AUD_JPY": 0.6,
+        "EUR_USD": 0.3,
+    }
     mtf_config = MTFConfig(
         lt_sma_short=20,
         lt_sma_long=50,
@@ -128,6 +127,18 @@ def main() -> int:
         except Exception as e:
             print(f"  [NG] データ読み込み失敗: {e}")
             continue
+
+        # OBS000007 チェック #5: is_jpy_pair=True の全ペア共通ハードコードを修正
+        # (EUR/USD の pip 換算が 100 倍狂うバグ)。ペアごとに動的判定する。
+        sim_config = SimulatorConfig(
+            initial_cash_jpy=1_000_000.0,
+            lot_size=1_000,
+            spread_pips=spread_pips_by_pair.get(symbol, 0.3),
+            slippage_pips=0.5,
+            is_jpy_pair="JPY" in symbol,
+            weekend_close=True,
+            max_dd_pause_threshold_pct=50.0,
+        )
 
         t0 = time.time()
         result = run_backtest(
