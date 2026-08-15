@@ -131,17 +131,51 @@ def fetch_pair(
     }
 
 
-def aggregate_to_json(raw_dir: Path, out_json: Path) -> dict:
-    """CSV 群を 1 つの JSON に集約."""
+def aggregate_to_json(raw_dir: Path, out_json: Path, *, allow_shrink: bool = False) -> dict:
+    """CSV 群を 1 つの JSON に集約.
+
+    OBS000007 (2026-08-15 独立監査 B4) で発覚したバグの修正:
+    旧実装は同一 symbol の複数 CSV (例: 異なる日付範囲で複数回取得した場合) を
+    `pairs_data[symbol] = df` で単純に上書きしており、ソート順で「最後のファイルが勝つ」
+    ため、範囲の狭い (壊れた/古い) CSV が全期間 CSV を silently 上書きしうる。
+    これにより過去に ds-1.json の USD_JPY が 74,232 本 → 852 本に縮小する事故が発生した。
+    修正: 同一 symbol の全 CSV を結合し、タイムスタンプで重複排除する。
+    さらに、既存 ds-1.json と比べて件数が減る場合は allow_shrink=True でない限り
+    エラーにして書き込みを拒否する (縮小事故の再発防止)。
+    """
     files = sorted(raw_dir.glob("ohlcv_*.csv"))
-    pairs_data: dict[str, pd.DataFrame] = {}
+    frames_by_symbol: dict[str, list[pd.DataFrame]] = {}
     for f in files:
         df = pd.read_csv(f, index_col="timestamp", parse_dates=True)
         # ファイル名から symbol 抽出 (ohlcv_USD_JPY_...)
         name = f.stem
         parts = name.split("_")
         symbol = "_".join(parts[1:3])  # USD_JPY
-        pairs_data[symbol] = df
+        frames_by_symbol.setdefault(symbol, []).append(df)
+
+    pairs_data: dict[str, pd.DataFrame] = {}
+    for symbol, frames in frames_by_symbol.items():
+        combined = pd.concat(frames).sort_index()
+        combined = combined[~combined.index.duplicated(keep="last")]
+        pairs_data[symbol] = combined
+
+    # 縮小ガード: 既存 ds-1.json があれば、通貨ペアごとの本数が減っていないか確認
+    if out_json.exists() and not allow_shrink:
+        try:
+            existing = json.loads(out_json.read_text(encoding="utf-8"))
+            existing_pairs = existing.get("pairs", {})
+        except (json.JSONDecodeError, OSError):
+            existing_pairs = {}
+        shrink_errors = []
+        for symbol, df in pairs_data.items():
+            prev_n = existing_pairs.get(symbol, {}).get("n_bars")
+            if prev_n is not None and len(df) < prev_n:
+                shrink_errors.append(f"{symbol}: {prev_n} 本 → {len(df)} 本に縮小")
+        if shrink_errors:
+            raise RuntimeError(
+                "ds-1.json の書き込みを中止しました (件数が縮小するため、--allow-shrink で明示的に許可しない限り拒否):\n  "
+                + "\n  ".join(shrink_errors)
+            )
 
     out: dict = {
         "schema_version": "1.0",
@@ -171,6 +205,11 @@ def main() -> int:
     parser.add_argument("--interval", default=INTERVAL, help=f"足種 (1min/5min/15min/30min/1hour, default {INTERVAL})")
     parser.add_argument("--out-dir", default="data/raw/ds-1", help="生データ出力ディレクトリ")
     parser.add_argument("--out-json", default="data/curated/ds-1.json", help="集約 JSON 出力先")
+    parser.add_argument(
+        "--allow-shrink",
+        action="store_true",
+        help="集約結果が既存 ds-1.json より件数が少なくても書き込みを許可する (通常は不要、事故防止のためデフォルト拒否)",
+    )
     args = parser.parse_args()
 
     start = pd.Timestamp(args.start)
@@ -196,7 +235,11 @@ def main() -> int:
 
     # JSON 集約
     print("\n=== JSON 集約 ===")
-    agg_result = aggregate_to_json(out_dir, out_json)
+    try:
+        agg_result = aggregate_to_json(out_dir, out_json, allow_shrink=args.allow_shrink)
+    except RuntimeError as e:
+        print(f"  [NG] {e}")
+        return 1
     print(f"  {agg_result['n_pairs']} 通貨, 合計 {agg_result['total_bars']} 本")
     print(f"  保存先: {agg_result['json']}")
 

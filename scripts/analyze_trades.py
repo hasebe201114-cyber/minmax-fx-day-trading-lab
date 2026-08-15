@@ -202,12 +202,21 @@ def main() -> int:
     parser.add_argument("--save-trades", action="store_true", help="trade history を JSON 保存")
     args = parser.parse_args()
 
+    # OBS000007 独立監査 B3: is_jpy_pair=True の全ペア共通ハードコードを修正
+    # (--pair を受け取るのに反映されておらず、EUR/USD 等で pip 換算が 100 倍狂うバグ)
+    spread_pips_by_pair = {
+        "USD_JPY": 0.3,
+        "EUR_JPY": 0.5,
+        "GBP_JPY": 0.7,
+        "AUD_JPY": 0.6,
+        "EUR_USD": 0.3,
+    }
     sim_config = SimulatorConfig(
         initial_cash_jpy=1_000_000.0,
         lot_size=1_000,
-        spread_pips=0.3,
+        spread_pips=spread_pips_by_pair.get(args.pair, 0.3),
         slippage_pips=0.5,
-        is_jpy_pair=True,
+        is_jpy_pair="JPY" in args.pair,
         weekend_close=True,
         max_dd_pause_threshold_pct=50.0,
     )
