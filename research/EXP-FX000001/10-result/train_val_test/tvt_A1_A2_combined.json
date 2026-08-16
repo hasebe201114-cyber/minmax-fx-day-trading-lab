@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-15T12:27:05.217651",
+  "generated_at": "2026-08-16T08:49:32.226617",
   "preset": "A1_A2_combined",
   "preset_params": {
     "atr_stop_multiplier": 1.5,
@@ -24,7 +24,7 @@
     ]
   },
   "n_pairs": 5,
-  "total_elapsed_sec": 4119.058879852295,
+  "total_elapsed_sec": 3768.243880033493,
   "results": [
     {
       "pair": "USD_JPY",
@@ -164,7 +164,7 @@
             },
             {
               "metric": "permutation_p_value",
-              "observed": 0.9560439560439561,
+              "observed": 0.9340659340659341,
               "threshold": 0.05,
               "pass": false,
               "applicable": true,
@@ -197,10 +197,10 @@
             "n_trades": 18,
             "n_permutations": 1000,
             "observed_statistic": -228.9643,
-            "null_mean": -1.8809,
-            "null_std": 137.8412,
-            "p_value": 0.956,
-            "p_value_two_sided": 0.0929,
+            "null_mean": -0.7418,
+            "null_std": 145.6362,
+            "p_value": 0.9341,
+            "p_value_two_sided": 0.1229,
             "method": "sign_flip_mean_pnl"
           },
           "trade_pnls": [
@@ -223,7 +223,7 @@
             -532.1428571428157,
             27.000000000015234
           ],
-          "elapsed_sec": 503.5936965942383
+          "elapsed_sec": 457.20753741264343
         },
         "validation": {
           "start": "2025-04-01",
@@ -351,7 +351,7 @@
             },
             {
               "metric": "permutation_p_value",
-              "observed": 0.25074925074925075,
+              "observed": 0.24275724275724275,
               "threshold": 0.05,
               "pass": false,
               "applicable": true,
@@ -378,10 +378,10 @@
             "n_trades": 4,
             "n_permutations": 1000,
             "observed_statistic": 298.8036,
-            "null_mean": -6.8354,
-            "null_std": 369.3039,
-            "p_value": 0.2507,
-            "p_value_two_sided": 0.5085,
+            "null_mean": 3.5849,
+            "null_std": 355.7215,
+            "p_value": 0.2428,
+            "p_value_two_sided": 0.4835,
             "method": "sign_flip_mean_pnl"
           },
           "trade_pnls": [
@@ -390,7 +390,7 @@
             -350.28571428568966,
             -361.9285714285354
           ],
-          "elapsed_sec": 155.21488785743713
+          "elapsed_sec": 141.09785509109497
         },
         "test": {
           "start": "2025-12-01",
@@ -518,7 +518,7 @@
             },
             {
               "metric": "permutation_p_value",
-              "observed": 0.922077922077922,
+              "observed": 0.9170829170829171,
               "threshold": 0.05,
               "pass": false,
               "applicable": true,
@@ -550,10 +550,10 @@
             "n_trades": 6,
             "n_permutations": 1000,
             "observed_statistic": -309.7143,
-            "null_mean": -6.1098,
-            "null_std": 209.6245,
-            "p_value": 0.9221,
-            "p_value_two_sided": 0.1798,
+            "null_mean": -3.8674,
+            "null_std": 211.2543,
+            "p_value": 0.9171,
+            "p_value_two_sided": 0.1868,
             "method": "sign_flip_mean_pnl"
           },
           "trade_pnls": [
@@ -564,7 +564,7 @@
             -185.6428571428239,
             -194.2142857142528
           ],
-          "elapsed_sec": 164.35949540138245
+          "elapsed_sec": 149.2136368751526
         }
       }
     },
@@ -706,7 +706,7 @@
             },
             {
               "metric": "permutation_p_value",
-              "observed": 0.5884115884115884,
+              "observed": 0.6533466533466533,
               "threshold": 0.05,
               "pass": false,
               "applicable": true,
@@ -738,10 +738,10 @@
             "n_trades": 15,
             "n_permutations": 1000,
             "observed_statistic": -48.0286,
-            "null_mean": -6.7165,
-            "null_std": 136.3663,
-            "p_value": 0.5884,
-            "p_value_two_sided": 0.7762,
+            "null_mean": 9.1334,
+            "null_std": 144.892,
+            "p_value": 0.6533,
+            "p_value_two_sided": 0.7483,
             "method": "sign_flip_mean_pnl"
           },
           "trade_pnls": [
@@ -761,7 +761,7 @@
             267.00000000002433,
             -5.999999999971806
           ],
-          "elapsed_sec": 487.7422664165497
+          "elapsed_sec": 449.01245307922363
         },
         "validation": {
           "start": "2025-04-01",
@@ -889,7 +889,7 @@
             },
             {
               "metric": "permutation_p_value",
-              "observed": 0.6543456543456544,
+              "observed": 0.6563436563436563,
               "threshold": 0.05,
               "pass": false,
               "applicable": true,
@@ -921,10 +921,10 @@
             "n_trades": 8,
             "n_permutations": 1000,
             "observed_statistic": -55.3482,
-            "null_mean": -4.1711,
-            "null_std": 167.9331,
-            "p_value": 0.6543,
-            "p_value_two_sided": 0.6833,
+            "null_mean": -5.5798,
+            "null_std": 169.9799,
+            "p_value": 0.6563,
+            "p_value_two_sided": 0.6823,
             "method": "sign_flip_mean_pnl"
           },
           "trade_pnls": [
@@ -937,7 +937,7 @@
             731.000000000023,
             -341.49999999996794
           ],
-          "elapsed_sec": 160.0626437664032
+          "elapsed_sec": 149.25492000579834
         },
         "test": {
           "start": "2025-12-01",
@@ -1097,10 +1097,10 @@
             "n_trades": 3,
             "n_permutations": 1000,
             "observed_statistic": -329.5,
-            "null_mean": -4.1189,
-            "null_std": 192.8311,
+            "null_mean": 4.1266,
+            "null_std": 190.0725,
             "p_value": 1.0,
-            "p_value_two_sided": 0.2478,
+            "p_value_two_sided": 0.2388,
             "method": "sign_flip_mean_pnl"
           },
           "trade_pnls": [
@@ -1108,7 +1108,7 @@
             -265.7857142856983,
             -392.64285714284597
           ],
-          "elapsed_sec": 161.27849173545837
+          "elapsed_sec": 151.06102561950684
         }
       }
     },
@@ -1250,7 +1250,7 @@
             },
             {
               "metric": "permutation_p_value",
-              "observed": 0.37662337662337664,
+              "observed": 0.3786213786213786,
               "threshold": 0.05,
               "pass": false,
               "applicable": true,
@@ -1279,10 +1279,10 @@
             "n_trades": 9,
             "n_permutations": 1000,
             "observed_statistic": 74.6032,
-            "null_mean": 4.275,
-            "null_std": 207.3653,
-            "p_value": 0.3766,
-            "p_value_two_sided": 0.7373,
+            "null_mean": 6.5188,
+            "null_std": 208.4197,
+            "p_value": 0.3786,
+            "p_value_two_sided": 0.7273,
             "method": "sign_flip_mean_pnl"
           },
           "trade_pnls": [
@@ -1296,7 +1296,7 @@
             756.1428571428621,
             -798.8571428571447
           ],
-          "elapsed_sec": 497.09543633461
+          "elapsed_sec": 454.9581847190857
         },
         "validation": {
           "start": "2025-04-01",
@@ -1424,7 +1424,7 @@
             },
             {
               "metric": "permutation_p_value",
-              "observed": 0.6693306693306693,
+              "observed": 0.6773226773226774,
               "threshold": 0.05,
               "pass": false,
               "applicable": true,
@@ -1455,10 +1455,10 @@
             "n_trades": 5,
             "n_permutations": 1000,
             "observed_statistic": -179.1714,
-            "null_mean": 2.103,
-            "null_std": 334.4724,
-            "p_value": 0.6693,
-            "p_value_two_sided": 0.7123,
+            "null_mean": 2.2134,
+            "null_std": 340.0628,
+            "p_value": 0.6773,
+            "p_value_two_sided": 0.7023,
             "method": "sign_flip_mean_pnl"
           },
           "trade_pnls": [
@@ -1468,7 +1468,7 @@
             -478.00000000000864,
             -621.4285714285666
           ],
-          "elapsed_sec": 155.00126433372498
+          "elapsed_sec": 145.34998416900635
         },
         "test": {
           "start": "2025-12-01",
@@ -1596,7 +1596,7 @@
             },
             {
               "metric": "permutation_p_value",
-              "observed": 0.24975024975024976,
+              "observed": 0.23576423576423577,
               "threshold": 0.05,
               "pass": false,
               "applicable": true,
@@ -1624,17 +1624,17 @@
             "n_trades": 2,
             "n_permutations": 1000,
             "observed_statistic": 699.4286,
-            "null_mean": 0.0051,
-            "null_std": 493.5806,
-            "p_value": 0.2498,
-            "p_value_two_sided": 0.4985,
+            "null_mean": -4.2026,
+            "null_std": 482.5368,
+            "p_value": 0.2358,
+            "p_value_two_sided": 0.4765,
             "method": "sign_flip_mean_pnl"
           },
           "trade_pnls": [
             699.0000000000123,
             699.8571428571267
           ],
-          "elapsed_sec": 164.29083013534546
+          "elapsed_sec": 152.0690038204193
         }
       }
     },
@@ -1776,7 +1776,7 @@
             },
             {
               "metric": "permutation_p_value",
-              "observed": 0.30569430569430567,
+              "observed": 0.3126873126873127,
               "threshold": 0.05,
               "pass": false,
               "applicable": true,
@@ -1803,10 +1803,10 @@
             "n_trades": 11,
             "n_permutations": 1000,
             "observed_statistic": 52.3052,
-            "null_mean": -1.5509,
-            "null_std": 95.9998,
-            "p_value": 0.3057,
-            "p_value_two_sided": 0.6274,
+            "null_mean": -0.3105,
+            "null_std": 101.7183,
+            "p_value": 0.3127,
+            "p_value_two_sided": 0.6334,
             "method": "sign_flip_mean_pnl"
           },
           "trade_pnls": [
@@ -1822,7 +1822,7 @@
             -464.21428571427725,
             -46.999999999997044
           ],
-          "elapsed_sec": 514.001386642456
+          "elapsed_sec": 467.6014165878296
         },
         "validation": {
           "start": "2025-04-01",
@@ -1950,7 +1950,7 @@
             },
             {
               "metric": "permutation_p_value",
-              "observed": 0.47052947052947053,
+              "observed": 0.4935064935064935,
               "threshold": 0.05,
               "pass": false,
               "applicable": true,
@@ -1980,10 +1980,10 @@
             "n_trades": 7,
             "n_permutations": 1000,
             "observed_statistic": 9.5204,
-            "null_mean": -3.2499,
-            "null_std": 136.6254,
-            "p_value": 0.4705,
-            "p_value_two_sided": 0.962,
+            "null_mean": 5.2844,
+            "null_std": 135.0869,
+            "p_value": 0.4935,
+            "p_value_two_sided": 0.9441,
             "method": "sign_flip_mean_pnl"
           },
           "trade_pnls": [
@@ -1995,7 +1995,7 @@
             -78.99999999999352,
             535.5714285714299
           ],
-          "elapsed_sec": 169.66467881202698
+          "elapsed_sec": 154.73757338523865
         },
         "test": {
           "start": "2025-12-01",
@@ -2123,7 +2123,7 @@
             },
             {
               "metric": "permutation_p_value",
-              "observed": 0.8041958041958042,
+              "observed": 0.7932067932067932,
               "threshold": 0.05,
               "pass": false,
               "applicable": true,
@@ -2155,10 +2155,10 @@
             "n_trades": 7,
             "n_permutations": 1000,
             "observed_statistic": -115.4082,
-            "null_mean": 0.8395,
-            "null_std": 138.4033,
-            "p_value": 0.8042,
-            "p_value_two_sided": 0.4116,
+            "null_mean": 2.9461,
+            "null_std": 142.4776,
+            "p_value": 0.7932,
+            "p_value_two_sided": 0.4426,
             "method": "sign_flip_mean_pnl"
           },
           "trade_pnls": [
@@ -2170,7 +2170,7 @@
             -260.7142857142861,
             -329.42857142856496
           ],
-          "elapsed_sec": 185.20679569244385
+          "elapsed_sec": 168.11025762557983
         }
       }
     },
@@ -2312,7 +2312,7 @@
             },
             {
               "metric": "permutation_p_value",
-              "observed": 0.9630369630369631,
+              "observed": 0.965034965034965,
               "threshold": 0.05,
               "pass": false,
               "applicable": true,
@@ -2344,10 +2344,10 @@
             "n_trades": 13,
             "n_permutations": 1000,
             "observed_statistic": -217.7308,
-            "null_mean": 1.8751,
-            "null_std": 121.86,
-            "p_value": 0.963,
-            "p_value_two_sided": 0.0659,
+            "null_mean": -6.9566,
+            "null_std": 120.4127,
+            "p_value": 0.965,
+            "p_value_two_sided": 0.0619,
             "method": "sign_flip_mean_pnl"
           },
           "trade_pnls": [
@@ -2365,7 +2365,7 @@
             -475.28571428574475,
             -114.0000000000474
           ],
-          "elapsed_sec": 470.34017395973206
+          "elapsed_sec": 428.55248403549194
         },
         "validation": {
           "start": "2025-04-01",
@@ -2525,10 +2525,10 @@
             "n_trades": 3,
             "n_permutations": 1000,
             "observed_statistic": -413.6786,
-            "null_mean": 2.8621,
-            "null_std": 238.9241,
+            "null_mean": -9.6331,
+            "null_std": 238.9873,
             "p_value": 1.0,
-            "p_value_two_sided": 0.2488,
+            "p_value_two_sided": 0.2428,
             "method": "sign_flip_mean_pnl"
           },
           "trade_pnls": [
@@ -2536,7 +2536,7 @@
             -421.28571428575736,
             -349.71428571429766
           ],
-          "elapsed_sec": 165.27558660507202
+          "elapsed_sec": 148.4166705608368
         },
         "test": {
           "start": "2025-12-01",
@@ -2696,8 +2696,8 @@
             "n_trades": 1,
             "n_permutations": 1000,
             "observed_statistic": -431.1429,
-            "null_mean": -10.3474,
-            "null_std": 431.0187,
+            "null_mean": -0.8623,
+            "null_std": 431.142,
             "p_value": 1.0,
             "p_value_two_sided": 1.0,
             "method": "sign_flip_mean_pnl"
@@ -2705,7 +2705,7 @@
           "trade_pnls": [
             -431.1428571428744
           ],
-          "elapsed_sec": 164.32467126846313
+          "elapsed_sec": 149.3732922077179
         }
       }
     }
