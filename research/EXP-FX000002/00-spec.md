@@ -68,14 +68,28 @@ SYS-FX007ではこの節を後から追加する形になった（OBS000005差�
 - ホールド期間: 数日〜数週間、週末持ち越し禁止（土曜06:00 JSTまでに全決済、CLAUDE.md準拠）
 - コスト前提: `SPREAD_PIPS`辞書（SYS-FX007から流用）、API手数料0.002%、スリッページ0.5pip固定、スワップは`data/curated/ds-7.json`の概算値を接続（トレンドフォローは保有期間がSYS-FX007より長くなりやすくスワップの影響が相対的に大きいため、必ず接続すること）
 
-## パラメータ空間（導出方針、具体的な数値は未確定）
+## パラメータ空間（v1.1、2026-08-16 導出完了）
 
-**具体的なMA期間・ADX閾値等の数値は、この時点では決めない。** OBS000006の手法を踏襲し、以下の手順でTrainデータから導出する（フェーズゲート2に相当）:
+`scripts/derive_trend_follow_params.py` で以下のルールを結果を見る前に確定し、Trainデータから導出した（`research/EXP-FX000002/10-result/trend_follow_params.json`）:
 
-1. 通貨ペア別にD1のトレンド持続期間の分布を実測（ZigZag等、OBS000006追記6の手法を再利用）
-2. 上記分布からMA短期/長期の候補を導出（教科書慣例値のSMA20/50/200等を初期値として使わない）
-3. トレンド強度フィルターの閾値は、対象指標の実測分布のパーセンタイルから導出（OBS000006追記2・4の手法）
-4. 上記をTrainで評価し、明らかに機能しない通貨・組み合わせを足切りしてからValidation/Testに進める
+```
+trend_duration_median(pair) = D1のZigZag転換点間隔の中央値 (閾値2.0xATR、OBS000006追記6と同一)
+MA_long(pair)  = round_to_standard(trend_duration_median(pair), [20,50,100,150,200])
+MA_short(pair) = round_to_standard(trend_duration_median(pair)/3, [10,20,30,50])
+trend_strength_threshold(pair) = percentile(ADX(14,D1)_dist(pair), 70)  # OBS000006の既存ルールを再利用
+```
+
+| 通貨 | トレンド持続期間中央値 | MA_short | MA_long | ADX閾値 |
+|---|---|---|---|---|
+| USD/JPY | 4.0日 | 10 | 20 | 49.24 |
+| EUR/JPY | 4.0日 | 10 | 20 | 42.26 |
+| GBP/JPY | 4.5日 | 10 | 20 | 41.34 |
+| AUD/JPY | 6.0日 | 10 | 20 | 43.01 |
+| EUR/USD | 6.0日 | 10 | 20 | 41.72 |
+
+**全ペアでMA(10, 20)に収束した。** D1のトレンド持続期間が4〜6日と短く、教科書慣例値（SMA50/SMA200等）よりかなり短いMAペアリングが妥当という結果。ADX閾値はSYS-FX007の`trend_strength_thresholds.json`（C1_ADXPercentile70列）をそのまま転用した（同一のD1・ADX(14)・percentile=70設定のため）。
+
+この値はTrain/Validation/Testいずれの結果を見た後も変更しない。
 
 ## 使用スクリプト / 再現方法（予定）
 
@@ -106,3 +120,4 @@ SYS-FX007ではこの節を後から追加する形になった（OBS000005差�
 
 ## 変更履歴
 - 2026-08-16: 初版作成。司令塔「SYS-FX008へ進めてください」を受け、SYS-FX007（EXP-FX000001）の教訓を最初から反映した設計で起票
+- 2026-08-16: v1.1。パラメータ空間を導出完了。全5ペアでMA(10,20)に収束、ADX閾値はSYS-FX007の既存導出値を再利用

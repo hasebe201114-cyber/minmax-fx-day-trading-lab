@@ -1,0 +1,62 @@
+{
+  "generated_at": "2026-08-16T23:47:17.246736",
+  "train_period": [
+    "2023-11-01",
+    "2025-03-31"
+  ],
+  "derivation_rule": {
+    "zigzag_threshold_atr": 2.0,
+    "ma_long_candidates": [
+      20,
+      50,
+      100,
+      150,
+      200
+    ],
+    "ma_short_candidates": [
+      10,
+      20,
+      30,
+      50
+    ],
+    "adx_threshold_source": "EXP-FX000001/10-result/trend_strength_thresholds.json (C1_ADXPercentile70)"
+  },
+  "_note": "この値はTrain/Validation/Testいずれの結果を見た後も変更しない",
+  "pairs": {
+    "USD_JPY": {
+      "trend_duration_median_days": 4.0,
+      "n_pivots": 70,
+      "ma_long": 20,
+      "ma_short": 10,
+      "adx_threshold": 49.24
+    },
+    "EUR_JPY": {
+      "trend_duration_median_days": 4.0,
+      "n_pivots": 66,
+      "ma_long": 20,
+      "ma_short": 10,
+      "adx_threshold": 42.26
+    },
+    "GBP_JPY": {
+      "trend_duration_median_days": 4.5,
+      "n_pivots": 57,
+      "ma_long": 20,
+      "ma_short": 10,
+      "adx_threshold": 41.34
+    },
+    "AUD_JPY": {
+      "trend_duration_median_days": 6.0,
+      "n_pivots": 65,
+      "ma_long": 20,
+      "ma_short": 10,
+      "adx_threshold": 43.01
+    },
+    "EUR_USD": {
+      "trend_duration_median_days": 6.0,
+      "n_pivots": 54,
+      "ma_long": 20,
+      "ma_short": 10,
+      "adx_threshold": 41.72
+    }
+  }
+}
