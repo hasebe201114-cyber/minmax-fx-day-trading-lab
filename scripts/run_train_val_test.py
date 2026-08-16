@@ -196,6 +196,18 @@ PRESETS = {
         "lt_trend_strength_method": "ma_spread_atr",
         "_trend_strength_key": "C3_MASpreadATRPercentile70",
     },
+    # OBS000006 Phase 2 (追記6): SL/TP/Donchian軸のデータ駆動再設計。
+    # トレンド強度軸(lt_adx_threshold)は既に別軸として検証済み・不成立の
+    # ため触らずbaseline値20のまま固定し、mt_donchian_length と
+    # reward_risk_ratio のみを変更して変数を分離する。
+    "D1_DataDrivenDonchianRR": {
+        "atr_stop_multiplier": 1.5,  # 現行のATR比例動的SLを維持 (k1=1.5と同値、変更不要と判断)
+        "reward_risk_ratio": 2.2,  # フォロースルー分布pooled中央値(全ペア共通)
+        "mt_donchian_length": 10,  # ZigZag転換点間隔から全ペア共通で導出
+        "lt_adx_threshold": 20.0,
+        "lt_sma_short": 20,
+        "lt_sma_long": 50,
+    },
 }
 
 
