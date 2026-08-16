@@ -25,6 +25,7 @@ from minmax_fx_dt.strategy.support_resistance import (
     detect_support_resistance,
     filter_by_strength,
     find_nearest_sr,
+    zigzag_pivot_indices,
 )
 from minmax_fx_dt.strategy.range_breakout import (
     EntrySignal,
@@ -43,6 +44,7 @@ __all__ = [
     # support_resistance
     "SRLevel", "detect_fractals", "cluster_fractals", "count_touches",
     "detect_support_resistance", "find_nearest_sr", "filter_by_strength",
+    "zigzag_pivot_indices",
     # range_breakout
     "State", "RangeBreakoutEngine", "EntrySignal", "PullbackSignal",
     "OrderBookSignal", "hedged_position_state",

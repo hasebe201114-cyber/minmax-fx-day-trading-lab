@@ -18,6 +18,7 @@ from minmax_fx_dt.strategy.support_resistance import (
     detect_fractals,
     detect_support_resistance,
     find_nearest_sr,
+    zigzag_pivot_indices,
 )
 from minmax_fx_dt.strategy.range_breakout import (
     OrderBookSignal,
@@ -142,6 +143,36 @@ def test_find_nearest_sr() -> None:
     nearest = find_nearest_sr(105.0, levels)
     assert nearest is not None
     assert nearest.price in (100.0, 110.0)
+
+
+def test_zigzag_pivot_indices_ignores_noise_below_threshold() -> None:
+    """OBS000006追記6: 閾値未満の微小反転はピボットとして検出されない."""
+    n = 50
+    # ATR=1.0 固定、閾値2.0xATR=2.0 未満の上下動のみ (ノイズ)
+    high = pd.Series([100.0 + 0.3 * ((-1) ** i) for i in range(n)])
+    low = high - 0.2
+    atr = pd.Series([1.0] * n)
+    pivots = zigzag_pivot_indices(high, low, atr, threshold_atr=2.0)
+    assert pivots == []
+
+
+def test_zigzag_pivot_indices_detects_swing_above_threshold() -> None:
+    """閾値以上の明確なスイング (上昇→下降→上昇) はピボットとして検出される."""
+    # 0->10 上昇 (10 pt) -> 10->0 下落 (10 pt) -> 0->10 上昇 (10 pt)、閾値 2.0 を大きく上回る
+    up1 = list(range(0, 11))
+    down1 = list(range(9, -1, -1))
+    up2 = list(range(1, 11))
+    prices = up1 + down1 + up2
+    high = pd.Series([float(p) for p in prices])
+    low = high - 0.1
+    atr = pd.Series([1.0] * len(high))
+    pivots = zigzag_pivot_indices(high, low, atr, threshold_atr=2.0)
+    assert len(pivots) >= 2  # 少なくとも山と谷を検出
+
+
+def test_zigzag_pivot_indices_empty_input() -> None:
+    empty = pd.Series([], dtype=float)
+    assert zigzag_pivot_indices(empty, empty, empty, threshold_atr=2.0) == []
 
 
 # ---- range_breakout テスト ----

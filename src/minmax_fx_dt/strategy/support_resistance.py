@@ -85,6 +85,56 @@ def detect_fractals(
     )
 
 
+def zigzag_pivot_indices(
+    high: pd.Series,
+    low: pd.Series,
+    atr_series: pd.Series,
+    threshold_atr: float,
+) -> list[int]:
+    """ATR正規化したZigZagで「意味のあるスイング」の転換点だけを抽出する.
+
+    OBS000006追記6: Williams Fractal(window=5) はノイズレベルの微小な上下動でも
+    極値と判定してしまい、「レンジ/トレンドの持続期間」の代理指標としては使えない
+    (実測: 全ペアでギャップ中央値が3本前後に張り付き、フラクタル窓幅5の機械的な
+    制約に支配されているだけと判明)。ZigZagはATR比例の閾値以上の反転のみを転換点
+    として残すため、この問題を回避する。
+
+    Returns:
+        転換点となったバーのインデックス（位置番号）のリスト。
+    """
+    n = len(high)
+    pivots: list[int] = []
+    if n == 0:
+        return pivots
+    trend = 0  # 0=未確定, 1=上昇追跡中, -1=下降追跡中
+    running_max_idx, running_max = 0, float(high.iloc[0])
+    running_min_idx, running_min = 0, float(low.iloc[0])
+    for i in range(1, n):
+        atr_i = atr_series.iloc[i]
+        if pd.isna(atr_i) or atr_i <= 0:
+            continue
+        thresh = threshold_atr * float(atr_i)
+        h_i, l_i = float(high.iloc[i]), float(low.iloc[i])
+        if trend >= 0:
+            if h_i > running_max:
+                running_max, running_max_idx = h_i, i
+            if running_max - l_i >= thresh:
+                pivots.append(running_max_idx)
+                trend = -1
+                running_min, running_min_idx = l_i, i
+                running_max, running_max_idx = h_i, i
+                continue
+        if trend <= 0:
+            if l_i < running_min:
+                running_min, running_min_idx = l_i, i
+            if h_i - running_min >= thresh:
+                pivots.append(running_min_idx)
+                trend = 1
+                running_max, running_max_idx = h_i, i
+                running_min, running_min_idx = l_i, i
+    return pivots
+
+
 def cluster_fractals(
     fractals: pd.Series,
     values: pd.Series,
