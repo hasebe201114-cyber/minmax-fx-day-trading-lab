@@ -87,6 +87,50 @@ def test_detect_support_resistance_returns_list(synthetic_h4: tuple) -> None:
         assert lv.strength <= 1.0
 
 
+def test_count_touches_tolerance_pct_is_a_fraction_not_a_percent_number() -> None:
+    """count_touches() の tolerance_pct は「比率」(0.005=0.5%) を受け取る規約であり、
+    cluster_threshold_pct と同じ「% 数値」(0.5=0.5%) を直接渡すと 100 倍広い許容誤差
+    になることの確認 (OBS000007 追記8 で発見したバグの再現用)。"""
+    idx = pd.date_range("2025-01-01", periods=300, freq="4h")
+    # 100 から 200 へ単調に離れていく価格系列 (104.0 付近には序盤の数本だけが接触する)
+    prices = np.linspace(100.0, 200.0, 300)
+    high = pd.Series(prices + 0.3, index=idx)
+    low = pd.Series(prices - 0.3, index=idx)
+
+    correct_touches = count_touches(high, low, 104.0, tolerance_pct=0.5 / 100.0)
+    buggy_touches = count_touches(high, low, 104.0, tolerance_pct=0.5)
+
+    assert correct_touches < 10
+    assert buggy_touches > 100  # 価格の 50% (52〜156) が全て「接触」扱いになる旧バグ
+    assert correct_touches < buggy_touches / 10
+
+
+def test_detect_support_resistance_does_not_inflate_touch_counts() -> None:
+    """detect_support_resistance() が touch_tolerance_pct を count_touches() へ渡す際に
+    比率へ変換 (/100) することの回帰テスト (OBS000007 追記8)。
+
+    修正前は変換していなかったため、価格の 50% という許容誤差になり、ほぼ全バーが
+    「接触」判定され touches が期間内バー数近くまで膨張していた
+    (実測: USD/JPY Train 期間で全 32 ラインが一律 1609 回)。
+    """
+    idx = pd.date_range("2025-01-01", periods=500, freq="4h")
+    rng = np.random.default_rng(42)
+    prices = 100.0 + np.cumsum(rng.normal(0, 0.3, 500))
+    high = pd.Series(prices + np.abs(rng.normal(0.2, 0.05, 500)), index=idx)
+    low = pd.Series(prices - np.abs(rng.normal(0.2, 0.05, 500)), index=idx)
+    close = pd.Series(prices, index=idx)
+
+    levels = detect_support_resistance(
+        high, low, close,
+        min_touches=1, fractal_window=5,
+        cluster_threshold_pct=0.5, touch_tolerance_pct=0.5,
+    )
+    assert len(levels) > 0
+    for lv in levels:
+        # バグ時は touches が期間内バー数の大半 (500本中数百本) に達していた
+        assert lv.touches < len(high) * 0.5
+
+
 def test_find_nearest_sr() -> None:
     """最も近い S/R ラインの検索."""
     levels = [

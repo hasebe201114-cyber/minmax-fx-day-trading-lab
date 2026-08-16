@@ -262,7 +262,11 @@ def detect_support_resistance(
 
     # 3. レジスタンスライン
     for center_price, fractal_count, dates in res_clusters:
-        touches = count_touches(high_recent, low_recent, center_price, touch_tolerance_pct)
+        # count_touches() は tolerance_pct を「比率」(0.005=0.5%) で受け取るのに対し、
+        # touch_tolerance_pct は cluster_threshold_pct と同じ「パーセント数値」(0.5=0.5%)
+        # の規約。/100 を忘れると許容誤差が100倍(価格の50%)に膨張し、ほぼ全バーが
+        # 「接触」判定されてしまう単位不一致バグがあった (OBS000007 追記8で発見)。
+        touches = count_touches(high_recent, low_recent, center_price, touch_tolerance_pct / 100.0)
         if touches < min_touches:
             continue
         last_touch = max(dates)
@@ -282,7 +286,11 @@ def detect_support_resistance(
 
     # 4. サポートライン
     for center_price, fractal_count, dates in sup_clusters:
-        touches = count_touches(high_recent, low_recent, center_price, touch_tolerance_pct)
+        # count_touches() は tolerance_pct を「比率」(0.005=0.5%) で受け取るのに対し、
+        # touch_tolerance_pct は cluster_threshold_pct と同じ「パーセント数値」(0.5=0.5%)
+        # の規約。/100 を忘れると許容誤差が100倍(価格の50%)に膨張し、ほぼ全バーが
+        # 「接触」判定されてしまう単位不一致バグがあった (OBS000007 追記8で発見)。
+        touches = count_touches(high_recent, low_recent, center_price, touch_tolerance_pct / 100.0)
         if touches < min_touches:
             continue
         last_touch = max(dates)
