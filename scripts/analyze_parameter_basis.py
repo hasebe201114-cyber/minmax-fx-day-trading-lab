@@ -34,11 +34,13 @@ import pandas as pd
 from minmax_fx_dt.strategy.indicators import adx as adx_ind
 from minmax_fx_dt.strategy.indicators import atr as atr_ind
 from minmax_fx_dt.strategy.indicators import donchian as donchian_ind
+from minmax_fx_dt.strategy.indicators import sma as sma_ind
 
 PAIRS = ["USD_JPY", "EUR_JPY", "GBP_JPY", "AUD_JPY", "EUR_USD"]
 TRAIN_START, TRAIN_END = "2023-11-01", "2025-03-31"
 DONCHIAN_LENGTHS = [10, 20, 30, 50]
 PERCENTILES = [10, 25, 50, 75, 90]
+ADX_CANDIDATE_THRESHOLDS = [15, 20, 25, 30, 35, 40, 45, 50]
 
 # 現行 (教科書慣例値) パラメータ — 比較用
 CURRENT_PARAMS = {
@@ -46,6 +48,8 @@ CURRENT_PARAMS = {
     "adx_length": 14,
     "adx_threshold": 20.0,  # A1_A2_combined 等で使用
     "donchian_length": 50,  # A1_A2_combined で使用
+    "lt_sma_short": 20,
+    "lt_sma_long": 50,
 }
 
 
@@ -88,6 +92,41 @@ def percentile_dict(values: pd.Series) -> dict:
     return {f"p{p}": round(float(np.percentile(v, p)), 4) for p in PERCENTILES}
 
 
+def analyze_lt_classification_sensitivity(d1: pd.DataFrame) -> dict:
+    """classify_lt_direction() が実際に使う SMA順序条件と ADX 条件を分離して、
+    ADX 閾値の変化が LT 方向判定（UP/DOWN 発生率）にどれだけ効くかを検証する。
+
+    単純な ADX の周辺分布（%ile）だけでは、「SMA 条件と AND を取った実際の
+    判定にどれだけ効くか」は分からない（両条件は相関するため）。この関数は
+    その相関を踏まえた限界効果を計測する。
+    """
+    sma_short = sma_ind(d1["close"], CURRENT_PARAMS["lt_sma_short"])
+    sma_long = sma_ind(d1["close"], CURRENT_PARAMS["lt_sma_long"])
+    adx_val = adx_ind(d1["high"], d1["low"], d1["close"], length=CURRENT_PARAMS["adx_length"])[
+        f"ADX_{CURRENT_PARAMS['adx_length']}"
+    ]
+
+    above = (d1["close"] > sma_short) & (sma_short > sma_long)
+    below = (d1["close"] < sma_short) & (sma_short < sma_long)
+    sma_dir = above | below
+    valid = sma_long.notna() & adx_val.notna()
+    n_valid = int(valid.sum())
+    if n_valid == 0:
+        return {}
+
+    sma_only_pct = round(100 * float((sma_dir & valid).sum()) / n_valid, 1)
+    by_threshold = {}
+    for t in ADX_CANDIDATE_THRESHOLDS:
+        combined = sma_dir & (adx_val >= t) & valid
+        by_threshold[str(t)] = round(100 * float(combined.sum()) / n_valid, 1)
+
+    return {
+        "n_valid_bars": n_valid,
+        "sma_order_only_pct": sma_only_pct,
+        "combined_pct_by_adx_threshold": by_threshold,
+    }
+
+
 def analyze_pair(pair: str) -> dict:
     pip = 0.01 if is_jpy_pair(pair) else 0.0001
     m5 = load_m5(pair)
@@ -123,6 +162,9 @@ def analyze_pair(pair: str) -> dict:
     atr_h4_median = float(atr_h4.dropna().median()) if atr_h4.notna().any() else float("nan")
     noise_to_atr_ratio = m5_noise_median / atr_h4_median if atr_h4_median else float("nan")
 
+    # LT分類 (classify_lt_direction が実際に使う SMA×ADX AND条件) への ADX 閾値の限界効果
+    lt_sensitivity = analyze_lt_classification_sensitivity(d1)
+
     return {
         "n_h4_bars": len(h4),
         "n_d1_bars": len(d1),
@@ -136,6 +178,7 @@ def analyze_pair(pair: str) -> dict:
         "m5_noise_floor_pips_median": round(m5_noise_median, 3),
         "atr_h4_pips_median": round(atr_h4_median, 3) if not np.isnan(atr_h4_median) else None,
         "m5_noise_to_atr_h4_ratio": round(noise_to_atr_ratio, 4) if not np.isnan(noise_to_atr_ratio) else None,
+        "lt_classification_sensitivity": lt_sensitivity,
     }
 
 
@@ -152,6 +195,10 @@ def main() -> int:
         print(f"  ADX(14,D1):           p10={stats['adx_d1'].get('p10')}  p50={stats['adx_d1'].get('p50')}  p90={stats['adx_d1'].get('p90')}")
         print(f"  現行ADX閾値(20)の位置: 下位 {stats['adx_current_threshold_percentile']}%ile")
         print(f"  M5ノイズ床/ATR(H4)比: {stats['m5_noise_to_atr_h4_ratio']}")
+        sens = stats["lt_classification_sensitivity"]
+        if sens:
+            print(f"  LT方向判定 (D1) への限界効果: SMA順序のみ={sens['sma_order_only_pct']}%  " +
+                  "  ".join(f"th{t}={sens['combined_pct_by_adx_threshold'][str(t)]}%" for t in ADX_CANDIDATE_THRESHOLDS))
         print()
 
     out_dir = ROOT / "research" / "EXP-FX000001" / "10-result"
