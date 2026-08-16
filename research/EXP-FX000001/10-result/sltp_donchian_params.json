@@ -1,0 +1,54 @@
+{
+  "generated_at": "2026-08-16T21:48:37.355529",
+  "train_period": [
+    "2023-11-01",
+    "2025-03-31"
+  ],
+  "formula": "SL_pips=max(k1*ATR_median,k2*noise_p95); Donchian=round_to_standard(fractal_gap_median); TP_pips=SL_pips*RR",
+  "k1": 1.5,
+  "k2": 2.5,
+  "rr": 2.2,
+  "_note": "この値は Train/Validation/Test いずれの結果を見た後も変更しない",
+  "pairs": {
+    "USD_JPY": {
+      "atr_median_pips": 50.507,
+      "noise_p95_pips": 15.9,
+      "fractal_gap_median_bars": 4.5,
+      "donchian_period": 10,
+      "sl_pips": 75.761,
+      "tp_pips": 166.674
+    },
+    "EUR_JPY": {
+      "atr_median_pips": 51.307,
+      "noise_p95_pips": 16.9,
+      "fractal_gap_median_bars": 5.0,
+      "donchian_period": 10,
+      "sl_pips": 76.961,
+      "tp_pips": 169.314
+    },
+    "GBP_JPY": {
+      "atr_median_pips": 63.4,
+      "noise_p95_pips": 20.6,
+      "fractal_gap_median_bars": 5.0,
+      "donchian_period": 10,
+      "sl_pips": 95.1,
+      "tp_pips": 209.22
+    },
+    "AUD_JPY": {
+      "atr_median_pips": 35.657,
+      "noise_p95_pips": 11.4,
+      "fractal_gap_median_bars": 5.0,
+      "donchian_period": 10,
+      "sl_pips": 53.486,
+      "tp_pips": 117.669
+    },
+    "EUR_USD": {
+      "atr_median_pips": 23.25,
+      "noise_p95_pips": 7.5,
+      "fractal_gap_median_bars": 5.0,
+      "donchian_period": 10,
+      "sl_pips": 34.875,
+      "tp_pips": 76.725
+    }
+  }
+}
