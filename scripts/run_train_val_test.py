@@ -162,7 +162,52 @@ PRESETS = {
         "lt_sma_short": 20,
         "lt_sma_long": 50,
     },
+    # OBS000006 Phase 1 (追記4): トレンド強度指標の代替比較。
+    # lt_adx_threshold は通貨ペア別に TREND_STRENGTH_THRESHOLDS から上書きする
+    # (_trend_strength_key 参照)。他の条件は A1_A2_combined と同一に固定し、
+    # 指標選択と閾値のみを変数として分離する。
+    "C1_ADXPercentile70": {
+        "atr_stop_multiplier": 1.5,
+        "reward_risk_ratio": 3.0,
+        "mt_donchian_length": 50,
+        "lt_adx_threshold": 20.0,  # _trend_strength_key で上書きされる
+        "lt_sma_short": 20,
+        "lt_sma_long": 50,
+        "lt_trend_strength_method": "adx",
+        "_trend_strength_key": "C1_ADXPercentile70",
+    },
+    "C2_WilderADXPercentile70": {
+        "atr_stop_multiplier": 1.5,
+        "reward_risk_ratio": 3.0,
+        "mt_donchian_length": 50,
+        "lt_adx_threshold": 20.0,
+        "lt_sma_short": 20,
+        "lt_sma_long": 50,
+        "lt_trend_strength_method": "adx_wilder",
+        "_trend_strength_key": "C2_WilderADXPercentile70",
+    },
+    "C3_MASpreadATRPercentile70": {
+        "atr_stop_multiplier": 1.5,
+        "reward_risk_ratio": 3.0,
+        "mt_donchian_length": 50,
+        "lt_adx_threshold": 1.5,
+        "lt_sma_short": 20,
+        "lt_sma_long": 50,
+        "lt_trend_strength_method": "ma_spread_atr",
+        "_trend_strength_key": "C3_MASpreadATRPercentile70",
+    },
 }
+
+
+def load_trend_strength_thresholds() -> dict[str, dict[str, float]]:
+    """OBS000006 Phase 2 で事前登録した通貨ペア別トレンド強度閾値を読み込み."""
+    path = ROOT / "research" / "EXP-FX000001" / "10-result" / "trend_strength_thresholds.json"
+    with path.open(encoding="utf-8") as f:
+        data = json.load(f)
+    return data["pairs"]
+
+
+TREND_STRENGTH_THRESHOLDS = load_trend_strength_thresholds()
 
 # 通貨別スプレッド (spec §コスト前提)
 SPREAD_PIPS = {
@@ -318,10 +363,17 @@ def run_one(symbol: str, preset_name: str, periods: dict = None) -> dict:
         swap_long_jpy_per_lot_per_day=swap["long"],
         swap_short_jpy_per_lot_per_day=swap["short"],
     )
+    trend_strength_key = preset.get("_trend_strength_key")
+    if trend_strength_key:
+        lt_adx_threshold = TREND_STRENGTH_THRESHOLDS[symbol][trend_strength_key]
+    else:
+        lt_adx_threshold = preset["lt_adx_threshold"]
+
     mtf_config = MTFConfig(
         lt_sma_short=preset["lt_sma_short"],
         lt_sma_long=preset["lt_sma_long"],
-        lt_adx_threshold=preset["lt_adx_threshold"],
+        lt_adx_threshold=lt_adx_threshold,
+        lt_trend_strength_method=preset.get("lt_trend_strength_method", "adx"),
         mt_donchian_length=preset["mt_donchian_length"],
         mt_atr_length=14,
         # OBS000005/00-spec.md v2.3 差し戻し2 対応: エントリー条件緩和候補
