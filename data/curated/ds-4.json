@@ -1,0 +1,759 @@
+{
+  "metadata": {
+    "id": "DS-4",
+    "name": "セッション境界 + ボラ集計 (DS-1 から自前計算)",
+    "generated_at": "2026-08-16T12:32:48.958178",
+    "session_definition_jst": {
+      "TOKYO": [
+        9,
+        18
+      ],
+      "LONDON": [
+        17,
+        2
+      ],
+      "NEW_YORK": [
+        22,
+        7
+      ]
+    },
+    "_note": "出来高は GMO 公開 klines API に volume 列がないため対象外。ボラは M5 バーの高安値幅 (pips) の平均・中央値。セッション時刻は DST を簡略化した年間固定値 (エントリー可否の目安用途であり分単位の精度は不要なため)。"
+  },
+  "pairs": {
+    "USD_JPY": {
+      "n_bars_total": 206133,
+      "period_start": "2023-11-01 06:00:00+09:00",
+      "period_end": "2026-08-15 05:55:00+09:00",
+      "hourly_jst": {
+        "0": {
+          "n_bars": 8664,
+          "mean_range_pips": 8.187,
+          "median_range_pips": 6.8
+        },
+        "1": {
+          "n_bars": 8664,
+          "mean_range_pips": 6.207,
+          "median_range_pips": 5.2
+        },
+        "2": {
+          "n_bars": 8664,
+          "mean_range_pips": 5.379,
+          "median_range_pips": 4.4
+        },
+        "3": {
+          "n_bars": 8664,
+          "mean_range_pips": 4.971,
+          "median_range_pips": 3.9
+        },
+        "4": {
+          "n_bars": 8664,
+          "mean_range_pips": 4.431,
+          "median_range_pips": 3.4
+        },
+        "5": {
+          "n_bars": 8664,
+          "mean_range_pips": 4.309,
+          "median_range_pips": 3.1
+        },
+        "6": {
+          "n_bars": 6876,
+          "mean_range_pips": 2.665,
+          "median_range_pips": 2.0
+        },
+        "7": {
+          "n_bars": 8664,
+          "mean_range_pips": 4.11,
+          "median_range_pips": 2.8
+        },
+        "8": {
+          "n_bars": 8664,
+          "mean_range_pips": 5.747,
+          "median_range_pips": 4.5
+        },
+        "9": {
+          "n_bars": 8664,
+          "mean_range_pips": 8.287,
+          "median_range_pips": 6.9
+        },
+        "10": {
+          "n_bars": 8664,
+          "mean_range_pips": 7.557,
+          "median_range_pips": 6.4
+        },
+        "11": {
+          "n_bars": 8664,
+          "mean_range_pips": 5.836,
+          "median_range_pips": 4.9
+        },
+        "12": {
+          "n_bars": 8653,
+          "mean_range_pips": 5.2,
+          "median_range_pips": 4.2
+        },
+        "13": {
+          "n_bars": 8660,
+          "mean_range_pips": 5.089,
+          "median_range_pips": 4.0
+        },
+        "14": {
+          "n_bars": 8664,
+          "mean_range_pips": 5.538,
+          "median_range_pips": 4.5
+        },
+        "15": {
+          "n_bars": 8664,
+          "mean_range_pips": 6.913,
+          "median_range_pips": 5.7
+        },
+        "16": {
+          "n_bars": 8664,
+          "mean_range_pips": 7.655,
+          "median_range_pips": 6.3
+        },
+        "17": {
+          "n_bars": 8664,
+          "mean_range_pips": 7.197,
+          "median_range_pips": 6.1
+        },
+        "18": {
+          "n_bars": 8664,
+          "mean_range_pips": 6.144,
+          "median_range_pips": 5.2
+        },
+        "19": {
+          "n_bars": 8664,
+          "mean_range_pips": 5.341,
+          "median_range_pips": 4.5
+        },
+        "20": {
+          "n_bars": 8664,
+          "mean_range_pips": 5.433,
+          "median_range_pips": 4.5
+        },
+        "21": {
+          "n_bars": 8664,
+          "mean_range_pips": 7.716,
+          "median_range_pips": 5.9
+        },
+        "22": {
+          "n_bars": 8664,
+          "mean_range_pips": 9.058,
+          "median_range_pips": 7.2
+        },
+        "23": {
+          "n_bars": 8664,
+          "mean_range_pips": 9.223,
+          "median_range_pips": 7.7
+        }
+      },
+      "sessions": {
+        "TOKYO": {
+          "jst_hours": "09:00-18:00",
+          "n_bars": 77961,
+          "mean_range_pips": 6.586,
+          "median_range_pips": 5.4
+        },
+        "LONDON": {
+          "jst_hours": "17:00-02:00",
+          "n_bars": 77976,
+          "mean_range_pips": 7.167,
+          "median_range_pips": 5.8
+        },
+        "NEW_YORK": {
+          "jst_hours": "22:00-07:00",
+          "n_bars": 76188,
+          "mean_range_pips": 6.127,
+          "median_range_pips": 4.7
+        }
+      }
+    },
+    "EUR_JPY": {
+      "n_bars_total": 206133,
+      "period_start": "2023-11-01 06:00:00+09:00",
+      "period_end": "2026-08-15 05:55:00+09:00",
+      "hourly_jst": {
+        "0": {
+          "n_bars": 8664,
+          "mean_range_pips": 8.436,
+          "median_range_pips": 7.0
+        },
+        "1": {
+          "n_bars": 8664,
+          "mean_range_pips": 6.487,
+          "median_range_pips": 5.4
+        },
+        "2": {
+          "n_bars": 8664,
+          "mean_range_pips": 5.524,
+          "median_range_pips": 4.4
+        },
+        "3": {
+          "n_bars": 8664,
+          "mean_range_pips": 4.951,
+          "median_range_pips": 3.9
+        },
+        "4": {
+          "n_bars": 8664,
+          "mean_range_pips": 4.452,
+          "median_range_pips": 3.5
+        },
+        "5": {
+          "n_bars": 8664,
+          "mean_range_pips": 4.638,
+          "median_range_pips": 3.5
+        },
+        "6": {
+          "n_bars": 6876,
+          "mean_range_pips": 3.623,
+          "median_range_pips": 2.9
+        },
+        "7": {
+          "n_bars": 8664,
+          "mean_range_pips": 4.845,
+          "median_range_pips": 3.5
+        },
+        "8": {
+          "n_bars": 8664,
+          "mean_range_pips": 5.815,
+          "median_range_pips": 4.5
+        },
+        "9": {
+          "n_bars": 8664,
+          "mean_range_pips": 8.207,
+          "median_range_pips": 6.8
+        },
+        "10": {
+          "n_bars": 8664,
+          "mean_range_pips": 7.37,
+          "median_range_pips": 6.1
+        },
+        "11": {
+          "n_bars": 8664,
+          "mean_range_pips": 5.896,
+          "median_range_pips": 4.8
+        },
+        "12": {
+          "n_bars": 8653,
+          "mean_range_pips": 5.329,
+          "median_range_pips": 4.2
+        },
+        "13": {
+          "n_bars": 8660,
+          "mean_range_pips": 5.217,
+          "median_range_pips": 4.1
+        },
+        "14": {
+          "n_bars": 8664,
+          "mean_range_pips": 5.765,
+          "median_range_pips": 4.7
+        },
+        "15": {
+          "n_bars": 8664,
+          "mean_range_pips": 7.441,
+          "median_range_pips": 6.1
+        },
+        "16": {
+          "n_bars": 8664,
+          "mean_range_pips": 8.773,
+          "median_range_pips": 7.2
+        },
+        "17": {
+          "n_bars": 8664,
+          "mean_range_pips": 8.566,
+          "median_range_pips": 7.2
+        },
+        "18": {
+          "n_bars": 8664,
+          "mean_range_pips": 7.43,
+          "median_range_pips": 6.3
+        },
+        "19": {
+          "n_bars": 8664,
+          "mean_range_pips": 6.469,
+          "median_range_pips": 5.4
+        },
+        "20": {
+          "n_bars": 8664,
+          "mean_range_pips": 6.415,
+          "median_range_pips": 5.4
+        },
+        "21": {
+          "n_bars": 8664,
+          "mean_range_pips": 7.937,
+          "median_range_pips": 6.4
+        },
+        "22": {
+          "n_bars": 8664,
+          "mean_range_pips": 9.005,
+          "median_range_pips": 7.3
+        },
+        "23": {
+          "n_bars": 8664,
+          "mean_range_pips": 9.403,
+          "median_range_pips": 7.8
+        }
+      },
+      "sessions": {
+        "TOKYO": {
+          "jst_hours": "09:00-18:00",
+          "n_bars": 77961,
+          "mean_range_pips": 6.952,
+          "median_range_pips": 5.6
+        },
+        "LONDON": {
+          "jst_hours": "17:00-02:00",
+          "n_bars": 77976,
+          "mean_range_pips": 7.794,
+          "median_range_pips": 6.4
+        },
+        "NEW_YORK": {
+          "jst_hours": "22:00-07:00",
+          "n_bars": 76188,
+          "mean_range_pips": 6.342,
+          "median_range_pips": 5.0
+        }
+      }
+    },
+    "GBP_JPY": {
+      "n_bars_total": 206133,
+      "period_start": "2023-11-01 06:00:00+09:00",
+      "period_end": "2026-08-15 05:55:00+09:00",
+      "hourly_jst": {
+        "0": {
+          "n_bars": 8664,
+          "mean_range_pips": 10.906,
+          "median_range_pips": 9.2
+        },
+        "1": {
+          "n_bars": 8664,
+          "mean_range_pips": 8.458,
+          "median_range_pips": 7.1
+        },
+        "2": {
+          "n_bars": 8664,
+          "mean_range_pips": 7.285,
+          "median_range_pips": 6.0
+        },
+        "3": {
+          "n_bars": 8664,
+          "mean_range_pips": 6.478,
+          "median_range_pips": 5.3
+        },
+        "4": {
+          "n_bars": 8664,
+          "mean_range_pips": 5.779,
+          "median_range_pips": 4.6
+        },
+        "5": {
+          "n_bars": 8664,
+          "mean_range_pips": 5.937,
+          "median_range_pips": 4.5
+        },
+        "6": {
+          "n_bars": 6876,
+          "mean_range_pips": 5.164,
+          "median_range_pips": 4.2
+        },
+        "7": {
+          "n_bars": 8664,
+          "mean_range_pips": 6.207,
+          "median_range_pips": 4.6
+        },
+        "8": {
+          "n_bars": 8664,
+          "mean_range_pips": 7.237,
+          "median_range_pips": 5.6
+        },
+        "9": {
+          "n_bars": 8664,
+          "mean_range_pips": 9.764,
+          "median_range_pips": 8.1
+        },
+        "10": {
+          "n_bars": 8664,
+          "mean_range_pips": 8.857,
+          "median_range_pips": 7.3
+        },
+        "11": {
+          "n_bars": 8664,
+          "mean_range_pips": 7.102,
+          "median_range_pips": 5.9
+        },
+        "12": {
+          "n_bars": 8653,
+          "mean_range_pips": 6.435,
+          "median_range_pips": 5.1
+        },
+        "13": {
+          "n_bars": 8660,
+          "mean_range_pips": 6.306,
+          "median_range_pips": 4.9
+        },
+        "14": {
+          "n_bars": 8664,
+          "mean_range_pips": 6.985,
+          "median_range_pips": 5.7
+        },
+        "15": {
+          "n_bars": 8664,
+          "mean_range_pips": 9.138,
+          "median_range_pips": 7.5
+        },
+        "16": {
+          "n_bars": 8664,
+          "mean_range_pips": 10.866,
+          "median_range_pips": 9.0
+        },
+        "17": {
+          "n_bars": 8664,
+          "mean_range_pips": 10.595,
+          "median_range_pips": 9.0
+        },
+        "18": {
+          "n_bars": 8664,
+          "mean_range_pips": 9.249,
+          "median_range_pips": 7.9
+        },
+        "19": {
+          "n_bars": 8664,
+          "mean_range_pips": 8.283,
+          "median_range_pips": 7.1
+        },
+        "20": {
+          "n_bars": 8664,
+          "mean_range_pips": 8.405,
+          "median_range_pips": 7.1
+        },
+        "21": {
+          "n_bars": 8664,
+          "mean_range_pips": 10.122,
+          "median_range_pips": 8.1
+        },
+        "22": {
+          "n_bars": 8664,
+          "mean_range_pips": 11.374,
+          "median_range_pips": 9.4
+        },
+        "23": {
+          "n_bars": 8664,
+          "mean_range_pips": 12.133,
+          "median_range_pips": 10.1
+        }
+      },
+      "sessions": {
+        "TOKYO": {
+          "jst_hours": "09:00-18:00",
+          "n_bars": 77961,
+          "mean_range_pips": 8.45,
+          "median_range_pips": 6.9
+        },
+        "LONDON": {
+          "jst_hours": "17:00-02:00",
+          "n_bars": 77976,
+          "mean_range_pips": 9.947,
+          "median_range_pips": 8.3
+        },
+        "NEW_YORK": {
+          "jst_hours": "22:00-07:00",
+          "n_bars": 76188,
+          "mean_range_pips": 8.239,
+          "median_range_pips": 6.6
+        }
+      }
+    },
+    "AUD_JPY": {
+      "n_bars_total": 206133,
+      "period_start": "2023-11-01 06:00:00+09:00",
+      "period_end": "2026-08-15 05:55:00+09:00",
+      "hourly_jst": {
+        "0": {
+          "n_bars": 8664,
+          "mean_range_pips": 6.562,
+          "median_range_pips": 5.3
+        },
+        "1": {
+          "n_bars": 8664,
+          "mean_range_pips": 4.997,
+          "median_range_pips": 4.1
+        },
+        "2": {
+          "n_bars": 8664,
+          "mean_range_pips": 4.494,
+          "median_range_pips": 3.5
+        },
+        "3": {
+          "n_bars": 8664,
+          "mean_range_pips": 4.125,
+          "median_range_pips": 3.2
+        },
+        "4": {
+          "n_bars": 8664,
+          "mean_range_pips": 3.734,
+          "median_range_pips": 2.9
+        },
+        "5": {
+          "n_bars": 8664,
+          "mean_range_pips": 3.497,
+          "median_range_pips": 2.7
+        },
+        "6": {
+          "n_bars": 6876,
+          "mean_range_pips": 2.927,
+          "median_range_pips": 2.3
+        },
+        "7": {
+          "n_bars": 8664,
+          "mean_range_pips": 3.94,
+          "median_range_pips": 2.9
+        },
+        "8": {
+          "n_bars": 8664,
+          "mean_range_pips": 4.482,
+          "median_range_pips": 3.6
+        },
+        "9": {
+          "n_bars": 8664,
+          "mean_range_pips": 6.406,
+          "median_range_pips": 5.3
+        },
+        "10": {
+          "n_bars": 8664,
+          "mean_range_pips": 6.447,
+          "median_range_pips": 5.4
+        },
+        "11": {
+          "n_bars": 8664,
+          "mean_range_pips": 5.257,
+          "median_range_pips": 4.5
+        },
+        "12": {
+          "n_bars": 8653,
+          "mean_range_pips": 4.718,
+          "median_range_pips": 3.9
+        },
+        "13": {
+          "n_bars": 8660,
+          "mean_range_pips": 4.411,
+          "median_range_pips": 3.5
+        },
+        "14": {
+          "n_bars": 8664,
+          "mean_range_pips": 4.85,
+          "median_range_pips": 4.0
+        },
+        "15": {
+          "n_bars": 8664,
+          "mean_range_pips": 5.522,
+          "median_range_pips": 4.7
+        },
+        "16": {
+          "n_bars": 8664,
+          "mean_range_pips": 6.002,
+          "median_range_pips": 5.0
+        },
+        "17": {
+          "n_bars": 8664,
+          "mean_range_pips": 5.789,
+          "median_range_pips": 4.9
+        },
+        "18": {
+          "n_bars": 8664,
+          "mean_range_pips": 4.898,
+          "median_range_pips": 4.2
+        },
+        "19": {
+          "n_bars": 8664,
+          "mean_range_pips": 4.34,
+          "median_range_pips": 3.6
+        },
+        "20": {
+          "n_bars": 8664,
+          "mean_range_pips": 4.393,
+          "median_range_pips": 3.6
+        },
+        "21": {
+          "n_bars": 8664,
+          "mean_range_pips": 5.48,
+          "median_range_pips": 4.4
+        },
+        "22": {
+          "n_bars": 8664,
+          "mean_range_pips": 6.52,
+          "median_range_pips": 5.3
+        },
+        "23": {
+          "n_bars": 8664,
+          "mean_range_pips": 7.287,
+          "median_range_pips": 6.0
+        }
+      },
+      "sessions": {
+        "TOKYO": {
+          "jst_hours": "09:00-18:00",
+          "n_bars": 77961,
+          "mean_range_pips": 5.489,
+          "median_range_pips": 4.6
+        },
+        "LONDON": {
+          "jst_hours": "17:00-02:00",
+          "n_bars": 77976,
+          "mean_range_pips": 5.585,
+          "median_range_pips": 4.5
+        },
+        "NEW_YORK": {
+          "jst_hours": "22:00-07:00",
+          "n_bars": 76188,
+          "mean_range_pips": 4.951,
+          "median_range_pips": 3.9
+        }
+      }
+    },
+    "EUR_USD": {
+      "n_bars_total": 206133,
+      "period_start": "2023-11-01 06:00:00+09:00",
+      "period_end": "2026-08-15 05:55:00+09:00",
+      "hourly_jst": {
+        "0": {
+          "n_bars": 8664,
+          "mean_range_pips": 5.41,
+          "median_range_pips": 4.6
+        },
+        "1": {
+          "n_bars": 8664,
+          "mean_range_pips": 4.174,
+          "median_range_pips": 3.6
+        },
+        "2": {
+          "n_bars": 8664,
+          "mean_range_pips": 3.55,
+          "median_range_pips": 3.0
+        },
+        "3": {
+          "n_bars": 8664,
+          "mean_range_pips": 3.325,
+          "median_range_pips": 2.6
+        },
+        "4": {
+          "n_bars": 8664,
+          "mean_range_pips": 2.894,
+          "median_range_pips": 2.2
+        },
+        "5": {
+          "n_bars": 8664,
+          "mean_range_pips": 2.562,
+          "median_range_pips": 1.9
+        },
+        "6": {
+          "n_bars": 6876,
+          "mean_range_pips": 1.599,
+          "median_range_pips": 1.2
+        },
+        "7": {
+          "n_bars": 8664,
+          "mean_range_pips": 1.96,
+          "median_range_pips": 1.3
+        },
+        "8": {
+          "n_bars": 8664,
+          "mean_range_pips": 2.122,
+          "median_range_pips": 1.5
+        },
+        "9": {
+          "n_bars": 8664,
+          "mean_range_pips": 2.932,
+          "median_range_pips": 2.3
+        },
+        "10": {
+          "n_bars": 8664,
+          "mean_range_pips": 3.017,
+          "median_range_pips": 2.5
+        },
+        "11": {
+          "n_bars": 8664,
+          "mean_range_pips": 2.451,
+          "median_range_pips": 2.1
+        },
+        "12": {
+          "n_bars": 8653,
+          "mean_range_pips": 2.101,
+          "median_range_pips": 1.7
+        },
+        "13": {
+          "n_bars": 8660,
+          "mean_range_pips": 1.888,
+          "median_range_pips": 1.6
+        },
+        "14": {
+          "n_bars": 8664,
+          "mean_range_pips": 2.301,
+          "median_range_pips": 1.9
+        },
+        "15": {
+          "n_bars": 8664,
+          "mean_range_pips": 3.411,
+          "median_range_pips": 2.8
+        },
+        "16": {
+          "n_bars": 8664,
+          "mean_range_pips": 4.436,
+          "median_range_pips": 3.8
+        },
+        "17": {
+          "n_bars": 8664,
+          "mean_range_pips": 4.528,
+          "median_range_pips": 3.9
+        },
+        "18": {
+          "n_bars": 8664,
+          "mean_range_pips": 4.041,
+          "median_range_pips": 3.5
+        },
+        "19": {
+          "n_bars": 8664,
+          "mean_range_pips": 3.637,
+          "median_range_pips": 3.1
+        },
+        "20": {
+          "n_bars": 8664,
+          "mean_range_pips": 3.763,
+          "median_range_pips": 3.2
+        },
+        "21": {
+          "n_bars": 8664,
+          "mean_range_pips": 5.028,
+          "median_range_pips": 4.0
+        },
+        "22": {
+          "n_bars": 8664,
+          "mean_range_pips": 5.801,
+          "median_range_pips": 4.8
+        },
+        "23": {
+          "n_bars": 8664,
+          "mean_range_pips": 5.972,
+          "median_range_pips": 5.1
+        }
+      },
+      "sessions": {
+        "TOKYO": {
+          "jst_hours": "09:00-18:00",
+          "n_bars": 77961,
+          "mean_range_pips": 3.007,
+          "median_range_pips": 2.4
+        },
+        "LONDON": {
+          "jst_hours": "17:00-02:00",
+          "n_bars": 77976,
+          "mean_range_pips": 4.706,
+          "median_range_pips": 3.9
+        },
+        "NEW_YORK": {
+          "jst_hours": "22:00-07:00",
+          "n_bars": 76188,
+          "mean_range_pips": 3.975,
+          "median_range_pips": 3.2
+        }
+      }
+    }
+  }
+}

@@ -174,6 +174,31 @@ SPREAD_PIPS = {
 }
 
 
+def load_swap_rates() -> dict[str, dict[str, float]]:
+    """DS-7 (data/curated/ds-7.json) からスワップレートを読み込み.
+
+    2026-08-16 ACTIVE.md フェーズゲート対応: これまで SimulatorConfig の
+    swap_long/short_jpy_per_lot_per_day がデフォルト 0.0 のまま一度も接続
+    されておらず、全 TVT がスワップ無視で実行されていた (OBS000005 追記4)。
+    ds-7.json は 2024 年単年の概算値であり実運用前の GMO 公式データでの
+    再計算が必要 (metadata._note 参照) だが、「0円固定」よりは実態に近い
+    近似として接続する。
+    """
+    ds7_path = ROOT / "data" / "curated" / "ds-7.json"
+    with ds7_path.open(encoding="utf-8") as f:
+        ds7 = json.load(f)
+    return {
+        pair: {
+            "long": v["swap_long_jpy_per_lot_per_day"],
+            "short": v["swap_short_jpy_per_lot_per_day"],
+        }
+        for pair, v in ds7["pairs"].items()
+    }
+
+
+SWAP_RATES = load_swap_rates()
+
+
 def load_ohlcv_from_ds1(symbol: str) -> pd.DataFrame:
     """DS-1 JSON から指定通貨の OHLCV を読み込み."""
     ds1_path = ROOT / "data" / "curated" / "ds-1.json"
@@ -281,6 +306,7 @@ def run_one(symbol: str, preset_name: str, periods: dict = None) -> dict:
         print(f"  [CACHE MISS] M5 ライブ読み込み: {len(m5_full)} bars ({m5_full.index[0].date()} - {m5_full.index[-1].date()})  load={time.time()-t_load0:.1f}秒")
         use_cache = False
 
+    swap = SWAP_RATES.get(symbol, {"long": 0.0, "short": 0.0})
     sim_config = SimulatorConfig(
         initial_cash_jpy=1_000_000.0,
         lot_size=1_000,
@@ -289,6 +315,8 @@ def run_one(symbol: str, preset_name: str, periods: dict = None) -> dict:
         is_jpy_pair="JPY" in symbol,
         weekend_close=True,
         max_dd_pause_threshold_pct=50.0,
+        swap_long_jpy_per_lot_per_day=swap["long"],
+        swap_short_jpy_per_lot_per_day=swap["short"],
     )
     mtf_config = MTFConfig(
         lt_sma_short=preset["lt_sma_short"],
