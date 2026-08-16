@@ -17,10 +17,12 @@ import pandas as pd
 
 from minmax_fx_dt.strategy.indicators import (
     adx,
+    adx_wilder,
     atr,
     bbands,
     classify_lt_direction,
     donchian,
+    ma_spread_atr_strength,
     sma,
 )
 from minmax_fx_dt.strategy.range_breakout import (
@@ -44,6 +46,10 @@ class MTFConfig:
     lt_sma_short: int = 50
     lt_sma_long: int = 200
     lt_adx_threshold: float = 25.0
+    # OBS000006 Phase 1 (追記3): トレンド強度指標の選択。
+    # "adx" (既定・非Wilder) / "adx_wilder" (RMA平滑) / "ma_spread_atr" (SMA乖離/ATR)
+    # lt_adx_threshold は選択した指標の閾値として共用する。
+    lt_trend_strength_method: str = "adx"
 
     # MT パラメータ
     mt_donchian_length: int = 20
@@ -204,10 +210,16 @@ def evaluate_mtf(
     # 1. LT 方向判定
     sma_short = sma(lt_close, config.lt_sma_short)
     sma_long = sma(lt_close, config.lt_sma_long)
-    adx_df = adx(lt_high, lt_low, lt_close, length=14)
-    adx_value = adx_df.iloc[:, 0]  # ADX 列
+    if config.lt_trend_strength_method == "adx_wilder":
+        trend_strength = adx_wilder(lt_high, lt_low, lt_close, length=14).iloc[:, 0]
+    elif config.lt_trend_strength_method == "ma_spread_atr":
+        trend_strength = ma_spread_atr_strength(
+            lt_close, sma_short, sma_long, lt_high, lt_low, atr_length=14
+        )
+    else:
+        trend_strength = adx(lt_high, lt_low, lt_close, length=14).iloc[:, 0]
     lt_direction_series = classify_lt_direction(
-        lt_close, sma_short, sma_long, adx_value, config.lt_adx_threshold
+        lt_close, sma_short, sma_long, trend_strength, config.lt_adx_threshold
     )
     lt_direction = str(lt_direction_series.iloc[-1])
 

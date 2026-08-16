@@ -108,6 +108,62 @@ def adx(
     })
 
 
+def adx_wilder(
+    high: pd.Series,
+    low: pd.Series,
+    close: pd.Series,
+    length: int = 14,
+) -> pd.DataFrame:
+    """Average Directional Index (ADX) Wilder標準実装 (RMA平滑).
+
+    OBS000006追記1・3: `adx()` は単純移動平均で平滑しており、ADX 20/25/30 という
+    教科書慣例値はWilderのRMA平滑に対して校正された値のため、そのまま`adx()`に
+    当てはめると較正がずれる。本関数はWilderのRMA平滑 (alpha=1/length) を使う
+    標準実装で、OBS000006 Phase 1 の代替指標比較用。
+
+    Returns:
+        DataFrame with columns: ADX_<length>, DMP_<length>, DMN_<length>.
+    """
+    up = high.diff()
+    down = -low.diff()
+    plus_dm = ((up > down) & (up > 0)) * up
+    minus_dm = ((down > up) & (down > 0)) * down
+    tr = atr(high, low, close, length=1)  # True Range (no smoothing)
+
+    def rma(s: pd.Series, n: int) -> pd.Series:
+        return s.ewm(alpha=1.0 / n, adjust=False, min_periods=n).mean()
+
+    atr_rma = rma(tr, length)
+    plus_di = 100 * (rma(plus_dm, length) / atr_rma)
+    minus_di = 100 * (rma(minus_dm, length) / atr_rma)
+    dx = 100 * (plus_di - minus_di).abs() / (plus_di + minus_di).replace(0, np.nan)
+    adx_val = rma(dx, length)
+    return pd.DataFrame({
+        f"ADX_{length}": adx_val,
+        f"DMP_{length}": plus_di,
+        f"DMN_{length}": minus_di,
+    })
+
+
+def ma_spread_atr_strength(
+    close: pd.Series,
+    sma_short: pd.Series,
+    sma_long: pd.Series,
+    high: pd.Series,
+    low: pd.Series,
+    atr_length: int = 14,
+) -> pd.Series:
+    """トレンド強度の代替指標: 短期/長期SMAの乖離幅をATRで正規化した値.
+
+    OBS000006追記3の差し戻し(代替指標比較)向け。ADXとは独立した設計思想で、
+    「2本の移動平均がどれだけ離れているか」を、その時点のボラティリティ
+    (ATR) を基準にスケール調整して測る。値が大きいほど強いトレンド。
+    """
+    atr_value = atr(high, low, close, length=atr_length)
+    spread = (sma_short - sma_long).abs()
+    return spread / atr_value.replace(0, np.nan)
+
+
 # ---- オシレーター ----
 
 def rsi(close: pd.Series, length: int = 14) -> pd.Series:
@@ -145,6 +201,6 @@ def classify_lt_direction(
 
 
 __all__ = [
-    "sma", "ema", "atr", "donchian", "bbands", "adx", "rsi",
-    "classify_lt_direction",
+    "sma", "ema", "atr", "donchian", "bbands", "adx", "adx_wilder",
+    "ma_spread_atr_strength", "rsi", "classify_lt_direction",
 ]
