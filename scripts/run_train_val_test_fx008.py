@@ -78,12 +78,16 @@ def load_trail_multiplier() -> float:
 
 SWAP_RATES = load_swap_rates()
 TREND_FOLLOW_PARAMS = load_trend_follow_params()
+_TRAIL_MULTIPLIER = load_trail_multiplier()
 
-# 00-spec.md §追加試行 (variant名 -> atr_trail_multiplier)。baselineは
-# TrendFollowConfigのデフォルト値(2.0固定)をそのまま使う。
-VARIANTS = {
-    "baseline": None,
-    "E1_trail": load_trail_multiplier(),
+# 00-spec.md §追加試行 (variant名 -> TrendFollowConfigへのoverride辞書)。
+# baselineはTrendFollowConfigのデフォルト値をそのまま使う。
+# E2はE1のatr_trail_multiplierを維持した上でmt_confirm_sma_lengthを追加変更
+# (変数を1つずつisolateする原則、00-spec.md §追加試行E2参照)。
+VARIANTS: dict[str, dict] = {
+    "baseline": {},
+    "E1_trail": {"atr_trail_multiplier": _TRAIL_MULTIPLIER},
+    "E2_mtconfirm": {"atr_trail_multiplier": _TRAIL_MULTIPLIER, "mt_confirm_sma_length": 10},
 }
 
 
@@ -171,14 +175,12 @@ def run_one(symbol: str, periods: dict = None, variant: str = "baseline") -> dic
     )
 
     p = TREND_FOLLOW_PARAMS[symbol]
-    trail_override = VARIANTS[variant]
     tf_kwargs = dict(
         lt_sma_short=p["ma_short"],
         lt_sma_long=p["ma_long"],
         lt_trend_strength_threshold=p["adx_threshold"],
     )
-    if trail_override is not None:
-        tf_kwargs["atr_trail_multiplier"] = trail_override
+    tf_kwargs.update(VARIANTS[variant])
     tf_config = TrendFollowConfig(**tf_kwargs)
 
     period_results = {}
@@ -235,7 +237,8 @@ def run_one(symbol: str, periods: dict = None, variant: str = "baseline") -> dic
         "variant": variant,
         "tf_params": {"lt_sma_short": tf_config.lt_sma_short, "lt_sma_long": tf_config.lt_sma_long,
                       "lt_trend_strength_threshold": tf_config.lt_trend_strength_threshold,
-                      "atr_trail_multiplier": tf_config.atr_trail_multiplier},
+                      "atr_trail_multiplier": tf_config.atr_trail_multiplier,
+                      "mt_confirm_sma_length": tf_config.mt_confirm_sma_length},
         "periods": period_results,
     }
 
