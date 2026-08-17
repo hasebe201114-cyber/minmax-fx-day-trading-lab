@@ -1,0 +1,43 @@
+{
+  "generated_at": "2026-08-17T12:03:50.083870",
+  "train_period": [
+    "2023-11-01",
+    "2025-03-31"
+  ],
+  "zigzag_threshold_atr": 2.0,
+  "pattern_tolerance_atr": 0.587,
+  "stop_buffer_atr": 0.636,
+  "max_bars_since_second_pivot": 30,
+  "staleness_raw_p90_bars": 28.0,
+  "atr_trail_multiplier": 2.44,
+  "trail_mfe_horizon_h4_bars": 30,
+  "lt_sma_short": 10,
+  "lt_sma_long": 20,
+  "lt_sma_source": "EXP-FX000002/10-result/trend_follow_params.json (全ペアMA(10,20)に収束、再利用)",
+  "pooled_n_triplets": 1748,
+  "pooled_n_break_lags": 354,
+  "pooled_n_lt_matched_signals": 171,
+  "_note": "この値はTrain/Validation/Testいずれの結果を見た後も変更しない",
+  "pairs": {
+    "USD_JPY": {
+      "n_alternating_triplets": 367,
+      "delta_atr_median": 1.396
+    },
+    "EUR_JPY": {
+      "n_alternating_triplets": 331,
+      "delta_atr_median": 1.5
+    },
+    "GBP_JPY": {
+      "n_alternating_triplets": 339,
+      "delta_atr_median": 1.46
+    },
+    "AUD_JPY": {
+      "n_alternating_triplets": 336,
+      "delta_atr_median": 1.413
+    },
+    "EUR_USD": {
+      "n_alternating_triplets": 375,
+      "delta_atr_median": 1.256
+    }
+  }
+}
