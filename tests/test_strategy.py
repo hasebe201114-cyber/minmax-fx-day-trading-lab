@@ -28,6 +28,10 @@ from minmax_fx_dt.strategy.range_breakout import (
     hedged_position_state,
 )
 from minmax_fx_dt.strategy.multi_timeframe import MTFConfig, evaluate_mtf
+from minmax_fx_dt.strategy.pattern_detection import (
+    DoublePatternConfig,
+    evaluate_double_pattern_signal,
+)
 
 
 # ---- フィクスチャ ----
@@ -303,6 +307,92 @@ def test_evaluate_mtf_synthetic() -> None:
     assert isinstance(result.sr_levels_count, int)
     assert result.engine.state in [s for s in State]
     assert isinstance(result.entry_signal.conditions_passed, dict)
+
+
+# ---- pattern_detection テスト (EXP-FX000003 / SYS-FX009 v2) ----
+
+def _double_top_series(with_break: bool, delay_bars: int = 0) -> tuple[pd.Series, pd.Series, pd.Series]:
+    """ダブルトップ形状の合成データ (山1=110 -> 谷(ネックライン)=100 -> 山2=110).
+
+    with_break=True の場合、山2の後にネックライン(100)を明確に割り込む区間を追加する。
+    delay_bars>0 の場合、山2の後に反転未確定のゆるやかな下降(陳腐化検証用)を挟んでから
+    ネックラインを割り込む。
+    """
+    seg1 = list(range(90, 111))  # 90 -> 110 (山1)
+    seg2 = list(range(109, 99, -1))  # 109 -> 100 (ネックライン=谷)
+    seg3 = list(range(101, 111))  # 101 -> 110 (山2、山1と同水準)
+    prices = seg1 + seg2 + seg3
+    if delay_bars > 0:
+        # ネックライン(100)へじわじわ近づくが、反転確定はしない緩やかな下降
+        start = 108
+        prices += [start - i for i in range(delay_bars)]
+    if with_break:
+        seg4 = list(range(109, 90, -1))  # 109 -> 91、ネックライン(100)を明確に割り込む
+        prices += seg4
+    high = pd.Series([float(p) for p in prices])
+    low = high - 0.1
+    atr = pd.Series([1.0] * len(high))
+    return high, low, atr
+
+
+def _double_bottom_series() -> tuple[pd.Series, pd.Series, pd.Series]:
+    """ダブルボトム形状の合成データ (谷1=90 -> 山(ネックライン)=100 -> 谷2=90 -> ブレイク)."""
+    seg1 = list(range(110, 89, -1))  # 110 -> 90 (谷1)
+    seg2 = list(range(91, 101))  # 91 -> 100 (ネックライン=山)
+    seg3 = list(range(99, 89, -1))  # 99 -> 90 (谷2、谷1と同水準)
+    seg4 = list(range(91, 110))  # 91 -> 109、ネックライン(100)を明確に上抜け
+    prices = seg1 + seg2 + seg3 + seg4
+    high = pd.Series([float(p) for p in prices])
+    low = high - 0.1
+    atr = pd.Series([1.0] * len(high))
+    return high, low, atr
+
+
+def test_double_top_signal_fires_on_neckline_break() -> None:
+    """LT=DOWN + 山1≒山2 + ネックライン割れで DOWN シグナルが発火する."""
+    high, low, atr = _double_top_series(with_break=True)
+    current_price = float(high.iloc[-1])
+    signal = evaluate_double_pattern_signal(high, low, atr, current_price, lt_direction="DOWN")
+    assert signal.direction == "DOWN"
+    assert signal.neckline_price == pytest.approx(100.0, abs=0.5)
+    assert signal.pattern_extreme_price >= signal.neckline_price
+
+
+def test_double_bottom_signal_fires_on_neckline_break() -> None:
+    """LT=UP + 谷1≒谷2 + ネックライン上抜けで UP シグナルが発火する."""
+    high, low, atr = _double_bottom_series()
+    current_price = float(high.iloc[-1])
+    signal = evaluate_double_pattern_signal(high, low, atr, current_price, lt_direction="UP")
+    assert signal.direction == "UP"
+    assert signal.neckline_price == pytest.approx(100.0, abs=0.5)
+    assert signal.pattern_extreme_price <= signal.neckline_price
+
+
+def test_double_pattern_signal_none_when_lt_direction_mismatched() -> None:
+    """ダブルトップ形状でも LT=UP (上位足の流れと逆) なら無効."""
+    high, low, atr = _double_top_series(with_break=True)
+    current_price = float(high.iloc[-1])
+    signal = evaluate_double_pattern_signal(high, low, atr, current_price, lt_direction="UP")
+    assert signal.direction == "NONE"
+
+
+def test_double_pattern_signal_none_when_neckline_not_broken() -> None:
+    """山2形成直後、ネックラインをまだ割り込んでいなければ無効."""
+    high, low, atr = _double_top_series(with_break=False)
+    current_price = float(high.iloc[-1])  # 山2のまま、ネックライン未割れ
+    signal = evaluate_double_pattern_signal(high, low, atr, current_price, lt_direction="DOWN")
+    assert signal.direction == "NONE"
+
+
+def test_double_pattern_signal_none_when_pattern_stale() -> None:
+    """山2確定から max_bars_since_second_pivot を超えた陳腐化パターンは無効."""
+    high, low, atr = _double_top_series(with_break=True, delay_bars=30)
+    current_price = float(high.iloc[-1])
+    config = DoublePatternConfig(max_bars_since_second_pivot=20)
+    signal = evaluate_double_pattern_signal(
+        high, low, atr, current_price, lt_direction="DOWN", config=config
+    )
+    assert signal.direction == "NONE"
 
 
 if __name__ == "__main__":
