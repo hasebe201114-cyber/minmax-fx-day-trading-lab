@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-17T12:20:40.801668",
+  "generated_at": "2026-08-17T15:47:49.247283",
   "pair": "EUR_USD",
   "period": "train",
   "dp_params": {
@@ -128,14 +128,14 @@
     {
       "metric": "min_n_trades",
       "observed": 23.0,
-      "threshold": 66,
+      "threshold": 300,
       "pass": false,
       "applicable": true,
       "note": ""
     },
     {
       "metric": "permutation_p_value",
-      "observed": 0.6953046953046953,
+      "observed": 0.6853146853146853,
       "threshold": 0.05,
       "pass": false,
       "applicable": true,
@@ -167,10 +167,10 @@
     "n_trades": 23,
     "n_permutations": 1000,
     "observed_statistic": -115.5746,
-    "null_mean": 0.9704,
-    "null_std": 214.5879,
-    "p_value": 0.6953,
-    "p_value_two_sided": 0.6014,
+    "null_mean": -1.3153,
+    "null_std": 213.754,
+    "p_value": 0.6853,
+    "p_value_two_sided": 0.6114,
     "method": "sign_flip_mean_pnl"
   },
   "trade_pnls": [
@@ -198,5 +198,5 @@
     1036.4999999999625,
     -1475.7784285714392
   ],
-  "elapsed_sec": 141.5355143547058
+  "elapsed_sec": 145.1212122440338
 }

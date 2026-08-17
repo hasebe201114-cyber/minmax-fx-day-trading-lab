@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-17T12:20:40.800191",
+  "generated_at": "2026-08-17T15:47:49.244034",
   "pair": "EUR_JPY",
   "period": "train",
   "dp_params": {
@@ -13,49 +13,49 @@
   "start": "2023-11-01",
   "end": "2025-03-31",
   "metrics": {
-    "sharpe_monthly": 0.874,
-    "sharpe_yearly": 0.1453,
-    "profit_factor_monthly": 3.3929,
-    "profit_factor_yearly": 3.3929,
-    "expectancy_jpy": 491.13,
-    "max_dd_jpy": 5731.86,
-    "max_dd_monthly_pct": 0.2314,
-    "max_dd_yearly_pct": 0.2314,
-    "max_consecutive_losses": 4,
-    "payoff_ratio": 0.6786,
+    "sharpe_monthly": 0.2252,
+    "sharpe_yearly": 0.0082,
+    "profit_factor_monthly": 1.1103,
+    "profit_factor_yearly": 1.1103,
+    "expectancy_jpy": 54.32,
+    "max_dd_jpy": 7517.86,
+    "max_dd_monthly_pct": 0.3524,
+    "max_dd_yearly_pct": 0.3524,
+    "max_consecutive_losses": 5,
+    "payoff_ratio": 0.7402,
     "spread_round_trip_jpy": 10.0,
-    "edge_per_trade_jpy": 491.13,
+    "edge_per_trade_jpy": 54.32,
     "backtest_forward_divergence_pct": 0.0,
     "max_margin_usage_pct": 0.7017,
     "weak_breakout_exclusion_pct": 0.0,
     "signals_dropped_position_open": 0,
-    "n_trades": 48,
-    "n_wins": 40,
+    "n_trades": 20,
+    "n_wins": 12,
     "n_losses": 8,
-    "win_rate": 83.3333,
+    "win_rate": 60.0,
     "period_start": "2023-11-01T06:00:00+09:00",
     "period_end": "2025-03-29T05:55:00+09:00"
   },
   "kpi_evals": [
     {
       "metric": "K1m_sharpe",
-      "observed": 0.874,
+      "observed": 0.2252,
       "threshold": 0.4,
-      "pass": true,
+      "pass": false,
       "applicable": true,
       "note": ""
     },
     {
       "metric": "K1m_pf",
-      "observed": 3.3929,
+      "observed": 1.1103,
       "threshold": 1.2,
-      "pass": true,
+      "pass": false,
       "applicable": true,
       "note": ""
     },
     {
       "metric": "K1m_expectancy",
-      "observed": 491.13,
+      "observed": 54.32,
       "threshold": 0.0,
       "pass": true,
       "applicable": true,
@@ -63,7 +63,7 @@
     },
     {
       "metric": "K2m_dd_monthly",
-      "observed": 0.2314,
+      "observed": 0.3524,
       "threshold": 10.0,
       "pass": true,
       "applicable": true,
@@ -71,7 +71,7 @@
     },
     {
       "metric": "K2m_dd_yearly",
-      "observed": 0.2314,
+      "observed": 0.3524,
       "threshold": 20.0,
       "pass": true,
       "applicable": true,
@@ -79,7 +79,7 @@
     },
     {
       "metric": "K3m_max_consecutive_losses",
-      "observed": 4.0,
+      "observed": 5.0,
       "threshold": 5,
       "pass": true,
       "applicable": true,
@@ -87,7 +87,7 @@
     },
     {
       "metric": "K4m_payoff",
-      "observed": 0.6786,
+      "observed": 0.7402,
       "threshold": 1.5,
       "pass": false,
       "applicable": true,
@@ -95,11 +95,11 @@
     },
     {
       "metric": "K5m_spread_cost_multiple",
-      "observed": 49.113,
+      "observed": 5.432,
       "threshold": 3.0,
       "pass": true,
       "applicable": true,
-      "note": "edge=491.1円 / spread往復=10.0円"
+      "note": "edge=54.3円 / spread往復=10.0円"
     },
     {
       "metric": "K6m_bt_ft_divergence",
@@ -127,17 +127,17 @@
     },
     {
       "metric": "min_n_trades",
-      "observed": 48.0,
-      "threshold": 66,
+      "observed": 20.0,
+      "threshold": 300,
       "pass": false,
       "applicable": true,
       "note": ""
     },
     {
       "metric": "permutation_p_value",
-      "observed": 0.000999000999000999,
+      "observed": 0.44555444555444557,
       "threshold": 0.05,
-      "pass": true,
+      "pass": false,
       "applicable": true,
       "note": ""
     }
@@ -150,22 +150,25 @@
       "K6m_bt_ft_divergence",
       "K7m_margin_usage"
     ],
-    "pass": 9,
-    "fail": 2,
+    "pass": 6,
+    "fail": 5,
     "fail_metrics": [
+      "K1m_sharpe",
+      "K1m_pf",
       "K4m_payoff",
-      "min_n_trades"
+      "min_n_trades",
+      "permutation_p_value"
     ],
     "all_applicable_pass": false
   },
   "permutation_test": {
-    "n_trades": 48,
+    "n_trades": 20,
     "n_permutations": 1000,
-    "observed_statistic": 491.1274,
-    "null_mean": -4.9616,
-    "null_std": 169.4429,
-    "p_value": 0.001,
-    "p_value_two_sided": 0.001,
+    "observed_statistic": 54.321,
+    "null_mean": -5.7101,
+    "null_std": 347.3041,
+    "p_value": 0.4456,
+    "p_value_two_sided": 0.8981,
     "method": "sign_flip_mean_pnl"
   },
   "trade_pnls": [
@@ -181,34 +184,6 @@
     -25.999999999967713,
     -1914.6031428571318,
     -1277.2631428571087,
-    267.95342857145965,
-    550.9534285714467,
-    322.95342857143805,
-    598.9534285714485,
-    1354.9534285714487,
-    1625.9534285714353,
-    880.9534285714592,
-    776.9534285714458,
-    636.9534285714594,
-    776.9534285714458,
-    828.9534285714383,
-    814.9534285714567,
-    789.953428571451,
-    711.9534285714481,
-    714.9534285714624,
-    658.9534285714508,
-    911.9534285714367,
-    877.9534285714449,
-    899.9534285714362,
-    1053.953428571461,
-    922.9534285714608,
-    767.9534285714597,
-    857.9534285714346,
-    875.9534285714353,
-    735.953428571449,
-    675.9534285714467,
-    749.953428571459,
-    843.9534285714531,
     -1142.999999999958,
     5333.999999999994,
     1555.000000000007,
@@ -218,5 +193,5 @@
     -1157.9999999999634,
     231.99999999999977
   ],
-  "elapsed_sec": 141.73130249977112
+  "elapsed_sec": 148.7272276878357
 }

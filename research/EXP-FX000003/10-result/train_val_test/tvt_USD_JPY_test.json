@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-17T12:32:24.398186",
+  "generated_at": "2026-08-17T15:47:49.243650",
   "pair": "USD_JPY",
   "period": "test",
   "dp_params": {
@@ -13,57 +13,57 @@
   "start": "2025-12-01",
   "end": "2026-08-15",
   "metrics": {
-    "sharpe_monthly": 1.2193,
-    "sharpe_yearly": 0.0997,
-    "profit_factor_monthly": 3.1907,
-    "profit_factor_yearly": 3.1907,
-    "expectancy_jpy": 426.92,
-    "max_dd_jpy": 2283.95,
-    "max_dd_monthly_pct": 0.0918,
-    "max_dd_yearly_pct": 0.0918,
-    "max_consecutive_losses": 2,
-    "payoff_ratio": 0.8702,
+    "sharpe_monthly": -0.9238,
+    "sharpe_yearly": -0.0243,
+    "profit_factor_monthly": 0.6224,
+    "profit_factor_yearly": 0.6224,
+    "expectancy_jpy": -147.19,
+    "max_dd_jpy": 3493.33,
+    "max_dd_monthly_pct": 0.2648,
+    "max_dd_yearly_pct": 0.2648,
+    "max_consecutive_losses": 3,
+    "payoff_ratio": 0.4668,
     "spread_round_trip_jpy": 6.0,
-    "edge_per_trade_jpy": 426.92,
+    "edge_per_trade_jpy": -147.19,
     "backtest_forward_divergence_pct": 0.0,
     "max_margin_usage_pct": 0.6559,
     "weak_breakout_exclusion_pct": 0.0,
     "signals_dropped_position_open": 0,
-    "n_trades": 14,
-    "n_wins": 11,
+    "n_trades": 7,
+    "n_wins": 4,
     "n_losses": 3,
-    "win_rate": 78.5714,
+    "win_rate": 57.1429,
     "period_start": "2025-12-01T07:00:00+09:00",
     "period_end": "2026-08-15T00:00:00+09:00"
   },
   "kpi_evals": [
     {
       "metric": "K1m_sharpe",
-      "observed": 1.2193,
+      "observed": -0.9238,
       "threshold": 0.4,
-      "pass": true,
+      "pass": false,
       "applicable": true,
       "note": ""
     },
     {
       "metric": "K1m_pf",
-      "observed": 3.1907,
+      "observed": 0.6224,
       "threshold": 1.2,
-      "pass": true,
+      "pass": false,
       "applicable": true,
       "note": ""
     },
     {
       "metric": "K1m_expectancy",
-      "observed": 426.92,
+      "observed": -147.19,
       "threshold": 0.0,
-      "pass": true,
+      "pass": false,
       "applicable": true,
       "note": "1トレードあたり期待値(円)"
     },
     {
       "metric": "K2m_dd_monthly",
-      "observed": 0.0918,
+      "observed": 0.2648,
       "threshold": 10.0,
       "pass": true,
       "applicable": true,
@@ -71,7 +71,7 @@
     },
     {
       "metric": "K2m_dd_yearly",
-      "observed": 0.0918,
+      "observed": 0.2648,
       "threshold": 20.0,
       "pass": true,
       "applicable": true,
@@ -79,7 +79,7 @@
     },
     {
       "metric": "K3m_max_consecutive_losses",
-      "observed": 2.0,
+      "observed": 3.0,
       "threshold": 5,
       "pass": true,
       "applicable": true,
@@ -87,7 +87,7 @@
     },
     {
       "metric": "K4m_payoff",
-      "observed": 0.8702,
+      "observed": 0.4668,
       "threshold": 1.5,
       "pass": false,
       "applicable": true,
@@ -95,11 +95,11 @@
     },
     {
       "metric": "K5m_spread_cost_multiple",
-      "observed": 71.15333333333334,
+      "observed": -24.531666666666666,
       "threshold": 3.0,
-      "pass": true,
+      "pass": false,
       "applicable": true,
-      "note": "edge=426.9円 / spread往復=6.0円"
+      "note": "edge=-147.2円 / spread往復=6.0円"
     },
     {
       "metric": "K6m_bt_ft_divergence",
@@ -127,17 +127,17 @@
     },
     {
       "metric": "min_n_trades",
-      "observed": 14.0,
-      "threshold": 66,
+      "observed": 7.0,
+      "threshold": 300,
       "pass": false,
       "applicable": true,
       "note": ""
     },
     {
       "metric": "permutation_p_value",
-      "observed": 0.04095904095904096,
+      "observed": 0.6773226773226774,
       "threshold": 0.05,
-      "pass": true,
+      "pass": false,
       "applicable": true,
       "note": ""
     }
@@ -150,22 +150,27 @@
       "K6m_bt_ft_divergence",
       "K7m_margin_usage"
     ],
-    "pass": 9,
-    "fail": 2,
+    "pass": 4,
+    "fail": 7,
     "fail_metrics": [
+      "K1m_sharpe",
+      "K1m_pf",
+      "K1m_expectancy",
       "K4m_payoff",
-      "min_n_trades"
+      "K5m_spread_cost_multiple",
+      "min_n_trades",
+      "permutation_p_value"
     ],
     "all_applicable_pass": false
   },
   "permutation_test": {
-    "n_trades": 14,
+    "n_trades": 7,
     "n_permutations": 1000,
-    "observed_statistic": 426.9245,
-    "null_mean": -4.8768,
-    "null_std": 256.9547,
-    "p_value": 0.041,
-    "p_value_two_sided": 0.0829,
+    "observed_statistic": -147.1907,
+    "null_mean": -9.8711,
+    "null_std": 298.0198,
+    "p_value": 0.6773,
+    "p_value_two_sided": 0.6354,
     "method": "sign_flip_mean_pnl"
   },
   "trade_pnls": [
@@ -173,16 +178,9 @@
     1176.000000000053,
     -589.9999999999516,
     -1357.9477142856767,
-    279.6111428571869,
-    424.61114285719714,
-    773.6111428571867,
-    1102.6111428571944,
-    1201.611142857184,
-    1639.6111428571721,
-    1585.6111428571985,
     -780.3868571428204,
     29.000000000033197,
     379.0000000000425
   ],
-  "elapsed_sec": 58.77851986885071
+  "elapsed_sec": 62.63029193878174
 }

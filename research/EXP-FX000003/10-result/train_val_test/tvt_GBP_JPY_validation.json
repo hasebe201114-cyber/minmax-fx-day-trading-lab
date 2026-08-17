@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-17T12:26:42.029861",
+  "generated_at": "2026-08-17T15:47:49.245475",
   "pair": "GBP_JPY",
   "period": "validation",
   "dp_params": {
@@ -128,14 +128,14 @@
     {
       "metric": "min_n_trades",
       "observed": 15.0,
-      "threshold": 66,
+      "threshold": 300,
       "pass": false,
       "applicable": true,
       "note": ""
     },
     {
       "metric": "permutation_p_value",
-      "observed": 0.948051948051948,
+      "observed": 0.9600399600399601,
       "threshold": 0.05,
       "pass": false,
       "applicable": true,
@@ -168,10 +168,10 @@
     "n_trades": 15,
     "n_permutations": 1000,
     "observed_statistic": -559.6696,
-    "null_mean": -11.4524,
-    "null_std": 318.1732,
-    "p_value": 0.9481,
-    "p_value_two_sided": 0.0739,
+    "null_mean": 6.8674,
+    "null_std": 315.9682,
+    "p_value": 0.96,
+    "p_value_two_sided": 0.0859,
     "method": "sign_flip_mean_pnl"
   },
   "trade_pnls": [
@@ -191,5 +191,5 @@
     1025.5285714285658,
     -468.0000000000084
   ],
-  "elapsed_sec": 55.255645751953125
+  "elapsed_sec": 58.325538635253906
 }

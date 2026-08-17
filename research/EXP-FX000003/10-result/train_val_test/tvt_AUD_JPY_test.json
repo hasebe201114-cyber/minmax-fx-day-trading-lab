@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-17T12:32:24.399413",
+  "generated_at": "2026-08-17T15:47:49.246966",
   "pair": "AUD_JPY",
   "period": "test",
   "dp_params": {
@@ -128,14 +128,14 @@
     {
       "metric": "min_n_trades",
       "observed": 8.0,
-      "threshold": 66,
+      "threshold": 300,
       "pass": false,
       "applicable": true,
       "note": ""
     },
     {
       "metric": "permutation_p_value",
-      "observed": 0.02097902097902098,
+      "observed": 0.024975024975024976,
       "threshold": 0.05,
       "pass": true,
       "applicable": true,
@@ -161,10 +161,10 @@
     "n_trades": 8,
     "n_permutations": 1000,
     "observed_statistic": 458.8454,
-    "null_mean": 10.7174,
-    "null_std": 221.7504,
-    "p_value": 0.021,
-    "p_value_two_sided": 0.04,
+    "null_mean": -2.843,
+    "null_std": 225.5529,
+    "p_value": 0.025,
+    "p_value_two_sided": 0.046,
     "method": "sign_flip_mean_pnl"
   },
   "trade_pnls": [
@@ -177,5 +177,5 @@
     -206.99999999999318,
     729.0000000000006
   ],
-  "elapsed_sec": 60.92343497276306
+  "elapsed_sec": 64.73663306236267
 }

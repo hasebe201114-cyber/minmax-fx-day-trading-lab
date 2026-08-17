@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-17T12:32:24.398683",
+  "generated_at": "2026-08-17T15:47:49.244693",
   "pair": "EUR_JPY",
   "period": "test",
   "dp_params": {
@@ -128,14 +128,14 @@
     {
       "metric": "min_n_trades",
       "observed": 2.0,
-      "threshold": 66,
+      "threshold": 300,
       "pass": false,
       "applicable": true,
       "note": ""
     },
     {
       "metric": "permutation_p_value",
-      "observed": 0.7372627372627373,
+      "observed": 0.7422577422577422,
       "threshold": 0.05,
       "pass": false,
       "applicable": true,
@@ -166,9 +166,9 @@
     "n_trades": 2,
     "n_permutations": 1000,
     "observed_statistic": -7.5,
-    "null_mean": -14.983,
-    "null_std": 331.0985,
-    "p_value": 0.7373,
+    "null_mean": -2.185,
+    "null_std": 337.082,
+    "p_value": 0.7423,
     "p_value_two_sided": 1.0,
     "method": "sign_flip_mean_pnl"
   },
@@ -176,5 +176,5 @@
     -478.99999999998454,
     464.0000000000132
   ],
-  "elapsed_sec": 61.460514307022095
+  "elapsed_sec": 69.15867400169373
 }
