@@ -69,8 +69,22 @@ def load_trend_follow_params() -> dict[str, dict]:
         return json.load(f)["pairs"]
 
 
+def load_trail_multiplier() -> float:
+    """E1追加試行: データ駆動導出したatr_trail_multiplier (00-spec.md §追加試行E1)."""
+    path = ROOT / "research" / "EXP-FX000002" / "10-result" / "trail_multiplier.json"
+    with path.open(encoding="utf-8") as f:
+        return json.load(f)["atr_trail_multiplier"]
+
+
 SWAP_RATES = load_swap_rates()
 TREND_FOLLOW_PARAMS = load_trend_follow_params()
+
+# 00-spec.md §追加試行 (variant名 -> atr_trail_multiplier)。baselineは
+# TrendFollowConfigのデフォルト値(2.0固定)をそのまま使う。
+VARIANTS = {
+    "baseline": None,
+    "E1_trail": load_trail_multiplier(),
+}
 
 
 def is_jpy_pair(pair: str) -> bool:
@@ -131,7 +145,7 @@ def build_stats(m_dict: dict, *, perm_p_value: float | None) -> Stats:
     return stats
 
 
-def run_one(symbol: str, periods: dict = None) -> dict:
+def run_one(symbol: str, periods: dict = None, variant: str = "baseline") -> dict:
     if periods is None:
         periods = PERIODS
 
@@ -157,11 +171,15 @@ def run_one(symbol: str, periods: dict = None) -> dict:
     )
 
     p = TREND_FOLLOW_PARAMS[symbol]
-    tf_config = TrendFollowConfig(
+    trail_override = VARIANTS[variant]
+    tf_kwargs = dict(
         lt_sma_short=p["ma_short"],
         lt_sma_long=p["ma_long"],
         lt_trend_strength_threshold=p["adx_threshold"],
     )
+    if trail_override is not None:
+        tf_kwargs["atr_trail_multiplier"] = trail_override
+    tf_config = TrendFollowConfig(**tf_kwargs)
 
     period_results = {}
     for period_name, (start, end) in periods.items():
@@ -214,8 +232,10 @@ def run_one(symbol: str, periods: dict = None) -> dict:
 
     return {
         "pair": symbol,
+        "variant": variant,
         "tf_params": {"lt_sma_short": tf_config.lt_sma_short, "lt_sma_long": tf_config.lt_sma_long,
-                      "lt_trend_strength_threshold": tf_config.lt_trend_strength_threshold},
+                      "lt_trend_strength_threshold": tf_config.lt_trend_strength_threshold,
+                      "atr_trail_multiplier": tf_config.atr_trail_multiplier},
         "periods": period_results,
     }
 
@@ -226,12 +246,14 @@ def main() -> int:
     parser.add_argument("--all-pairs", action="store_true", help="5 通貨全て")
     parser.add_argument("--period", choices=list(PERIODS.keys()),
                         help="単一期間指定 (train/validation/test). 1 セル単独実行用")
+    parser.add_argument("--variant", default="baseline", choices=list(VARIANTS.keys()),
+                        help="パラメータバリアント (baseline / E1_trail)")
     args = parser.parse_args()
 
     targets = PAIRS if (args.all_pairs or not args.pair) else [args.pair]
     selected_periods = {args.period: PERIODS[args.period]} if args.period else PERIODS
 
-    print("=== train/val/test 分離バックテスト (SYS-FX008) ===")
+    print(f"=== train/val/test 分離バックテスト (SYS-FX008, variant={args.variant}) ===")
     print(f"期間: {[(k, v) for k, v in selected_periods.items()]}")
     print(f"対象通貨: {targets}")
     print()
@@ -240,7 +262,7 @@ def main() -> int:
     total_t0 = time.time()
     for symbol in targets:
         try:
-            r = run_one(symbol, selected_periods)
+            r = run_one(symbol, selected_periods, variant=args.variant)
             all_results.append(r)
         except Exception as e:
             print(f"[NG] {symbol}: {e}")
@@ -266,7 +288,8 @@ def main() -> int:
 
     for r in all_results:
         for period_name, pr in r["periods"].items():
-            cell_file = out_dir / f"tvt_{r['pair']}_{period_name}.json"
+            variant_suffix = "" if args.variant == "baseline" else f"_{args.variant}"
+            cell_file = out_dir / f"tvt_{r['pair']}_{period_name}{variant_suffix}.json"
             cell_file.write_text(
                 json.dumps({
                     "generated_at": datetime.now().isoformat(),
