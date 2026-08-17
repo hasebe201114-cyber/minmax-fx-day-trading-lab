@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-17T16:28:55.837304",
+  "generated_at": "2026-08-17T19:54:13.497689",
   "train_period": [
     "2023-11-01",
     "2025-03-31"
@@ -9,6 +9,165 @@
     "variance_ratio": "VR>1=モメンタム, VR<1=平均回帰, VR≈1=ランダムウォーク",
     "autocorrelation": "|AC| が標準誤差(1/sqrt(n))を明確に超えなければ線形の予測可能性なし",
     "effective_independent_count": "N_eff = k/(1+(k-1)*rho_bar)。プール評価の実質的な独立サンプル数の目安"
+  },
+  "m15": {
+    "USD_JPY": {
+      "n_bars": 34643,
+      "ac_standard_error": 0.0054,
+      "autocorrelation": {
+        "lag_1": 0.0053,
+        "lag_2": 0.0137,
+        "lag_3": -0.0144,
+        "lag_5": -0.0034
+      },
+      "variance_ratio": {
+        "q_4": 1.0145,
+        "q_16": 0.983,
+        "q_96": 1.0367,
+        "q_288": 0.9649
+      }
+    },
+    "EUR_JPY": {
+      "n_bars": 34643,
+      "ac_standard_error": 0.0054,
+      "autocorrelation": {
+        "lag_1": -0.0013,
+        "lag_2": 0.0208,
+        "lag_3": -0.0042,
+        "lag_5": -0.011
+      },
+      "variance_ratio": {
+        "q_4": 1.0168,
+        "q_16": 0.9943,
+        "q_96": 0.9487,
+        "q_288": 0.8795
+      }
+    },
+    "GBP_JPY": {
+      "n_bars": 34643,
+      "ac_standard_error": 0.0054,
+      "autocorrelation": {
+        "lag_1": -0.0002,
+        "lag_2": 0.0237,
+        "lag_3": -0.0039,
+        "lag_5": -0.0107
+      },
+      "variance_ratio": {
+        "q_4": 1.0216,
+        "q_16": 1.0208,
+        "q_96": 0.9746,
+        "q_288": 0.9356
+      }
+    },
+    "AUD_JPY": {
+      "n_bars": 34643,
+      "ac_standard_error": 0.0054,
+      "autocorrelation": {
+        "lag_1": -0.0071,
+        "lag_2": 0.0255,
+        "lag_3": -0.0058,
+        "lag_5": -0.0123
+      },
+      "variance_ratio": {
+        "q_4": 1.0119,
+        "q_16": 1.0217,
+        "q_96": 0.9525,
+        "q_288": 0.8892
+      }
+    },
+    "EUR_USD": {
+      "n_bars": 34643,
+      "ac_standard_error": 0.0054,
+      "autocorrelation": {
+        "lag_1": -0.0112,
+        "lag_2": -0.0084,
+        "lag_3": 0.0024,
+        "lag_5": -0.0005
+      },
+      "variance_ratio": {
+        "q_4": 0.976,
+        "q_16": 0.9411,
+        "q_96": 0.9295,
+        "q_288": 0.9148
+      }
+    }
+  },
+  "h1": {
+    "USD_JPY": {
+      "n_bars": 8660,
+      "ac_standard_error": 0.0107,
+      "autocorrelation": {
+        "lag_1": 0.0001,
+        "lag_2": -0.0127,
+        "lag_3": 0.0023,
+        "lag_5": 0.0044
+      },
+      "variance_ratio": {
+        "q_4": 0.9886,
+        "q_24": 1.0513,
+        "q_72": 0.979
+      }
+    },
+    "EUR_JPY": {
+      "n_bars": 8660,
+      "ac_standard_error": 0.0107,
+      "autocorrelation": {
+        "lag_1": 0.0187,
+        "lag_2": -0.0212,
+        "lag_3": -0.0019,
+        "lag_5": -0.0084
+      },
+      "variance_ratio": {
+        "q_4": 1.0059,
+        "q_24": 0.972,
+        "q_72": 0.9011
+      }
+    },
+    "GBP_JPY": {
+      "n_bars": 8660,
+      "ac_standard_error": 0.0107,
+      "autocorrelation": {
+        "lag_1": 0.0363,
+        "lag_2": -0.0183,
+        "lag_3": -0.0064,
+        "lag_5": -0.0069
+      },
+      "variance_ratio": {
+        "q_4": 1.033,
+        "q_24": 0.9973,
+        "q_72": 0.9575
+      }
+    },
+    "AUD_JPY": {
+      "n_bars": 8660,
+      "ac_standard_error": 0.0107,
+      "autocorrelation": {
+        "lag_1": 0.0399,
+        "lag_2": -0.0175,
+        "lag_3": 0.0034,
+        "lag_5": -0.0176
+      },
+      "variance_ratio": {
+        "q_4": 1.0438,
+        "q_24": 0.9872,
+        "q_72": 0.9221
+      }
+    },
+    "EUR_USD": {
+      "n_bars": 8660,
+      "ac_standard_error": 0.0107,
+      "autocorrelation": {
+        "lag_1": -0.0283,
+        "lag_2": 0.0001,
+        "lag_3": -0.0017,
+        "lag_5": 0.0146
+      },
+      "variance_ratio": {
+        "q_4": 0.9569,
+        "q_24": 0.9494,
+        "q_72": 0.9334
+      }
+    }
   },
   "h4": {
     "USD_JPY": {

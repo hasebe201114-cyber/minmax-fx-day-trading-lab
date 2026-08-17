@@ -41,6 +41,8 @@ TRAIN_START, TRAIN_END = "2023-11-01", "2025-03-31"
 
 # 検証するラグ/集約期間 (結果を見る前に固定)
 AC_LAGS = [1, 2, 3, 5]
+VR_Q_M15 = [4, 16, 96, 288]  # M15足で 1h / 4h / 1日 / 3日 相当 (提案6: 週内完結の時間軸)
+VR_Q_H1 = [4, 24, 72]        # H1足で 4h / 1日 / 3日 相当 (提案6)
 VR_Q_H4 = [2, 4, 6, 12]   # H4足で 8h / 16h / 1日 / 2日 相当
 VR_Q_D1 = [2, 3, 5, 10]   # D1足で 2日 / 3日 / 1週 / 2週 相当
 
@@ -94,10 +96,15 @@ def main() -> int:
     with (ROOT / "data" / "curated" / "ds-1.json").open(encoding="utf-8") as f:
         ds1 = json.load(f)
 
-    results: dict = {"h4": {}, "d1": {}}
+    results: dict = {"m15": {}, "h1": {}, "h4": {}, "d1": {}}
     d1_returns: dict[str, pd.Series] = {}
 
-    for tf_name, resample_rule, vr_qs in (("h4", "4h", VR_Q_H4), ("d1", "D", VR_Q_D1)):
+    for tf_name, resample_rule, vr_qs in (
+        ("m15", "15min", VR_Q_M15),  # 提案6: 週内完結を前提とした短い時間軸
+        ("h1", "1h", VR_Q_H1),       # 提案6
+        ("h4", "4h", VR_Q_H4),
+        ("d1", "D", VR_Q_D1),
+    ):
         print(f"--- {tf_name.upper()}足 ---")
         header = f"{'pair':<10}" + "".join(f"{'AC('+str(k)+')':>9}" for k in AC_LAGS) \
                  + "".join(f"{'VR('+str(q)+')':>9}" for q in vr_qs)
