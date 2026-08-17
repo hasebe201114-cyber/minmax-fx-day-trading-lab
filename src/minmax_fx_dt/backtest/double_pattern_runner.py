@@ -211,10 +211,26 @@ def run_double_pattern_backtest(
 
         # 6. エントリー判定 (フラットの場合のみ)
         # 週末クローズ窓 (土曜 06:00 JST 未満) では新規エントリーしない (回転売買防止、SYS-FX008と同じ理由)。
+        # cached_signal は次の確定バーまで再計算されない (絶対価格のstop_lossを含む) ため、
+        # 同一確定バー内で価格が急変(フラッシュクラッシュ等)すると、現在値が既に
+        # stop_loss を超えた「建値時点で即ストップ状態」のポジションを繰り返し開いてしまう
+        # 回転売買バグが起きる (2024-07-11 BOJ介入時のUSD/JPY等で実測、98/268トレードが該当)。
+        # エントリー方向と整合する側に現在値があるかを確認し、既にstop_loss側へ price
+        # が抜けていれば陳腐化したシグナルとしてエントリーしない。
+        signal_still_valid = (
+            cached_signal is not None
+            and cached_signal.direction == "UP"
+            and st_close > cached_signal.stop_loss
+        ) or (
+            cached_signal is not None
+            and cached_signal.direction == "DOWN"
+            and st_close < cached_signal.stop_loss
+        )
         if (
             state.position_side == PositionSide.FLAT
             and cached_signal is not None
             and cached_signal.direction != "NONE"
+            and signal_still_valid
             and not (sim_config.weekend_close and is_weekend_close_time(st_ts))
         ):
             if cached_signal.direction == "UP":

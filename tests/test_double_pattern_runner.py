@@ -117,6 +117,31 @@ def test_double_bottom_pattern_produces_long_entry() -> None:
     _assert_no_weekend_entries(result.state.trade_history)
 
 
+def test_stale_signal_does_not_churn_after_intrabar_crash() -> None:
+    """H4確定バーが変わらない間に急落してcached_signal.stop_lossを下抜けた場合、
+    陳腐化したシグナルでの新規エントリーを繰り返さないことを確認する.
+
+    実データ(2024-07-11 BOJ介入時のUSD/JPY等)で発見された回帰バグ: cached_signal
+    は次のH4確定バーまで再計算されない(絶対価格のstop_lossを保持したまま)ため、
+    同一確定バー内で価格が急落してstop_lossを下抜けると、「建値時点で既にストップ
+    状態」のポジションを毎M5バールから繰り返し開いてしまい、そのたびに(逆説的に)
+    有利な価格でストップに掛かる回転売買が発生していた(3ペアで計84トレード、
+    最大288,367円相当の見せかけの利益を生んでいた)。
+    """
+    lt, mt, st = _pattern_dataset(_SEG_PRICES_BOTTOM, "UP", datetime(2026, 1, 5))
+    # 直近の確定H4バー(16:00)以降、価格がstop_loss(147.91付近)を大きく下回ったまま
+    # 保持される「フラッシュクラッシュ」を、同一未確定バー内に注入する。
+    crash_mask = st.index >= "2026-01-20 16:15:00"
+    st.loc[crash_mask, ["open", "high", "low", "close"]] = [140.0, 140.05, 139.95, 140.0]
+
+    result = run_double_pattern_backtest(
+        lt, mt, st, pair="USD_JPY", sim_config=_sim_config(), dp_config=_dp_config()
+    )
+    # クラッシュ後の陳腐化シグナルでの回転売買がなければ、少数のトレードで収まるはず
+    # (回帰前は同一ウィンドウ内で48本近くの繰り返しエントリーが発生していた)。
+    assert result.state.total_trades <= 3
+
+
 def test_target_reached_moves_stop_to_breakeven_or_better() -> None:
     """1:1ターゲット到達後は、ストップがブレイクイーブン以上に有利な水準へ切り替わる.
 
