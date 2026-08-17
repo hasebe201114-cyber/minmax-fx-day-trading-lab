@@ -1,0 +1,5367 @@
+{
+  "generated_at": "2026-08-17T17:05:58.768722",
+  "train_period": [
+    "2023-11-01",
+    "2025-03-31"
+  ],
+  "zigzag_threshold_atr": 2.0,
+  "pattern_tolerance_atr": 0.587,
+  "lt_sma_short": 10,
+  "lt_sma_long": 20,
+  "horizons_h4_bars": {
+    "4h": 1,
+    "1d": 6,
+    "3d": 18,
+    "1w": 42
+  },
+  "effective_pair_count": 1.7,
+  "_note": "前方リターンはパターンの想定方向(ダブルトップ=下落, ダブルボトム=上昇)に符号を揃えてある。値が正=パターンの予測通り、負=逆行。continuation=LTがパターンの想定方向と一致 (SYS-FX009 v2が採用した文脈)、reversal=LTが逆 (今回検証する新仮説の文脈)。",
+  "n_total_events": 354,
+  "n_tests": 36,
+  "bonferroni_alpha": 0.001389,
+  "groups": {
+    "all_patterns": {
+      "4h": {
+        "n": 354,
+        "mean": -0.000207,
+        "win_rate": 0.444,
+        "perm_p_raw_n": 0.9421,
+        "n_effective": 120,
+        "p_value_corr_adjusted": 0.8002,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "1d": {
+        "n": 353,
+        "mean": 4e-05,
+        "win_rate": 0.516,
+        "perm_p_raw_n": 0.4466,
+        "n_effective": 120,
+        "p_value_corr_adjusted": 0.2138,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "3d": {
+        "n": 350,
+        "mean": 0.000542,
+        "win_rate": 0.5,
+        "perm_p_raw_n": 0.1558,
+        "n_effective": 119,
+        "p_value_corr_adjusted": 0.0509,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "1w": {
+        "n": 346,
+        "mean": 0.000518,
+        "win_rate": 0.529,
+        "perm_p_raw_n": 0.2547,
+        "n_effective": 118,
+        "p_value_corr_adjusted": 0.7992,
+        "judgeable": true,
+        "survives_bonferroni": false
+      }
+    },
+    "double_top_all": {
+      "4h": {
+        "n": 183,
+        "mean": -0.000526,
+        "win_rate": 0.35,
+        "perm_p_raw_n": 0.999,
+        "n_effective": 62,
+        "p_value_corr_adjusted": 0.8142,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "1d": {
+        "n": 182,
+        "mean": -0.000196,
+        "win_rate": 0.5,
+        "perm_p_raw_n": 0.6613,
+        "n_effective": 62,
+        "p_value_corr_adjusted": 0.5984,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "3d": {
+        "n": 181,
+        "mean": 0.000311,
+        "win_rate": 0.464,
+        "perm_p_raw_n": 0.3536,
+        "n_effective": 62,
+        "p_value_corr_adjusted": 0.1978,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "1w": {
+        "n": 180,
+        "mean": 0.000567,
+        "win_rate": 0.511,
+        "perm_p_raw_n": 0.3107,
+        "n_effective": 61,
+        "p_value_corr_adjusted": 0.5445,
+        "judgeable": true,
+        "survives_bonferroni": false
+      }
+    },
+    "double_bottom_all": {
+      "4h": {
+        "n": 171,
+        "mean": 0.000135,
+        "win_rate": 0.544,
+        "perm_p_raw_n": 0.2458,
+        "n_effective": 58,
+        "p_value_corr_adjusted": 0.0969,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "1d": {
+        "n": 171,
+        "mean": 0.000292,
+        "win_rate": 0.532,
+        "perm_p_raw_n": 0.1958,
+        "n_effective": 58,
+        "p_value_corr_adjusted": 0.2168,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "3d": {
+        "n": 169,
+        "mean": 0.00079,
+        "win_rate": 0.538,
+        "perm_p_raw_n": 0.1189,
+        "n_effective": 57,
+        "p_value_corr_adjusted": 0.2697,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "1w": {
+        "n": 166,
+        "mean": 0.000466,
+        "win_rate": 0.548,
+        "perm_p_raw_n": 0.3447,
+        "n_effective": 56,
+        "p_value_corr_adjusted": 0.1968,
+        "judgeable": true,
+        "survives_bonferroni": false
+      }
+    },
+    "continuation_context": {
+      "4h": {
+        "n": 171,
+        "mean": -0.000224,
+        "win_rate": 0.456,
+        "perm_p_raw_n": 0.9011,
+        "n_effective": 58,
+        "p_value_corr_adjusted": 0.8821,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "1d": {
+        "n": 171,
+        "mean": 0.000548,
+        "win_rate": 0.556,
+        "perm_p_raw_n": 0.1089,
+        "n_effective": 58,
+        "p_value_corr_adjusted": 0.4805,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "3d": {
+        "n": 169,
+        "mean": 0.000959,
+        "win_rate": 0.538,
+        "perm_p_raw_n": 0.1229,
+        "n_effective": 57,
+        "p_value_corr_adjusted": 0.2098,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "1w": {
+        "n": 166,
+        "mean": 0.000862,
+        "win_rate": 0.536,
+        "perm_p_raw_n": 0.2378,
+        "n_effective": 56,
+        "p_value_corr_adjusted": 0.5275,
+        "judgeable": true,
+        "survives_bonferroni": false
+      }
+    },
+    "reversal_context": {
+      "4h": {
+        "n": 169,
+        "mean": -0.000254,
+        "win_rate": 0.426,
+        "perm_p_raw_n": 0.9021,
+        "n_effective": 57,
+        "p_value_corr_adjusted": 0.995,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "1d": {
+        "n": 168,
+        "mean": -0.000548,
+        "win_rate": 0.47,
+        "perm_p_raw_n": 0.9151,
+        "n_effective": 57,
+        "p_value_corr_adjusted": 0.7313,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "3d": {
+        "n": 167,
+        "mean": 0.000171,
+        "win_rate": 0.461,
+        "perm_p_raw_n": 0.4216,
+        "n_effective": 57,
+        "p_value_corr_adjusted": 0.5924,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "1w": {
+        "n": 166,
+        "mean": 0.000149,
+        "win_rate": 0.512,
+        "perm_p_raw_n": 0.4605,
+        "n_effective": 56,
+        "p_value_corr_adjusted": 0.6503,
+        "judgeable": true,
+        "survives_bonferroni": false
+      }
+    },
+    "double_top_continuation(SYS-FX009想定)": {
+      "4h": {
+        "n": 70,
+        "mean": -0.000498,
+        "win_rate": 0.371,
+        "perm_p": null,
+        "n_effective": 24,
+        "p_value_corr_adjusted": null,
+        "judgeable": false,
+        "survives_bonferroni": false
+      },
+      "1d": {
+        "n": 70,
+        "mean": 0.000975,
+        "win_rate": 0.557,
+        "perm_p": null,
+        "n_effective": 24,
+        "p_value_corr_adjusted": null,
+        "judgeable": false,
+        "survives_bonferroni": false
+      },
+      "3d": {
+        "n": 70,
+        "mean": 0.002521,
+        "win_rate": 0.529,
+        "perm_p": null,
+        "n_effective": 24,
+        "p_value_corr_adjusted": null,
+        "judgeable": false,
+        "survives_bonferroni": false
+      },
+      "1w": {
+        "n": 70,
+        "mean": 0.003212,
+        "win_rate": 0.557,
+        "perm_p": null,
+        "n_effective": 24,
+        "p_value_corr_adjusted": null,
+        "judgeable": false,
+        "survives_bonferroni": false
+      }
+    },
+    "double_top_reversal(新仮説)": {
+      "4h": {
+        "n": 107,
+        "mean": -0.000539,
+        "win_rate": 0.336,
+        "perm_p_raw_n": 0.988,
+        "n_effective": 36,
+        "p_value_corr_adjusted": 0.8731,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "1d": {
+        "n": 106,
+        "mean": -0.00089,
+        "win_rate": 0.472,
+        "perm_p_raw_n": 0.963,
+        "n_effective": 36,
+        "p_value_corr_adjusted": 0.8262,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "3d": {
+        "n": 105,
+        "mean": -0.00083,
+        "win_rate": 0.429,
+        "perm_p_raw_n": 0.8541,
+        "n_effective": 36,
+        "p_value_corr_adjusted": 0.8931,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "1w": {
+        "n": 104,
+        "mean": -0.000842,
+        "win_rate": 0.49,
+        "perm_p_raw_n": 0.7373,
+        "n_effective": 35,
+        "p_value_corr_adjusted": 0.3586,
+        "judgeable": true,
+        "survives_bonferroni": false
+      }
+    },
+    "double_bottom_continuation(SYS-FX009想定)": {
+      "4h": {
+        "n": 101,
+        "mean": -3.4e-05,
+        "win_rate": 0.515,
+        "perm_p_raw_n": 0.5524,
+        "n_effective": 34,
+        "p_value_corr_adjusted": 0.4545,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "1d": {
+        "n": 101,
+        "mean": 0.000252,
+        "win_rate": 0.554,
+        "perm_p_raw_n": 0.2757,
+        "n_effective": 34,
+        "p_value_corr_adjusted": 0.0989,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "3d": {
+        "n": 99,
+        "mean": -0.000145,
+        "win_rate": 0.545,
+        "perm_p_raw_n": 0.5824,
+        "n_effective": 34,
+        "p_value_corr_adjusted": 0.005,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "1w": {
+        "n": 96,
+        "mean": -0.000851,
+        "win_rate": 0.521,
+        "perm_p_raw_n": 0.7263,
+        "n_effective": 33,
+        "p_value_corr_adjusted": 0.5405,
+        "judgeable": true,
+        "survives_bonferroni": false
+      }
+    },
+    "double_bottom_reversal(新仮説)": {
+      "4h": {
+        "n": 62,
+        "mean": 0.000239,
+        "win_rate": 0.581,
+        "perm_p": null,
+        "n_effective": 21,
+        "p_value_corr_adjusted": null,
+        "judgeable": false,
+        "survives_bonferroni": false
+      },
+      "1d": {
+        "n": 62,
+        "mean": 3.6e-05,
+        "win_rate": 0.468,
+        "perm_p": null,
+        "n_effective": 21,
+        "p_value_corr_adjusted": null,
+        "judgeable": false,
+        "survives_bonferroni": false
+      },
+      "3d": {
+        "n": 62,
+        "mean": 0.001865,
+        "win_rate": 0.516,
+        "perm_p": null,
+        "n_effective": 21,
+        "p_value_corr_adjusted": null,
+        "judgeable": false,
+        "survives_bonferroni": false
+      },
+      "1w": {
+        "n": 62,
+        "mean": 0.001813,
+        "win_rate": 0.548,
+        "perm_p": null,
+        "n_effective": 21,
+        "p_value_corr_adjusted": null,
+        "judgeable": false,
+        "survives_bonferroni": false
+      }
+    }
+  },
+  "survivors": [],
+  "naive_only_hits": [
+    {
+      "group": "double_bottom_continuation(SYS-FX009想定)",
+      "horizon": "3d"
+    }
+  ],
+  "events": [
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 27,
+      "break_time": "2023-11-07 12:00:00+09:00",
+      "lt_direction": "NONE",
+      "context": "lt_unknown",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00032586395800748846,
+        "1d": 0.0019396844131200908,
+        "3d": 0.006547926475712451,
+        "1w": 0.005940007653796542
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 60,
+      "break_time": "2023-11-14 20:00:00+09:00",
+      "lt_direction": "NONE",
+      "context": "lt_unknown",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0016858709456739618,
+        "1d": -0.0024242596688806017,
+        "3d": 0.007882916205677937,
+        "1w": 0.010379228249192352
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 125,
+      "break_time": "2023-11-29 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0009312981404754339,
+        "1d": 0.00017684067381562585,
+        "3d": 0.0020082993736911803,
+        "1w": 0.0188243114059512
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 219,
+      "break_time": "2023-12-20 12:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.002417690020410923,
+        "1d": 0.004177147556120531,
+        "3d": 0.010275368536388996,
+        "1w": 0.018549680802823154
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 311,
+      "break_time": "2024-01-12 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -3.4451752047637285e-05,
+        "1d": 0.00014471032119889315,
+        "3d": -0.014407046245253241,
+        "1w": -0.020231095647272213
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 320,
+      "break_time": "2024-01-15 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0013925333662871964,
+        "1d": 0.006759278659300705,
+        "3d": 0.014874139350325777,
+        "1w": 0.014941769064142463
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 364,
+      "break_time": "2024-01-24 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0027498752726016207,
+        "1d": -0.0016168921156216598,
+        "3d": -0.005099941201072156,
+        "1w": 0.0031529763156985524
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 359,
+      "break_time": "2024-01-24 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0001952723887681529,
+        "1d": -0.0070471598069783425,
+        "3d": -0.002568520536113894,
+        "1w": -0.014492663287204444
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 364,
+      "break_time": "2024-01-24 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0027498752726016207,
+        "1d": -0.0016168921156216598,
+        "3d": -0.005099941201072156,
+        "1w": 0.0031529763156985524
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 396,
+      "break_time": "2024-02-01 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.003769563738790005,
+        "1d": 0.0003688575022353646,
+        "3d": -0.013512527452546053,
+        "1w": -0.019792583959180376
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 402,
+      "break_time": "2024-02-02 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0015291879852981083,
+        "1d": -0.013173668456680332,
+        "3d": -0.01386790931873172,
+        "1w": -0.01817087087782543
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 407,
+      "break_time": "2024-02-02 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0028020773949188893,
+        "1d": 0.0036243294682316574,
+        "3d": 0.0015539283725756192,
+        "1w": 0.01060637912726392
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 522,
+      "break_time": "2024-02-29 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0002537139055505122,
+        "1d": -0.0037447986457959104,
+        "3d": -0.005060806944463536,
+        "1w": 0.017591100667468496
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 551,
+      "break_time": "2024-03-07 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0011917915106209875,
+        "1d": 0.007754453257517113,
+        "3d": 0.015331376612163439,
+        "1w": 0.001911168171002231
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 642,
+      "break_time": "2024-03-27 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.000324015145583445,
+        "1d": -0.0013020361849100937,
+        "3d": -0.0011038659560353992,
+        "1w": -0.0004099607288594598
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 643,
+      "break_time": "2024-03-27 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0007468186205796812,
+        "1d": 0.0002578810785793806,
+        "3d": -0.0007798508104519541,
+        "1w": -0.0005816413023529421
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 674,
+      "break_time": "2024-04-03 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0007579228006573402,
+        "1d": -0.0007908890004157954,
+        "3d": 0.0004478929347309091,
+        "1w": 0.009722785970132541
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 683,
+      "break_time": "2024-04-05 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0005290130723469844,
+        "1d": -0.003789483778489533,
+        "3d": -0.004151834847931468,
+        "1w": -0.01981754203735875
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 717,
+      "break_time": "2024-04-12 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0018749290961839193,
+        "1d": -0.006524192222713943,
+        "3d": -0.011054938016780369,
+        "1w": -0.011914691585516834
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 719,
+      "break_time": "2024-04-13 04:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 1.304240084554209e-05,
+        "1d": 0.005631509635223075,
+        "3d": 0.006545423551110652,
+        "1w": 0.009430756298436371
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 745,
+      "break_time": "2024-04-19 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00339248336418585,
+        "1d": -0.005158759601784801,
+        "3d": -0.0061020827534310484,
+        "1w": -0.012372543388482704
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 756,
+      "break_time": "2024-04-23 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.00047146202536296755,
+        "1d": -0.00027781457025355394,
+        "3d": 0.00516747068100365,
+        "1w": 0.01832576527847074
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 745,
+      "break_time": "2024-04-19 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00339248336418585,
+        "1d": -0.005158759601784801,
+        "3d": -0.0061020827534310484,
+        "1w": -0.012372543388482704
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 800,
+      "break_time": "2024-05-02 04:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0021263823871242593,
+        "1d": 0.013949106187366667,
+        "3d": 0.01025835652586693,
+        "1w": -0.0022803855059914113
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 928,
+      "break_time": "2024-05-30 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0014868183237437549,
+        "1d": -0.0036206518472843285,
+        "3d": 0.010670157665868985,
+        "1w": -0.0032642681200654167
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 917,
+      "break_time": "2024-05-29 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0007950668115901394,
+        "1d": 0.0032652779085129424,
+        "3d": 0.0007187678212430271,
+        "1w": -0.007197009228300466
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 936,
+      "break_time": "2024-06-01 04:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 6.355178201378209e-05,
+        "1d": -0.007156281736585335,
+        "3d": -0.007956730030344694,
+        "1w": -0.00015889712715644322
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 941,
+      "break_time": "2024-06-03 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0001472343942205967,
+        "1d": 0.008467135355894051,
+        "3d": 0.0011017449678343283,
+        "1w": -0.0071954688314068704
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 952,
+      "break_time": "2024-06-05 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0015813519049663327,
+        "1d": -0.00021146323021614677,
+        "3d": 0.006603297531555974,
+        "1w": 0.012100362897665917
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1008,
+      "break_time": "2024-06-18 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0008542114724310323,
+        "1d": -0.0017281602563983256,
+        "3d": 0.005669882587625352,
+        "1w": 0.014535732853270034
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1045,
+      "break_time": "2024-06-26 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0019506486013476376,
+        "1d": 0.0008418007549524376,
+        "3d": 0.0037607839848643465,
+        "1w": 0.002927657848637466
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1065,
+      "break_time": "2024-07-01 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0008292592838605728,
+        "1d": -0.0013246674793743196,
+        "3d": -0.003675005143171539,
+        "1w": -0.000686874839430196
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1087,
+      "break_time": "2024-07-05 12:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00018658108868230272,
+        "1d": 0.0024786092627673284,
+        "3d": -0.0045612448410112805,
+        "1w": 0.016171304259343877
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1102,
+      "break_time": "2024-07-09 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00030370551954739256,
+        "1d": 0.0018512275083075735,
+        "3d": -0.02283489015066209,
+        "1w": -0.031277627443080824
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1120,
+      "break_time": "2024-07-12 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0012672506162978436,
+        "1d": -0.0014888544591826758,
+        "3d": 0.006251988016979126,
+        "1w": 0.007203065071649917
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1167,
+      "break_time": "2024-07-24 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.00432470788422723,
+        "1d": 0.016999379808323667,
+        "3d": 0.007603271882572926,
+        "1w": 0.038641462045129416
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1223,
+      "break_time": "2024-08-06 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.002275282556264635,
+        "1d": 0.010528574803959856,
+        "3d": 0.014863763154732368,
+        "1w": 0.013934436035951236
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1257,
+      "break_time": "2024-08-13 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0021860313864339176,
+        "1d": 0.0016067104025614398,
+        "3d": -0.006806621354550124,
+        "1w": 0.008464177050248267
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1280,
+      "break_time": "2024-08-19 12:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0032713987359151986,
+        "1d": -0.00800211832400688,
+        "3d": 0.0033921847551061646,
+        "1w": 0.009858133507598232
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1288,
+      "break_time": "2024-08-20 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0014708512968280019,
+        "1d": -0.00032961373688955575,
+        "3d": 0.0026339422212906527,
+        "1w": 0.00765970286534845
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1295,
+      "break_time": "2024-08-22 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0014497558665489407,
+        "1d": -0.010159140479359507,
+        "3d": 0.004153778636410976,
+        "1w": -0.005827666834046674
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1331,
+      "break_time": "2024-08-29 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0039223711323854715,
+        "1d": 0.001670430678891499,
+        "3d": 0.004708539651213428,
+        "1w": -0.01625803958323413
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1429,
+      "break_time": "2024-09-20 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.00115698656045371,
+        "1d": -0.0018247990326489827,
+        "3d": -0.0039730275709386476,
+        "1w": -0.0016928577949189005
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1384,
+      "break_time": "2024-09-11 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.003227210207250586,
+        "1d": -0.004916088431610177,
+        "3d": 0.007671929770196151,
+        "1w": -0.006234184394723563
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1420,
+      "break_time": "2024-09-19 04:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.007253594634524241,
+        "1d": 0.003882136889177268,
+        "3d": 0.008063288670272506,
+        "1w": 7.0337585240665135e-06
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1608,
+      "break_time": "2024-10-31 12:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0019104459905774362,
+        "1d": -0.0014709071712397659,
+        "3d": -0.0005518437633886819,
+        "1w": -0.003339251739140181
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1632,
+      "break_time": "2024-11-06 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -2.5964415769408333e-05,
+        "1d": 0.0024959251603240418,
+        "3d": -0.008965219807083535,
+        "1w": 0.014441591501219264
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1617,
+      "break_time": "2024-11-02 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0007188697064206551,
+        "1d": -0.007467520297831598,
+        "3d": 0.008637886373463743,
+        "1w": 0.007100636968275786
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1620,
+      "break_time": "2024-11-04 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.002191028191986355,
+        "1d": -0.002907169992383274,
+        "3d": -0.01715572293554235,
+        "1w": -0.017738288701035998
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1696,
+      "break_time": "2024-11-20 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0009635273552133228,
+        "1d": -0.008705351665570404,
+        "3d": -0.009372659750184198,
+        "1w": -0.037609458711926
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1690,
+      "break_time": "2024-11-19 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0017931863741065257,
+        "1d": -0.012761415192242609,
+        "3d": -0.0035702036585316677,
+        "1w": 0.014600998927363662
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1866,
+      "break_time": "2024-12-30 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0007641560268947245,
+        "1d": 0.0020326699641932677,
+        "3d": -0.001774408916581649,
+        "1w": -0.006674220001823272
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1935,
+      "break_time": "2025-01-15 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0013555422645383786,
+        "1d": 0.0010050541622739217,
+        "3d": -0.0005565061791079629,
+        "1w": 0.0024279397831525884
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1935,
+      "break_time": "2025-01-15 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0013555422645383786,
+        "1d": 0.0010050541622739217,
+        "3d": -0.0005565061791079629,
+        "1w": 0.0024279397831525884
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1895,
+      "break_time": "2025-01-07 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0033096792361213545,
+        "1d": -0.0011378507229808932,
+        "3d": -0.00010108987530355051,
+        "1w": -0.011488317279681581
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1917,
+      "break_time": "2025-01-11 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00015198338344291074,
+        "1d": 0.003438456971780468,
+        "3d": 0.010255063789982977,
+        "1w": 0.012208483374680057
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1916,
+      "break_time": "2025-01-10 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00042422919143092486,
+        "1d": -0.003386179519633714,
+        "3d": -0.007453308574977058,
+        "1w": -0.015605379720418533
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1917,
+      "break_time": "2025-01-11 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00015198338344291074,
+        "1d": 0.003438456971780468,
+        "3d": 0.010255063789982977,
+        "1w": 0.012208483374680057
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1916,
+      "break_time": "2025-01-10 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00042422919143092486,
+        "1d": -0.003386179519633714,
+        "3d": -0.007453308574977058,
+        "1w": -0.015605379720418533
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1951,
+      "break_time": "2025-01-20 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0016595174549829395,
+        "1d": -0.00513049132002763,
+        "3d": 0.003552742706588674,
+        "1w": -0.0018935448634813667
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1957,
+      "break_time": "2025-01-21 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0024399441711819847,
+        "1d": -0.0038728070896176803,
+        "3d": -0.005419022218879022,
+        "1w": -0.0009921466613791452
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1967,
+      "break_time": "2025-01-23 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00030021302575100606,
+        "1d": -0.003698257462285248,
+        "3d": -0.014195400952653259,
+        "1w": -0.01255137699644937
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1967,
+      "break_time": "2025-01-23 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00030021302575100606,
+        "1d": -0.003698257462285248,
+        "3d": -0.014195400952653259,
+        "1w": -0.01255137699644937
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1978,
+      "break_time": "2025-01-24 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.002414709758977729,
+        "1d": -0.01505697263360073,
+        "3d": -0.005941551755119789,
+        "1w": -0.0069975248615437025
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1984,
+      "break_time": "2025-01-27 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0025490445161340247,
+        "1d": -0.009688013031598608,
+        "3d": -0.0033778668589006244,
+        "1w": 0.005124192857033805
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 2025,
+      "break_time": "2025-02-05 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0012916611381514898,
+        "1d": 0.0073875441903963335,
+        "3d": 0.011428246214771676,
+        "1w": 0.0029707032375254627
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 2025,
+      "break_time": "2025-02-05 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0012916611381514898,
+        "1d": 0.0073875441903963335,
+        "3d": 0.011428246214771676,
+        "1w": 0.0029707032375254627
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 2025,
+      "break_time": "2025-02-05 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0012916611381514898,
+        "1d": 0.0073875441903963335,
+        "3d": 0.011428246214771676,
+        "1w": 0.0029707032375254627
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2046,
+      "break_time": "2025-02-10 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0029829048459912855,
+        "1d": 0.00027611052485188026,
+        "3d": 0.01112194147536627,
+        "1w": -0.00297631025816969
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2132,
+      "break_time": "2025-02-28 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0020859082589419486,
+        "1d": 0.0005916707558188961,
+        "3d": -0.00458566585767084,
+        "1w": -0.023243640580179914
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 82,
+      "break_time": "2023-11-20 08:00:00+09:00",
+      "lt_direction": "NONE",
+      "context": "lt_unknown",
+      "fwd_returns_pips_signed": {
+        "4h": 0.00038082602853339864,
+        "1d": -0.0052850859726660815,
+        "3d": -0.001008046012916708,
+        "1w": -0.003766923274726608
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 84,
+      "break_time": "2023-11-20 16:00:00+09:00",
+      "lt_direction": "NONE",
+      "context": "lt_unknown",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0019294017752811143,
+        "1d": 0.003306503221073953,
+        "3d": -0.00543347499945579,
+        "1w": 0.0009506584333776047
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 131,
+      "break_time": "2023-11-30 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.00017972403113653002,
+        "1d": -0.0003407672252082605,
+        "3d": 0.011774851883049386,
+        "1w": 0.033061487150849445
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 221,
+      "break_time": "2023-12-20 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0022037421713720917,
+        "1d": 0.005751283108399008,
+        "3d": 0.002954399999370416,
+        "1w": 0.007601007937272364
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 253,
+      "break_time": "2023-12-29 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 4.471372041336963e-05,
+        "1d": 0.004988308015117404,
+        "3d": 0.0010736814881937562,
+        "1w": -0.006310093175386555
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 248,
+      "break_time": "2023-12-28 04:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0011821834905054729,
+        "1d": 0.005611890757178273,
+        "3d": 0.012952820210377247,
+        "1w": -0.003259645467045047
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 352,
+      "break_time": "2024-01-22 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.001687942166775258,
+        "1d": 0.00011801425501722917,
+        "3d": 0.006324028316395669,
+        "1w": 0.006049052375057151
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 363,
+      "break_time": "2024-01-24 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.002260971810351009,
+        "1d": -0.0003110284491691928,
+        "3d": 0.0019492394487610198,
+        "1w": 0.008848730436631591
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 384,
+      "break_time": "2024-01-30 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0014958023323368153,
+        "1d": -0.002889452389324809,
+        "3d": 0.0034696005869898627,
+        "1w": 0.002979487662702951
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 459,
+      "break_time": "2024-02-15 04:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0020571804065099286,
+        "1d": 0.0002475676491240364,
+        "3d": 0.0018799787855350303,
+        "1w": 0.007744520148282419
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 462,
+      "break_time": "2024-02-15 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0029012840546069896,
+        "1d": -0.004509478770057029,
+        "3d": -0.005627504737003797,
+        "1w": -0.010615568383651741
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 466,
+      "break_time": "2024-02-16 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0004020224877487877,
+        "1d": 0.0010506799483245288,
+        "3d": 0.0030007802312299603,
+        "1w": 0.011093664877566134
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 554,
+      "break_time": "2024-03-07 12:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.002677477334919409,
+        "1d": -0.0019539951802078903,
+        "3d": 0.0020942675552086953,
+        "1w": -0.004415781680542352
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 717,
+      "break_time": "2024-04-12 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.002721374283337852,
+        "1d": -0.009129967068699507,
+        "3d": -0.011917824051953296,
+        "1w": -0.013333123490347099
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 695,
+      "break_time": "2024-04-09 04:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00019404759077978895,
+        "1d": -0.0005458548525565377,
+        "3d": -0.0029572436014762005,
+        "1w": -0.0013530529178398254
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 748,
+      "break_time": "2024-04-19 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0018690346539615987,
+        "1d": -0.0007217129775831665,
+        "3d": 0.003957118286241013,
+        "1w": 0.017089192769742745
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 834,
+      "break_time": "2024-05-09 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.001510407470235009,
+        "1d": 0.002964927168945586,
+        "3d": 0.008323589279548571,
+        "1w": 0.012238252367079205
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 866,
+      "break_time": "2024-05-16 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.00024875916687427946,
+        "1d": 0.0012490936816247356,
+        "3d": 0.005582168143305921,
+        "1w": 0.007988525851215122
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 926,
+      "break_time": "2024-05-30 12:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0031743061477076395,
+        "1d": -0.003839749914294366,
+        "3d": -0.007993167763180153,
+        "1w": 0.00039010781656134697
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 897,
+      "break_time": "2024-05-23 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.002415488572672153,
+        "1d": 0.0019281987315276083,
+        "3d": 0.004122288478193958,
+        "1w": 0.004602702815498461
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 903,
+      "break_time": "2024-05-24 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0002701210863547132,
+        "1d": 0.0007279858012028129,
+        "3d": 0.001631360023791828,
+        "1w": -0.001910545909576733
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 930,
+      "break_time": "2024-05-31 04:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.002280045881661863,
+        "1d": 0.004538696738473291,
+        "3d": -0.009258449524066847,
+        "1w": -0.00890213594059297
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 946,
+      "break_time": "2024-06-04 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.000991459872178524,
+        "1d": -0.00753295887510852,
+        "3d": -0.006205646428559142,
+        "1w": -0.00833439206905151
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 986,
+      "break_time": "2024-06-13 04:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0006543557629621333,
+        "1d": -0.004930253543175667,
+        "3d": -0.0015403094876731416,
+        "1w": 0.00618450793392622
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1021,
+      "break_time": "2024-06-20 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0005936444949234954,
+        "1d": 0.0015852423162288076,
+        "3d": 0.004572749737079995,
+        "1w": 0.018097617492666807
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1083,
+      "break_time": "2024-07-04 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0014981534190159351,
+        "1d": -0.0008440636132664991,
+        "3d": -0.0010219724956934684,
+        "1w": 0.011020731886728363
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1095,
+      "break_time": "2024-07-08 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0015388240222140581,
+        "1d": -0.0001778772364859904,
+        "3d": 0.005606967310562538,
+        "1w": -0.01332471292510995
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1087,
+      "break_time": "2024-07-05 12:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0006953843427952577,
+        "1d": 0.0018356072582497163,
+        "3d": -0.004342532889324957,
+        "1w": 0.009339573651312882
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1089,
+      "break_time": "2024-07-05 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0003099814035980586,
+        "1d": 0.00035578611891295964,
+        "3d": 0.00337486819431021,
+        "1w": -0.009028703922896675
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1093,
+      "break_time": "2024-07-08 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0024907759301413535,
+        "1d": -0.003954732720703014,
+        "3d": -0.009018961837511164,
+        "1w": 0.0054518393453939495
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1095,
+      "break_time": "2024-07-08 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0015388240222140581,
+        "1d": -0.0001778772364859904,
+        "3d": 0.005606967310562538,
+        "1w": -0.01332471292510995
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1119,
+      "break_time": "2024-07-12 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.007030414817862152,
+        "1d": -0.006426199233957597,
+        "3d": -0.007530330540159724,
+        "1w": -0.015569020043495918
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1120,
+      "break_time": "2024-07-12 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.000987470819158176,
+        "1d": -0.0015040522226881237,
+        "3d": 0.004321472529250414,
+        "1w": 0.009476862130544994
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1163,
+      "break_time": "2024-07-23 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.001954792372188763,
+        "1d": 0.01127320696664924,
+        "3d": 0.010003077785376568,
+        "1w": 0.043488389694371854
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1198,
+      "break_time": "2024-07-31 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0043712872855898866,
+        "1d": 0.020692287712513746,
+        "3d": 0.03624369535844352,
+        "1w": 0.028574510641992568
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1196,
+      "break_time": "2024-07-31 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0017940908562668056,
+        "1d": 0.017073934379800093,
+        "3d": 0.035763403203367794,
+        "1w": 0.030877659142535485
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1260,
+      "break_time": "2024-08-14 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.005710761881380755,
+        "1d": -0.008375341227198518,
+        "3d": -0.01287417801318469,
+        "1w": -0.009446572013624532
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1261,
+      "break_time": "2024-08-14 12:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00017912678827247674,
+        "1d": 0.001178965178085356,
+        "3d": 0.003895780599576071,
+        "1w": 0.0004507633723029869
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1280,
+      "break_time": "2024-08-19 12:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.002789799828035733,
+        "1d": -0.011548619980907837,
+        "3d": -0.00628773306522401,
+        "1w": -0.0013586747878360228
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1308,
+      "break_time": "2024-08-24 04:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0034453945779153727,
+        "1d": 0.0020496949663870723,
+        "3d": 0.005284486982522374,
+        "1w": 0.005657688621476531
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1307,
+      "break_time": "2024-08-24 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0013680612499404887,
+        "1d": 0.002015260852131995,
+        "3d": 0.0037858380567632466,
+        "1w": 0.0016677261727409132
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1412,
+      "break_time": "2024-09-17 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0005834379882152518,
+        "1d": 0.001546633844898615,
+        "3d": 0.020773592289051734,
+        "1w": 0.021258100460628704
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1480,
+      "break_time": "2024-10-02 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0011397777428650002,
+        "1d": 0.0022473380371303975,
+        "3d": 0.01014404485588205,
+        "1w": 0.01027901500927797
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1548,
+      "break_time": "2024-10-17 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.001371754984719864,
+        "1d": 0.0001415885623430313,
+        "3d": -0.005488009550637329,
+        "1w": -0.019180357178278484
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1523,
+      "break_time": "2024-10-11 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0013600359871555057,
+        "1d": -0.00012857287191359035,
+        "3d": -0.004048787215647387,
+        "1w": -0.00036739492918425043
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1561,
+      "break_time": "2024-10-21 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.001405783587405729,
+        "1d": 0.002570656073640265,
+        "3d": 0.007789759774128768,
+        "1w": 0.01750125353644627
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1635,
+      "break_time": "2024-11-06 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.004375529403162659,
+        "1d": -0.001812886490156096,
+        "3d": 0.007967201899905518,
+        "1w": 0.0066572445146722
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1636,
+      "break_time": "2024-11-07 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.001361905431542354,
+        "1d": -0.0051016052373746845,
+        "3d": -0.014087943093561428,
+        "1w": -0.013495694209613163
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1645,
+      "break_time": "2024-11-08 12:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0037362065635919706,
+        "1d": 0.0010148182553768592,
+        "3d": 0.0012945300324584963,
+        "1w": 0.004358233660121336
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1665,
+      "break_time": "2024-11-13 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0037693727132115384,
+        "1d": -0.0029704679629762865,
+        "3d": -0.009477817784640408,
+        "1w": -0.014404769387715177
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1679,
+      "break_time": "2024-11-16 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0008001034406612817,
+        "1d": -0.007330803971940192,
+        "3d": -0.008338797752745819,
+        "1w": 0.004269819158261967
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1679,
+      "break_time": "2024-11-16 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0008001034406612817,
+        "1d": -0.007330803971940192,
+        "3d": -0.008338797752745819,
+        "1w": 0.004269819158261967
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1685,
+      "break_time": "2024-11-18 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0015817908066999564,
+        "1d": -0.004465701518310716,
+        "3d": -0.007700298507624659,
+        "1w": -0.026106584168681835
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1690,
+      "break_time": "2024-11-19 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0029082031152309895,
+        "1d": -0.011612840209012099,
+        "3d": 0.008924792749698263,
+        "1w": 0.01579458718023652
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1758,
+      "break_time": "2024-12-04 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00048621702022799695,
+        "1d": -0.0024144677465018916,
+        "3d": -0.0005430630149696469,
+        "1w": 0.008949505420154935
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1825,
+      "break_time": "2024-12-19 12:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.007319286738459496,
+        "1d": 0.004627643610611187,
+        "3d": 0.00739276077460449,
+        "1w": 0.007582543718585022
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1866,
+      "break_time": "2024-12-30 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0008077050602492974,
+        "1d": 0.004892923620609224,
+        "3d": 0.010372152981101834,
+        "1w": 0.003578435191092133
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1938,
+      "break_time": "2025-01-16 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.002568371805782732,
+        "1d": 0.00035585300525031727,
+        "3d": -0.012122939813203004,
+        "1w": -0.02159929852768183
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1967,
+      "break_time": "2025-01-23 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0011165302837792268,
+        "1d": -0.0029535407134728686,
+        "3d": -0.005330067179551534,
+        "1w": -0.017117267643710576
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1952,
+      "break_time": "2025-01-20 12:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.001563498832557464,
+        "1d": 0.0013154875715750691,
+        "3d": 0.011581162720310623,
+        "1w": 0.008230499136515412
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1984,
+      "break_time": "2025-01-27 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0028642525307205347,
+        "1d": -0.0019700545820615645,
+        "3d": 0.006636506401934916,
+        "1w": 0.016668299236968664
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 2103,
+      "break_time": "2025-02-22 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0006856974676772154,
+        "1d": -0.0013901303003214238,
+        "3d": -0.006434712017985511,
+        "1w": -0.002688827627320478
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2137,
+      "break_time": "2025-03-03 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0007084978546760823,
+        "1d": -0.001564470873524293,
+        "3d": 0.028233794822139835,
+        "1w": 0.030167252284197588
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 2127,
+      "break_time": "2025-02-27 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0022854811537316166,
+        "1d": -0.00541393537710988,
+        "3d": -0.002477300690499895,
+        "1w": -0.02560746319408569
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2230,
+      "break_time": "2025-03-24 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.00020959449706214883,
+        "1d": 0.0035940048409521808,
+        "3d": -0.0022590092190082345,
+        "1w": null
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2250,
+      "break_time": "2025-03-27 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0012835040804493048,
+        "1d": -0.0026089272054115042,
+        "3d": null,
+        "1w": null
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 90,
+      "break_time": "2023-11-21 16:00:00+09:00",
+      "lt_direction": "NONE",
+      "context": "lt_unknown",
+      "fwd_returns_pips_signed": {
+        "4h": 1.0804211481918458e-05,
+        "1d": -0.007802492244314507,
+        "3d": -0.014964664452975285,
+        "1w": -0.008681161010596128
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 53,
+      "break_time": "2023-11-13 16:00:00+09:00",
+      "lt_direction": "NONE",
+      "context": "lt_unknown",
+      "fwd_returns_pips_signed": {
+        "4h": 0.00017753055051539235,
+        "1d": 0.0031424691268062688,
+        "3d": 0.009301994129551794,
+        "1w": 0.0032282784157144917
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 85,
+      "break_time": "2023-11-20 20:00:00+09:00",
+      "lt_direction": "NONE",
+      "context": "lt_unknown",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0007762552544434698,
+        "1d": 0.001737976289323484,
+        "3d": -0.010882469015217389,
+        "1w": -0.010829123732527535
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 96,
+      "break_time": "2023-11-22 16:00:00+09:00",
+      "lt_direction": "NONE",
+      "context": "lt_unknown",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00048252457790454173,
+        "1d": 0.00393726569443853,
+        "3d": 0.007672938209134728,
+        "1w": 0.004022686498728056
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 84,
+      "break_time": "2023-11-20 16:00:00+09:00",
+      "lt_direction": "NONE",
+      "context": "lt_unknown",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0023864426890654045,
+        "1d": -0.0006592706112238389,
+        "3d": -0.012399028549976876,
+        "1w": -0.011405475876729021
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 220,
+      "break_time": "2023-12-20 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.002097966403621143,
+        "1d": 0.003539611688157862,
+        "3d": 0.0037166449432106674,
+        "1w": 0.00813046356823044
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 271,
+      "break_time": "2024-01-03 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.003943603382340122,
+        "1d": 0.014418974402025775,
+        "3d": 0.013868645144130554,
+        "1w": 0.02290247333642359
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 294,
+      "break_time": "2024-01-09 12:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0008669409796349115,
+        "1d": -0.003145204255705636,
+        "3d": -0.010372057774759469,
+        "1w": -0.02341527827410772
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 301,
+      "break_time": "2024-01-10 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0032151235801629596,
+        "1d": 0.004899743724255501,
+        "3d": 0.004581395248695053,
+        "1w": 0.022636327109760046
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 357,
+      "break_time": "2024-01-23 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0008668853036768454,
+        "1d": -0.0008084074813750064,
+        "3d": -0.0003830113247946798,
+        "1w": 0.010321885601180192
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 376,
+      "break_time": "2024-01-26 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0014018842767882234,
+        "1d": -0.0033539865974701044,
+        "3d": -0.006078398948868191,
+        "1w": -0.011302690886819455
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 384,
+      "break_time": "2024-01-30 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0018136336844811751,
+        "1d": -0.0008538844252647948,
+        "3d": 0.00431792768601813,
+        "1w": 0.003149659430248697
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 593,
+      "break_time": "2024-03-15 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 7.900703956842392e-05,
+        "1d": 0.0005687114100929591,
+        "3d": 0.01411126042317079,
+        "1w": 0.008580457223465565
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 675,
+      "break_time": "2024-04-04 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00015632653518515838,
+        "1d": -0.0032880002065418523,
+        "3d": 0.0003907094551900414,
+        "1w": -0.009165420058057094
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 695,
+      "break_time": "2024-04-09 04:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -1.5607563425668047e-05,
+        "1d": 0.0012010514542266648,
+        "3d": 0.0012737961101247919,
+        "1w": -7.804025320190533e-05
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 706,
+      "break_time": "2024-04-11 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.001017111023192463,
+        "1d": -0.003916712472767259,
+        "3d": -0.002793268792042447,
+        "1w": -0.00315228384591304
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 745,
+      "break_time": "2024-04-19 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.006223484796013423,
+        "1d": -0.0032550476701391773,
+        "3d": -0.010444435681153053,
+        "1w": -0.025819969891549555
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 761,
+      "break_time": "2024-04-23 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0011891379632755772,
+        "1d": 0.0012877365658505724,
+        "3d": 0.018185314873075953,
+        "1w": 0.008273810985347296
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 866,
+      "break_time": "2024-05-16 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0007976933368478711,
+        "1d": 0.00307042158785098,
+        "3d": 0.00972691096722933,
+        "1w": 0.01566909272453909
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 984,
+      "break_time": "2024-06-12 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.002869886400758581,
+        "1d": 0.0014783962096771575,
+        "3d": -0.0017859782975886418,
+        "1w": 0.003965755085900469
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 931,
+      "break_time": "2024-05-31 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0005664771041580252,
+        "1d": 0.005530705434465766,
+        "3d": -0.007868526631037653,
+        "1w": 0.0029641816634500273
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 946,
+      "break_time": "2024-06-04 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0015926589389083645,
+        "1d": -0.00858543038615256,
+        "3d": -0.007018952681844937,
+        "1w": -0.01588330991091702
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 994,
+      "break_time": "2024-06-14 12:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.008686547124825417,
+        "1d": -0.007323664417388187,
+        "3d": -0.002777475379629024,
+        "1w": 0.006786706322223779
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 996,
+      "break_time": "2024-06-14 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0004262756362773956,
+        "1d": -0.0017691092164886513,
+        "3d": -0.008237488726918762,
+        "1w": -0.014931186463589263
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1021,
+      "break_time": "2024-06-20 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0007005115013845042,
+        "1d": 0.0006454271710580883,
+        "3d": 0.004702067114513042,
+        "1w": 0.013570148184191666
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1114,
+      "break_time": "2024-07-11 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0002585864119932779,
+        "1d": 0.0002928200544092263,
+        "3d": -0.0024076314991665626,
+        "1w": 0.013915455629821771
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1119,
+      "break_time": "2024-07-12 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.006655080556667414,
+        "1d": -0.005689099596265734,
+        "3d": -0.006220761540087771,
+        "1w": -0.018315288320938095
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1138,
+      "break_time": "2024-07-17 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0030347697821175856,
+        "1d": 0.005409186204043515,
+        "3d": 0.010714186073983,
+        "1w": 0.0333937546003229
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1138,
+      "break_time": "2024-07-17 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0030347697821175856,
+        "1d": 0.005409186204043515,
+        "3d": 0.010714186073983,
+        "1w": 0.0333937546003229
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1197,
+      "break_time": "2024-07-31 04:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0005906885257367378,
+        "1d": 0.01625275517828495,
+        "3d": 0.044644645157688956,
+        "1w": 0.04487902556882073
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1196,
+      "break_time": "2024-07-31 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0018218649124310815,
+        "1d": 0.016801861603289225,
+        "3d": 0.04729774316695501,
+        "1w": 0.048994322672903934
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1223,
+      "break_time": "2024-08-06 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 5.383058439800692e-05,
+        "1d": 0.004570644704183557,
+        "3d": 0.012666860992280427,
+        "1w": 0.017386452308396194
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1269,
+      "break_time": "2024-08-15 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0005636360938936491,
+        "1d": -0.00398057838531507,
+        "3d": -0.00584291796895986,
+        "1w": -0.009325079373397216
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1280,
+      "break_time": "2024-08-19 12:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.002266143271911325,
+        "1d": -0.010505508458563462,
+        "3d": -0.006441602622462739,
+        "1w": -0.011661357259981742
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1294,
+      "break_time": "2024-08-21 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.002679463710299146,
+        "1d": 0.00717645023777802,
+        "3d": -0.0005521506407184518,
+        "1w": 0.006116323184371275
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1300,
+      "break_time": "2024-08-22 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0009451821223516177,
+        "1d": -0.0004959786674225697,
+        "3d": -0.0012534733293492195,
+        "1w": 0.002460590114604422
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1357,
+      "break_time": "2024-09-05 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0010212154408444363,
+        "1d": 0.0008941681261358525,
+        "3d": 0.012800592061690708,
+        "1w": 0.021791943836237948
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1339,
+      "break_time": "2024-08-31 04:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0019094549808791328,
+        "1d": 0.005732995917249184,
+        "3d": -0.015381891027145933,
+        "1w": -0.029989323299774995
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1357,
+      "break_time": "2024-09-05 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0010212154408444363,
+        "1d": 0.0008941681261358525,
+        "3d": 0.012800592061690708,
+        "1w": 0.021791943836237948
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1390,
+      "break_time": "2024-09-12 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0007961012975190584,
+        "1d": -0.0024029018775921784,
+        "3d": 0.0016721557764141082,
+        "1w": 0.031750884426530845
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1404,
+      "break_time": "2024-09-16 12:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0037663603268605073,
+        "1d": -0.008622677134999535,
+        "3d": -0.023566230074063554,
+        "1w": -0.04340285829139123
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1412,
+      "break_time": "2024-09-17 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0007816473883526243,
+        "1d": 0.004043020624509452,
+        "3d": 0.026145901586924758,
+        "1w": 0.033128473598056374
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1480,
+      "break_time": "2024-10-02 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0017587704490571454,
+        "1d": -0.006879038372615831,
+        "3d": 0.0024593536101420455,
+        "1w": 0.005046224760384632
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1539,
+      "break_time": "2024-10-16 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.005251786023410254,
+        "1d": 0.0040457059976120036,
+        "3d": -0.0019834513932792674,
+        "1w": -0.009944184652996846
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1541,
+      "break_time": "2024-10-16 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0011925201622950965,
+        "1d": -0.000971600054841204,
+        "3d": -0.002676043828105712,
+        "1w": -0.012319014890042723
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1549,
+      "break_time": "2024-10-18 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.00032732722273820514,
+        "1d": -0.002140495076845994,
+        "3d": 0.002095087022579989,
+        "1w": 0.01289409227779803
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1608,
+      "break_time": "2024-10-31 12:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0027161490904017427,
+        "1d": 0.004492495962904464,
+        "3d": 0.0007802960453870966,
+        "1w": 0.0014293174655941598
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1608,
+      "break_time": "2024-10-31 12:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0027161490904017427,
+        "1d": 0.004492495962904464,
+        "3d": 0.0007802960453870966,
+        "1w": 0.0014293174655941598
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1677,
+      "break_time": "2024-11-15 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0015708685963167213,
+        "1d": 0.007577107198630806,
+        "3d": -0.0012741991657296836,
+        "1w": 0.019900975633470708
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1694,
+      "break_time": "2024-11-20 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0030231535438938195,
+        "1d": -0.0020885129234642363,
+        "3d": -0.011978827322315588,
+        "1w": -0.021728691085980856
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1690,
+      "break_time": "2024-11-19 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0020666793979078335,
+        "1d": -0.014677109761492169,
+        "3d": 0.004508020446657213,
+        "1w": 0.012615653914752833
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1757,
+      "break_time": "2024-12-04 12:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.003265433107636717,
+        "1d": -6.300237836054379e-05,
+        "3d": 0.002689646488713393,
+        "1w": 0.01641784012494174
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1809,
+      "break_time": "2024-12-16 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.002159728570497066,
+        "1d": -0.0014253123487577568,
+        "3d": 0.013015390195564969,
+        "1w": 0.011031031550036374
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1824,
+      "break_time": "2024-12-19 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.006734341382092168,
+        "1d": -0.003398348046689037,
+        "3d": -0.008740757505101726,
+        "1w": -0.00959290059496265
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1825,
+      "break_time": "2024-12-19 12:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.008581527310130177,
+        "1d": -0.0017455519586162538,
+        "3d": 0.0009046554794656103,
+        "1w": 0.002062233427911231
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1909,
+      "break_time": "2025-01-09 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0012614335159613077,
+        "1d": -0.0013643374655059048,
+        "3d": 0.009062012946902342,
+        "1w": 0.020607480704374126
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 2031,
+      "break_time": "2025-02-06 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0013658046711428895,
+        "1d": 0.008668941852395307,
+        "3d": 0.011796973187170323,
+        "1w": -0.008432860989105784
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2054,
+      "break_time": "2025-02-12 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0023151637678937576,
+        "1d": 0.014212149225926396,
+        "3d": 0.01331122246032379,
+        "1w": -0.002214699846253332
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2122,
+      "break_time": "2025-02-27 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0007833299330881616,
+        "1d": 0.0037575651248058506,
+        "3d": 0.011999954525596657,
+        "1w": 0.009144613494474818
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 2130,
+      "break_time": "2025-02-28 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.003114630924688555,
+        "1d": -0.008914719025306717,
+        "3d": -0.018382183324574086,
+        "1w": -0.007027309276807614
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2149,
+      "break_time": "2025-03-05 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0011177620853093373,
+        "1d": 0.0056387208520769505,
+        "3d": -0.0026793533253846036,
+        "1w": 0.0016918268973338257
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 2216,
+      "break_time": "2025-03-20 04:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0014078895890143883,
+        "1d": 0.002226618842653849,
+        "3d": -0.006557772419617969,
+        "1w": -0.0037275333050370563
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2230,
+      "break_time": "2025-03-24 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0002994537572842404,
+        "1d": 0.005402175547738253,
+        "3d": 0.0013674633625395671,
+        "1w": null
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 2244,
+      "break_time": "2025-03-26 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0017008647583791614,
+        "1d": -0.006909129609593556,
+        "3d": null,
+        "1w": null
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2250,
+      "break_time": "2025-03-27 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0016329041417977308,
+        "1d": -0.0011430828083014433,
+        "3d": null,
+        "1w": null
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 28,
+      "break_time": "2023-11-07 16:00:00+09:00",
+      "lt_direction": "NONE",
+      "context": "lt_unknown",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0003106490519124705,
+        "1d": -0.0038039760158952163,
+        "3d": 0.002675573006925447,
+        "1w": -0.01571113732710394
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 60,
+      "break_time": "2023-11-14 20:00:00+09:00",
+      "lt_direction": "NONE",
+      "context": "lt_unknown",
+      "fwd_returns_pips_signed": {
+        "4h": 0.002158955127081086,
+        "1d": 0.004853659217634032,
+        "3d": -0.0050832163428840005,
+        "1w": 0.0033949292778974183
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 96,
+      "break_time": "2023-11-22 16:00:00+09:00",
+      "lt_direction": "NONE",
+      "context": "lt_unknown",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0006654415962259463,
+        "1d": 0.002524647302819538,
+        "3d": 0.003983377242556152,
+        "1w": 0.0016667778301888703
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 125,
+      "break_time": "2023-11-29 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0018200414022100375,
+        "1d": 0.0030079210745217466,
+        "3d": 0.0002043339232074004,
+        "1w": 0.027707193864335622
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 162,
+      "break_time": "2023-12-07 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0020339944740914717,
+        "1d": 0.012741296836172644,
+        "3d": -0.00043755014293456185,
+        "1w": 0.0062087979448604
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 207,
+      "break_time": "2023-12-18 12:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0018898169579042445,
+        "1d": 0.008046050329296506,
+        "3d": 0.00848137371925528,
+        "1w": 0.012741671558652357
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 224,
+      "break_time": "2023-12-21 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0008708363689073906,
+        "1d": -0.001885854581376023,
+        "3d": -0.008982838249260716,
+        "1w": 0.00396982625982556
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 245,
+      "break_time": "2023-12-27 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0006868378563886779,
+        "1d": -0.012745599409671016,
+        "3d": -0.009303255218697792,
+        "1w": -0.0053880216309698525
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 251,
+      "break_time": "2023-12-28 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0008824522361434717,
+        "1d": -0.0013493177614183338,
+        "3d": 0.001382342614901333,
+        "1w": -0.003959744370153118
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 275,
+      "break_time": "2024-01-04 12:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0024625351815350527,
+        "1d": 0.0029975146181628887,
+        "3d": -0.002820293506146321,
+        "1w": 0.0012371773318839985
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 266,
+      "break_time": "2024-01-03 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00202845101149407,
+        "1d": -0.00521364619069864,
+        "3d": -0.012346027470201193,
+        "1w": -0.013723282428639294
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 275,
+      "break_time": "2024-01-04 12:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0024625351815350527,
+        "1d": 0.0029975146181628887,
+        "3d": -0.002820293506146321,
+        "1w": 0.0012371773318839985
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 335,
+      "break_time": "2024-01-18 04:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0011846328766367265,
+        "1d": 0.0035557602695819313,
+        "3d": 0.002436956554231706,
+        "1w": 0.003340308255554092
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 357,
+      "break_time": "2024-01-23 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.001959869490559818,
+        "1d": 0.0009453933334588882,
+        "3d": -0.0004107619692170772,
+        "1w": 0.014327707792411104
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 362,
+      "break_time": "2024-01-24 12:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00043188993647991225,
+        "1d": 7.199979431771197e-05,
+        "3d": -0.0038803107764655564,
+        "1w": 0.006801097461358374
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 392,
+      "break_time": "2024-01-31 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00043280229854669727,
+        "1d": 0.007189177937890534,
+        "3d": 0.0030762267218813477,
+        "1w": 0.00011338394392446105
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 510,
+      "break_time": "2024-02-27 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0031501209884341463,
+        "1d": 0.00014249799000243257,
+        "3d": 0.0036911322280790415,
+        "1w": 0.002078409746479437
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 551,
+      "break_time": "2024-03-07 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00040787193386915277,
+        "1d": -0.00035687884342117115,
+        "3d": -0.009999878415626995,
+        "1w": -0.0028892754546685495
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 563,
+      "break_time": "2024-03-09 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0009343540032995534,
+        "1d": 0.0024066410192480348,
+        "3d": -0.00534788025788302,
+        "1w": -0.006869150249923628
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 606,
+      "break_time": "2024-03-19 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0010964134170441397,
+        "1d": 0.005490289317976682,
+        "3d": 0.001816549361140396,
+        "1w": -0.0016061810914669294
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 563,
+      "break_time": "2024-03-09 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0009343540032995534,
+        "1d": 0.0024066410192480348,
+        "3d": -0.00534788025788302,
+        "1w": -0.006869150249923628
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 674,
+      "break_time": "2024-04-03 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0023923215912970974,
+        "1d": 0.010053354990300356,
+        "3d": 0.007139879110773961,
+        "1w": 0.0012873380033919801
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 758,
+      "break_time": "2024-04-23 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0018518801870976986,
+        "1d": 0.009010101424802741,
+        "3d": 0.01488008952287867,
+        "1w": 0.014988468712210157
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 785,
+      "break_time": "2024-04-29 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.004241943024308803,
+        "1d": -0.0016404010943116276,
+        "3d": 0.011242477736096212,
+        "1w": 0.002348107917739206
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 872,
+      "break_time": "2024-05-17 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.003169879221205818,
+        "1d": 0.0018935303648284219,
+        "3d": 0.0028341558541047362,
+        "1w": 0.005057422478889961
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 891,
+      "break_time": "2024-05-22 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0034499740296789483,
+        "1d": -0.0008462189904161477,
+        "3d": -0.003275117340418632,
+        "1w": -0.006463080463722015
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 909,
+      "break_time": "2024-05-27 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0006614042139627685,
+        "1d": 0.0020881633672518163,
+        "3d": -0.004199082757450512,
+        "1w": -0.004940797501006067
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 928,
+      "break_time": "2024-05-30 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0009225270205108771,
+        "1d": 0.004795528257228732,
+        "3d": -0.01155534462037977,
+        "1w": -0.004422632938036131
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 945,
+      "break_time": "2024-06-04 12:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.010920613253919242,
+        "1d": 0.001665680160587435,
+        "3d": 0.0024658074524275264,
+        "1w": -0.00448256918904999
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 952,
+      "break_time": "2024-06-05 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0003183377011062305,
+        "1d": 0.0004628558286752238,
+        "3d": -0.0012063600758498438,
+        "1w": 0.008815198385168976
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 982,
+      "break_time": "2024-06-12 12:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.000865185011287295,
+        "1d": 0.004347186217621868,
+        "3d": -0.0004906039818086683,
+        "1w": 0.018155199587368998
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 991,
+      "break_time": "2024-06-14 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0009693596747251121,
+        "1d": 0.0012490753663350063,
+        "3d": -0.007318890928346811,
+        "1w": -0.01824019057242854
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 994,
+      "break_time": "2024-06-14 12:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.007321330194191233,
+        "1d": -0.006426079295701825,
+        "3d": 0.005871940308047385,
+        "1w": 0.015416226874974015
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 995,
+      "break_time": "2024-06-14 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.001780087549984266,
+        "1d": 0.00033713006315405636,
+        "3d": -0.01278449610673782,
+        "1w": -0.021531818361120614
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1034,
+      "break_time": "2024-06-24 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00015045229750221267,
+        "1d": -0.003164261582048411,
+        "3d": 0.005588282929855026,
+        "1w": 0.015580272060181422
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1114,
+      "break_time": "2024-07-11 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0019358387386914089,
+        "1d": 0.004239525187846205,
+        "3d": 0.00679189452583806,
+        "1w": 0.03094310366079167
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1102,
+      "break_time": "2024-07-09 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0008740816948762387,
+        "1d": 0.0033266280138386506,
+        "3d": -0.01429562573170795,
+        "1w": -0.030476858239473437
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1198,
+      "break_time": "2024-07-31 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0028625589034634302,
+        "1d": 0.014977641558879817,
+        "3d": 0.04180633453183713,
+        "1w": 0.023143548300194716
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1262,
+      "break_time": "2024-08-14 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0026515400624784746,
+        "1d": 0.0011796264516883426,
+        "3d": 0.0013846369079395515,
+        "1w": 0.004148172305073139
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1280,
+      "break_time": "2024-08-19 12:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.003519617294339028,
+        "1d": -0.01414623482379973,
+        "3d": -0.004448610628502436,
+        "1w": -0.006548423843983464
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1279,
+      "break_time": "2024-08-19 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00949701878979159,
+        "1d": 0.003091756602485063,
+        "3d": -0.0061101853082785595,
+        "1w": -0.008145002851294159
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1280,
+      "break_time": "2024-08-19 12:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.003519617294339028,
+        "1d": -0.01414623482379973,
+        "3d": -0.004448610628502436,
+        "1w": -0.006548423843983464
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1295,
+      "break_time": "2024-08-22 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0011350913126459972,
+        "1d": -0.0032892414353407062,
+        "3d": -0.000245534345349796,
+        "1w": -0.01057478545046564
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1340,
+      "break_time": "2024-09-02 04:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.004435851726007911,
+        "1d": 0.005850615319515917,
+        "3d": -0.02653201219993573,
+        "1w": -0.0453224072535896
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1353,
+      "break_time": "2024-09-04 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0025886790628000256,
+        "1d": 0.00731072676807365,
+        "3d": 0.027563420708381692,
+        "1w": 0.021297696526788812
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1412,
+      "break_time": "2024-09-17 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.00033388285195723455,
+        "1d": 0.003104977748531468,
+        "3d": 0.023575636347121787,
+        "1w": 0.036779019601466345
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1480,
+      "break_time": "2024-10-02 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0009638171878298962,
+        "1d": -0.002079840731425975,
+        "3d": 0.002353257665429709,
+        "1w": -0.001940385999202654
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1500,
+      "break_time": "2024-10-08 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0014124649858198168,
+        "1d": -0.0012705147293017305,
+        "3d": -0.0020200612887473213,
+        "1w": 0.00116188237995285
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1539,
+      "break_time": "2024-10-16 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0010319556473579183,
+        "1d": -0.003102670783736272,
+        "3d": -0.007101898210421176,
+        "1w": -0.008872003785027616
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1596,
+      "break_time": "2024-10-29 12:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.002781725866588758,
+        "1d": 0.0003184047946822588,
+        "3d": 0.005216683235003572,
+        "1w": -0.01590006109067854
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1634,
+      "break_time": "2024-11-06 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0025091141375463977,
+        "1d": 0.0076954074865751565,
+        "3d": -0.0021728832822320854,
+        "1w": -0.004231596917877667
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1679,
+      "break_time": "2024-11-16 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.002168697322849411,
+        "1d": -0.006941307449543466,
+        "3d": -0.014360019438580451,
+        "1w": -0.0036419313373876605
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1679,
+      "break_time": "2024-11-16 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.002168697322849411,
+        "1d": -0.006941307449543466,
+        "3d": -0.014360019438580451,
+        "1w": -0.0036419313373876605
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1667,
+      "break_time": "2024-11-14 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0003466324690668543,
+        "1d": 0.0011298652301618972,
+        "3d": 0.007656472288149807,
+        "1w": 0.003025750933209004
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1694,
+      "break_time": "2024-11-20 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.002369809747023055,
+        "1d": -0.0020385752871421303,
+        "3d": -0.0032974407894927893,
+        "1w": -0.026211995898892226
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1677,
+      "break_time": "2024-11-15 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.002061640779825069,
+        "1d": 0.005767327899842023,
+        "3d": -0.008766642080368037,
+        "1w": 0.00781082298633784
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1682,
+      "break_time": "2024-11-18 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0022590069980070737,
+        "1d": 0.0017556989895721742,
+        "3d": 0.0078665779480378,
+        "1w": -0.010205962234111077
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1692,
+      "break_time": "2024-11-20 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0005249161987848083,
+        "1d": -0.00029724454527446653,
+        "3d": -0.0038511978357780308,
+        "1w": -0.024459089899535158
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1754,
+      "break_time": "2024-12-04 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0030544142455939394,
+        "1d": 0.00017570605455929922,
+        "3d": 0.01114067121375939,
+        "1w": -0.00667458830617651
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1824,
+      "break_time": "2024-12-19 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.006343202864281139,
+        "1d": -0.011450330085144955,
+        "3d": -0.01550307225028913,
+        "1w": -0.011174105359229358
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1867,
+      "break_time": "2024-12-31 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.002077375273140447,
+        "1d": 0.004857363214888721,
+        "3d": 0.001104667331334852,
+        "1w": -0.0009604774515308279
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1880,
+      "break_time": "2025-01-03 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0013515314291723257,
+        "1d": 0.0005633600993011356,
+        "3d": 0.012999027699406973,
+        "1w": -0.008716064543681235
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1944,
+      "break_time": "2025-01-17 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -7.249190941660544e-05,
+        "1d": -0.003762628352406594,
+        "3d": -0.010426097638828402,
+        "1w": -0.004175241955941544
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1957,
+      "break_time": "2025-01-21 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.000453996726640149,
+        "1d": -0.007474959875919396,
+        "3d": -0.01687523096647503,
+        "1w": 0.0009189421455033653
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1965,
+      "break_time": "2025-01-22 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0005410178412654787,
+        "1d": 0.0006022467045703195,
+        "3d": 0.001122540733437205,
+        "1w": -0.016482334084369832
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1982,
+      "break_time": "2025-01-27 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0019295072472598207,
+        "1d": 0.005184172258140052,
+        "3d": 0.01649575049651819,
+        "1w": 0.013031879116409684
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 2041,
+      "break_time": "2025-02-08 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00020015696586739296,
+        "1d": -0.0034707284448387554,
+        "3d": -0.018000444256993653,
+        "1w": -0.016105023253172313
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2056,
+      "break_time": "2025-02-12 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.001582450645939204,
+        "1d": 0.0005165983149799658,
+        "3d": -3.1004387123445554e-05,
+        "1w": -0.010336197233144162
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2202,
+      "break_time": "2025-03-17 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.008415846934211935,
+        "1d": 0.00529581793024736,
+        "3d": -0.010633759988230906,
+        "1w": 0.0051485053326496555
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2230,
+      "break_time": "2025-03-24 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0001700336883336817,
+        "1d": 0.00731711873080787,
+        "3d": 0.0065043980244974264,
+        "1w": null
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 2257,
+      "break_time": "2025-03-28 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0019391248228366464,
+        "1d": null,
+        "3d": null,
+        "1w": null
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 36,
+      "break_time": "2023-11-09 00:00:00+09:00",
+      "lt_direction": "NONE",
+      "context": "lt_unknown",
+      "fwd_returns_pips_signed": {
+        "4h": 0.00011204377188395176,
+        "1d": -0.0013829063789971285,
+        "3d": -0.003001839827608141,
+        "1w": 0.014847903827157338
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 59,
+      "break_time": "2023-11-14 16:00:00+09:00",
+      "lt_direction": "NONE",
+      "context": "lt_unknown",
+      "fwd_returns_pips_signed": {
+        "4h": 0.01035461426863836,
+        "1d": 0.01253063283046392,
+        "3d": 0.013800859985293346,
+        "1w": 0.017253604028291195
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 202,
+      "break_time": "2023-12-15 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0024021062058734444,
+        "1d": 0.0008703260607361013,
+        "3d": -0.002989976213831805,
+        "1w": -0.011345443799717886
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 229,
+      "break_time": "2023-12-22 04:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.001035779925787031,
+        "1d": 0.0006626995717112089,
+        "3d": 0.008698065688150985,
+        "1w": -0.0084263245138958
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 270,
+      "break_time": "2024-01-03 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0008055731447463993,
+        "1d": -0.0025314965333955025,
+        "3d": -0.001636609202076686,
+        "1w": -0.004327983381041373
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 227,
+      "break_time": "2023-12-21 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.000236548575442877,
+        "1d": 0.004039969362094206,
+        "3d": 0.0057870741846668405,
+        "1w": -0.0030430052636051808
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 284,
+      "break_time": "2024-01-06 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0009041550648146712,
+        "1d": 0.000574946057608397,
+        "3d": -0.0012879831145626297,
+        "1w": -0.006667912596649617
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 326,
+      "break_time": "2024-01-16 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0008090317802366825,
+        "1d": 0.0008642168802736327,
+        "3d": 2.7569855122144826e-05,
+        "1w": -0.0004502000709992876
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 349,
+      "break_time": "2024-01-22 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00022005428094375168,
+        "1d": -0.001826082277356894,
+        "3d": -0.0027541651179296273,
+        "1w": -0.005303930623135195
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 359,
+      "break_time": "2024-01-24 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0020463665711472068,
+        "1d": -0.005108086006908222,
+        "3d": -0.0017240191423001233,
+        "1w": 0.0008769784502281469
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 406,
+      "break_time": "2024-02-02 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.006914126775258975,
+        "1d": -0.009832376230284975,
+        "3d": -0.011420142410169157,
+        "1w": -0.01113211460884965
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 395,
+      "break_time": "2024-01-31 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.003019148096007604,
+        "1d": -0.004836869064312507,
+        "3d": -0.012103763593808006,
+        "1w": -0.010495680073123431
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 411,
+      "break_time": "2024-02-05 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 8.349684804262458e-05,
+        "1d": 0.003084730256012011,
+        "3d": -0.0003524654063871008,
+        "1w": 0.005852349960874262
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 453,
+      "break_time": "2024-02-14 04:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0006160681976968285,
+        "1d": -0.0015850966964186114,
+        "3d": -0.006139896863146366,
+        "1w": -0.01008299554188434
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 481,
+      "break_time": "2024-02-20 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0023112633479130673,
+        "1d": -0.0002591944620952552,
+        "3d": 0.0018401991497790093,
+        "1w": 0.0026805702553797245
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 469,
+      "break_time": "2024-02-16 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.003083011533151825,
+        "1d": -0.002173954292707961,
+        "3d": -0.004565412923831114,
+        "1w": -0.00909164504102436
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 470,
+      "break_time": "2024-02-17 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0002689206561178048,
+        "1d": -0.0017353462750668708,
+        "3d": 0.0026112576646725866,
+        "1w": 0.0061468689783928665
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 550,
+      "break_time": "2024-03-06 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0014593518112812898,
+        "1d": 0.0026143086287909734,
+        "3d": 0.004984205654716967,
+        "1w": 0.0003673330742083869
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 507,
+      "break_time": "2024-02-26 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0001659659220449028,
+        "1d": -0.0005717763956795269,
+        "3d": 2.7658309249500856e-05,
+        "1w": 0.0028539883117190273
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 518,
+      "break_time": "2024-02-28 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0013305123510627265,
+        "1d": -0.0020689216664186855,
+        "3d": -0.002898980924968292,
+        "1w": -0.012185410838702657
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 539,
+      "break_time": "2024-03-05 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0003499562590394828,
+        "1d": -0.00034086460174805044,
+        "3d": 0.007862822575982614,
+        "1w": 0.00785368368772825
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 537,
+      "break_time": "2024-03-04 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.00056185727540424,
+        "1d": -0.0003133034184915201,
+        "3d": 0.0039355648855113196,
+        "1w": 0.00682220450697725
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 581,
+      "break_time": "2024-03-13 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0008039026249176545,
+        "1d": -0.004047587507797726,
+        "3d": -0.003854910163763603,
+        "1w": -0.011554127625917565
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 613,
+      "break_time": "2024-03-21 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0019496484452705687,
+        "1d": -0.00476652767501691,
+        "3d": -0.006913825716442973,
+        "1w": -0.010768392413808156
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 705,
+      "break_time": "2024-04-10 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0015821462783442847,
+        "1d": 0.004483037701068671,
+        "3d": 0.008939348029470384,
+        "1w": 0.009896860822526193
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 737,
+      "break_time": "2024-04-18 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0005059353822331331,
+        "1d": -0.002383209827640273,
+        "3d": -0.002383209827640273,
+        "1w": 0.0008805373720041643
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 760,
+      "break_time": "2024-04-23 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.004064855881235188,
+        "1d": 0.0031203612325146762,
+        "3d": 0.006902319749925376,
+        "1w": 0.005848544479541848
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 760,
+      "break_time": "2024-04-23 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.004064855881235188,
+        "1d": 0.0031203612325146762,
+        "3d": 0.006902319749925376,
+        "1w": 0.005848544479541848
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 779,
+      "break_time": "2024-04-26 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.002403476376434857,
+        "1d": -0.0035144164485902407,
+        "3d": 0.0010117475990921998,
+        "1w": -0.007815818706628619
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 810,
+      "break_time": "2024-05-03 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0001486049711096893,
+        "1d": 0.0005850044042166602,
+        "3d": -0.0015802931478391263,
+        "1w": 0.0020228458493284918
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 848,
+      "break_time": "2024-05-13 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0013059245438658135,
+        "1d": 0.0019233620369283333,
+        "3d": 0.006117863717950492,
+        "1w": 0.0031051333540204756
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 826,
+      "break_time": "2024-05-08 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00032578596150673045,
+        "1d": -0.0005677297014620858,
+        "3d": -0.003243813811053306,
+        "1w": -0.01200234649118366
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 891,
+      "break_time": "2024-05-22 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0011175197767970546,
+        "1d": 0.0008218558705860579,
+        "3d": -0.0027101037023699037,
+        "1w": -0.0014942308876079863
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 909,
+      "break_time": "2024-05-27 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00041433603244514505,
+        "1d": 0.0014258448245062089,
+        "3d": -0.004178837945419123,
+        "1w": 0.0012052018331630554
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 942,
+      "break_time": "2024-06-04 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0012105650781377847,
+        "1d": -0.0013866125262872453,
+        "3d": -0.00039466740605439976,
+        "1w": -0.004534279227060484
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 966,
+      "break_time": "2024-06-08 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 7.403705558019225e-05,
+        "1d": 0.006676069494729223,
+        "3d": -0.003906922430207668,
+        "1w": 0.00815845594177092
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 991,
+      "break_time": "2024-06-14 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0002327562540476169,
+        "1d": 0.003731486847765114,
+        "3d": 0.00011174224799793964,
+        "1w": 0.0008570098335436149
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1022,
+      "break_time": "2024-06-21 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.00044825880225013437,
+        "1d": 0.0014575763837057498,
+        "3d": 0.0009154088219571616,
+        "1w": -0.003578855045923063
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1046,
+      "break_time": "2024-06-26 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 1.8726241082303585e-05,
+        "1d": -0.003029030502740601,
+        "3d": -0.006402500731481131,
+        "1w": -0.01344811294541963
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1062,
+      "break_time": "2024-07-01 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0013844304909001598,
+        "1d": -0.0018426837660114326,
+        "3d": 0.002924562355969329,
+        "1w": 0.005812864895262726
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1113,
+      "break_time": "2024-07-11 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0027338643192437173,
+        "1d": 0.0037904272807261774,
+        "3d": 0.0036618618866798014,
+        "1w": 0.004056688741871012
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1147,
+      "break_time": "2024-07-19 04:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0008167723265418009,
+        "1d": 0.0012024472624519583,
+        "3d": 0.004468274463776192,
+        "1w": 0.007864991777994115
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1177,
+      "break_time": "2024-07-26 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.00023964900752544704,
+        "1d": 0.0008293096933228716,
+        "3d": -0.003934758369408056,
+        "1w": 0.009249214886906665
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1188,
+      "break_time": "2024-07-29 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0018843878546211529,
+        "1d": 0.00023073905822380836,
+        "3d": 0.00476400614255694,
+        "1w": -0.00729155051358063
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1201,
+      "break_time": "2024-07-31 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0004896368009059404,
+        "1d": -0.0027111948170553957,
+        "3d": 0.011667350225516848,
+        "1w": 0.008831947894202774
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1262,
+      "break_time": "2024-08-14 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0012331128591268337,
+        "1d": -0.0010802225037700591,
+        "3d": 0.001812875535027389,
+        "1w": 0.009606950388645424
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1280,
+      "break_time": "2024-08-19 12:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.00047103156782353495,
+        "1d": 0.003543730769213091,
+        "3d": 0.009679326464592297,
+        "1w": 0.011220794031563175
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1323,
+      "break_time": "2024-08-28 12:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.002029327157585567,
+        "1d": 0.0017507243041486598,
+        "3d": 0.008684895757833572,
+        "1w": 0.0032975011123282105
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1474,
+      "break_time": "2024-10-01 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0004514998902799272,
+        "1d": 0.0036358414236553754,
+        "3d": 0.009706876420438201,
+        "1w": 0.012481993450872489
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1445,
+      "break_time": "2024-09-25 04:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0002501429401263605,
+        "1d": -0.0050968646896523,
+        "3d": -0.00215560697593542,
+        "1w": -0.014942848163295178
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1461,
+      "break_time": "2024-09-27 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0009576444470260209,
+        "1d": 0.0010371589928686725,
+        "3d": -0.0100516008977007,
+        "1w": -0.017570671999492374
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1531,
+      "break_time": "2024-10-15 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0013297081645430725,
+        "1d": 0.000918071380263133,
+        "3d": 0.006647479203241394,
+        "1w": 0.011323435296866441
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1557,
+      "break_time": "2024-10-21 04:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0007176637593413054,
+        "1d": -0.004942060825365552,
+        "3d": -0.008024754372619139,
+        "1w": -0.005441311959050496
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1562,
+      "break_time": "2024-10-22 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0006842222324782155,
+        "1d": 0.0010642483016386206,
+        "3d": -0.00107235642088295,
+        "1w": -0.0034809621173714084
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1579,
+      "break_time": "2024-10-24 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0023125461252285345,
+        "1d": 0.0030329673256861284,
+        "3d": 0.0007128342869623938,
+        "1w": 0.008630838553790016
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1633,
+      "break_time": "2024-11-06 12:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0019746285360288524,
+        "1d": -0.0022816495507725076,
+        "3d": 0.00024244006720572364,
+        "1w": 0.017332532139264334
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1641,
+      "break_time": "2024-11-07 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.000999611345523066,
+        "1d": -0.005352145048984208,
+        "3d": -0.017874536104672475,
+        "1w": -0.024981980607787516
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1686,
+      "break_time": "2024-11-19 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.00013209915003973421,
+        "1d": -0.000698528399038785,
+        "3d": -0.010529508489995398,
+        "1w": -0.0038953229800894745
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1698,
+      "break_time": "2024-11-21 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0006736339007185066,
+        "1d": 0.004747258317350719,
+        "3d": 0.0026705330799184426,
+        "1w": -0.0016405961033789523
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1694,
+      "break_time": "2024-11-20 08:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0007836214093598082,
+        "1d": -0.004388626898471186,
+        "3d": -0.010855232414348527,
+        "1w": -0.003990586766980199
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1697,
+      "break_time": "2024-11-20 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0010540560765100598,
+        "1d": -0.000978125211526036,
+        "3d": 0.003712274744965577,
+        "1w": -0.003774269304820936
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1771,
+      "break_time": "2024-12-06 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.002811317159073269,
+        "1d": 0.00012287392677992615,
+        "3d": -0.007962195736798607,
+        "1w": -0.007228809985899733
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1760,
+      "break_time": "2024-12-05 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.000589678737293993,
+        "1d": 0.004846896241381016,
+        "3d": 0.005792665884579898,
+        "1w": -0.0025228377678515462
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1799,
+      "break_time": "2024-12-13 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0005065299462713932,
+        "1d": -0.003464124049916084,
+        "3d": -0.003121110097318809,
+        "1w": 0.004954561470413392
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1802,
+      "break_time": "2024-12-13 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0005050769873272895,
+        "1d": -0.00015252621573891983,
+        "3d": 0.0007527573665919718,
+        "1w": -0.009048708992373596
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1823,
+      "break_time": "2024-12-19 04:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0037895086691145663,
+        "1d": -0.0017085028697531174,
+        "3d": -0.005578022276056097,
+        "1w": -0.008398519747227925
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1834,
+      "break_time": "2024-12-21 00:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0003545742510830674,
+        "1d": -0.00408040390831662,
+        "3d": -0.0033495081438253554,
+        "1w": -0.006314869529614867
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1866,
+      "break_time": "2024-12-30 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 7.688537355670516e-05,
+        "1d": 0.0028197904323729595,
+        "3d": 0.011998074986457951,
+        "1w": 0.01015178307833945
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1903,
+      "break_time": "2025-01-08 16:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.002658776007091964,
+        "1d": 0.0015517110724658605,
+        "3d": 0.009894514130463418,
+        "1w": 0.0027753804848359223
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1954,
+      "break_time": "2025-01-20 20:00:00+09:00",
+      "lt_direction": "DOWN",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0017778124141839477,
+        "1d": -0.0026727187252613624,
+        "3d": -0.000605062373496737,
+        "1w": -0.0010855313204228972
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 2012,
+      "break_time": "2025-02-03 04:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.002939756681831645,
+        "1d": -0.008922432601867116,
+        "3d": -0.014839609629955685,
+        "1w": -0.00890310108569579
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 2012,
+      "break_time": "2025-02-03 04:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.002939756681831645,
+        "1d": -0.008922432601867116,
+        "3d": -0.014839609629955685,
+        "1w": -0.00890310108569579
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1988,
+      "break_time": "2025-01-28 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0003641311679016268,
+        "1d": -1.9168104274984443e-05,
+        "3d": 0.004225940076393521,
+        "1w": 0.0025526375106718416
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1985,
+      "break_time": "2025-01-27 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.002305377692919046,
+        "1d": -0.007401746214376344,
+        "3d": -0.007698958651549015,
+        "1w": -0.008025035186518398
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1988,
+      "break_time": "2025-01-28 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0003641311679016268,
+        "1d": -1.9168104274984443e-05,
+        "3d": 0.004225940076393521,
+        "1w": 0.0025526375106718416
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 2127,
+      "break_time": "2025-02-27 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0003071312050247979,
+        "1d": 0.0009985215031688768,
+        "3d": -0.008694793026526038,
+        "1w": -0.03923695304302762
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 2106,
+      "break_time": "2025-02-24 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0013217766980992834,
+        "1d": -0.004600468159797685,
+        "3d": -0.004953759261014087,
+        "1w": 0.009476861302150044
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 2122,
+      "break_time": "2025-02-27 00:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "continuation",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0002573965780466314,
+        "1d": -0.006782865134964559,
+        "3d": -0.0005436104449850002,
+        "1w": 0.03428253862076288
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 2127,
+      "break_time": "2025-02-27 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0003071312050247979,
+        "1d": 0.0009985215031688768,
+        "3d": -0.008694793026526038,
+        "1w": -0.03923695304302762
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 2124,
+      "break_time": "2025-02-27 08:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -7.639784179820641e-05,
+        "1d": 0.008487753377942345,
+        "3d": -0.0018891332781758516,
+        "1w": -0.035730313350734365
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 2220,
+      "break_time": "2025-03-20 20:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": -0.0017344457813312092,
+        "1d": 0.0005449415246361472,
+        "3d": 0.0008591105501545987,
+        "1w": null
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 2213,
+      "break_time": "2025-03-19 16:00:00+09:00",
+      "lt_direction": "UP",
+      "context": "reversal",
+      "fwd_returns_pips_signed": {
+        "4h": 0.0014689548275449715,
+        "1d": 0.004966395139639659,
+        "3d": 0.005538192628242997,
+        "1w": 0.010578595802673757
+      }
+    }
+  ]
+}
