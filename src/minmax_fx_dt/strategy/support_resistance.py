@@ -103,6 +103,29 @@ def zigzag_pivots_typed(
         (バーのインデックス, 種別) のリスト。種別は "HIGH"（山）/ "LOW"（谷）で、
         隣接する要素は必ず交互になる。EXP-FX000003（ダブルトップ/ボトム検出）向け
         にzigzag_pivot_indices()を拡張したもの。
+
+    Note (2026-08-17 修正): 単一の足のレンジ(高値-安値)だけでthreshを超える
+    場合、その足自身の高値・安値の両方が同一イテレーション内で「新しい極値」
+    かつ「反転確定のトリガー」を兼ねてしまい、確定直後にリセットされる
+    running_max/running_minも同じ足にリセットされていた。その結果、次の足の
+    反応だけで逆種別のピボットが直前ピボットと同一インデックスに確定する
+    退化ケースがあった(ダブルボトム検出でP1とネックラインの間隔が0本になる
+    "チャート上に存在しない形")。ダブルトップ/ボトム検出(pattern_detection.py・
+    analyze_pattern_reversal_ic.py)でUSD/JPYの候補39件中13件(33%)がP1→P2
+    間隔2本以内、確定ブレイク30件中9件(30%)がP1とネックライン同一足という
+    最も退化したケースだったことから発覚。
+
+    修正方針: 直前ピボットと同一インデックスでは確定させない、という単純な
+    ガードは一度試したが誤りだった — 一方向に強く伸びる相場では
+    running_max/min が何百本も同じ足に張り付いたまま二度と更新されず、
+    ピボット検出そのものが長期間停止してしまう(実測: USD/JPYで600本超の
+    無検出区間が発生)。正しい修正は「自己参照で確定した(=このピボット自身の
+    足がトリガーにもなった)場合に限り」、反対方向の追跡をリセットする際の
+    起点をこの足自身の高値/安値で埋めず、次の新しい足が現れるまで未確定の
+    ままにする(sentinelとして±infで初期化)ことで、次のピボットの起点が必ず
+    後続の別の足になるようにした。自己参照でない通常の確定(反転が別の足で
+    確認された場合)は従来どおり確定した足自身の高値/安値で反対方向の追跡を
+    開始してよく、変更していない。
     """
     n = len(high)
     pivots: list[tuple[int, str]] = []
@@ -123,7 +146,13 @@ def zigzag_pivots_typed(
             if running_max - l_i >= thresh:
                 pivots.append((running_max_idx, "HIGH"))
                 trend = -1
-                running_min, running_min_idx = l_i, i
+                if running_max_idx == i:
+                    # 自己参照確定: この足自身の安値を次の谷の起点にすると
+                    # 直後の足だけで同一インデックスの谷が確定してしまうため、
+                    # 真に新しい足が安値を更新するまで起点を保留する
+                    running_min, running_min_idx = float("inf"), -1
+                else:
+                    running_min, running_min_idx = l_i, i
                 running_max, running_max_idx = h_i, i
                 continue
         if trend <= 0:
@@ -132,7 +161,10 @@ def zigzag_pivots_typed(
             if h_i - running_min >= thresh:
                 pivots.append((running_min_idx, "LOW"))
                 trend = 1
-                running_max, running_max_idx = h_i, i
+                if running_min_idx == i:
+                    running_max, running_max_idx = float("-inf"), -1
+                else:
+                    running_max, running_max_idx = h_i, i
                 running_min, running_min_idx = l_i, i
     return pivots
 

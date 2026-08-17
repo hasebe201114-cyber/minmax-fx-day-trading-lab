@@ -19,6 +19,7 @@ from minmax_fx_dt.strategy.support_resistance import (
     detect_support_resistance,
     find_nearest_sr,
     zigzag_pivot_indices,
+    zigzag_pivots_typed,
 )
 from minmax_fx_dt.strategy.range_breakout import (
     OrderBookSignal,
@@ -177,6 +178,23 @@ def test_zigzag_pivot_indices_detects_swing_above_threshold() -> None:
 def test_zigzag_pivot_indices_empty_input() -> None:
     empty = pd.Series([], dtype=float)
     assert zigzag_pivot_indices(empty, empty, empty, threshold_atr=2.0) == []
+
+
+def test_zigzag_pivots_typed_never_repeats_index_for_adjacent_pivots() -> None:
+    """退化ケース回帰テスト (2026-08-17): 1本の足のレンジだけでthreshを超え、
+    直後の足の反応だけで逆種別のピボットが同一インデックスに確定してしまう
+    バグがあった(修正前はこの系列で(5,'HIGH')の直後に(5,'LOW')が付く)。
+    ダブルトップ/ボトム検出でP1とネックラインの間隔が0本になる"チャート上に
+    存在しない形"の原因だった。隣接するピボットが同一インデックスを共有せず、
+    インデックスが単調増加することを確認する。"""
+    high = pd.Series([20.0, 15.0, 12.0, 10.0, 9.5, 15.0, 12.0])
+    low = pd.Series([19.8, 14.8, 11.8, 9.8, 7.0, 8.5, 11.5])
+    atr = pd.Series([1.0] * len(high))
+    pivots = zigzag_pivots_typed(high, low, atr, threshold_atr=2.0)
+    indices = [idx for idx, _kind in pivots]
+    assert indices == sorted(set(indices)), "ピボットのインデックスは単調増加でなければならない"
+    for a, b in zip(pivots, pivots[1:]):
+        assert a[0] != b[0], f"隣接ピボットが同一インデックスを共有している: {a} -> {b}"
 
 
 # ---- range_breakout テスト ----
