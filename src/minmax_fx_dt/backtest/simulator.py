@@ -51,6 +51,8 @@ class Trade:
     entry_conditions: Optional[dict[str, bool]] = None  # 4 条件 AND の成立状況 (v2.1 で MT-3 恒久フォールバック)
     lt_direction: str = ""  # エントリー時の LT 方向
     sr_level_price: float = 0.0  # エントリー時の S/R ライン価格（あれば）
+    initial_risk: float = 0.0  # |entry_price - 初期ストップ| (SYS-FX009 1:1ターゲット算出用)
+    target_reached: bool = False  # 1:1ターゲット到達済みか (SYS-FX009、到達後はブレイクイーブン+トレーリングへ切替)
 
 
 @dataclass
