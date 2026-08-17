@@ -85,13 +85,13 @@ def detect_fractals(
     )
 
 
-def zigzag_pivot_indices(
+def zigzag_pivots_typed(
     high: pd.Series,
     low: pd.Series,
     atr_series: pd.Series,
     threshold_atr: float,
-) -> list[int]:
-    """ATR正規化したZigZagで「意味のあるスイング」の転換点だけを抽出する.
+) -> list[tuple[int, str]]:
+    """ATR正規化したZigZagで「意味のあるスイング」の転換点を種別付きで抽出する.
 
     OBS000006追記6: Williams Fractal(window=5) はノイズレベルの微小な上下動でも
     極値と判定してしまい、「レンジ/トレンドの持続期間」の代理指標としては使えない
@@ -100,10 +100,12 @@ def zigzag_pivot_indices(
     として残すため、この問題を回避する。
 
     Returns:
-        転換点となったバーのインデックス（位置番号）のリスト。
+        (バーのインデックス, 種別) のリスト。種別は "HIGH"（山）/ "LOW"（谷）で、
+        隣接する要素は必ず交互になる。EXP-FX000003（ダブルトップ/ボトム検出）向け
+        にzigzag_pivot_indices()を拡張したもの。
     """
     n = len(high)
-    pivots: list[int] = []
+    pivots: list[tuple[int, str]] = []
     if n == 0:
         return pivots
     trend = 0  # 0=未確定, 1=上昇追跡中, -1=下降追跡中
@@ -119,7 +121,7 @@ def zigzag_pivot_indices(
             if h_i > running_max:
                 running_max, running_max_idx = h_i, i
             if running_max - l_i >= thresh:
-                pivots.append(running_max_idx)
+                pivots.append((running_max_idx, "HIGH"))
                 trend = -1
                 running_min, running_min_idx = l_i, i
                 running_max, running_max_idx = h_i, i
@@ -128,11 +130,27 @@ def zigzag_pivot_indices(
             if l_i < running_min:
                 running_min, running_min_idx = l_i, i
             if h_i - running_min >= thresh:
-                pivots.append(running_min_idx)
+                pivots.append((running_min_idx, "LOW"))
                 trend = 1
                 running_max, running_max_idx = h_i, i
                 running_min, running_min_idx = l_i, i
     return pivots
+
+
+def zigzag_pivot_indices(
+    high: pd.Series,
+    low: pd.Series,
+    atr_series: pd.Series,
+    threshold_atr: float,
+) -> list[int]:
+    """ATR正規化したZigZagで「意味のあるスイング」の転換点だけを抽出する.
+
+    種別（山/谷）が不要な場合の簡易版。実装は`zigzag_pivots_typed()`に委譲。
+
+    Returns:
+        転換点となったバーのインデックス（位置番号）のリスト。
+    """
+    return [idx for idx, _kind in zigzag_pivots_typed(high, low, atr_series, threshold_atr)]
 
 
 def cluster_fractals(
