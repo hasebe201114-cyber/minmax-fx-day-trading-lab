@@ -1,0 +1,49 @@
+{
+  "generated_at": "2026-08-17T23:38:56.221241",
+  "train_period": [
+    "2023-11-01",
+    "2025-03-31"
+  ],
+  "timeframe": "H1",
+  "zigzag_threshold_atr": 2.0,
+  "pattern_tolerance_atr": 0.676,
+  "stop_buffer_atr": 0.629,
+  "max_bars_since_second_pivot": 60,
+  "staleness_raw_p90_bars": 65.5,
+  "break_search_cap_bars": 240,
+  "atr_trail_multiplier": 5.19,
+  "trail_mfe_horizon_bars": 120,
+  "lt_sma_short": 10,
+  "lt_sma_long": 20,
+  "pooled_n_triplets": 6266,
+  "pooled_n_break_lags": 1416,
+  "pooled_n_lt_matched_signals": 673,
+  "_note": "H4版(double_pattern_params.json)と同じ導出方法論をH1に適用したもの。この値はTrain/Validation/Testいずれの結果を見た後も変更しない",
+  "pairs": {
+    "USD_JPY": {
+      "n_pivots": 1233,
+      "n_alternating_triplets": 1231,
+      "delta_atr_median": 1.517
+    },
+    "EUR_JPY": {
+      "n_pivots": 1195,
+      "n_alternating_triplets": 1193,
+      "delta_atr_median": 1.527
+    },
+    "GBP_JPY": {
+      "n_pivots": 1203,
+      "n_alternating_triplets": 1201,
+      "delta_atr_median": 1.459
+    },
+    "AUD_JPY": {
+      "n_pivots": 1151,
+      "n_alternating_triplets": 1149,
+      "delta_atr_median": 1.512
+    },
+    "EUR_USD": {
+      "n_pivots": 1494,
+      "n_alternating_triplets": 1492,
+      "delta_atr_median": 1.499
+    }
+  }
+}
