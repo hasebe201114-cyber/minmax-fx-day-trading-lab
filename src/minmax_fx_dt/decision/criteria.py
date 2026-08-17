@@ -55,6 +55,21 @@ STRATEGY_GO_THRESHOLD: dict[str, float] = {
     "SYS-FX009": 0.4,  # 上位足トレンド+ダブルトップ/ボトム (1:1+トレーリング)
 }
 
+# min_n_trades の再導出 (2026-08-17、司令塔指摘対応):
+# 旧値 60→66 は統計的な検出力計算に基づくものではなく、(1) 60 は初期 spec の
+# 経験則的な値 (導出根拠の記録なし)、(2) 66 は SYS-FX007 ベースラインプリセットの
+# Train 実測トレード数がたまたま 66 件だった、という2つのその場しのぎの数字が
+# 「同じ基準を使う」という理由だけで SYS-FX008/009 へ踏襲されてきたに過ぎない
+# (詳細: research/method-notes/min_n_trades_power_analysis.json)。
+#
+# 再導出: 実際に使っている backtest.permutation.permutation_test() そのものを使い、
+# 実測トレード値幅分布 (SYS-FX009 Train pooled, n=179) をブートストラップして、
+# 「勝率60%相当の弱いエッジ」を検出力80%・有意水準0.05で検出するために必要な
+# 最小サンプル数をシミュレーションで算出した (n=300)。この水準を採用する。
+# 勝率55%相当まで拾おうとすると n=1,165 まで跳ね上がり、本PJの実測シグナル頻度
+# (5通貨・数年で数十〜数百件) では原理的に届かないため、60%を実務上の下限とした。
+MIN_N_TRADES_STATISTICAL = 300  # 勝率60%相当のエッジを検出力80%で検出できる最小n
+
 # SYS-FX007 の K1m〜K7m 閾値 (research/EXP-FX000001/00-spec.md から転記)
 KPI_THRESHOLDS: dict[str, dict[str, float]] = {
     "SYS-FX007": {
@@ -68,7 +83,7 @@ KPI_THRESHOLDS: dict[str, dict[str, float]] = {
         "backtest_forward_divergence_pct": 30.0,  # K6m
         "max_margin_usage_pct": 30.0,     # K7m
         "weak_breakout_exclusion_pct": 30.0,  # v2 拡張
-        "min_n_trades": 60,               # 統計的有意性
+        "min_n_trades": MIN_N_TRADES_STATISTICAL,  # 統計的有意性 (2026-08-17 再導出、旧60)
         "permutation_p_value": 0.05,      # 統計的有意性
     },
     "SYS-FX008": {
@@ -85,7 +100,7 @@ KPI_THRESHOLDS: dict[str, dict[str, float]] = {
         "backtest_forward_divergence_pct": 30.0,  # K6m
         "max_margin_usage_pct": 30.0,     # K7m (判定対象外だが閾値自体は形式上必要)
         "weak_breakout_exclusion_pct": 0.0,  # SYS-FX008にMT-3フォールバック概念はないためno-op (0以上は常に真)
-        "min_n_trades": 66,               # 統計的有意性 (00-spec.md v1)
+        "min_n_trades": MIN_N_TRADES_STATISTICAL,  # 統計的有意性 (2026-08-17 再導出、旧66)
         "permutation_p_value": 0.05,      # 統計的有意性
     },
     "SYS-FX009": {
@@ -102,7 +117,7 @@ KPI_THRESHOLDS: dict[str, dict[str, float]] = {
         "backtest_forward_divergence_pct": 30.0,  # K6m
         "max_margin_usage_pct": 30.0,     # K7m (判定対象外だが閾値自体は形式上必要)
         "weak_breakout_exclusion_pct": 0.0,  # SYS-FX009にMT-3フォールバック概念はないためno-op
-        "min_n_trades": 66,               # 統計的有意性 (SYS-FX007/008と同一)
+        "min_n_trades": MIN_N_TRADES_STATISTICAL,  # 統計的有意性 (2026-08-17 再導出、旧66)
         "permutation_p_value": 0.05,      # 統計的有意性
     },
 }

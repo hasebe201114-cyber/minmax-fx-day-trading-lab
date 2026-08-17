@@ -21,7 +21,7 @@ def _full_pass_stats(**overrides) -> Stats:
     base: Stats = {
         "strategy_id": "SYS-FX007",
         "n_days": 95,
-        "n_trades": 80,
+        "n_trades": 320,  # min_n_trades=300 (2026-08-17 検出力再導出後) を上回る値
         "sharpe": 0.6,
         "sharpe_monthly": 0.6,
         "regime": "TREND",
@@ -108,7 +108,7 @@ def test_evaluate_kpis_marks_unhedged_margin_as_not_applicable() -> None:
 
 
 def test_evaluate_kpis_min_n_trades_fails_below_threshold() -> None:
-    """OBS000007 追記6 の実測 (最大 n=18) が min_n_trades=60 未達になることを確認."""
+    """OBS000007 追記6 の実測 (最大 n=18) が min_n_trades=300 (2026-08-17 検出力再導出後、旧60) 未達になることを確認."""
     evals = evaluate_kpis(_full_pass_stats(n_trades=18))
     gate = next(e for e in evals if e.metric == "min_n_trades")
     assert gate.pass_ is False
