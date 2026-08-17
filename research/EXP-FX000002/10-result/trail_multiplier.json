@@ -1,0 +1,11 @@
+{
+  "generated_at": "2026-08-17T02:57:57.536193",
+  "train_period": [
+    "2023-11-01",
+    "2025-03-31"
+  ],
+  "horizon_d1_bars": 15,
+  "pooled_n_signals": 285,
+  "atr_trail_multiplier": 1.47,
+  "_note": "この値はTrain再評価の結果を見た後も変更しない"
+}
