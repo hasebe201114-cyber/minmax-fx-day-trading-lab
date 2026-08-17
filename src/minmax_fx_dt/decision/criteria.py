@@ -70,6 +70,23 @@ KPI_THRESHOLDS: dict[str, dict[str, float]] = {
         "min_n_trades": 60,               # 統計的有意性
         "permutation_p_value": 0.05,      # 統計的有意性
     },
+    "SYS-FX008": {
+        # EXP-FX000002/00-spec.md v1 から転記。SYS-FX007と同一のK1m〜K6m基準を使い
+        # ポートフォリオ比較を可能にする。K7m は片側ポジションのみのため対象外
+        # (hedging_enabled=False で evaluate_kpis() が自動的に判定対象外にする)。
+        "sharpe_monthly": 0.4,            # K1m
+        "profit_factor_monthly": 1.2,     # K1m
+        "max_dd_monthly_pct": 10.0,       # K2m (証拠金 %)
+        "max_dd_yearly_pct": 20.0,        # K2m
+        "max_consecutive_losses": 5,      # K3m
+        "payoff_ratio": 1.5,              # K4m
+        "spread_cost_multiple": 3.0,      # K5m
+        "backtest_forward_divergence_pct": 30.0,  # K6m
+        "max_margin_usage_pct": 30.0,     # K7m (判定対象外だが閾値自体は形式上必要)
+        "weak_breakout_exclusion_pct": 0.0,  # SYS-FX008にMT-3フォールバック概念はないためno-op (0以上は常に真)
+        "min_n_trades": 66,               # 統計的有意性 (00-spec.md v1)
+        "permutation_p_value": 0.05,      # 統計的有意性
+    },
 }
 
 # Day 30 短期撤退閾値 (親PJ踏襲)
