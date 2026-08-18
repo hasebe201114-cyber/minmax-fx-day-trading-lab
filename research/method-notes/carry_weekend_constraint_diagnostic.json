@@ -1,0 +1,71 @@
+{
+  "generated_at": "2026-08-18T23:55:55.352680",
+  "train_period": [
+    "2023-11-01",
+    "2025-03-31"
+  ],
+  "lot_size": 1000,
+  "results": {
+    "USD_JPY": {
+      "unconstrained": {
+        "price_pnl_jpy": -1856.0,
+        "swap_pnl_jpy": 8528.0,
+        "total_jpy": 6672.0
+      },
+      "weekly_cycle_constrained": {
+        "n_weeks": 74,
+        "price_pnl_jpy": 517.0,
+        "swap_pnl_jpy": 8513.0,
+        "total_jpy": 9030.0
+      },
+      "swap_capture_ratio": 0.9983,
+      "total_capture_ratio": 1.3534
+    },
+    "EUR_JPY": {
+      "unconstrained": {
+        "price_pnl_jpy": 1851.0,
+        "swap_pnl_jpy": 6313.0,
+        "total_jpy": 8164.0
+      },
+      "weekly_cycle_constrained": {
+        "n_weeks": 74,
+        "price_pnl_jpy": 5990.0,
+        "swap_pnl_jpy": 6305.0,
+        "total_jpy": 12295.0
+      },
+      "swap_capture_ratio": 0.9988,
+      "total_capture_ratio": 1.506
+    },
+    "GBP_JPY": {
+      "unconstrained": {
+        "price_pnl_jpy": 9544.0,
+        "swap_pnl_jpy": 10900.0,
+        "total_jpy": 20444.0
+      },
+      "weekly_cycle_constrained": {
+        "n_weeks": 74,
+        "price_pnl_jpy": 14053.0,
+        "swap_pnl_jpy": 10880.0,
+        "total_jpy": 24933.0
+      },
+      "swap_capture_ratio": 0.9982,
+      "total_capture_ratio": 1.2196
+    },
+    "AUD_JPY": {
+      "unconstrained": {
+        "price_pnl_jpy": -1937.0,
+        "swap_pnl_jpy": 4489.0,
+        "total_jpy": 2552.0
+      },
+      "weekly_cycle_constrained": {
+        "n_weeks": 74,
+        "price_pnl_jpy": -658.0,
+        "swap_pnl_jpy": 4481.0,
+        "total_jpy": 3823.0
+      },
+      "swap_capture_ratio": 0.9983,
+      "total_capture_ratio": 1.4983
+    }
+  },
+  "_note": "無制約(真のバイ&ホールド)と週次サイクル制約(週末持ち越し禁止ルール遵守)を比較し、本PJのスコープ制約がキャリー戦略の収益(特にスワップ捕捉率)にどれだけ影響するかを定量化。再エントリーのスリッページ/スプレッドコストは含めない(制約自体の構造的影響のみを見るため)。"
+}
