@@ -1,0 +1,91 @@
+{
+  "generated_at": "2026-08-18T13:33:29.677277",
+  "train_period": [
+    "2023-11-01",
+    "2025-03-31"
+  ],
+  "percentile_candidates": [
+    50,
+    60,
+    70,
+    80
+  ],
+  "horizon": {
+    "label": "3d",
+    "bars": 72
+  },
+  "n_tests": 4,
+  "bonferroni_alpha": 0.0125,
+  "results": {
+    "p50": {
+      "percentile": 50,
+      "thresholds": {
+        "USD_JPY": 18.16,
+        "EUR_JPY": 31.55,
+        "GBP_JPY": 28.93,
+        "AUD_JPY": 25.28,
+        "EUR_USD": 17.81
+      },
+      "n": 207,
+      "mean": 0.000912,
+      "win_rate": 0.512,
+      "n_effective": 70,
+      "judgeable": true,
+      "p_value_corr_adjusted": 0.4845,
+      "survives_bonferroni": false
+    },
+    "p60": {
+      "percentile": 60,
+      "thresholds": {
+        "USD_JPY": 18.69,
+        "EUR_JPY": 38.6,
+        "GBP_JPY": 38.67,
+        "AUD_JPY": 29.6,
+        "EUR_USD": 19.89
+      },
+      "n": 171,
+      "mean": 0.001311,
+      "win_rate": 0.497,
+      "n_effective": 58,
+      "judgeable": true,
+      "p_value_corr_adjusted": 0.6414,
+      "survives_bonferroni": false
+    },
+    "p70": {
+      "percentile": 70,
+      "thresholds": {
+        "USD_JPY": 21.39,
+        "EUR_JPY": 43.19,
+        "GBP_JPY": 42.06,
+        "AUD_JPY": 33.56,
+        "EUR_USD": 25.27
+      },
+      "n": 126,
+      "mean": 0.002351,
+      "win_rate": 0.524,
+      "n_effective": 43,
+      "judgeable": true,
+      "p_value_corr_adjusted": 0.1229,
+      "survives_bonferroni": false
+    },
+    "p80": {
+      "percentile": 80,
+      "thresholds": {
+        "USD_JPY": 24.21,
+        "EUR_JPY": 47.04,
+        "GBP_JPY": 47.14,
+        "AUD_JPY": 35.64,
+        "EUR_USD": 28.97
+      },
+      "n": 85,
+      "mean": 0.003085,
+      "win_rate": 0.518,
+      "n_effective": 29,
+      "judgeable": false,
+      "p_value_corr_adjusted": null,
+      "survives_bonferroni": false
+    }
+  },
+  "survivors": [],
+  "_note": "W1_ADX(14,Wilder)フィルターの閾値パーセンタイルを50/60/70/80で振った感度検証。3dホライズンのみ対象。"
+}
