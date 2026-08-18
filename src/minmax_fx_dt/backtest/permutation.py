@@ -17,16 +17,66 @@
 帰無仮説 H0: 各トレードの勝敗方向 (符号) はエッジと無関係な五分五分のコイン投げであり、
     観測された平均損益は偶然の産物である (絶対値=値幅はエッジの有無に関わらず同じという仮定)。
 対立仮説 H1: 観測された平均損益はコイン投げでは説明できないほど大きい (=正のエッジがある)。
+
+追記 (2026-08-18、提案5「統計基盤の補正」対応):
+    上記の符号シャッフルは各トレードの符号を完全に独立に反転させるが、5通貨プール評価
+    (複数通貨のトレードを1本の配列に結合して1回のpermutation_test()に渡す運用)では、
+    異なる通貨ペアのトレードも独立とみなしてしまう。実測 (research/method-notes/
+    market_character.json、D1リターンのTrain期間相関) では、5通貨平均相関0.486
+    (実効独立数1.70)、JPYクロス4通貨限定では平均相関0.808 (実効独立数1.17) と、
+    通貨ペア間に無視できない相関が存在する。独立性を仮定した符号シャッフルは
+    帰無分布の分散を過小評価し、p値を楽観側(有意判定されやすい側)に歪める。
+
+    この歪みを補正するため `permutation_test_clustered()` を追加した。単一通貨での
+    検証や、通貨ラベルを持たない既存の診断スクリプトは従来通り `permutation_test()`
+    を使用してよい (後方互換のため変更しない)。5通貨プール評価にのみ新関数を使う。
+
+    設計変更の経緯 (2026-08-18、実装中に自己検証で発見): 当初は通貨を
+    JPYクロス/EUR_USDの2クラスタに分割し、1回のpermutation試行につきクラスタ数分
+    (2個)の符号のみを独立に引く設計だったが、過去3戦略のTVT結果で検証したところ
+    帰無分布が実質4通り(2クラスタ×±1)にしか分岐せず、p値が0.25刻みに近い粗い
+    離散値しか取れない欠陥が判明した(検証: `scripts/verify_cluster_correction_conclusions.py`)。
+    通貨ペアごとの実測相関行列(`PAIR_CORRELATION_MATRIX`)をガウス・コピュラの
+    相関としてそのまま使い、通貨ペア単位(5ペア→最大32通りの符号組み合わせ)で
+    相関した符号を生成する方式に修正し、粗い離散化を解消した。
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Sequence
+from typing import Mapping, Sequence
 
 import numpy as np
 
 DEFAULT_N_PERMUTATIONS = 1000  # spec 既定
+
+# 通貨間相関行列 (research/method-notes/market_character.json より、D1リターン・Train期間)
+PAIR_CORRELATION_MATRIX: dict[str, dict[str, float]] = {
+    "USD_JPY": {"USD_JPY": 1.0, "EUR_JPY": 0.7728, "GBP_JPY": 0.7871, "AUD_JPY": 0.6811, "EUR_USD": -0.4428},
+    "EUR_JPY": {"USD_JPY": 0.7728, "EUR_JPY": 1.0, "GBP_JPY": 0.9183, "AUD_JPY": 0.8384, "EUR_USD": 0.2249},
+    "GBP_JPY": {"USD_JPY": 0.7871, "EUR_JPY": 0.9183, "GBP_JPY": 1.0, "AUD_JPY": 0.8516, "EUR_USD": 0.0902},
+    "AUD_JPY": {"USD_JPY": 0.6811, "EUR_JPY": 0.8384, "GBP_JPY": 0.8516, "AUD_JPY": 1.0, "EUR_USD": 0.138},
+    "EUR_USD": {"USD_JPY": -0.4428, "EUR_JPY": 0.2249, "GBP_JPY": 0.0902, "AUD_JPY": 0.138, "EUR_USD": 1.0},
+}
+
+def effective_pair_count(pairs: Sequence[str]) -> float:
+    """指定した通貨サブセットの実効独立数を算出する.
+
+    N_eff = k / (1 + (k-1)*rho_bar) (analyze_market_character.py の
+    effective_independent_count() と同一の式・同一の相関行列を使用)。
+    """
+    unique_pairs = sorted(set(pairs))
+    k = len(unique_pairs)
+    if k <= 1:
+        return float(k)
+    off_diag = [
+        PAIR_CORRELATION_MATRIX[a][b]
+        for i, a in enumerate(unique_pairs)
+        for b in unique_pairs[i + 1:]
+    ]
+    rho_bar = sum(off_diag) / len(off_diag)
+    denom = 1.0 + (k - 1) * rho_bar
+    return k / denom if denom != 0 else float(k)
 
 
 @dataclass
@@ -113,4 +163,108 @@ def permutation_test(
     )
 
 
-__all__ = ["PermutationTestResult", "permutation_test", "DEFAULT_N_PERMUTATIONS"]
+def permutation_test_clustered(
+    trade_pnls: Sequence[float],
+    pairs: Sequence[str],
+    *,
+    n_permutations: int = DEFAULT_N_PERMUTATIONS,
+    seed: int | None = None,
+    correlation_matrix: Mapping[str, Mapping[str, float]] | None = None,
+) -> PermutationTestResult:
+    """通貨間相関を考慮した permutation test (ガウス・コピュラによる相関符号反転版).
+
+    `permutation_test()` は各トレードの符号を独立に反転させるが、これは複数通貨の
+    トレードをプールする際に「異なる通貨ペアのトレードも独立」という誤った前提を
+    含む (モジュール docstring の追記参照)。本関数は通貨ペアごとに、実測相関行列
+    (`PAIR_CORRELATION_MATRIX`) をガウス・コピュラの相関として使った相関乱数から
+    符号を生成する: 1回のpermutation試行につき通貨ペアの数だけ相関した標準正規
+    乱数を引き (相関行列のCholesky分解によるガウス・コピュラ)、閾値0で符号化して、
+    同一通貨ペアの全トレードへ一括適用する。高相関な通貨ペア (例: EUR/JPY・GBP/JPY
+    は相関0.918) はほぼ同じ符号を引きやすくなり、無相関/逆相関の通貨ペア (例:
+    EUR/USD) はより独立に近い形で符号が決まる — 実測された相関構造を反映した、
+    独立シャッフルより保守的な (広い) 帰無分布を与える。
+
+    簡略化の注記: 生成される符号どうしの相関は、二値変数の性質上、入力したガウス
+    相関よりもやや弱くなる (Corr(sign(X),sign(Y)) = (2/π)・arcsin(ρ) の関係)。厳密に
+    一致させるには逆変換 ρ_gauss = sin(ρ_target・π/2) が必要だが、実測相関行列に
+    この逆変換を適用すると半正定値性が崩れる (実装時に数値確認済み) ため、本関数は
+    実測相関をそのままガウス相関として使う単純化を採用している。この単純化は符号
+    相関をやや過小評価する方向 (=補正をやや弱める方向) に働くが、無相関を仮定する
+    `permutation_test()` よりは常に保守的である。
+
+    Args:
+        trade_pnls: 各トレードの損益 (円 or pips、符号付き)。
+        pairs: trade_pnls と同じ長さの、各トレードの通貨ペア名 (例: "USD_JPY")。
+        n_permutations: シャッフル回数。
+        seed: 乱数シード。
+        correlation_matrix: 通貨ペア間相関行列 (pair→pair→correlation)。省略時は
+            `PAIR_CORRELATION_MATRIX` (market_character.json のTrain期間実測値) を
+            使用。行列に無い通貨ペアが混在すると KeyError。
+
+    Returns:
+        PermutationTestResult。method フィールドに使用した通貨ペア数を明記する。
+    """
+    n = len(trade_pnls)
+    if len(pairs) != n:
+        raise ValueError(f"trade_pnls({n}件)とpairs({len(pairs)}件)の長さが一致しません")
+    if n == 0:
+        return PermutationTestResult(
+            n_trades=0,
+            n_permutations=n_permutations,
+            observed_statistic=0.0,
+            null_mean=0.0,
+            null_std=0.0,
+            p_value=1.0,
+            p_value_two_sided=1.0,
+            method="gaussian_copula_pair_sign_flip",
+        )
+
+    corr_map = correlation_matrix if correlation_matrix is not None else PAIR_CORRELATION_MATRIX
+    unique_pairs = sorted(set(pairs))
+    k = len(unique_pairs)
+    pair_index = {p: i for i, p in enumerate(unique_pairs)}
+    trade_pair_idx = np.array([pair_index[p] for p in pairs])
+
+    pnls = np.asarray(trade_pnls, dtype=float)
+    magnitudes = np.abs(pnls)
+    observed = float(pnls.mean())
+
+    rng = np.random.default_rng(seed)
+    if k == 1:
+        signs = rng.choice(np.array([-1.0, 1.0]), size=(n_permutations, n))
+    else:
+        sigma = np.array([[corr_map[a][b] for b in unique_pairs] for a in unique_pairs])
+        sigma = sigma + np.eye(k) * 1e-8  # Cholesky分解の数値安定化用の微小nugget
+        chol = np.linalg.cholesky(sigma)
+        z = rng.standard_normal(size=(n_permutations, k))
+        y = z @ chol.T
+        pair_signs = np.where(y >= 0.0, 1.0, -1.0)  # (n_permutations, k)
+        signs = pair_signs[:, trade_pair_idx]  # (n_permutations, n)
+
+    null_stats = (signs * magnitudes).mean(axis=1)
+
+    p_value = float((np.sum(null_stats >= observed) + 1) / (n_permutations + 1))
+    p_value_two_sided = float(
+        (np.sum(np.abs(null_stats) >= abs(observed)) + 1) / (n_permutations + 1)
+    )
+
+    return PermutationTestResult(
+        n_trades=n,
+        n_permutations=n_permutations,
+        observed_statistic=observed,
+        null_mean=float(null_stats.mean()),
+        null_std=float(null_stats.std()),
+        p_value=p_value,
+        p_value_two_sided=p_value_two_sided,
+        method=f"gaussian_copula_pair_sign_flip(k_pairs={k})",
+    )
+
+
+__all__ = [
+    "PermutationTestResult",
+    "permutation_test",
+    "permutation_test_clustered",
+    "effective_pair_count",
+    "PAIR_CORRELATION_MATRIX",
+    "DEFAULT_N_PERMUTATIONS",
+]

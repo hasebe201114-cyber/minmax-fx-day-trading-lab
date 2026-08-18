@@ -34,6 +34,8 @@ from enum import Enum
 from pathlib import Path
 from typing import TypedDict
 
+from ..backtest.permutation import effective_pair_count
+
 ROOT = Path(__file__).resolve().parents[3]
 REGIME_LATEST = ROOT / "research" / "regime_latest.json"
 
@@ -177,6 +179,26 @@ class Stats(TypedDict, total=False):
     permutation_p_value: float | None  # permutation test 未実行なら None (判定対象外)
     n_trades_per_currency: dict[str, int]  # 通貨別取引数
     hedging_enabled: bool  # 両建てロジックが実際に稼働したか (K7m の有効性判定用)
+    n_trades_effective: float  # 実効トレード数 (2026-08-18 提案5対応、明示指定時はこちらを優先)
+
+
+def compute_n_trades_effective(n_trades_per_currency: dict[str, int] | None, n_trades_fallback: int) -> float:
+    """通貨間相関を考慮した実効トレード数を算出する (2026-08-18 提案5対応).
+
+    `n_trades_per_currency` から実際にトレードが発生した通貨の組み合わせを特定し、
+    `backtest.permutation.effective_pair_count()` (market_character.json の実測相関から
+    N_eff = k/(1+(k-1)*rho_bar) で算出) を使って名目トレード数を実効値へ縮小する。
+    通貨別内訳が無い場合 (単一通貨評価など) は名目値をそのまま返す (後方互換)。
+    """
+    if not n_trades_per_currency:
+        return float(n_trades_fallback)
+    active = {pair: n for pair, n in n_trades_per_currency.items() if n > 0}
+    if len(active) <= 1:
+        return float(sum(active.values())) if active else float(n_trades_fallback)
+    n_total = sum(active.values())
+    n_pairs = len(active)
+    eff_count = effective_pair_count(list(active.keys()))
+    return n_total * (eff_count / n_pairs)
 
 
 def load_regime() -> str:
@@ -375,14 +397,21 @@ def evaluate_kpis(stats: Stats) -> list[KPIEvaluation]:
         )
     )
 
-    # 統計的有意性: 有効サンプル数
+    # 統計的有意性: 有効サンプル数 (2026-08-18 提案5対応: 名目→実効トレード数へ切替え)
     n_trades = int(stats.get("n_trades", 0))
+    n_trades_effective = stats.get("n_trades_effective")
+    if n_trades_effective is None:
+        n_trades_effective = compute_n_trades_effective(stats.get("n_trades_per_currency"), n_trades)
+    else:
+        n_trades_effective = float(n_trades_effective)
+    note = "" if n_trades_effective == n_trades else f"名目n_trades={n_trades}(通貨間相関を考慮し実効値へ縮小)"
     evals.append(
         KPIEvaluation(
             "min_n_trades",
-            float(n_trades),
+            round(n_trades_effective, 2),
             thresholds["min_n_trades"],
-            n_trades >= thresholds["min_n_trades"],
+            n_trades_effective >= thresholds["min_n_trades"],
+            note,
         )
     )
 

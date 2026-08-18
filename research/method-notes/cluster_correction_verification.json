@@ -1,0 +1,60 @@
+{
+  "generated_at": "2026-08-18T22:11:33.304140",
+  "significance_threshold": 0.05,
+  "n_cells": 5,
+  "n_conclusion_changed": 0,
+  "n_more_conservative": 3,
+  "results": [
+    {
+      "label": "SYS-FX007_D1_train",
+      "n_trades": 125,
+      "naive_p_value": 0.6024,
+      "clustered_p_value": 0.4955,
+      "clustered_more_conservative": false,
+      "naive_significant": false,
+      "clustered_significant": false,
+      "conclusion_unchanged": true
+    },
+    {
+      "label": "SYS-FX008_E1_trail_train",
+      "n_trades": 163,
+      "naive_p_value": 0.1658,
+      "clustered_p_value": 0.4695,
+      "clustered_more_conservative": true,
+      "naive_significant": false,
+      "clustered_significant": false,
+      "conclusion_unchanged": true
+    },
+    {
+      "label": "SYS-FX009_baseline_train",
+      "n_trades": 95,
+      "naive_p_value": 0.2707,
+      "clustered_p_value": 0.4685,
+      "clustered_more_conservative": true,
+      "naive_significant": false,
+      "clustered_significant": false,
+      "conclusion_unchanged": true
+    },
+    {
+      "label": "SYS-FX009_baseline_validation",
+      "n_trades": 46,
+      "naive_p_value": 0.7742,
+      "clustered_p_value": 0.5405,
+      "clustered_more_conservative": false,
+      "naive_significant": false,
+      "clustered_significant": false,
+      "conclusion_unchanged": true
+    },
+    {
+      "label": "SYS-FX009_baseline_test",
+      "n_trades": 29,
+      "naive_p_value": 0.4735,
+      "clustered_p_value": 0.5025,
+      "clustered_more_conservative": true,
+      "naive_significant": false,
+      "clustered_significant": false,
+      "conclusion_unchanged": true
+    }
+  ],
+  "_note": "permutation_test()(独立符号シャッフル、旧方式)とpermutation_test_clustered()(通貨クラスタ単位、新方式)を過去3戦略の代表セルで比較。新方式が旧方式よりp値が大きく(保守的)、かつ有意水準0.05を跨ぐ結論変化が無いことを確認する提案5の成功基準3の検証。"
+}
