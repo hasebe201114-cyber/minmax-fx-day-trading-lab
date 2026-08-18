@@ -1,0 +1,79 @@
+{
+  "generated_at": "2026-08-18T22:56:03.903462",
+  "train_period": [
+    "2023-11-01",
+    "2025-03-31"
+  ],
+  "timeframe": "H1",
+  "context": "continuation_only, scaled_exit_scheme(40/35/25%)",
+  "stop_k_candidates": [
+    0.7,
+    0.5,
+    0.3
+  ],
+  "n_tests": 3,
+  "bonferroni_alpha": 0.016667,
+  "n_total_events": 673,
+  "baseline_k1_0": {
+    "n": 673,
+    "mean_r": 0.0052,
+    "win_rate": 0.495,
+    "n_effective": 229,
+    "judgeable": true,
+    "exit_reason_counts": {
+      "SL_INITIAL_NO_TP": 338,
+      "TP_THEN_SL_TRAIL": 243,
+      "TP_FULL": 81,
+      "MAX_HOLD": 11
+    },
+    "perm_p": 0.8012
+  },
+  "candidates": {
+    "0.7": {
+      "n": 673,
+      "mean_r": 0.0551,
+      "win_rate": 0.431,
+      "n_effective": 229,
+      "judgeable": true,
+      "exit_reason_counts": {
+        "SL_INITIAL_NO_TP": 382,
+        "TP_THEN_SL_TRAIL": 210,
+        "TP_FULL": 75,
+        "MAX_HOLD": 6
+      },
+      "perm_p": 0.5904,
+      "survives_bonferroni": false
+    },
+    "0.5": {
+      "n": 673,
+      "mean_r": 0.0619,
+      "win_rate": 0.358,
+      "n_effective": 229,
+      "judgeable": true,
+      "exit_reason_counts": {
+        "SL_INITIAL_NO_TP": 432,
+        "TP_THEN_SL_TRAIL": 174,
+        "TP_FULL": 64,
+        "MAX_HOLD": 3
+      },
+      "perm_p": 0.2877,
+      "survives_bonferroni": false
+    },
+    "0.3": {
+      "n": 673,
+      "mean_r": 0.0598,
+      "win_rate": 0.257,
+      "n_effective": 229,
+      "judgeable": true,
+      "exit_reason_counts": {
+        "SL_INITIAL_NO_TP": 500,
+        "TP_THEN_SL_TRAIL": 121,
+        "TP_FULL": 50,
+        "MAX_HOLD": 2
+      },
+      "perm_p": 0.2677,
+      "survives_bonferroni": false
+    }
+  },
+  "_note": "TP価格水準(1R/2R/3R、risk_original基準)は固定したまま、初期ストップだけをrisk_originalに対するk倍へタイト化した場合の効果を測定。R値は常にrisk_originalで正規化(kによらず同じモノサシ)。方向性エッジ自体は既に非有意と確定済みのため、この結果はペイオフ構造改善のみを対象とした診断であり、有意化しても即採用可を意味しない(K1m〜K7m等他のKPIも別途要確認)。"
+}
