@@ -1,0 +1,181 @@
+{
+  "generated_at": "2026-08-18T06:41:16.610351",
+  "train_period": [
+    "2023-11-01",
+    "2025-03-31"
+  ],
+  "adx_length": 14,
+  "adx_percentile": 70,
+  "horizons_h1_bars": {
+    "4h": 4,
+    "1d": 24,
+    "3d": 72
+  },
+  "effective_pair_count": 1.7,
+  "d1_adx_thresholds": {
+    "USD_JPY": 35.57883564913038,
+    "EUR_JPY": 25.298027994921938,
+    "GBP_JPY": 26.822423795587827,
+    "AUD_JPY": 30.47917745386568,
+    "EUR_USD": 31.67298897100092
+  },
+  "w1_adx_thresholds": {
+    "USD_JPY": 21.392079076340433,
+    "EUR_JPY": 43.192526254353616,
+    "GBP_JPY": 42.05705567851519,
+    "AUD_JPY": 33.56044017949348,
+    "EUR_USD": 25.272820204436254
+  },
+  "n_total_events": 673,
+  "n_tests": 15,
+  "bonferroni_alpha": 0.003333,
+  "results": {
+    "continuation_all(参考)": {
+      "4h": {
+        "n": 673,
+        "mean": -1e-05,
+        "win_rate": 0.508,
+        "n_effective": 229,
+        "judgeable": true,
+        "p_value_corr_adjusted": 0.9311,
+        "survives_bonferroni": false
+      },
+      "1d": {
+        "n": 673,
+        "mean": 0.000267,
+        "win_rate": 0.516,
+        "n_effective": 229,
+        "judgeable": true,
+        "p_value_corr_adjusted": 0.4366,
+        "survives_bonferroni": false
+      },
+      "3d": {
+        "n": 669,
+        "mean": 0.000493,
+        "win_rate": 0.511,
+        "n_effective": 227,
+        "judgeable": true,
+        "p_value_corr_adjusted": 0.4645,
+        "survives_bonferroni": false
+      }
+    },
+    "D1_ADX_TRENDING(同一時間軸、過去実績あり)": {
+      "4h": {
+        "n": 170,
+        "mean": 8.1e-05,
+        "win_rate": 0.524,
+        "n_effective": 58,
+        "judgeable": true,
+        "p_value_corr_adjusted": 0.2537,
+        "survives_bonferroni": false
+      },
+      "1d": {
+        "n": 170,
+        "mean": 0.000838,
+        "win_rate": 0.529,
+        "n_effective": 58,
+        "judgeable": true,
+        "p_value_corr_adjusted": 0.1548,
+        "survives_bonferroni": false
+      },
+      "3d": {
+        "n": 170,
+        "mean": 0.000941,
+        "win_rate": 0.488,
+        "n_effective": 58,
+        "judgeable": true,
+        "p_value_corr_adjusted": 0.4935,
+        "survives_bonferroni": false
+      }
+    },
+    "D1_ADX_NOT_TRENDING": {
+      "4h": {
+        "n": 503,
+        "mean": -4e-05,
+        "win_rate": 0.503,
+        "n_effective": 171,
+        "judgeable": true,
+        "p_value_corr_adjusted": 0.7033,
+        "survives_bonferroni": false
+      },
+      "1d": {
+        "n": 503,
+        "mean": 7.4e-05,
+        "win_rate": 0.511,
+        "n_effective": 171,
+        "judgeable": true,
+        "p_value_corr_adjusted": 0.8462,
+        "survives_bonferroni": false
+      },
+      "3d": {
+        "n": 499,
+        "mean": 0.000341,
+        "win_rate": 0.519,
+        "n_effective": 170,
+        "judgeable": true,
+        "p_value_corr_adjusted": 0.6264,
+        "survives_bonferroni": false
+      }
+    },
+    "W1_ADX_TRENDING(一つ上の時間軸、司令塔提案・過去未検証)": {
+      "4h": {
+        "n": 127,
+        "mean": -0.000132,
+        "win_rate": 0.559,
+        "n_effective": 43,
+        "judgeable": true,
+        "p_value_corr_adjusted": 0.8891,
+        "survives_bonferroni": false
+      },
+      "1d": {
+        "n": 127,
+        "mean": 0.000474,
+        "win_rate": 0.535,
+        "n_effective": 43,
+        "judgeable": true,
+        "p_value_corr_adjusted": 0.6184,
+        "survives_bonferroni": false
+      },
+      "3d": {
+        "n": 126,
+        "mean": 0.002351,
+        "win_rate": 0.524,
+        "n_effective": 43,
+        "judgeable": true,
+        "p_value_corr_adjusted": 0.1229,
+        "survives_bonferroni": false
+      }
+    },
+    "W1_ADX_NOT_TRENDING": {
+      "4h": {
+        "n": 546,
+        "mean": 1.9e-05,
+        "win_rate": 0.496,
+        "n_effective": 186,
+        "judgeable": true,
+        "p_value_corr_adjusted": 0.6404,
+        "survives_bonferroni": false
+      },
+      "1d": {
+        "n": 546,
+        "mean": 0.000219,
+        "win_rate": 0.511,
+        "n_effective": 186,
+        "judgeable": true,
+        "p_value_corr_adjusted": 0.3836,
+        "survives_bonferroni": false
+      },
+      "3d": {
+        "n": 543,
+        "mean": 6.2e-05,
+        "win_rate": 0.508,
+        "n_effective": 185,
+        "judgeable": true,
+        "p_value_corr_adjusted": 0.3127,
+        "survives_bonferroni": false
+      }
+    }
+  },
+  "survivors": [],
+  "_note": "継続文脈のダブルトップ/ボトム(H1)に、D1(同一時間軸・過去実績あり)とW1(一つ上の時間軸・司令塔提案・過去未検証)のADX(14,Wilder)強度フィルターをそれぞれ追加した場合の前方リターンIC比較。"
+}
