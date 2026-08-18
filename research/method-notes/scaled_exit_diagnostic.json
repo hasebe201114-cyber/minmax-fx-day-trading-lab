@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-18T00:00:09.670201",
+  "generated_at": "2026-08-18T02:22:53.258584",
   "train_period": [
     "2023-11-01",
     "2025-03-31"
@@ -98,6 +98,156 @@
       "MAX_HOLD": 12
     },
     "perm_p": 0.8841
+  },
+  "old_scheme_r_distribution": {
+    "spike_minus_1R": 338,
+    "spike_second": {
+      "label": "ブレイクイーブン(1R到達後に建値まで戻された)",
+      "value": 0.0,
+      "count": 104
+    },
+    "rest_bins": [
+      {
+        "range": [
+          -0.2,
+          0.0
+        ],
+        "count": 1
+      },
+      {
+        "range": [
+          0.0,
+          0.15
+        ],
+        "count": 18
+      },
+      {
+        "range": [
+          0.15,
+          0.2
+        ],
+        "count": 11
+      },
+      {
+        "range": [
+          0.2,
+          0.6
+        ],
+        "count": 55
+      },
+      {
+        "range": [
+          0.6,
+          1.0
+        ],
+        "count": 43
+      },
+      {
+        "range": [
+          1.0,
+          1.5
+        ],
+        "count": 46
+      },
+      {
+        "range": [
+          1.5,
+          2.0
+        ],
+        "count": 19
+      },
+      {
+        "range": [
+          2.0,
+          3.0
+        ],
+        "count": 21
+      },
+      {
+        "range": [
+          3.0,
+          7.0
+        ],
+        "count": 16
+      }
+    ],
+    "rest_n": 231,
+    "rest_min": -0.2858,
+    "rest_max": 6.5313
+  },
+  "scaled_scheme_r_distribution": {
+    "spike_minus_1R": 338,
+    "spike_second": {
+      "label": "TP全達成(理論上限1.85R)",
+      "value": 1.85,
+      "count": 81
+    },
+    "rest_bins": [
+      {
+        "range": [
+          -0.2,
+          0.2
+        ],
+        "count": 4
+      },
+      {
+        "range": [
+          0.2,
+          0.6
+        ],
+        "count": 130
+      },
+      {
+        "range": [
+          0.6,
+          1.0
+        ],
+        "count": 36
+      },
+      {
+        "range": [
+          1.0,
+          1.5
+        ],
+        "count": 78
+      },
+      {
+        "range": [
+          1.5,
+          1.85
+        ],
+        "count": 5
+      },
+      {
+        "range": [
+          1.85,
+          2.0
+        ],
+        "count": 0
+      },
+      {
+        "range": [
+          2.0,
+          3.0
+        ],
+        "count": 0
+      },
+      {
+        "range": [
+          3.0,
+          7.0
+        ],
+        "count": 0
+      }
+    ],
+    "rest_n": 254,
+    "rest_min": -0.2858,
+    "rest_max": 1.6126
+  },
+  "old_scheme_tail_beyond_scaled_ceiling": {
+    "n": 42,
+    "sum_extra_r": 57.3242,
+    "mean_contribution_to_all_673": 0.0852
   },
   "scaled_scheme": {
     "n": 673,

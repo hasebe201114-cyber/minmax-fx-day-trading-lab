@@ -354,6 +354,38 @@ def print_breakdown(summary: dict, label: str) -> None:
     print()
 
 
+def r_distribution(results: list[dict], second_spike_value: float, second_spike_label: str) -> dict:
+    """1トレード当たりのRマルチプルをレンジ別に集計する.
+
+    構造的に厳密に同じ値へ集中する決済(初期SLの-1.0R・旧方式のブレイクイーブン
+    0.0R・新方式のTP全達成の上限値1.85R)は、その原因が「価格が偶然そこで止まった」
+    のではなく、ストップ幅/利確幅の定義そのものから機械的に決まる値であるため、
+    独立した特異点として分離して集計する。それ以外は連続値としてビン分割する。
+    """
+    rs = [r["r"] for r in results]
+
+    def is_near(r: float, v: float, tol: float = 1e-6) -> bool:
+        return abs(r - v) < tol
+
+    n_neg1 = sum(1 for r in rs if is_near(r, -1.0))
+    n_second = sum(1 for r in rs if is_near(r, second_spike_value))
+    rest = [r for r in rs if not is_near(r, -1.0) and not is_near(r, second_spike_value)]
+
+    edges = sorted(set([-0.2, 0.2, 0.6, 1.0, 1.5, second_spike_value, second_spike_value + 0.15, 2.0, 3.0, 7.0]))
+    hist, bin_edges = np.histogram(rest, bins=edges)
+    bins = [{"range": [round(float(bin_edges[i]), 3), round(float(bin_edges[i + 1]), 3)], "count": int(hist[i])}
+            for i in range(len(hist))]
+
+    return {
+        "spike_minus_1R": n_neg1,
+        "spike_second": {"label": second_spike_label, "value": round(second_spike_value, 4), "count": n_second},
+        "rest_bins": bins,
+        "rest_n": len(rest),
+        "rest_min": round(min(rest), 4) if rest else None,
+        "rest_max": round(max(rest), 4) if rest else None,
+    }
+
+
 def main() -> int:
     print("=== SYS-FX009派生診断: H1 + 段階利確(40/35/25%)の効果測定 (Train期間・継続文脈のみ、反転文脈は除外) ===\n")
     with (ROOT / "research" / "EXP-FX000003" / "10-result" / "double_pattern_params_h1.json").open(encoding="utf-8") as f:
@@ -391,6 +423,27 @@ def main() -> int:
     print_breakdown(old_summary, "旧方式: 1R到達で全量利確、以降BE+ATRトレーリング")
     print_breakdown(scaled_summary, "新方式: 1R=40%/2R=35%/3R=25%の段階利確、1R到達後はBE+ATRトレーリング")
 
+    tp_ceiling = sum(r * frac for r, frac in TP_LEVELS)
+    old_dist = r_distribution(old_results, second_spike_value=0.0, second_spike_label="ブレイクイーブン(1R到達後に建値まで戻された)")
+    scaled_dist = r_distribution(scaled_results, second_spike_value=tp_ceiling, second_spike_label=f"TP全達成(理論上限{tp_ceiling}R)")
+
+    print(f"--- 損益(R)のレンジ別分布 ---")
+    print(f"旧方式: -1.0R(初期SL全損)={old_dist['spike_minus_1R']}件、"
+          f"0.0R(1R到達後ブレイクイーブン)={old_dist['spike_second']['count']}件")
+    print(f"新方式: -1.0R(初期SL全損)={scaled_dist['spike_minus_1R']}件、"
+          f"{tp_ceiling}R(TP全達成・理論上限)={scaled_dist['spike_second']['count']}件")
+    print("残り(上記の特異点を除く連続値)のレンジ別件数:")
+    print(f"  {'range':<18}{'旧方式':>8}{'新方式':>8}")
+    old_bin_map = {tuple(b["range"]): b["count"] for b in old_dist["rest_bins"]}
+    scaled_bin_map = {tuple(b["range"]): b["count"] for b in scaled_dist["rest_bins"]}
+    all_ranges = sorted(set(old_bin_map) | set(scaled_bin_map))
+    for rng in all_ranges:
+        print(f"  [{rng[0]:>5}, {rng[1]:>5}) {old_bin_map.get(rng,0):>8}{scaled_bin_map.get(rng,0):>8}")
+    n_old_tail = sum(1 for r in old_results if r["r"] > tp_ceiling)
+    sum_old_tail_extra = sum(r["r"] - tp_ceiling for r in old_results if r["r"] > tp_ceiling)
+    print(f"\n旧方式のみに存在する「新方式の上限{tp_ceiling}Rを超える」トレード: {n_old_tail}件 "
+          f"(上限超過分の合計+{round(sum_old_tail_extra,2)}R、全673件平均への寄与は+{round(sum_old_tail_extra/len(old_results),4)}R)\n")
+
     if old_summary["n"] == scaled_summary["n"] and old_summary["n"] > 0:
         old_rs = [r["r"] for r in old_results]
         scaled_rs = [r["r"] for r in scaled_results]
@@ -412,6 +465,12 @@ def main() -> int:
             "n_entries_by_pair": n_entries_by_pair,
             "n_reversal_excluded_by_pair": n_reversal_by_pair,
             "old_scheme": old_summary,
+            "old_scheme_r_distribution": old_dist,
+            "scaled_scheme_r_distribution": scaled_dist,
+            "old_scheme_tail_beyond_scaled_ceiling": {
+                "n": n_old_tail, "sum_extra_r": round(sum_old_tail_extra, 4),
+                "mean_contribution_to_all_673": round(sum_old_tail_extra / len(old_results), 4),
+            },
             "scaled_scheme": scaled_summary,
             "old_scheme_results": [{"r": round(r["r"], 4), "exit_reason": r["exit_reason"]} for r in old_results],
             "scaled_scheme_results": [
