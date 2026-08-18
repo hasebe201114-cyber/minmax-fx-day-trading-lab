@@ -1,0 +1,49 @@
+{
+  "generated_at": "2026-08-18T16:11:58.672752",
+  "train_period": [
+    "2023-11-01",
+    "2025-03-31"
+  ],
+  "max_pullback_wait_bars": 24,
+  "pullback_tolerance_atr": 0.3,
+  "n_tests": 1,
+  "bonferroni_alpha": 0.05,
+  "n_total_break_events": 673,
+  "status_counts": {
+    "TRIGGERED": 523,
+    "INVALIDATED": 96,
+    "TIMEOUT": 54
+  },
+  "trigger_rate": 0.7771,
+  "n_events_by_pair": {
+    "USD_JPY": 136,
+    "EUR_JPY": 126,
+    "GBP_JPY": 135,
+    "AUD_JPY": 113,
+    "EUR_USD": 163
+  },
+  "immediate_entry_matched": {
+    "n": 523,
+    "mean_r": 0.1487,
+    "win_rate": 0.562,
+    "n_effective": 178,
+    "judgeable": true,
+    "perm_p": 0.04,
+    "survives_bonferroni": null
+  },
+  "pullback_entry": {
+    "n": 523,
+    "mean_r": 0.0373,
+    "win_rate": 0.501,
+    "n_effective": 178,
+    "judgeable": true,
+    "perm_p": 0.5864,
+    "survives_bonferroni": false
+  },
+  "paired_diff": {
+    "n": 523,
+    "mean_diff_r": -0.1114,
+    "pullback_better_fraction": 0.132
+  },
+  "_note": "戻りのエントリータイミング(ブレイク&リテスト)を、即時エントリーのマッチド・ペア比較で検証。SL式は不変(参照ATRバーのみ変更)。イグジットは新方式(40/35/25%段階利確)のみで比較。戻りが成立したイベントに限定した診断であり、正式なバックテストKPI評価ではない。"
+}
