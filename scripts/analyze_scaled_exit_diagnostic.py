@@ -160,8 +160,57 @@ def find_continuation_entries(pair: str, params: dict) -> list[dict]:
     return entries
 
 
-def simulate_old_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, trail_mult: float) -> float:
-    """旧方式: 1R到達で全量、以降BE+ATRトレーリング。戻り値はRマルチプル."""
+def count_reversal_signals(pair: str, params: dict) -> int:
+    """参考値: 継続文脈ゲートで除外される反転文脈(LT不一致)のブレイクが何件あるかを数える.
+
+    本番のevaluate_double_pattern_signal・find_continuation_entries()と同じく
+    シミュレーション対象には一切含めない。除外されていることの確認用。
+    """
+    m5 = load_m5(pair)
+    h1 = to_h1(m5)
+    d1 = to_d1(m5)
+    atr_h1 = atr_ind(h1["high"], h1["low"], h1["close"], length=14)
+    lt_dir = lt_direction_series(d1)
+
+    pivots = zigzag_pivots_typed(h1["high"], h1["low"], atr_h1, params["zigzag_threshold_atr"])
+    triplets = alternating_triplets(pivots)
+    tol = params["pattern_tolerance_atr"]
+    cap = params["break_search_cap_bars"]
+
+    n_reversal = 0
+    for idx1, kind1, idx2, _k2, idx3, _k3 in triplets:
+        required_lt = "DOWN" if kind1 == "HIGH" else "UP"
+        atr_neckline = atr_h1.iloc[idx2]
+        if pd.isna(atr_neckline) or atr_neckline <= 0:
+            continue
+        p1 = float(h1["high" if kind1 == "HIGH" else "low"].iloc[idx1])
+        p2 = float(h1["high" if kind1 == "HIGH" else "low"].iloc[idx3])
+        if abs(p1 - p2) / float(atr_neckline) > tol:
+            continue
+        neckline = float(h1["low" if kind1 == "HIGH" else "high"].iloc[idx2])
+        search_end = min(idx3 + 1 + cap, len(h1))
+        for j in range(idx3 + 1, search_end):
+            broke = (
+                (kind1 == "HIGH" and float(h1["low"].iloc[j]) < neckline)
+                or (kind1 == "LOW" and float(h1["high"].iloc[j]) > neckline)
+            )
+            if not broke:
+                continue
+            lt_at_break = lt_dir.asof(h1.index[j])
+            if lt_at_break != required_lt:
+                n_reversal += 1
+            break
+    return n_reversal
+
+
+def simulate_old_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, trail_mult: float) -> dict:
+    """旧方式: 1R到達で全量、以降BE+ATRトレーリング。
+
+    Returns: {"r": Rマルチプル, "exit_reason": 決済種類, "target_reached": bool}
+    決済種類: SL_INITIAL(1R未到達のままSLで損切り) / WEEKEND_BEFORE_TARGET(1R未到達のまま週末クローズ)
+             / TARGET_THEN_SL_TRAIL(1R到達後BE/トレーリングSLで決済) / TARGET_THEN_WEEKEND(1R到達後週末クローズ)
+             / MAX_HOLD(保有上限、安全策)
+    """
     direction = entry["direction"]
     entry_price = entry["entry_price"]
     risk = entry["initial_risk"]
@@ -174,20 +223,20 @@ def simulate_old_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, trail_
     for i in range(start, end):
         ts = h1.index[i]
         o, h, low, c = float(h1["open"].iloc[i]), float(h1["high"].iloc[i]), float(h1["low"].iloc[i]), float(h1["close"].iloc[i])
-        # 週末クローズ
         if is_weekend_close_time(ts):
-            return (c - entry_price) / risk if direction == "UP" else (entry_price - c) / risk
-        # ストップ判定 (保守的に先に処理)
+            r = (c - entry_price) / risk if direction == "UP" else (entry_price - c) / risk
+            return {"r": r, "exit_reason": "TARGET_THEN_WEEKEND" if target_reached else "WEEKEND_BEFORE_TARGET",
+                    "target_reached": target_reached}
         stop_hit = (low <= stop) if direction == "UP" else (h >= stop)
         if stop_hit:
-            return (stop - entry_price) / risk if direction == "UP" else (entry_price - stop) / risk
-        # 1R到達判定
+            r = (stop - entry_price) / risk if direction == "UP" else (entry_price - stop) / risk
+            return {"r": r, "exit_reason": "TARGET_THEN_SL_TRAIL" if target_reached else "SL_INITIAL",
+                    "target_reached": target_reached}
         if not target_reached:
             reached_now = (h >= target) if direction == "UP" else (low <= target)
             if reached_now:
                 target_reached = True
                 stop = max(stop, entry_price) if direction == "UP" else min(stop, entry_price)
-        # トレーリング更新 (Openベース、1R到達後のみ)
         if target_reached:
             atr_i = atr_h1.asof(ts)
             if pd.notna(atr_i) and atr_i > 0:
@@ -197,13 +246,18 @@ def simulate_old_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, trail_
                 else:
                     new_stop = o + trail_mult * float(atr_i)
                     stop = min(stop, new_stop)
-    # 上限到達 (滅多に無いはずだが安全策): 最終バーの終値で決済
     c = float(h1["close"].iloc[end - 1])
-    return (c - entry_price) / risk if direction == "UP" else (entry_price - c) / risk
+    r = (c - entry_price) / risk if direction == "UP" else (entry_price - c) / risk
+    return {"r": r, "exit_reason": "MAX_HOLD", "target_reached": target_reached}
 
 
-def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, trail_mult: float) -> float:
-    """新方式: 1R=40%/2R=35%/3R=25%の段階利確、1R到達後はBE+ATRトレーリング。戻り値はRマルチプル."""
+def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, trail_mult: float) -> dict:
+    """新方式: 1R=40%/2R=35%/3R=25%の段階利確、1R到達後はBE+ATRトレーリング。
+
+    Returns: {"r": Rマルチプル, "exit_reason": 決済種類, "n_levels_hit": 0-3}
+    決済種類: SL_INITIAL_NO_TP / WEEKEND_NO_TP / TP_THEN_SL_TRAIL / TP_THEN_WEEKEND
+             / TP_FULL(TP1-3すべて到達し残玉ゼロ) / MAX_HOLD
+    """
     direction = entry["direction"]
     entry_price = entry["entry_price"]
     risk = entry["initial_risk"]
@@ -219,13 +273,16 @@ def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, tra
     for i in range(start, end):
         ts = h1.index[i]
         o, h, low, c = float(h1["open"].iloc[i]), float(h1["high"].iloc[i]), float(h1["low"].iloc[i]), float(h1["close"].iloc[i])
+        n_levels_hit = sum(1 for lv in levels if lv[3])
         if is_weekend_close_time(ts):
             exit_r = (c - entry_price) / risk if direction == "UP" else (entry_price - c) / risk
-            return realized_r + remaining_fraction * exit_r
+            reason = "WEEKEND_NO_TP" if n_levels_hit == 0 else "TP_THEN_WEEKEND"
+            return {"r": realized_r + remaining_fraction * exit_r, "exit_reason": reason, "n_levels_hit": n_levels_hit}
         stop_hit = (low <= stop) if direction == "UP" else (h >= stop)
         if stop_hit:
             exit_r = (stop - entry_price) / risk if direction == "UP" else (entry_price - stop) / risk
-            return realized_r + remaining_fraction * exit_r
+            reason = "SL_INITIAL_NO_TP" if n_levels_hit == 0 else "TP_THEN_SL_TRAIL"
+            return {"r": realized_r + remaining_fraction * exit_r, "exit_reason": reason, "n_levels_hit": n_levels_hit}
         for idx_lv, (r_level, frac, price_level, hit) in enumerate(levels):
             if hit or remaining_fraction <= 0:
                 continue
@@ -247,22 +304,34 @@ def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, tra
                     new_stop = o + trail_mult * float(atr_i)
                     stop = min(stop, new_stop)
         if remaining_fraction <= 1e-9:
-            return realized_r
+            return {"r": realized_r, "exit_reason": "TP_FULL", "n_levels_hit": 3}
     c = float(h1["close"].iloc[end - 1])
     exit_r = (c - entry_price) / risk if direction == "UP" else (entry_price - c) / risk
-    return realized_r + remaining_fraction * exit_r
+    n_levels_hit = sum(1 for lv in levels if lv[3])
+    return {"r": realized_r + remaining_fraction * exit_r, "exit_reason": "MAX_HOLD", "n_levels_hit": n_levels_hit}
 
 
-def summarize(rs: list[float], label: str) -> dict:
+def summarize(results: list[dict], label: str) -> dict:
+    rs = [r["r"] for r in results]
     n = len(rs)
     if n == 0:
         return {"n": 0, "mean_r": None, "win_rate": None, "judgeable": False}
     mean_r = float(np.mean(rs))
+    n_wins = sum(1 for r in rs if r > 0)
+    n_losses = sum(1 for r in rs if r < 0)
+    n_flat = n - n_wins - n_losses
     win_rate = float(np.mean([r > 0 for r in rs]))
     n_eff = max(4, int(round(n * (EFFECTIVE_PAIR_COUNT / len(PAIRS)))))
     judgeable = n_eff >= MIN_N_FOR_JUDGEMENT
-    result = {"n": n, "mean_r": round(mean_r, 4), "win_rate": round(win_rate, 3),
-              "n_effective": n_eff, "judgeable": judgeable}
+    exit_reason_counts: dict[str, int] = {}
+    for r in results:
+        exit_reason_counts[r["exit_reason"]] = exit_reason_counts.get(r["exit_reason"], 0) + 1
+    result = {
+        "n": n, "mean_r": round(mean_r, 4), "win_rate": round(win_rate, 3),
+        "n_wins": n_wins, "n_losses": n_losses, "n_flat": n_flat,
+        "n_effective": n_eff, "judgeable": judgeable,
+        "exit_reason_counts": dict(sorted(exit_reason_counts.items(), key=lambda kv: -kv[1])),
+    }
     if judgeable:
         rng = np.random.default_rng(42)
         idx = rng.choice(n, size=n_eff, replace=False) if n_eff < n else np.arange(n)
@@ -272,8 +341,21 @@ def summarize(rs: list[float], label: str) -> dict:
     return result
 
 
+def print_breakdown(summary: dict, label: str) -> None:
+    print(f"--- {label} ---")
+    print(f"  取引数 n={summary['n']}  平均R={summary['mean_r']}  勝率={summary['win_rate']}")
+    print(f"  勝ち={summary['n_wins']}件  負け={summary['n_losses']}件  引き分け(R=0)={summary['n_flat']}件")
+    print(f"  n_eff={summary.get('n_effective')}  perm_p={summary.get('perm_p')}"
+          f"{'' if summary['judgeable'] else '  [n不足・判定不能]'}")
+    print("  決済種類の内訳:")
+    for reason, cnt in summary["exit_reason_counts"].items():
+        pct = 100.0 * cnt / summary["n"]
+        print(f"    {reason:<22} {cnt:>4}件 ({pct:5.1f}%)")
+    print()
+
+
 def main() -> int:
-    print("=== SYS-FX009派生診断: H1 + 段階利確(40/35/25%)の効果測定 (Train期間・継続文脈のみ) ===\n")
+    print("=== SYS-FX009派生診断: H1 + 段階利確(40/35/25%)の効果測定 (Train期間・継続文脈のみ、反転文脈は除外) ===\n")
     with (ROOT / "research" / "EXP-FX000003" / "10-result" / "double_pattern_params_h1.json").open(encoding="utf-8") as f:
         params = json.load(f)
     trail_mult = params["atr_trail_multiplier"]
@@ -282,9 +364,10 @@ def main() -> int:
           f"break_search_cap_bars={params['break_search_cap_bars']}, atr_trail_multiplier={trail_mult}")
     print(f"事前登録した段階利確レベル: {TP_LEVELS} (Rマルチプル, 按分比率)\n")
 
-    old_rs: list[float] = []
-    scaled_rs: list[float] = []
+    old_results: list[dict] = []
+    scaled_results: list[dict] = []
     n_entries_by_pair: dict[str, int] = {}
+    n_reversal_by_pair: dict[str, int] = {}
 
     for pair in PAIRS:
         m5 = load_m5(pair)
@@ -292,30 +375,29 @@ def main() -> int:
         atr_h1 = atr_ind(h1["high"], h1["low"], h1["close"], length=14)
         entries = find_continuation_entries(pair, params)
         n_entries_by_pair[pair] = len(entries)
+        n_reversal_by_pair[pair] = count_reversal_signals(pair, params)
         for e in entries:
-            old_rs.append(simulate_old_scheme(h1, atr_h1, e, trail_mult))
-            scaled_rs.append(simulate_scaled_scheme(h1, atr_h1, e, trail_mult))
-        print(f"[{pair}] 継続文脈エントリー={len(entries)}件")
+            old_results.append(simulate_old_scheme(h1, atr_h1, e, trail_mult))
+            scaled_results.append(simulate_scaled_scheme(h1, atr_h1, e, trail_mult))
+        print(f"[{pair}] 継続文脈エントリー(シミュレーション対象)={len(entries)}件  "
+              f"反転文脈ブレイク(除外・参考値)={n_reversal_by_pair[pair]}件")
 
-    print(f"\n全体エントリー数: {len(old_rs)}件\n")
+    print(f"\n全体エントリー数(継続文脈のみ): {len(old_results)}件")
+    print(f"参考: 反転文脈のため除外されたブレイク総数: {sum(n_reversal_by_pair.values())}件\n")
 
-    old_summary = summarize(old_rs, "旧方式(1R全量+BE/ATRトレーリング)")
-    scaled_summary = summarize(scaled_rs, "新方式(1R=40%/2R=35%/3R=25%+BE/ATRトレーリング)")
+    old_summary = summarize(old_results, "旧方式")
+    scaled_summary = summarize(scaled_results, "新方式")
 
-    print("--- 旧方式: 1R到達で全量利確、以降BE+ATRトレーリング ---")
-    print(f"  n={old_summary['n']}  平均R={old_summary['mean_r']}  勝率={old_summary['win_rate']}  "
-          f"n_eff={old_summary.get('n_effective')}  perm_p={old_summary.get('perm_p')}"
-          f"{'' if old_summary['judgeable'] else '  [n不足・判定不能]'}")
-    print("--- 新方式: 1R=40%/2R=35%/3R=25%の段階利確、1R到達後はBE+ATRトレーリング ---")
-    print(f"  n={scaled_summary['n']}  平均R={scaled_summary['mean_r']}  勝率={scaled_summary['win_rate']}  "
-          f"n_eff={scaled_summary.get('n_effective')}  perm_p={scaled_summary.get('perm_p')}"
-          f"{'' if scaled_summary['judgeable'] else '  [n不足・判定不能]'}")
+    print_breakdown(old_summary, "旧方式: 1R到達で全量利確、以降BE+ATRトレーリング")
+    print_breakdown(scaled_summary, "新方式: 1R=40%/2R=35%/3R=25%の段階利確、1R到達後はBE+ATRトレーリング")
 
     if old_summary["n"] == scaled_summary["n"] and old_summary["n"] > 0:
+        old_rs = [r["r"] for r in old_results]
+        scaled_rs = [r["r"] for r in scaled_results]
         diffs = [s - o for s, o in zip(scaled_rs, old_rs)]
         mean_diff = float(np.mean(diffs))
         win_rate_diff = float(np.mean([d > 0 for d in diffs]))
-        print(f"\n--- ペア差分 (新方式 - 旧方式、同一エントリーの対応比較) ---")
+        print(f"--- ペア差分 (新方式 - 旧方式、同一エントリーの対応比較) ---")
         print(f"  平均差分R={round(mean_diff,4)}  新方式が上回った割合={round(win_rate_diff,3)}")
 
     out_path = ROOT / "research" / "method-notes" / "scaled_exit_diagnostic.json"
@@ -324,18 +406,23 @@ def main() -> int:
             "generated_at": datetime.now().isoformat(),
             "train_period": [TRAIN_START, TRAIN_END],
             "timeframe": "H1",
-            "context": "continuation_only (本番のevaluate_double_pattern_signalと同じLT一致ゲート)",
+            "context": "continuation_only (本番のevaluate_double_pattern_signalと同じLT一致ゲート、反転文脈は除外)",
             "tp_levels": TP_LEVELS,
             "h1_params_used": params,
             "n_entries_by_pair": n_entries_by_pair,
+            "n_reversal_excluded_by_pair": n_reversal_by_pair,
             "old_scheme": old_summary,
             "scaled_scheme": scaled_summary,
-            "old_scheme_r_multiples": [round(r, 4) for r in old_rs],
-            "scaled_scheme_r_multiples": [round(r, 4) for r in scaled_rs],
+            "old_scheme_results": [{"r": round(r["r"], 4), "exit_reason": r["exit_reason"]} for r in old_results],
+            "scaled_scheme_results": [
+                {"r": round(r["r"], 4), "exit_reason": r["exit_reason"], "n_levels_hit": r["n_levels_hit"]}
+                for r in scaled_results
+            ],
             "_note": (
                 "スプレッド/スリッページ/スワップ等のコストは含めない簡易バーパス"
                 "シミュレーション(H1 OHLCのみ)。方向性の比較診断であり、正式な"
-                "バックテストKPI評価ではない。"
+                "バックテストKPI評価ではない。継続文脈のみ(本番と同じLT一致ゲート)、"
+                "反転文脈のブレイクはシミュレーション対象から除外している。"
             ),
         }, indent=2, ensure_ascii=False),
         encoding="utf-8",
