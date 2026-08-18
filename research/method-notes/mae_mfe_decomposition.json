@@ -1,0 +1,39 @@
+{
+  "generated_at": "2026-08-18T22:29:53.384474",
+  "train_period": [
+    "2023-11-01",
+    "2025-03-31"
+  ],
+  "timeframe": "H1",
+  "context": "continuation_only, scaled_exit_scheme(40/35/25%)のみ",
+  "n_total": 673,
+  "n_won": 333,
+  "n_lost": 340,
+  "n_flat": 0,
+  "lost_breakdown": {
+    "mfe_before_exit_percentiles": {
+      "p25": 0.1374,
+      "p50": 0.2831,
+      "p75": 0.5581,
+      "p90": 0.804
+    },
+    "n_never_favorable_mfe_le_0_1R": 64,
+    "n_moderately_favorable_0_1_to_1_0R": 276,
+    "n_same_bar_tp_sl_conflict": 0
+  },
+  "won_breakdown": {
+    "mae_before_exit_percentiles": {
+      "p10": -0.7624,
+      "p25": -0.5218,
+      "p50": -0.2925,
+      "p75": -0.1519
+    },
+    "hypothetical_survival_rate_by_stop_width": {
+      "-0.3": 0.5195195195195195,
+      "-0.5": 0.7237237237237237,
+      "-0.7": 0.8708708708708709,
+      "-1.0": 1.0
+    }
+  },
+  "_note": "H1継続文脈イベント(n=673、新方式イグジットのみ)のMAE/MFE分解。LOSTトレードはn_levels_hit==0の構造(TP1到達で建値ストップへ移動するため、TP到達後は必ずR>=0.4でWONになる)。方向性エッジ自体は本セッションの一連のIC分析で無い(統計的に有意でない)と既に確認済みのため、本分析は「エッジがある前提での設計診断」であり、それ自体が採用可否を左右するものではない。"
+}
