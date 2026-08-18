@@ -1,0 +1,62 @@
+{
+  "generated_at": "2026-08-18T14:12:55.573264",
+  "train_period": [
+    "2023-11-01",
+    "2025-03-31"
+  ],
+  "sr_touch_tolerance_pct": 0.5,
+  "horizon": {
+    "label": "3d",
+    "bars": 72
+  },
+  "n_tests": 2,
+  "bonferroni_alpha": 0.025,
+  "n_total_events": 669,
+  "n_aligned": 644,
+  "aligned_fraction": 0.9626,
+  "results": {
+    "SR_ALIGNED": {
+      "n": 644,
+      "mean": 0.000455,
+      "win_rate": 0.514,
+      "n_effective": 219,
+      "judgeable": true,
+      "p_value_corr_adjusted": 0.5894,
+      "survives_bonferroni": false
+    },
+    "SR_NOT_ALIGNED": {
+      "n": 25,
+      "mean": 0.001483,
+      "win_rate": 0.44,
+      "n_effective": 8,
+      "judgeable": false,
+      "p_value_corr_adjusted": null,
+      "survives_bonferroni": false
+    }
+  },
+  "strict_check": {
+    "min_touches": 5,
+    "min_strength": 0.7,
+    "n_aligned_strict": 638,
+    "aligned_strict_fraction": 0.9537,
+    "results": {
+      "SR_ALIGNED_STRICT": {
+        "n": 638,
+        "mean": 0.000428,
+        "win_rate": 0.516,
+        "n_effective": 217,
+        "judgeable": true,
+        "p_value_corr_adjusted": 0.0589
+      },
+      "SR_NOT_ALIGNED_STRICT": {
+        "n": 31,
+        "mean": 0.001837,
+        "win_rate": 0.419,
+        "n_effective": 11,
+        "judgeable": false,
+        "p_value_corr_adjusted": null
+      }
+    }
+  },
+  "_note": "ダブルトップ/ボトムのネックラインが、ブレイク時点までのデータのみ(先読み無し)で計算したSYS-FX007のS/R検出結果と一致するかどうかで前方リターンICを比較。戻りエントリー・S/R基準SLの設計に着手する価値があるかを判断するための第1段階の診断。"
+}
