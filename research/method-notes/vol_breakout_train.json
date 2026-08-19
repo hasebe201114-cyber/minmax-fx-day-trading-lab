@@ -1,0 +1,644 @@
+{
+  "generated_at": "2026-08-19T23:17:15.984370",
+  "train_period": [
+    "2023-11-01",
+    "2025-03-31"
+  ],
+  "params": {
+    "n_breakout": 3.5,
+    "retrace_ratio": 0.55,
+    "stop_buffer_atr": 0.629,
+    "atr_trail_multiplier": 3.23
+  },
+  "n_trades_total": 76,
+  "trades_per_currency": {
+    "USD_JPY": 19,
+    "EUR_JPY": 13,
+    "GBP_JPY": 8,
+    "AUD_JPY": 8,
+    "EUR_USD": 28
+  },
+  "mean_r": -0.242,
+  "win_rate": 0.408,
+  "profit_factor_r": 0.591,
+  "payoff_ratio_r": 0.858,
+  "exit_reason_counts": {
+    "TP_THEN_SL_TRAIL": 24,
+    "SL_INITIAL_NO_TP": 45,
+    "TP_FULL": 7
+  },
+  "n_trades_effective": 25.816620468503725,
+  "min_n_trades_pass": false,
+  "permutation_p_clustered": 0.5611219439028049,
+  "_note": "R マルチプル単位の簡易評価(実運用コスト・$建て複利サイジング未反映)。SYS-FX009のscaled_exit_diagnostic→$1000バックテストと同じ2段階アプローチの第1段階。この段階でmin_n_trades等が未達でも即REJECTとはせず、Validation拡張やコスト込み評価の要否を判断する材料とする",
+  "trades": [
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "pair": "USD_JPY",
+      "direction": "DOWN",
+      "entry_time": "2023-11-14 00:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "USD_JPY",
+      "direction": "DOWN",
+      "entry_time": "2023-12-08 02:45:00+09:00"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "pair": "USD_JPY",
+      "direction": "UP",
+      "entry_time": "2023-12-19 11:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "USD_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-01-23 15:45:00+09:00"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "pair": "USD_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-03-21 05:30:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "USD_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-04-05 03:45:00+09:00"
+    },
+    {
+      "r": 0.989575746025124,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "pair": "USD_JPY",
+      "direction": "UP",
+      "entry_time": "2024-04-10 22:00:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "USD_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-04-19 12:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "USD_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-04-26 17:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "USD_JPY",
+      "direction": "UP",
+      "entry_time": "2024-04-29 10:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "USD_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-05-03 23:45:00+09:00"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "pair": "USD_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-05-15 19:15:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "USD_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-05-15 21:45:00+09:00"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "pair": "USD_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-06-24 19:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "USD_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-07-04 00:00:00+09:00"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "pair": "USD_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-07-05 10:00:00+09:00"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "pair": "USD_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-07-17 20:00:00+09:00"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "pair": "USD_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-07-22 17:00:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "USD_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-11-19 18:15:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_JPY",
+      "direction": "DOWN",
+      "entry_time": "2023-12-08 02:45:00+09:00"
+    },
+    {
+      "r": 0.5538751794010088,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "pair": "EUR_JPY",
+      "direction": "UP",
+      "entry_time": "2023-12-19 11:45:00+09:00"
+    },
+    {
+      "r": 0.48632202548603487,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "pair": "EUR_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-01-23 15:45:00+09:00"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "pair": "EUR_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-01-25 22:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-04-19 12:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_JPY",
+      "direction": "UP",
+      "entry_time": "2024-04-23 18:15:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_JPY",
+      "direction": "UP",
+      "entry_time": "2024-04-29 10:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-06-21 17:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-07-22 17:30:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-11-19 18:15:00+09:00"
+    },
+    {
+      "r": 0.6252728004108372,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "pair": "EUR_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-12-30 22:45:00+09:00"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "pair": "EUR_JPY",
+      "direction": "UP",
+      "entry_time": "2025-02-04 03:00:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_JPY",
+      "direction": "DOWN",
+      "entry_time": "2025-03-19 18:00:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "GBP_JPY",
+      "direction": "DOWN",
+      "entry_time": "2023-12-08 02:45:00+09:00"
+    },
+    {
+      "r": 0.5880248799511376,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "pair": "GBP_JPY",
+      "direction": "UP",
+      "entry_time": "2023-12-19 11:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "GBP_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-01-23 15:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "GBP_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-04-19 12:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "GBP_JPY",
+      "direction": "UP",
+      "entry_time": "2024-04-29 10:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "GBP_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-05-02 07:15:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "GBP_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-05-14 18:15:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "GBP_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-06-24 19:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "AUD_JPY",
+      "direction": "DOWN",
+      "entry_time": "2023-12-08 02:45:00+09:00"
+    },
+    {
+      "r": 0.6195887664477124,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "pair": "AUD_JPY",
+      "direction": "UP",
+      "entry_time": "2023-12-19 11:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "AUD_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-04-19 12:30:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "AUD_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-05-02 06:45:00+09:00"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "pair": "AUD_JPY",
+      "direction": "UP",
+      "entry_time": "2024-06-12 23:00:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "AUD_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-06-21 17:45:00+09:00"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "pair": "AUD_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-08-02 22:15:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "AUD_JPY",
+      "direction": "DOWN",
+      "entry_time": "2024-12-11 17:30:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_USD",
+      "direction": "DOWN",
+      "entry_time": "2023-12-08 22:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_USD",
+      "direction": "DOWN",
+      "entry_time": "2024-02-16 23:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_USD",
+      "direction": "UP",
+      "entry_time": "2024-03-08 23:15:00+09:00"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "pair": "EUR_USD",
+      "direction": "DOWN",
+      "entry_time": "2024-03-21 19:15:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_USD",
+      "direction": "UP",
+      "entry_time": "2024-04-23 18:15:00+09:00"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "pair": "EUR_USD",
+      "direction": "UP",
+      "entry_time": "2024-05-02 05:00:00+09:00"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "pair": "EUR_USD",
+      "direction": "UP",
+      "entry_time": "2024-05-03 23:30:00+09:00"
+    },
+    {
+      "r": 1.3470456693471897,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 2,
+      "pair": "EUR_USD",
+      "direction": "UP",
+      "entry_time": "2024-05-15 23:00:00+09:00"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "pair": "EUR_USD",
+      "direction": "UP",
+      "entry_time": "2024-06-06 22:15:00+09:00"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "pair": "EUR_USD",
+      "direction": "DOWN",
+      "entry_time": "2024-06-21 17:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_USD",
+      "direction": "UP",
+      "entry_time": "2024-07-05 22:00:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_USD",
+      "direction": "UP",
+      "entry_time": "2024-07-11 22:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_USD",
+      "direction": "DOWN",
+      "entry_time": "2024-09-06 23:45:00+09:00"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "pair": "EUR_USD",
+      "direction": "DOWN",
+      "entry_time": "2024-09-27 15:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_USD",
+      "direction": "UP",
+      "entry_time": "2024-09-30 19:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_USD",
+      "direction": "UP",
+      "entry_time": "2024-11-01 22:30:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_USD",
+      "direction": "DOWN",
+      "entry_time": "2024-11-19 19:45:00+09:00"
+    },
+    {
+      "r": 1.1,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 2,
+      "pair": "EUR_USD",
+      "direction": "DOWN",
+      "entry_time": "2024-11-22 17:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_USD",
+      "direction": "DOWN",
+      "entry_time": "2024-11-22 18:45:00+09:00"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "pair": "EUR_USD",
+      "direction": "DOWN",
+      "entry_time": "2024-12-11 17:45:00+09:00"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "pair": "EUR_USD",
+      "direction": "DOWN",
+      "entry_time": "2024-12-30 22:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_USD",
+      "direction": "DOWN",
+      "entry_time": "2025-01-08 21:00:00+09:00"
+    },
+    {
+      "r": 1.197600216565466,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 2,
+      "pair": "EUR_USD",
+      "direction": "DOWN",
+      "entry_time": "2025-01-10 23:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_USD",
+      "direction": "UP",
+      "entry_time": "2025-01-16 00:15:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_USD",
+      "direction": "UP",
+      "entry_time": "2025-01-30 22:45:00+09:00"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "pair": "EUR_USD",
+      "direction": "DOWN",
+      "entry_time": "2025-02-12 23:30:00+09:00"
+    },
+    {
+      "r": 0.5486455020469627,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "pair": "EUR_USD",
+      "direction": "DOWN",
+      "entry_time": "2025-02-27 22:45:00+09:00"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "pair": "EUR_USD",
+      "direction": "DOWN",
+      "entry_time": "2025-03-19 17:30:00+09:00"
+    }
+  ]
+}

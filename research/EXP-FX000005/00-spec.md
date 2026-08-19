@@ -60,10 +60,12 @@
 | ゲート | 状態 |
 |---|---|
 | ゲート1: データ基盤 | ✅ DS-1（M5 OHLCV）で対応可能。3分足は無いためM5で代替（prescreen記載の通り） |
-| ゲート2: パラメータ導出 | 🔶 進行中。N候補・探索窓Mは確定。retrace_ratio・stop_buffer_atr・atr_trail_multiplierは未導出 |
+| ゲート2: パラメータ導出 | ✅ 完了。N=3.5、探索窓M=確定後30分〜3時間(M15)、retrace_ratio=0.55、stop_buffer_atr=0.629、atr_trail_multiplier=3.23（`research/EXP-FX000005/10-result/vol_breakout_entry_params.json`） |
+| Train ベースライン評価 | ✅ 実施済み（Rマルチプル単位の簡易評価）。**5通貨すべてmean_Rマイナス、プール n=76・mean_R=-0.242・PF0.591**。詳細は`research/method-notes/vol_breakout_train.json`。司令塔判断待ち |
 
 ## 次のアクション
 1. ~~高ボラブレイク検出ロジックを実装し、Trainデータでレンジ/ATR比の分布と発生頻度を実測（Nの候補選定材料）~~ 完了（N=3.5、週1回相当）
-2. ~~戻り幅分布を実測しretrace_ratioを導出~~ 探索窓Mを確定・戻り幅分布を実測済み（`vol_breakout_retrace_window.json`、中央値0.528）。retrace_ratio自体の具体値はこの分布から次に導出
-3. stop_buffer_atr・atr_trail_multiplierをSYS-FX009の方法論で再導出
-4. エントリー・SL・TPロジックを結線し、Train期間でベースライン評価
+2. ~~戻り幅分布を実測しretrace_ratioを導出~~ 完了（retrace_ratio=0.55）
+3. ~~stop_buffer_atr・atr_trail_multiplierをSYS-FX009の方法論で再導出~~ 完了（0.629 / 3.23）
+4. ~~エントリー・SL・TPロジックを結線し、Train期間でベースライン評価~~ 完了。**結果はTrainの時点で明確にマイナス**（5通貨すべて負、PF0.591）
+5. 司令塔判断待ち: (a) パラメータ再検討(retrace_ratio感度・確認ロジック等)で改善余地を探る、(b) この時点でREJECT相当と判断する、のいずれか

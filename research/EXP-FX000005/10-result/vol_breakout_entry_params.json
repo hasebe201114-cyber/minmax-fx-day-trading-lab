@@ -1,0 +1,29 @@
+{
+  "generated_at": "2026-08-19T23:15:09.430092",
+  "train_period": [
+    "2023-11-01",
+    "2025-03-31"
+  ],
+  "n_breakout_threshold": 3.5,
+  "window_definition": {
+    "start_minutes_after_h1_close": 30,
+    "end_hours_after_h1_close": 3,
+    "granularity": "M15"
+  },
+  "retrace_ratio": 0.55,
+  "retrace_ratio_source_median": 0.528,
+  "outcome_counts": {
+    "NO_TRIGGER": 139,
+    "ENTRY": 76,
+    "INVALIDATED": 38,
+    "TIMEOUT": 8
+  },
+  "n_valid_entries": 76,
+  "stop_buffer_atr": 0.629,
+  "stop_buffer_atr_percentile": 25,
+  "pooled_n_bars_for_buffer": 43240,
+  "atr_trail_multiplier": 3.23,
+  "trail_horizon_hours": 72,
+  "pooled_n_mfe_samples": 76,
+  "_note": "retrace_ratioは戻り幅分布(vol_breakout_retrace_window.json)の中央値を0.05刻みに丸めた値。stop_buffer_atr/atr_trail_multiplierはSYS-FX009 H1版(derive_double_pattern_params_h1.py)と同一方法論。atr_trail_multiplierの観測窓のみ、本戦略の想定保有期間(数時間〜数日)に合わせ72時間(3日)に変更。この値はTrain/Validation/Testいずれの結果を見た後も変更しない"
+}
