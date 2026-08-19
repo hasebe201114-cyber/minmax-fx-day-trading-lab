@@ -1,0 +1,326 @@
+{
+  "generated_at": "2026-08-19T23:57:42.065773",
+  "stop_buffer_atr_m5": 0.701,
+  "n_breakout_threshold": 3.5,
+  "periods": {
+    "train": [
+      "2023-11-01",
+      "2025-03-31"
+    ],
+    "validation": [
+      "2025-04-01",
+      "2025-11-30"
+    ]
+  },
+  "results": {
+    "train": {
+      "by_pair": {
+        "AUD_JPY": {
+          "n_events": 31,
+          "n_trades": 89,
+          "trades_per_event": 2.871,
+          "elapsed_hours_mean": 1.39,
+          "elapsed_hours_median": 0.92,
+          "elapsed_hours_max": 4.5
+        },
+        "EUR_JPY": {
+          "n_events": 40,
+          "n_trades": 92,
+          "trades_per_event": 2.3,
+          "elapsed_hours_mean": 1.09,
+          "elapsed_hours_median": 0.88,
+          "elapsed_hours_max": 3.0
+        },
+        "EUR_USD": {
+          "n_events": 80,
+          "n_trades": 182,
+          "trades_per_event": 2.275,
+          "elapsed_hours_mean": 1.06,
+          "elapsed_hours_median": 0.83,
+          "elapsed_hours_max": 3.83
+        },
+        "GBP_JPY": {
+          "n_events": 40,
+          "n_trades": 93,
+          "trades_per_event": 2.325,
+          "elapsed_hours_mean": 1.2,
+          "elapsed_hours_median": 1.0,
+          "elapsed_hours_max": 2.92
+        },
+        "USD_JPY": {
+          "n_events": 70,
+          "n_trades": 167,
+          "trades_per_event": 2.386,
+          "elapsed_hours_mean": 1.18,
+          "elapsed_hours_median": 0.83,
+          "elapsed_hours_max": 4.83
+        }
+      },
+      "by_direction": {
+        "DOWN": {
+          "n_events": 147,
+          "n_trades": 330,
+          "trades_per_event": 2.245,
+          "elapsed_hours_mean": 1.05,
+          "elapsed_hours_median": 0.83,
+          "elapsed_hours_max": 3.58
+        },
+        "UP": {
+          "n_events": 114,
+          "n_trades": 293,
+          "trades_per_event": 2.57,
+          "elapsed_hours_mean": 1.29,
+          "elapsed_hours_median": 0.92,
+          "elapsed_hours_max": 4.83
+        }
+      },
+      "by_pair_direction": {
+        "AUD_JPY_DOWN": {
+          "n_events": 16,
+          "n_trades": 39,
+          "trades_per_event": 2.438,
+          "elapsed_hours_mean": 1.27,
+          "elapsed_hours_median": 0.92,
+          "elapsed_hours_max": 3.58
+        },
+        "AUD_JPY_UP": {
+          "n_events": 15,
+          "n_trades": 50,
+          "trades_per_event": 3.333,
+          "elapsed_hours_mean": 1.49,
+          "elapsed_hours_median": 0.96,
+          "elapsed_hours_max": 4.5
+        },
+        "EUR_JPY_DOWN": {
+          "n_events": 23,
+          "n_trades": 53,
+          "trades_per_event": 2.304,
+          "elapsed_hours_mean": 1.0,
+          "elapsed_hours_median": 0.83,
+          "elapsed_hours_max": 2.33
+        },
+        "EUR_JPY_UP": {
+          "n_events": 17,
+          "n_trades": 39,
+          "trades_per_event": 2.294,
+          "elapsed_hours_mean": 1.2,
+          "elapsed_hours_median": 0.92,
+          "elapsed_hours_max": 3.0
+        },
+        "EUR_USD_DOWN": {
+          "n_events": 43,
+          "n_trades": 90,
+          "trades_per_event": 2.093,
+          "elapsed_hours_mean": 0.96,
+          "elapsed_hours_median": 0.83,
+          "elapsed_hours_max": 2.42
+        },
+        "EUR_USD_UP": {
+          "n_events": 37,
+          "n_trades": 92,
+          "trades_per_event": 2.486,
+          "elapsed_hours_mean": 1.16,
+          "elapsed_hours_median": 0.92,
+          "elapsed_hours_max": 3.83
+        },
+        "GBP_JPY_DOWN": {
+          "n_events": 20,
+          "n_trades": 51,
+          "trades_per_event": 2.55,
+          "elapsed_hours_mean": 1.21,
+          "elapsed_hours_median": 1.0,
+          "elapsed_hours_max": 2.92
+        },
+        "GBP_JPY_UP": {
+          "n_events": 20,
+          "n_trades": 42,
+          "trades_per_event": 2.1,
+          "elapsed_hours_mean": 1.19,
+          "elapsed_hours_median": 0.92,
+          "elapsed_hours_max": 2.67
+        },
+        "USD_JPY_DOWN": {
+          "n_events": 45,
+          "n_trades": 97,
+          "trades_per_event": 2.156,
+          "elapsed_hours_mean": 0.99,
+          "elapsed_hours_median": 0.83,
+          "elapsed_hours_max": 3.33
+        },
+        "USD_JPY_UP": {
+          "n_events": 25,
+          "n_trades": 70,
+          "trades_per_event": 2.8,
+          "elapsed_hours_mean": 1.45,
+          "elapsed_hours_median": 1.0,
+          "elapsed_hours_max": 4.83
+        }
+      },
+      "overall": {
+        "ALL": {
+          "n_events": 261,
+          "n_trades": 623,
+          "trades_per_event": 2.387,
+          "elapsed_hours_mean": 1.17,
+          "elapsed_hours_median": 0.92,
+          "elapsed_hours_max": 4.83
+        }
+      }
+    },
+    "validation": {
+      "by_pair": {
+        "AUD_JPY": {
+          "n_events": 16,
+          "n_trades": 39,
+          "trades_per_event": 2.438,
+          "elapsed_hours_mean": 1.09,
+          "elapsed_hours_median": 1.08,
+          "elapsed_hours_max": 2.25
+        },
+        "EUR_JPY": {
+          "n_events": 7,
+          "n_trades": 24,
+          "trades_per_event": 3.429,
+          "elapsed_hours_mean": 1.41,
+          "elapsed_hours_median": 1.12,
+          "elapsed_hours_max": 2.92
+        },
+        "EUR_USD": {
+          "n_events": 22,
+          "n_trades": 50,
+          "trades_per_event": 2.273,
+          "elapsed_hours_mean": 1.12,
+          "elapsed_hours_median": 0.96,
+          "elapsed_hours_max": 2.5
+        },
+        "GBP_JPY": {
+          "n_events": 12,
+          "n_trades": 34,
+          "trades_per_event": 2.833,
+          "elapsed_hours_mean": 1.58,
+          "elapsed_hours_median": 1.17,
+          "elapsed_hours_max": 3.92
+        },
+        "USD_JPY": {
+          "n_events": 17,
+          "n_trades": 56,
+          "trades_per_event": 3.294,
+          "elapsed_hours_mean": 1.38,
+          "elapsed_hours_median": 1.17,
+          "elapsed_hours_max": 2.83
+        }
+      },
+      "by_direction": {
+        "DOWN": {
+          "n_events": 50,
+          "n_trades": 138,
+          "trades_per_event": 2.76,
+          "elapsed_hours_mean": 1.24,
+          "elapsed_hours_median": 1.04,
+          "elapsed_hours_max": 3.0
+        },
+        "UP": {
+          "n_events": 24,
+          "n_trades": 65,
+          "trades_per_event": 2.708,
+          "elapsed_hours_mean": 1.41,
+          "elapsed_hours_median": 1.17,
+          "elapsed_hours_max": 3.92
+        }
+      },
+      "by_pair_direction": {
+        "AUD_JPY_DOWN": {
+          "n_events": 12,
+          "n_trades": 27,
+          "trades_per_event": 2.25,
+          "elapsed_hours_mean": 1.05,
+          "elapsed_hours_median": 0.92,
+          "elapsed_hours_max": 2.25
+        },
+        "AUD_JPY_UP": {
+          "n_events": 4,
+          "n_trades": 12,
+          "trades_per_event": 3.0,
+          "elapsed_hours_mean": 1.2,
+          "elapsed_hours_median": 1.21,
+          "elapsed_hours_max": 1.83
+        },
+        "EUR_JPY_DOWN": {
+          "n_events": 6,
+          "n_trades": 19,
+          "trades_per_event": 3.167,
+          "elapsed_hours_mean": 1.39,
+          "elapsed_hours_median": 1.08,
+          "elapsed_hours_max": 2.92
+        },
+        "EUR_JPY_UP": {
+          "n_events": 1,
+          "n_trades": 5,
+          "trades_per_event": 5.0,
+          "elapsed_hours_mean": 1.47,
+          "elapsed_hours_median": 1.67,
+          "elapsed_hours_max": 2.08
+        },
+        "EUR_USD_DOWN": {
+          "n_events": 10,
+          "n_trades": 26,
+          "trades_per_event": 2.6,
+          "elapsed_hours_mean": 0.97,
+          "elapsed_hours_median": 0.83,
+          "elapsed_hours_max": 1.83
+        },
+        "EUR_USD_UP": {
+          "n_events": 12,
+          "n_trades": 24,
+          "trades_per_event": 2.0,
+          "elapsed_hours_mean": 1.28,
+          "elapsed_hours_median": 1.12,
+          "elapsed_hours_max": 2.5
+        },
+        "GBP_JPY_DOWN": {
+          "n_events": 10,
+          "n_trades": 23,
+          "trades_per_event": 2.3,
+          "elapsed_hours_mean": 1.29,
+          "elapsed_hours_median": 1.0,
+          "elapsed_hours_max": 3.0
+        },
+        "GBP_JPY_UP": {
+          "n_events": 2,
+          "n_trades": 11,
+          "trades_per_event": 5.5,
+          "elapsed_hours_mean": 2.19,
+          "elapsed_hours_median": 2.0,
+          "elapsed_hours_max": 3.92
+        },
+        "USD_JPY_DOWN": {
+          "n_events": 12,
+          "n_trades": 43,
+          "trades_per_event": 3.583,
+          "elapsed_hours_mean": 1.45,
+          "elapsed_hours_median": 1.33,
+          "elapsed_hours_max": 2.83
+        },
+        "USD_JPY_UP": {
+          "n_events": 5,
+          "n_trades": 13,
+          "trades_per_event": 2.6,
+          "elapsed_hours_mean": 1.17,
+          "elapsed_hours_median": 0.83,
+          "elapsed_hours_max": 2.83
+        }
+      },
+      "overall": {
+        "ALL": {
+          "n_events": 74,
+          "n_trades": 203,
+          "trades_per_event": 2.743,
+          "elapsed_hours_mean": 1.3,
+          "elapsed_hours_median": 1.08,
+          "elapsed_hours_max": 3.92
+        }
+      }
+    }
+  },
+  "_note": "トレンドイベント(初動)単位・押し目買いトレード単位の内訳集計。KPI判定は行わない"
+}
