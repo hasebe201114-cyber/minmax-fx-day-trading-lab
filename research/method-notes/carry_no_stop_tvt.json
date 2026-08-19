@@ -1,0 +1,118 @@
+{
+  "generated_at": "2026-08-19T21:00:45.546649",
+  "design": "常にロング・週次サイクル・ストップ無し・固定ロット(1lot=1000通貨)",
+  "kpi_thresholds": {
+    "monthly_sharpe": 0.4,
+    "profit_factor": 1.2,
+    "max_dd_monthly_pct": 10.0,
+    "max_dd_yearly_pct": 20.0,
+    "payoff_ratio": 1.5,
+    "min_n_trades_effective": 300
+  },
+  "periods": {
+    "train": {
+      "period": "train",
+      "start": "2023-11-01",
+      "end": "2025-03-31",
+      "n_by_pair": {
+        "USD_JPY": 71,
+        "EUR_JPY": 71,
+        "GBP_JPY": 71,
+        "AUD_JPY": 71
+      },
+      "summary": {
+        "label": "no_stop_train",
+        "n_cycles": 284,
+        "final_equity_jpy": 1043855.0,
+        "total_return_pct": 4.39,
+        "win_rate": 0.549,
+        "monthly_sharpe": 0.507,
+        "max_dd_pct": 6.81,
+        "max_dd_monthly_pct": 4.93,
+        "profit_factor": 1.195,
+        "payoff_ratio": 0.98,
+        "n_stopped": 0
+      },
+      "n_trades_effective": 82.9,
+      "perm_p_clustered": 0.4845,
+      "kpi_pass": {
+        "monthly_sharpe": true,
+        "profit_factor": false,
+        "max_dd_monthly_pct": true,
+        "payoff_ratio": false,
+        "min_n_trades_effective": false
+      },
+      "kpi_pass_count": "2/5"
+    },
+    "validation": {
+      "period": "validation",
+      "start": "2025-04-01",
+      "end": "2025-11-30",
+      "n_by_pair": {
+        "USD_JPY": 32,
+        "EUR_JPY": 32,
+        "GBP_JPY": 32,
+        "AUD_JPY": 32
+      },
+      "summary": {
+        "label": "no_stop_validation",
+        "n_cycles": 128,
+        "final_equity_jpy": 1063227.0,
+        "total_return_pct": 6.32,
+        "win_rate": 0.625,
+        "monthly_sharpe": 4.721,
+        "max_dd_pct": 0.74,
+        "max_dd_monthly_pct": 0.0,
+        "profit_factor": 2.731,
+        "payoff_ratio": 1.638,
+        "n_stopped": 0
+      },
+      "n_trades_effective": 37.4,
+      "perm_p_clustered": 0.4306,
+      "kpi_pass": {
+        "monthly_sharpe": true,
+        "profit_factor": true,
+        "max_dd_monthly_pct": true,
+        "payoff_ratio": true,
+        "min_n_trades_effective": false
+      },
+      "kpi_pass_count": "4/5"
+    },
+    "test": {
+      "period": "test",
+      "start": "2025-12-01",
+      "end": "2026-08-15",
+      "n_by_pair": {
+        "USD_JPY": 34,
+        "EUR_JPY": 34,
+        "GBP_JPY": 34,
+        "AUD_JPY": 34
+      },
+      "summary": {
+        "label": "no_stop_test",
+        "n_cycles": 136,
+        "final_equity_jpy": 1036694.0,
+        "total_return_pct": 3.67,
+        "win_rate": 0.699,
+        "monthly_sharpe": 2.496,
+        "max_dd_pct": 2.04,
+        "max_dd_monthly_pct": 1.12,
+        "profit_factor": 1.56,
+        "payoff_ratio": 0.673,
+        "n_stopped": 0
+      },
+      "n_trades_effective": 39.7,
+      "perm_p_clustered": 0.4426,
+      "kpi_pass": {
+        "monthly_sharpe": true,
+        "profit_factor": true,
+        "max_dd_monthly_pct": true,
+        "payoff_ratio": false,
+        "min_n_trades_effective": false
+      },
+      "kpi_pass_count": "3/5"
+    }
+  },
+  "all_periods_all_kpi_pass": false,
+  "_note": "実運用コスト(スプレッド/スリッページ/手数料)・複利ポジションサイジングは含まない簡易版。K6m(バックテスト/フォワード比較)・K7m(両建て証拠金)は本戦略の設計上判定対象外。permutation_p_valueはspec通り補助指標。"
+}
