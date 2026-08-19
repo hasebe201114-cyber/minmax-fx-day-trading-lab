@@ -92,4 +92,7 @@ SYS-FX008のE1/E2改善ループと同様、機械的な感度確認の1試行�
 出力: `research/method-notes/vol_breakout_dow_theory_train.json`
 
 ### 結果（2026-08-19実施）
-stop_buffer_atr_m5はM5バーレンジ/ATR比のp25で0.701と導出。トレンドイベント261件から押し目買い候補623件（平均2.39件/イベント）を検出。**プール(5通貨) n=623、mean_R=+0.0908、勝率52.5%、PF(Rベース)1.191、ペイオフ比1.078と、単発版(mean_R=-0.242)から明確に改善し5通貨すべてで平均Rが正に転じた**（USD/JPY+0.155、EUR/JPY+0.036、GBP/JPY+0.055、AUD/JPY+0.148、EUR/USD+0.050）。実効トレード数211.6はmin_n_trades(300)にはまだ届かないが単発版(25.8)より大幅に改善。permutation_p=0.496で統計的有意性は未達（SYS-FX007/008の初期Train評価と同型の「符号は正だが非有意」パターン）。司令塔判断待ち。
+stop_buffer_atr_m5はM5バーレンジ/ATR比のp25で0.701と導出。トレンドイベント261件から押し目買い候補623件（平均2.39件/イベント）を検出。**プール(5通貨) n=623、mean_R=+0.0908、勝率52.5%、PF(Rベース)1.191、ペイオフ比1.078と、単発版(mean_R=-0.242)から明確に改善し5通貨すべてで平均Rが正に転じた**（USD/JPY+0.155、EUR/JPY+0.036、GBP/JPY+0.055、AUD/JPY+0.148、EUR/USD+0.050）。実効トレード数211.6はmin_n_trades(300)にはまだ届かないが単発版(25.8)より大幅に改善。permutation_p=0.496で統計的有意性は未達（SYS-FX007/008の初期Train評価と同型の「符号は正だが非有意」パターン）。
+
+### Validation確認（2026-08-19実施、`scripts/backtest_vol_breakout_dow_theory_validation.py`）
+Train導出パラメータ(N=3.5, zigzag_threshold_atr_m5=1.0, stop_buffer_atr_m5=0.701, atr_trail_multiplier=3.23)を再学習せずそのままValidation期間(2025-04-01〜2025-11-30)へ適用（SYS-FX009/010の過学習検出プロトコル踏襲）。**結果: プール(5通貨) n=203、mean_R=+0.1767、勝率54.7%、PF1.390、ペイオフ比1.152と、Train(+0.0908)から更に改善し符号も維持**（USD/JPY+0.427、AUD/JPY+0.232、EUR/USD+0.247が牽引、EUR/JPY-0.240、GBP/JPY-0.109は依然マイナス）。SYS-FX009/010で見られたTrain優位性のValidation消失（過学習）は確認されなかった。実効n=69.0は300未達、permutation_p=0.435で単独では非有意。次はTest期間まで拡張し3期間通しの評価を行う。司令塔判断待ち。
