@@ -1,0 +1,50 @@
+{
+  "generated_at": "2026-08-19T14:32:56.546659",
+  "validation_period": [
+    "2025-04-01",
+    "2025-11-30"
+  ],
+  "results": {
+    "no_stop": {
+      "label": "no_stop",
+      "n_cycles": 128,
+      "final_equity_jpy": 1063227.0,
+      "total_return_pct": 6.32,
+      "win_rate": 0.625,
+      "monthly_sharpe": 4.721,
+      "max_dd_pct": 0.74,
+      "max_dd_monthly_pct": 0.0,
+      "profit_factor": 2.731,
+      "payoff_ratio": 1.638,
+      "n_stopped": 0
+    },
+    "k=1.5": {
+      "label": "k=1.5",
+      "n_cycles": 128,
+      "final_equity_jpy": 1041154.0,
+      "total_return_pct": 4.12,
+      "win_rate": 0.594,
+      "monthly_sharpe": 3.983,
+      "max_dd_pct": 0.98,
+      "max_dd_monthly_pct": 0.0,
+      "profit_factor": 1.73,
+      "payoff_ratio": 1.184,
+      "n_stopped": 35
+    },
+    "k=2.386": {
+      "label": "k=2.386",
+      "n_cycles": 128,
+      "final_equity_jpy": 1053917.0,
+      "total_return_pct": 5.39,
+      "win_rate": 0.625,
+      "monthly_sharpe": 5.747,
+      "max_dd_pct": 0.67,
+      "max_dd_monthly_pct": 0.0,
+      "profit_factor": 2.176,
+      "payoff_ratio": 1.306,
+      "n_stopped": 14
+    }
+  },
+  "verdict": "Validationで改善が消失/逆転 → Trainでの最良値選択は過学習だった可能性が高い",
+  "_note": "Trainスイープ(carry_kstop_sweep.json)で最良だったk_stop=1.5を、追加チューニング無しでValidation期間に適用した確認結果。"
+}

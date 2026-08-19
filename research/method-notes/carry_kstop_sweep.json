@@ -1,0 +1,124 @@
+{
+  "generated_at": "2026-08-19T14:31:47.413690",
+  "train_period": [
+    "2023-11-01",
+    "2025-03-31"
+  ],
+  "k_stop_candidates": [
+    "no_stop",
+    1.5,
+    2.0,
+    2.386,
+    3.0,
+    4.0,
+    5.0,
+    6.0
+  ],
+  "results": {
+    "no_stop": {
+      "label": "no_stop",
+      "n_cycles": 284,
+      "final_equity_jpy": 1043855.0,
+      "total_return_pct": 4.39,
+      "win_rate": 0.549,
+      "monthly_sharpe": 0.507,
+      "max_dd_pct": 6.81,
+      "max_dd_monthly_pct": 4.93,
+      "profit_factor": 1.195,
+      "payoff_ratio": 0.98,
+      "n_stopped": 0
+    },
+    "k=1.5": {
+      "label": "k=1.5",
+      "n_cycles": 284,
+      "final_equity_jpy": 1073991.0,
+      "total_return_pct": 7.4,
+      "win_rate": 0.518,
+      "monthly_sharpe": 1.407,
+      "max_dd_pct": 4.1,
+      "max_dd_monthly_pct": 2.73,
+      "profit_factor": 1.389,
+      "payoff_ratio": 1.295,
+      "n_stopped": 106
+    },
+    "k=2.0": {
+      "label": "k=2.0",
+      "n_cycles": 284,
+      "final_equity_jpy": 1048667.0,
+      "total_return_pct": 4.87,
+      "win_rate": 0.532,
+      "monthly_sharpe": 0.745,
+      "max_dd_pct": 5.82,
+      "max_dd_monthly_pct": 3.94,
+      "profit_factor": 1.223,
+      "payoff_ratio": 1.077,
+      "n_stopped": 76
+    },
+    "k=2.386": {
+      "label": "k=2.386",
+      "n_cycles": 284,
+      "final_equity_jpy": 1039542.0,
+      "total_return_pct": 3.95,
+      "win_rate": 0.539,
+      "monthly_sharpe": 0.591,
+      "max_dd_pct": 6.27,
+      "max_dd_monthly_pct": 4.39,
+      "profit_factor": 1.173,
+      "payoff_ratio": 1.005,
+      "n_stopped": 61
+    },
+    "k=3.0": {
+      "label": "k=3.0",
+      "n_cycles": 284,
+      "final_equity_jpy": 1046489.0,
+      "total_return_pct": 4.65,
+      "win_rate": 0.546,
+      "monthly_sharpe": 0.599,
+      "max_dd_pct": 5.7,
+      "max_dd_monthly_pct": 3.82,
+      "profit_factor": 1.21,
+      "payoff_ratio": 1.007,
+      "n_stopped": 39
+    },
+    "k=4.0": {
+      "label": "k=4.0",
+      "n_cycles": 284,
+      "final_equity_jpy": 1043436.0,
+      "total_return_pct": 4.34,
+      "win_rate": 0.549,
+      "monthly_sharpe": 0.5,
+      "max_dd_pct": 6.35,
+      "max_dd_monthly_pct": 4.47,
+      "profit_factor": 1.192,
+      "payoff_ratio": 0.978,
+      "n_stopped": 19
+    },
+    "k=5.0": {
+      "label": "k=5.0",
+      "n_cycles": 284,
+      "final_equity_jpy": 1038165.0,
+      "total_return_pct": 3.82,
+      "win_rate": 0.549,
+      "monthly_sharpe": 0.43,
+      "max_dd_pct": 6.9,
+      "max_dd_monthly_pct": 5.02,
+      "profit_factor": 1.165,
+      "payoff_ratio": 0.956,
+      "n_stopped": 12
+    },
+    "k=6.0": {
+      "label": "k=6.0",
+      "n_cycles": 284,
+      "final_equity_jpy": 1039811.0,
+      "total_return_pct": 3.98,
+      "win_rate": 0.549,
+      "monthly_sharpe": 0.45,
+      "max_dd_pct": 6.81,
+      "max_dd_monthly_pct": 4.93,
+      "profit_factor": 1.174,
+      "payoff_ratio": 0.963,
+      "n_stopped": 5
+    }
+  },
+  "_note": "週内ATRストップ幅(k_stop)を{None,1.5,2.0,2.386,3.0,4.0,5.0,6.0}でスイープし、単一の最良値を後付けで選ぶのではなく傾向を確認する。carry_baseline_train.jsonのk_stop=2.386(価格変動p10由来)は、このスイープの1候補として含まれる。"
+}
