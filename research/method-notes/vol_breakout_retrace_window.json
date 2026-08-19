@@ -1,0 +1,55 @@
+{
+  "generated_at": "2026-08-19T23:07:01.654745",
+  "train_period": [
+    "2023-11-01",
+    "2025-03-31"
+  ],
+  "n_breakout_threshold": 3.5,
+  "window_definition": {
+    "start_minutes_after_h1_close": 30,
+    "end_hours_after_h1_close": 3,
+    "granularity": "M15"
+  },
+  "n_events_pooled": 261,
+  "retrace_frac": {
+    "median": 0.528,
+    "p25": 0.34,
+    "p75": 0.789,
+    "mean": 0.599
+  },
+  "full_retrace_rate": 0.222,
+  "full_reverse_rate": 0.103,
+  "per_pair": {
+    "USD_JPY": {
+      "n_events": 70,
+      "full_retrace": 15,
+      "full_reverse": 7,
+      "retrace_frac_median": 0.524
+    },
+    "EUR_JPY": {
+      "n_events": 40,
+      "full_retrace": 8,
+      "full_reverse": 4,
+      "retrace_frac_median": 0.542
+    },
+    "GBP_JPY": {
+      "n_events": 40,
+      "full_retrace": 9,
+      "full_reverse": 4,
+      "retrace_frac_median": 0.513
+    },
+    "AUD_JPY": {
+      "n_events": 31,
+      "full_retrace": 5,
+      "full_reverse": 3,
+      "retrace_frac_median": 0.499
+    },
+    "EUR_USD": {
+      "n_events": 80,
+      "full_retrace": 21,
+      "full_reverse": 9,
+      "retrace_frac_median": 0.575
+    }
+  },
+  "_note": "確定後30分〜3時間(M15)という司令塔確認済みの探索窓での戻り幅分布。2日窓での初回実測(vol_breakout_frequency.json)は窓が長すぎるアーティファクトであったため、本ファイルの数値をspec Mパラメータ・retrace_ratio導出の正式な材料とする。"
+}
