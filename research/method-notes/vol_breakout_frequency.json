@@ -1,0 +1,73 @@
+{
+  "generated_at": "2026-08-19T22:49:03.780415",
+  "train_period": [
+    "2023-11-01",
+    "2025-03-31"
+  ],
+  "n_weeks_total_pooled": 257.8,
+  "range_atr_ratio_percentiles": {
+    "p90": 1.703,
+    "p95": 2.058,
+    "p97": 2.334,
+    "p99": 3.079
+  },
+  "n_candidates": {
+    "2.0": {
+      "n_events": 2443,
+      "events_per_week": 9.478,
+      "retrace_frac_median": 1.29,
+      "retrace_frac_p25": 1.0,
+      "retrace_frac_p75": 2.302,
+      "n_retrace_samples": 2443
+    },
+    "2.5": {
+      "n_events": 976,
+      "events_per_week": 3.786,
+      "retrace_frac_median": 1.085,
+      "retrace_frac_p25": 1.0,
+      "retrace_frac_p75": 1.864,
+      "n_retrace_samples": 976
+    },
+    "3.0": {
+      "n_events": 488,
+      "events_per_week": 1.893,
+      "retrace_frac_median": 1.0,
+      "retrace_frac_p25": 1.0,
+      "retrace_frac_p75": 1.627,
+      "n_retrace_samples": 488
+    },
+    "3.5": {
+      "n_events": 261,
+      "events_per_week": 1.013,
+      "retrace_frac_median": 1.0,
+      "retrace_frac_p25": 1.0,
+      "retrace_frac_p75": 1.458,
+      "n_retrace_samples": 261
+    },
+    "4.0": {
+      "n_events": 151,
+      "events_per_week": 0.586,
+      "retrace_frac_median": 1.0,
+      "retrace_frac_p25": 1.0,
+      "retrace_frac_p75": 1.298,
+      "n_retrace_samples": 151
+    },
+    "4.5": {
+      "n_events": 98,
+      "events_per_week": 0.38,
+      "retrace_frac_median": 1.0,
+      "retrace_frac_p25": 0.993,
+      "retrace_frac_p75": 1.0,
+      "n_retrace_samples": 98
+    },
+    "5.0": {
+      "n_events": 65,
+      "events_per_week": 0.252,
+      "retrace_frac_median": 1.0,
+      "retrace_frac_p25": 0.999,
+      "retrace_frac_p75": 1.0,
+      "n_retrace_samples": 65
+    }
+  },
+  "_note": "高ボラブレイク検出(H1レンジ/ATR比)のN候補ごとの発生頻度と、ブレイク後M5での戻り幅(ブレイクバーのレンジに対する比率)の分布。パラメータ最終決定の材料であり、この段階では確定しない。"
+}
