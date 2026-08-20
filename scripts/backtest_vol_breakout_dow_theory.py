@@ -148,10 +148,15 @@ def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, tra
 
 def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFrame, atr_h1: pd.Series,
                                break_idx: int, direction: str, stop_buffer_atr_m5: float,
-                               trail_mult: float) -> list[dict]:
+                               trail_mult: float, blackout_check=None) -> list[dict]:
     """1トレンドイベントをM5ダウ理論で追跡し、1通貨1ポジション制約下で連続的に
     押し目買い/戻り売りをシミュレートする。M5で型崩れしてもH1が型崩れ前の高値
-    (UP)/安値(DOWN)を更新したら追跡を再開する。"""
+    (UP)/安値(DOWN)を更新したら追跡を再開する。
+
+    blackout_check: Optional[Callable[[pd.Timestamp], bool]]。Trueを返す時刻は
+    新規エントリーを見送る(経済指標カレンダーのブラックアウト窓フィルター用、
+    2026-08-20追加)。ダウ理論のスイング構造追跡自体は影響を受けない(型崩れ判定は
+    ブラックアウト中も継続する)。"""
     break_bar = h1.iloc[break_idx]
     break_time = h1.index[break_idx]
     start_time = break_time + pd.Timedelta(minutes=WINDOW_START_MIN)
@@ -229,7 +234,7 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                 if h_i - running_extreme >= thresh:
                     pivot_low = running_extreme
                     if pivot_low > last_confirmed_extreme:
-                        if position_open_until is None or ts > position_open_until:
+                        if (position_open_until is None or ts > position_open_until) and not (blackout_check and blackout_check(ts)):
                             buffer = stop_buffer_atr_m5 * float(atr_i)
                             stop0 = pivot_low - buffer
                             entry_price = c_i
@@ -265,7 +270,7 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                 if running_extreme - l_i >= thresh:
                     pivot_high = running_extreme
                     if pivot_high < last_confirmed_extreme:
-                        if position_open_until is None or ts > position_open_until:
+                        if (position_open_until is None or ts > position_open_until) and not (blackout_check and blackout_check(ts)):
                             buffer = stop_buffer_atr_m5 * float(atr_i)
                             stop0 = pivot_high + buffer
                             entry_price = c_i
