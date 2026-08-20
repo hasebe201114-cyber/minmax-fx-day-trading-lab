@@ -30,17 +30,27 @@ atr_trail_multiplier=3.23)はTrainデータから導出済みの値をそのま�
       とみなしスリッページ0.5pipを適用
     - **イグジット**: TPで決済された部分は指値注文(価格が目標に達したら約定、
       理論上スリッページなし)、SL・トレーリングストップ・週末強制クローズ・
-      MAX_HOLDで決済された部分は成行注文(ストップ到達で成行に切り替わる、
-      またはその場で即時決済)とみなし0.5pipのスリッページを適用
+      MAX_HOLDで決済された部分は成行注文とみなし0.5pipのスリッページを適用
     - 1トレード内でTP1/TP2/TP3が部分的に成立した場合(段階利確)、成立済み
       TP分の数量比率(n_levels_hitに対応する累積配分、40%/75%/100%)は指値扱い、
       残数量は成行扱いとして按分し、コストをブレンドする
     - スプレッドは決済方式によらず常に発生(市場の売買気配差そのものであり、
       指値・成行いずれでも回避できないため)
-    - 簡略化(正直に明記): ニュース急変時等、成行決済でも0.5pipを大きく超える
-      滑りが発生しうる事例(2024-07-11 BOJ介入等、本PJで過去に確認済み)は
-      定数モデルのため反映していない。指値(TP)側もスリッページ0固定で、
-      実際にはガチガチの指値でも約定拒否・遅延が起こり得る点は考慮していない
+
+## 修正2 (2026-08-20、司令塔指摘): SL・トレーリングストップも指値注文扱いに変更
+
+司令塔「SL、トレーリングも指値注文でよいと思います」を受け、上記モデルを
+さらに修正した。ストップ系(SL_INITIAL_NO_TP・TP_THEN_SL_TRAILの残数量)も
+TPと同様、指定価格ちょうどで約定する指値注文扱いとしスリッページ0にする。
+週末強制クローズ・MAX_HOLD(いずれも価格指定注文ではなく、時刻/上限到達に
+よる強制決済のため対象外)は引き続き成行扱い(0.5pip)のまま据え置く。
+    - スリッページが残るのは「エントリー」と「週末強制クローズ/MAX_HOLDに
+      よるイグジット」のみになった
+    - 簡略化(正直に明記): ニュース急変時(2024-07-11 BOJ介入等、本PJで過去に
+      確認済み)は、ストップ注文が指定価格を素通りして更に不利な価格でしか
+      約定しない「スリッページ拡大」が実際には起こりうるが、本モデルは
+      ストップ系イグジットのスリッページを一律0とする定数モデルのため
+      反映していない。実運用ではこの想定より悪化する局面がありうる点に注意
 
 出力: research/method-notes/vol_breakout_dow_theory_1000usd_backtest.json
 """
@@ -138,9 +148,12 @@ def run_period(period_name: str, start: str, end: str) -> dict:
         pip = pip_size(pair)
         for sim in trades:
             fraction_via_tp = TP_CUM_FRACTION[sim["n_levels_hit"]]
-            fraction_via_market_exit = 1.0 - fraction_via_tp
+            fraction_remaining = 1.0 - fraction_via_tp
+            # 残数量の決済がスリッページを伴う「成行」なのは週末強制クローズ/MAX_HOLDのみ
+            # (SL・トレーリングストップは指値注文扱い、司令塔指摘によりスリッページ0)
+            remaining_is_market = sim["exit_reason"] in ("WEEKEND_NO_TP", "TP_THEN_WEEKEND", "MAX_HOLD")
             entry_pips = spread + SLIPPAGE_PIPS_MARKET_LEG
-            exit_pips = spread + fraction_via_market_exit * SLIPPAGE_PIPS_MARKET_LEG
+            exit_pips = spread + (fraction_remaining * SLIPPAGE_PIPS_MARKET_LEG if remaining_is_market else 0.0)
             cost_price = (entry_pips + exit_pips) * pip
             cost_r = cost_price / sim["initial_risk"]
             leverage_ratio = sim["entry_price"] / sim["initial_risk"]
