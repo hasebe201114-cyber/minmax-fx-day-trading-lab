@@ -52,6 +52,21 @@ TPと同様、指定価格ちょうどで約定する指値注文扱いとしス
       ストップ系イグジットのスリッページを一律0とする定数モデルのため
       反映していない。実運用ではこの想定より悪化する局面がありうる点に注意
 
+## 修正3 (2026-08-20、司令塔指摘): 実効レバレッジをGMOの規制上限25倍でキャップ
+
+司令塔から「一定数量なのか複利を考慮した裏返すとDDが低いという理由もこれが
+原因では」との指摘を受けて実効レバレッジを点検したところ、口座残高の1%を
+機械的にリスクするサイジング(修正前)では、`leverage_ratio(=entry_price/
+initial_risk)`に1%を掛けた実際の口座レバレッジが、一部のトレード(M5 ATR
+ベースの特にタイトなストップの場合)でGMOコイン外国為替FXの規制上限25倍を
+超えていた(Train5.5%・Validation0.6%・Test14.5%のトレードが該当、超過時は
+最大89倍相当まで達するケースもあった)。
+
+修正: 各トレードで許容される最大リスク%を`MAX_LEVERAGE(25) / leverage_ratio`
+とし、通常の1%との小さい方を実際のリスク%として採用する(証拠金制約による
+サイジング縮小)。25倍以内に収まるトレード(大多数)は影響を受けず、超過する
+トレードのみポジションが縮小され、その分dollar_pnlも縮小する。
+
 出力: research/method-notes/vol_breakout_dow_theory_1000usd_backtest.json
 """
 
@@ -101,6 +116,7 @@ for _r_level, _frac in TP_LEVELS:
     TP_CUM_FRACTION.append(_cum)
 
 RISK_PCT_PER_TRADE = 0.01
+MAX_LEVERAGE = 25.0  # GMOコイン外国為替FXの規制上限(CLAUDE.md記載)
 INITIAL_CAPITAL_USD = 1000.0
 
 
@@ -187,7 +203,14 @@ def run_period(period_name: str, start: str, end: str) -> dict:
                 t["risk_dollars"] = 0.0
                 t["skipped_ruin"] = True
             else:
-                t["risk_dollars"] = balance * RISK_PCT_PER_TRADE
+                # account_leverage = leverage_ratio * risk_pct なので、25倍上限を
+                # 満たすrisk_pctの上限は MAX_LEVERAGE / leverage_ratio。
+                # ストップが浅く25倍を超える場合はリスク%を縮小する(証拠金制約)
+                max_risk_pct = MAX_LEVERAGE / t["leverage_ratio"] if t["leverage_ratio"] > 0 else RISK_PCT_PER_TRADE
+                effective_risk_pct = min(RISK_PCT_PER_TRADE, max_risk_pct)
+                t["risk_dollars"] = balance * effective_risk_pct
+                t["effective_risk_pct"] = effective_risk_pct
+                t["leverage_capped"] = effective_risk_pct < RISK_PCT_PER_TRADE
                 t["skipped_ruin"] = False
         else:
             if t.get("skipped_ruin"):
@@ -246,6 +269,7 @@ def run_period(period_name: str, start: str, end: str) -> dict:
             "median": round(float(np.median([t["leverage_ratio"] for t in all_trades])), 1) if all_trades else None,
             "max": round(float(np.max([t["leverage_ratio"] for t in all_trades])), 1) if all_trades else None,
         },
+        "n_leverage_capped": sum(1 for t in all_trades if t.get("leverage_capped")),
         "trades": [
             {k: (str(v) if isinstance(v, pd.Timestamp) else (round(v, 6) if isinstance(v, float) else v))
              for k, v in t.items()}
