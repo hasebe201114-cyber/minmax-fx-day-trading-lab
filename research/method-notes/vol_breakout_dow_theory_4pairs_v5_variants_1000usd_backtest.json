@@ -1,0 +1,219 @@
+{
+  "generated_at": "2026-08-20T14:25:54.240505",
+  "selected_pairs": [
+    "USD_JPY",
+    "EUR_JPY",
+    "GBP_JPY",
+    "AUD_JPY"
+  ],
+  "variants": {
+    "baseline(第3試行)": {
+      "tp_levels": null,
+      "skip_first_entry": false
+    },
+    "TP3=4Rのみ": {
+      "tp_levels": [
+        [
+          1.0,
+          0.4
+        ],
+        [
+          2.0,
+          0.35
+        ],
+        [
+          4.0,
+          0.25
+        ]
+      ],
+      "skip_first_entry": false
+    },
+    "初回除外のみ": {
+      "tp_levels": null,
+      "skip_first_entry": true
+    },
+    "両方(第5試行)": {
+      "tp_levels": [
+        [
+          1.0,
+          0.4
+        ],
+        [
+          2.0,
+          0.35
+        ],
+        [
+          4.0,
+          0.25
+        ]
+      ],
+      "skip_first_entry": true
+    }
+  },
+  "results": {
+    "baseline(第3試行)": {
+      "train": {
+        "variant": "baseline(第3試行)",
+        "period": "train",
+        "n_trades": 387,
+        "final_balance_usd": 2997.69,
+        "total_return_pct": 199.77,
+        "max_drawdown_pct": -15.57,
+        "win_rate": 0.6253,
+        "mean_r_net": 0.3005,
+        "profit_factor": 1.707,
+        "max_consecutive_losses": 6,
+        "perm_p_clustered": 0.3866
+      },
+      "validation": {
+        "variant": "baseline(第3試行)",
+        "period": "validation",
+        "n_trades": 120,
+        "final_balance_usd": 1191.83,
+        "total_return_pct": 19.18,
+        "max_drawdown_pct": -15.34,
+        "win_rate": 0.5667,
+        "mean_r_net": 0.1609,
+        "profit_factor": 1.338,
+        "max_consecutive_losses": 6,
+        "perm_p_clustered": 0.4625
+      },
+      "test": {
+        "variant": "baseline(第3試行)",
+        "period": "test",
+        "n_trades": 183,
+        "final_balance_usd": 1393.42,
+        "total_return_pct": 39.34,
+        "max_drawdown_pct": -7.18,
+        "win_rate": 0.5902,
+        "mean_r_net": 0.1722,
+        "profit_factor": 1.356,
+        "max_consecutive_losses": 5,
+        "perm_p_clustered": 0.4705
+      }
+    },
+    "TP3=4Rのみ": {
+      "train": {
+        "variant": "TP3=4Rのみ",
+        "period": "train",
+        "n_trades": 345,
+        "final_balance_usd": 3209.36,
+        "total_return_pct": 220.94,
+        "max_drawdown_pct": -14.09,
+        "win_rate": 0.6377,
+        "mean_r_net": 0.3575,
+        "profit_factor": 1.871,
+        "max_consecutive_losses": 6,
+        "perm_p_clustered": 0.3866
+      },
+      "validation": {
+        "variant": "TP3=4Rのみ",
+        "period": "validation",
+        "n_trades": 104,
+        "final_balance_usd": 1125.72,
+        "total_return_pct": 12.57,
+        "max_drawdown_pct": -14.7,
+        "win_rate": 0.5769,
+        "mean_r_net": 0.1263,
+        "profit_factor": 1.272,
+        "max_consecutive_losses": 6,
+        "perm_p_clustered": 0.4625
+      },
+      "test": {
+        "variant": "TP3=4Rのみ",
+        "period": "test",
+        "n_trades": 173,
+        "final_balance_usd": 1381.71,
+        "total_return_pct": 38.17,
+        "max_drawdown_pct": -6.02,
+        "win_rate": 0.5838,
+        "mean_r_net": 0.186,
+        "profit_factor": 1.387,
+        "max_consecutive_losses": 5,
+        "perm_p_clustered": 0.4705
+      }
+    },
+    "初回除外のみ": {
+      "train": {
+        "variant": "初回除外のみ",
+        "period": "train",
+        "n_trades": 378,
+        "final_balance_usd": 2152.28,
+        "total_return_pct": 115.23,
+        "max_drawdown_pct": -17.21,
+        "win_rate": 0.5873,
+        "mean_r_net": 0.2196,
+        "profit_factor": 1.464,
+        "max_consecutive_losses": 10,
+        "perm_p_clustered": 0.4605
+      },
+      "validation": {
+        "variant": "初回除外のみ",
+        "period": "validation",
+        "n_trades": 103,
+        "final_balance_usd": 1205.71,
+        "total_return_pct": 20.57,
+        "max_drawdown_pct": -11.88,
+        "win_rate": 0.5825,
+        "mean_r_net": 0.1961,
+        "profit_factor": 1.421,
+        "max_consecutive_losses": 7,
+        "perm_p_clustered": 0.4186
+      },
+      "test": {
+        "variant": "初回除外のみ",
+        "period": "test",
+        "n_trades": 162,
+        "final_balance_usd": 1127.21,
+        "total_return_pct": 12.72,
+        "max_drawdown_pct": -10.96,
+        "win_rate": 0.5432,
+        "mean_r_net": 0.0538,
+        "profit_factor": 1.1,
+        "max_consecutive_losses": 8,
+        "perm_p_clustered": 0.4905
+      }
+    },
+    "両方(第5試行)": {
+      "train": {
+        "variant": "両方(第5試行)",
+        "period": "train",
+        "n_trades": 334,
+        "final_balance_usd": 2208.36,
+        "total_return_pct": 120.84,
+        "max_drawdown_pct": -13.59,
+        "win_rate": 0.5958,
+        "mean_r_net": 0.255,
+        "profit_factor": 1.55,
+        "max_consecutive_losses": 8,
+        "perm_p_clustered": 0.4605
+      },
+      "validation": {
+        "variant": "両方(第5試行)",
+        "period": "validation",
+        "n_trades": 91,
+        "final_balance_usd": 1158.61,
+        "total_return_pct": 15.86,
+        "max_drawdown_pct": -12.66,
+        "win_rate": 0.5934,
+        "mean_r_net": 0.1758,
+        "profit_factor": 1.388,
+        "max_consecutive_losses": 7,
+        "perm_p_clustered": 0.4625
+      },
+      "test": {
+        "variant": "両方(第5試行)",
+        "period": "test",
+        "n_trades": 147,
+        "final_balance_usd": 1076.92,
+        "total_return_pct": 7.69,
+        "max_drawdown_pct": -10.49,
+        "win_rate": 0.517,
+        "mean_r_net": 0.0299,
+        "profit_factor": 1.054,
+        "max_consecutive_losses": 8,
+        "perm_p_clustered": 0.4905
+      }
+    }
+  }
+}
