@@ -1,0 +1,109 @@
+{
+  "generated_at": "2026-08-20T12:18:07.653922",
+  "selected_pairs": [
+    "USD_JPY",
+    "EUR_JPY",
+    "GBP_JPY",
+    "AUD_JPY"
+  ],
+  "kpi_thresholds": {
+    "monthly_sharpe": 0.4,
+    "profit_factor": 1.2,
+    "monthly_expectancy_positive": true,
+    "max_dd_monthly_pct": 10.0,
+    "max_dd_yearly_pct": 20.0,
+    "max_consecutive_losses": 5,
+    "payoff_ratio": 1.5,
+    "spread_cost_multiplier": 3.0,
+    "min_n_trades_effective": 300,
+    "permutation_p_value": 0.05
+  },
+  "periods": {
+    "train": {
+      "period": "train",
+      "monthly_sharpe": 1.61,
+      "max_dd_pct": 24.52,
+      "max_dd_monthly_pct": 24.52,
+      "max_dd_pct_of_initial_capital_reference": 4307.7,
+      "max_dd_monthly_pct_of_initial_capital_reference": 0.0,
+      "profit_factor": 1.484,
+      "payoff_ratio": 0.904,
+      "max_consecutive_losses": 20,
+      "monthly_expectancy_positive": true,
+      "spread_cost_multiplier": 2.82,
+      "n_trades_effective": 666.9,
+      "permutation_p_clustered": 0.4426,
+      "kpi_pass": {
+        "monthly_sharpe": true,
+        "profit_factor": true,
+        "monthly_expectancy_positive": true,
+        "max_dd_monthly_pct": false,
+        "max_dd_yearly_pct": false,
+        "max_consecutive_losses": false,
+        "payoff_ratio": false,
+        "spread_cost_multiplier": false,
+        "min_n_trades_effective": true,
+        "permutation_p_value": false
+      },
+      "kpi_pass_count": "4/10"
+    },
+    "validation": {
+      "period": "validation",
+      "monthly_sharpe": 3.794,
+      "max_dd_pct": 15.0,
+      "max_dd_monthly_pct": 15.0,
+      "max_dd_pct_of_initial_capital_reference": 77.12,
+      "max_dd_monthly_pct_of_initial_capital_reference": 0.0,
+      "profit_factor": 1.381,
+      "payoff_ratio": 0.904,
+      "max_consecutive_losses": 9,
+      "monthly_expectancy_positive": true,
+      "spread_cost_multiplier": 2.44,
+      "n_trades_effective": 236.8,
+      "permutation_p_clustered": 0.4426,
+      "kpi_pass": {
+        "monthly_sharpe": true,
+        "profit_factor": true,
+        "monthly_expectancy_positive": true,
+        "max_dd_monthly_pct": false,
+        "max_dd_yearly_pct": true,
+        "max_consecutive_losses": false,
+        "payoff_ratio": false,
+        "spread_cost_multiplier": false,
+        "min_n_trades_effective": false,
+        "permutation_p_value": false
+      },
+      "kpi_pass_count": "4/10"
+    },
+    "test": {
+      "period": "test",
+      "monthly_sharpe": 3.888,
+      "max_dd_pct": 22.91,
+      "max_dd_monthly_pct": 22.91,
+      "max_dd_pct_of_initial_capital_reference": 612.6,
+      "max_dd_monthly_pct_of_initial_capital_reference": 107.71,
+      "profit_factor": 1.483,
+      "payoff_ratio": 0.806,
+      "max_consecutive_losses": 10,
+      "monthly_expectancy_positive": true,
+      "spread_cost_multiplier": 2.45,
+      "n_trades_effective": 286.2,
+      "permutation_p_clustered": 0.4426,
+      "kpi_pass": {
+        "monthly_sharpe": true,
+        "profit_factor": true,
+        "monthly_expectancy_positive": true,
+        "max_dd_monthly_pct": false,
+        "max_dd_yearly_pct": false,
+        "max_consecutive_losses": false,
+        "payoff_ratio": false,
+        "spread_cost_multiplier": false,
+        "min_n_trades_effective": false,
+        "permutation_p_value": false
+      },
+      "kpi_pass_count": "3/10"
+    }
+  },
+  "all_periods_all_kpi_pass": false,
+  "_note": "改善ループ第4試行(N=2.5・ZigZag=0.6・カレンダー6h+BOJのみ)。ピーク比DD採用済みの既存版と同一ロジックで判定。"
+}
