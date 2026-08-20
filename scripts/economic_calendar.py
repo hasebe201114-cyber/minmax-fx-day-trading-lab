@@ -84,11 +84,19 @@ FOMC_MEETINGS = [
 BLACKOUT_BUFFER_HOURS = 24
 
 
-def build_blackout_windows(tz: str = "Asia/Tokyo") -> list[tuple[pd.Timestamp, pd.Timestamp]]:
+def build_blackout_windows(
+    tz: str = "Asia/Tokyo",
+    buffer_hours: float = BLACKOUT_BUFFER_HOURS,
+    meetings: list[tuple[str, str]] | None = None,
+) -> list[tuple[pd.Timestamp, pd.Timestamp]]:
+    """meetings省略時はBOJ+FOMC全会合(デフォルト挙動)。感度分析(改善ループ第4試行)
+    でバッファ時間・対象会合セットを変えた変種を作る際に呼び出し側から指定する。"""
+    if meetings is None:
+        meetings = BOJ_MEETINGS + FOMC_MEETINGS
     windows = []
-    for start_str, end_str in BOJ_MEETINGS + FOMC_MEETINGS:
-        start = pd.Timestamp(start_str, tz=tz) - pd.Timedelta(hours=BLACKOUT_BUFFER_HOURS)
-        end = pd.Timestamp(end_str, tz=tz) + pd.Timedelta(hours=24 + BLACKOUT_BUFFER_HOURS)
+    for start_str, end_str in meetings:
+        start = pd.Timestamp(start_str, tz=tz) - pd.Timedelta(hours=buffer_hours)
+        end = pd.Timestamp(end_str, tz=tz) + pd.Timedelta(hours=24 + buffer_hours)
         windows.append((start, end))
     windows.sort(key=lambda w: w[0])
     return windows
@@ -97,11 +105,19 @@ def build_blackout_windows(tz: str = "Asia/Tokyo") -> list[tuple[pd.Timestamp, p
 _WINDOWS = build_blackout_windows()
 
 
-def is_blackout(ts: pd.Timestamp) -> bool:
-    """指定時刻がBOJ/FOMCブラックアウト窓内かを判定する(新規エントリー用フィルター)."""
-    for start, end in _WINDOWS:
+def is_blackout(ts: pd.Timestamp, windows: list[tuple[pd.Timestamp, pd.Timestamp]] | None = None) -> bool:
+    """指定時刻がブラックアウト窓内かを判定する(新規エントリー用フィルター)。
+    windows省略時はデフォルトのBOJ+FOMC・±24hバッファ窓(_WINDOWS)を使用。"""
+    ws = windows if windows is not None else _WINDOWS
+    for start, end in ws:
         if start <= ts <= end:
             return True
         if start > ts:
             break
     return False
+
+
+def make_blackout_check(buffer_hours: float, meetings: list[tuple[str, str]] | None = None):
+    """指定バッファ/会合セットのis_blackout互換コールバックを返す(感度分析用)。"""
+    windows = build_blackout_windows(buffer_hours=buffer_hours, meetings=meetings)
+    return lambda ts: is_blackout(ts, windows=windows)
