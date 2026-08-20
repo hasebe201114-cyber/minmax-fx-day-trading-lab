@@ -90,11 +90,20 @@ def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, tra
     """段階利確(40/35/25%)、1R到達後BE+ATRトレーリング。exit_timeを含めて返す
     (ポジション保有中判定=1通貨1ポジション制約のゲーティングに必要なため、
     `analyze_scaled_exit_diagnostic.simulate_scaled_scheme`をexit_time付きで
-    ローカルに複製したもの)。"""
+    ローカルに複製したもの)。
+
+    バグ修正(2026-08-20、改善ループ第4試行のN=2.5感度分析で発覚): エントリーが
+    利用可能なH1データの最終バーで発生した場合(start>=n)、以前は
+    `h1.index[end-1]`(=エントリー自身のH1バー開始時刻、M5エントリー時刻より
+    前になりうる)をexit_timeとして返しており、exit_time<entry_timeという
+    イベント順序違反を引き起こしていた(N=3.5では稀にしか起きずKeyError等の
+    形で表面化していなかった)。エントリーのM5時刻(entry_ts)を必ずexit_time
+    の下限として使うよう修正。"""
     direction = entry["direction"]
     entry_price = entry["entry_price"]
     risk = entry["initial_risk"]
     stop = entry["stop0"]
+    entry_ts = entry.get("entry_ts")
     levels = [(r, frac, entry_price + r * risk if direction == "UP" else entry_price - r * risk, False)
               for r, frac in TP_LEVELS]
     remaining_fraction = 1.0
@@ -103,6 +112,11 @@ def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, tra
     n = len(h1)
     start = entry["entry_idx"] + 1
     end = min(n, start + MAX_HOLD_BARS)
+    if start >= end:
+        # H1データが尽きている(エントリーが利用可能な最終バー付近で発生)。
+        # 追加の値動きを観測できないため、エントリー時刻でフラット(r=0)決済とする。
+        ts_last = entry_ts if entry_ts is not None else h1.index[min(max(end - 1, 0), n - 1)]
+        return {"r": 0.0, "exit_reason": "NO_H1_DATA_AFTER_ENTRY", "n_levels_hit": 0, "exit_time": ts_last}
     for i in range(start, end):
         ts = h1.index[i]
         o, h, low, c = float(h1["open"].iloc[i]), float(h1["high"].iloc[i]), float(h1["low"].iloc[i]), float(h1["close"].iloc[i])
@@ -248,7 +262,7 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                             entry_h1_idx = int(h1.index.searchsorted(ts, side="right") - 1)
                             if initial_risk > 0 and 0 <= entry_h1_idx < len(h1):
                                 entry = dict(direction=direction, entry_idx=entry_h1_idx, entry_price=entry_price,
-                                             stop0=stop0, initial_risk=initial_risk)
+                                             stop0=stop0, initial_risk=initial_risk, entry_ts=ts)
                                 res = simulate_scaled_scheme(h1, atr_h1, entry, trail_mult)
                                 res["entry_time"] = str(ts)
                                 res["direction"] = direction
@@ -284,7 +298,7 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                             entry_h1_idx = int(h1.index.searchsorted(ts, side="right") - 1)
                             if initial_risk > 0 and 0 <= entry_h1_idx < len(h1):
                                 entry = dict(direction=direction, entry_idx=entry_h1_idx, entry_price=entry_price,
-                                             stop0=stop0, initial_risk=initial_risk)
+                                             stop0=stop0, initial_risk=initial_risk, entry_ts=ts)
                                 res = simulate_scaled_scheme(h1, atr_h1, entry, trail_mult)
                                 res["entry_time"] = str(ts)
                                 res["direction"] = direction
