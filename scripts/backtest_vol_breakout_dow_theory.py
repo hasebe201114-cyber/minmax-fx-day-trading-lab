@@ -86,7 +86,8 @@ def is_weekend_close_time(ts: pd.Timestamp) -> bool:
     return ts.weekday() == 5 and ts.hour >= 6
 
 
-def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, trail_mult: float) -> dict:
+def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, trail_mult: float,
+                            breakeven_trigger_r: float | None = None) -> dict:
     """段階利確(40/35/25%)、1R到達後BE+ATRトレーリング。exit_timeを含めて返す
     (ポジション保有中判定=1通貨1ポジション制約のゲーティングに必要なため、
     `analyze_scaled_exit_diagnostic.simulate_scaled_scheme`をexit_time付きで
@@ -98,7 +99,11 @@ def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, tra
     前になりうる)をexit_timeとして返しており、exit_time<entry_timeという
     イベント順序違反を引き起こしていた(N=3.5では稀にしか起きずKeyError等の
     形で表面化していなかった)。エントリーのM5時刻(entry_ts)を必ずexit_time
-    の下限として使うよう修正。"""
+    の下限として使うよう修正。
+
+    breakeven_trigger_r: 省略時(None)は現行仕様どおりTP1到達(1.0R)時に建値へ移動する。
+    数値を指定すると、TP到達とは独立に「含み益がこのR値に達した時点」で建値へ移動する
+    (高ボラ想定に対しトレーリング開始を早める効果を検証する診断用パラメータ、2026-08-20追加)。"""
     direction = entry["direction"]
     entry_price = entry["entry_price"]
     risk = entry["initial_risk"]
@@ -132,6 +137,11 @@ def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, tra
             reason = "SL_INITIAL_NO_TP" if n_levels_hit == 0 else "TP_THEN_SL_TRAIL"
             return {"r": realized_r + remaining_fraction * exit_r, "exit_reason": reason,
                     "n_levels_hit": n_levels_hit, "exit_time": ts}
+        if breakeven_trigger_r is not None and not be_moved:
+            favorable_r = (h - entry_price) / risk if direction == "UP" else (entry_price - low) / risk
+            if favorable_r >= breakeven_trigger_r:
+                stop = max(stop, entry_price) if direction == "UP" else min(stop, entry_price)
+                be_moved = True
         for idx_lv, (r_level, frac, price_level, hit) in enumerate(levels):
             if hit or remaining_fraction <= 0:
                 continue
@@ -163,7 +173,8 @@ def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, tra
 def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFrame, atr_h1: pd.Series,
                                break_idx: int, direction: str, stop_buffer_atr_m5: float,
                                trail_mult: float, blackout_check=None,
-                               zigzag_threshold_atr_m5: float | None = None) -> list[dict]:
+                               zigzag_threshold_atr_m5: float | None = None,
+                               breakeven_trigger_r: float | None = None) -> list[dict]:
     """1トレンドイベントをM5ダウ理論で追跡し、1通貨1ポジション制約下で連続的に
     押し目買い/戻り売りをシミュレートする。M5で型崩れしてもH1が型崩れ前の高値
     (UP)/安値(DOWN)を更新したら追跡を再開する。
@@ -201,6 +212,13 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
     h1_confirm_threshold: float | None = None
     pause_extreme: float | None = None  # 一時停止中に記録したM5最安値(UP)/最高値(DOWN)
 
+    # 診断用の追加フィールド(2026-08-20追加、既存の数値結果には影響しない加算のみ):
+    # entry_seq=イベント内で何番目のエントリーか(1始まり)、
+    # resumed_since_last_entry=このエントリーがH1継続確認による再開の直後かどうか
+    entry_seq = 0
+    resumed_since_last_entry = False
+    break_price = float(break_bar["close"])
+
     for i in range(start_pos, end_pos):
         ts = m5.index[i]
         if is_weekend_close_time(ts):
@@ -219,6 +237,7 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                         state = "SEARCHING_HIGH"
                         last_confirmed_extreme = pause_extreme if pause_extreme is not None else last_confirmed_extreme
                         running_extreme, running_extreme_idx = h_i, i
+                        resumed_since_last_entry = True
                     h1_extreme_since_break = max(h1_extreme_since_break, h1_high_hp)
                 else:
                     if awaiting_h1_confirm and h1_low_hp < h1_confirm_threshold:
@@ -226,6 +245,7 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                         state = "SEARCHING_LOW"
                         last_confirmed_extreme = pause_extreme if pause_extreme is not None else last_confirmed_extreme
                         running_extreme, running_extreme_idx = l_i, i
+                        resumed_since_last_entry = True
                     h1_extreme_since_break = min(h1_extreme_since_break, h1_low_hp)
             last_h1_pos_checked = cur_h1_pos
 
@@ -263,11 +283,19 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                             if initial_risk > 0 and 0 <= entry_h1_idx < len(h1):
                                 entry = dict(direction=direction, entry_idx=entry_h1_idx, entry_price=entry_price,
                                              stop0=stop0, initial_risk=initial_risk, entry_ts=ts)
-                                res = simulate_scaled_scheme(h1, atr_h1, entry, trail_mult)
+                                res = simulate_scaled_scheme(h1, atr_h1, entry, trail_mult, breakeven_trigger_r=breakeven_trigger_r)
                                 res["entry_time"] = str(ts)
                                 res["direction"] = direction
                                 res["entry_price"] = entry_price
                                 res["initial_risk"] = initial_risk
+                                entry_seq += 1
+                                res["entry_seq"] = entry_seq
+                                res["resumed_since_last_entry"] = resumed_since_last_entry
+                                res["bars_since_tracking_start"] = i - start_pos
+                                res["break_price"] = break_price
+                                res["break_time"] = str(break_time)
+                                res["entry_h1_idx"] = entry_h1_idx
+                                resumed_since_last_entry = False
                                 trades.append(res)
                                 position_open_until = res["exit_time"]
                         last_confirmed_extreme = pivot_low
@@ -299,11 +327,19 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                             if initial_risk > 0 and 0 <= entry_h1_idx < len(h1):
                                 entry = dict(direction=direction, entry_idx=entry_h1_idx, entry_price=entry_price,
                                              stop0=stop0, initial_risk=initial_risk, entry_ts=ts)
-                                res = simulate_scaled_scheme(h1, atr_h1, entry, trail_mult)
+                                res = simulate_scaled_scheme(h1, atr_h1, entry, trail_mult, breakeven_trigger_r=breakeven_trigger_r)
                                 res["entry_time"] = str(ts)
                                 res["direction"] = direction
                                 res["entry_price"] = entry_price
                                 res["initial_risk"] = initial_risk
+                                entry_seq += 1
+                                res["entry_seq"] = entry_seq
+                                res["resumed_since_last_entry"] = resumed_since_last_entry
+                                res["bars_since_tracking_start"] = i - start_pos
+                                res["break_price"] = break_price
+                                res["break_time"] = str(break_time)
+                                res["entry_h1_idx"] = entry_h1_idx
+                                resumed_since_last_entry = False
                                 trades.append(res)
                                 position_open_until = res["exit_time"]
                         last_confirmed_extreme = pivot_high
