@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-20T11:40:02.682997",
+  "generated_at": "2026-08-20T12:20:11.685568",
   "train_period": [
     "2023-11-01",
     "2025-03-31"
@@ -78,9 +78,9 @@
         "GBP_JPY": 212,
         "AUD_JPY": 236
       },
-      "mean_r": 0.4282,
+      "mean_r": 0.4318,
       "win_rate": 0.624,
-      "profit_factor_r": 2.132,
+      "profit_factor_r": 2.153,
       "n_trades_effective": 318.0,
       "permutation_p_clustered": 0.3894805259737013,
       "n_breakout": 3.0,
@@ -95,9 +95,9 @@
         "GBP_JPY": 220,
         "AUD_JPY": 246
       },
-      "mean_r": 0.4696,
+      "mean_r": 0.4723,
       "win_rate": 0.631,
-      "profit_factor_r": 2.269,
+      "profit_factor_r": 2.286,
       "n_trades_effective": 330.0,
       "permutation_p_clustered": 0.3894805259737013,
       "n_breakout": 3.0,
@@ -112,9 +112,9 @@
         "GBP_JPY": 231,
         "AUD_JPY": 249
       },
-      "mean_r": 0.5049,
+      "mean_r": 0.5075,
       "win_rate": 0.634,
-      "profit_factor_r": 2.376,
+      "profit_factor_r": 2.393,
       "n_trades_effective": 342.2,
       "permutation_p_clustered": 0.3894805259737013,
       "n_breakout": 3.0,
@@ -129,9 +129,9 @@
         "GBP_JPY": 600,
         "AUD_JPY": 503
       },
-      "mean_r": 0.4433,
+      "mean_r": 0.4449,
       "win_rate": 0.624,
-      "profit_factor_r": 2.177,
+      "profit_factor_r": 2.187,
       "n_trades_effective": 710.4,
       "permutation_p_clustered": 0.4488275586220689,
       "n_breakout": 2.5,
@@ -146,9 +146,9 @@
         "GBP_JPY": 616,
         "AUD_JPY": 533
       },
-      "mean_r": 0.4892,
+      "mean_r": 0.4904,
       "win_rate": 0.633,
-      "profit_factor_r": 2.33,
+      "profit_factor_r": 2.337,
       "n_trades_effective": 732.6,
       "permutation_p_clustered": 0.4488275586220689,
       "n_breakout": 2.5,
@@ -163,9 +163,9 @@
         "GBP_JPY": 650,
         "AUD_JPY": 557
       },
-      "mean_r": 0.5176,
+      "mean_r": 0.5188,
       "win_rate": 0.633,
-      "profit_factor_r": 2.41,
+      "profit_factor_r": 2.418,
       "n_trades_effective": 765.3,
       "permutation_p_clustered": 0.4488275586220689,
       "n_breakout": 2.5,
@@ -181,9 +181,9 @@
       "GBP_JPY": 650,
       "AUD_JPY": 557
     },
-    "mean_r": 0.5176,
+    "mean_r": 0.5188,
     "win_rate": 0.633,
-    "profit_factor_r": 2.41,
+    "profit_factor_r": 2.418,
     "n_trades_effective": 765.3,
     "permutation_p_clustered": 0.4488275586220689,
     "n_breakout": 2.5,
