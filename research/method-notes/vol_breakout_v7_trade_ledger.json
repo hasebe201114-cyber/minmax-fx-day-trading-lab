@@ -1,0 +1,389 @@
+{
+  "generated_at": "2026-08-20T23:10:00.837223",
+  "source": "vol_breakout_dow_theory_4pairs_v7_1000usd_backtest.json(改善ループ第7試行、採用中の最良候補)",
+  "overall": {
+    "n_trades": 655,
+    "win_rate": 0.627,
+    "mean_r_net": 0.3832,
+    "mean_r_gross": 0.5438,
+    "sum_dollar_pnl": 4552.75,
+    "profit_factor": 1.772,
+    "max_win_streak": 28,
+    "max_loss_streak": 8,
+    "hold_hours_median": 1.83,
+    "hold_hours_p75": 4.75,
+    "hold_hours_max": 310.83
+  },
+  "by_pair": [
+    {
+      "pair": "USD_JPY",
+      "n_trades": 253,
+      "win_rate": 0.64,
+      "mean_r_net": 0.3885,
+      "mean_r_gross": 0.5268,
+      "sum_dollar_pnl": 1787.06,
+      "mean_dollar_pnl": 7.06
+    },
+    {
+      "pair": "GBP_JPY",
+      "n_trades": 152,
+      "win_rate": 0.586,
+      "mean_r_net": 0.2791,
+      "mean_r_gross": 0.451,
+      "sum_dollar_pnl": 727.78,
+      "mean_dollar_pnl": 4.79
+    },
+    {
+      "pair": "EUR_JPY",
+      "n_trades": 127,
+      "win_rate": 0.63,
+      "mean_r_net": 0.4665,
+      "mean_r_gross": 0.6274,
+      "sum_dollar_pnl": 1242.75,
+      "mean_dollar_pnl": 9.79
+    },
+    {
+      "pair": "AUD_JPY",
+      "n_trades": 123,
+      "win_rate": 0.65,
+      "mean_r_net": 0.4148,
+      "mean_r_gross": 0.6072,
+      "sum_dollar_pnl": 795.16,
+      "mean_dollar_pnl": 6.46
+    }
+  ],
+  "by_direction": [
+    {
+      "direction": "DOWN",
+      "n_trades": 388,
+      "win_rate": 0.649,
+      "mean_r_net": 0.4721,
+      "mean_r_gross": 0.6075,
+      "sum_dollar_pnl": 3582.98,
+      "mean_dollar_pnl": 9.23
+    },
+    {
+      "direction": "UP",
+      "n_trades": 267,
+      "win_rate": 0.596,
+      "mean_r_net": 0.2539,
+      "mean_r_gross": 0.4512,
+      "sum_dollar_pnl": 969.77,
+      "mean_dollar_pnl": 3.63
+    }
+  ],
+  "by_exit_reason": [
+    {
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_trades": 241,
+      "win_rate": 0.0,
+      "mean_r_net": -1.1728,
+      "mean_r_gross": -1.0,
+      "sum_dollar_pnl": -5893.45,
+      "mean_dollar_pnl": -24.45
+    },
+    {
+      "exit_reason": "TP_FULL",
+      "n_trades": 210,
+      "win_rate": 1.0,
+      "mean_r_net": 1.9147,
+      "mean_r_gross": 2.1,
+      "sum_dollar_pnl": 7897.82,
+      "mean_dollar_pnl": 37.61
+    },
+    {
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_trades": 203,
+      "win_rate": 0.99,
+      "mean_r_net": 0.6486,
+      "mean_r_gross": 0.7695,
+      "sum_dollar_pnl": 2551.16,
+      "mean_dollar_pnl": 12.57
+    },
+    {
+      "exit_reason": "MAX_HOLD",
+      "n_trades": 1,
+      "win_rate": 0.0,
+      "mean_r_net": -0.1358,
+      "mean_r_gross": -0.0058,
+      "sum_dollar_pnl": -2.78,
+      "mean_dollar_pnl": -2.78
+    }
+  ],
+  "by_n_levels_hit": [
+    {
+      "n_levels_hit": 0,
+      "n_trades": 242,
+      "win_rate": 0.0,
+      "mean_r_net": -1.1685,
+      "mean_r_gross": -0.9959,
+      "sum_dollar_pnl": -5896.23,
+      "mean_dollar_pnl": -24.36
+    },
+    {
+      "n_levels_hit": 3,
+      "n_trades": 210,
+      "win_rate": 1.0,
+      "mean_r_net": 1.9147,
+      "mean_r_gross": 2.1,
+      "sum_dollar_pnl": 7897.82,
+      "mean_dollar_pnl": 37.61
+    },
+    {
+      "n_levels_hit": 2,
+      "n_trades": 102,
+      "win_rate": 1.0,
+      "mean_r_net": 0.9943,
+      "mean_r_gross": 1.126,
+      "sum_dollar_pnl": 1959.56,
+      "mean_dollar_pnl": 19.21
+    },
+    {
+      "n_levels_hit": 1,
+      "n_trades": 101,
+      "win_rate": 0.98,
+      "mean_r_net": 0.2994,
+      "mean_r_gross": 0.4094,
+      "sum_dollar_pnl": 591.61,
+      "mean_dollar_pnl": 5.86
+    }
+  ],
+  "period_returns": {
+    "train": {
+      "start": "2023-11-01",
+      "end": "2025-03-31",
+      "years": 1.413,
+      "n_trades": 417,
+      "final_balance_usd": 4283.36,
+      "total_return_pct": 328.34,
+      "annualized_return_pct": 180.03,
+      "max_drawdown_pct": -14.92
+    },
+    "validation": {
+      "start": "2025-04-01",
+      "end": "2025-11-30",
+      "years": 0.665,
+      "n_trades": 89,
+      "final_balance_usd": 1219.66,
+      "total_return_pct": 21.97,
+      "annualized_return_pct": 34.78,
+      "max_drawdown_pct": -10.21
+    },
+    "test": {
+      "start": "2025-12-01",
+      "end": "2026-08-15",
+      "years": 0.704,
+      "n_trades": 149,
+      "final_balance_usd": 2049.73,
+      "total_return_pct": 104.97,
+      "annualized_return_pct": 177.32,
+      "max_drawdown_pct": -7.33
+    }
+  },
+  "monthly": [
+    {
+      "month": "2023-11",
+      "n_trades": 43,
+      "sum_dollar_pnl": 171.43,
+      "win_rate": 0.651
+    },
+    {
+      "month": "2023-12",
+      "n_trades": 16,
+      "sum_dollar_pnl": 117.23,
+      "win_rate": 0.812
+    },
+    {
+      "month": "2024-01",
+      "n_trades": 10,
+      "sum_dollar_pnl": -29.19,
+      "win_rate": 0.4
+    },
+    {
+      "month": "2024-02",
+      "n_trades": 12,
+      "sum_dollar_pnl": 80.68,
+      "win_rate": 0.833
+    },
+    {
+      "month": "2024-03",
+      "n_trades": 39,
+      "sum_dollar_pnl": 409.39,
+      "win_rate": 0.795
+    },
+    {
+      "month": "2024-04",
+      "n_trades": 69,
+      "sum_dollar_pnl": 716.1,
+      "win_rate": 0.609
+    },
+    {
+      "month": "2024-05",
+      "n_trades": 40,
+      "sum_dollar_pnl": -63.28,
+      "win_rate": 0.45
+    },
+    {
+      "month": "2024-06",
+      "n_trades": 10,
+      "sum_dollar_pnl": 0.24,
+      "win_rate": 0.5
+    },
+    {
+      "month": "2024-07",
+      "n_trades": 47,
+      "sum_dollar_pnl": 1111.52,
+      "win_rate": 0.766
+    },
+    {
+      "month": "2024-08",
+      "n_trades": 33,
+      "sum_dollar_pnl": -27.52,
+      "win_rate": 0.424
+    },
+    {
+      "month": "2024-09",
+      "n_trades": 21,
+      "sum_dollar_pnl": 179.78,
+      "win_rate": 0.619
+    },
+    {
+      "month": "2024-10",
+      "n_trades": 10,
+      "sum_dollar_pnl": -165.99,
+      "win_rate": 0.3
+    },
+    {
+      "month": "2024-11",
+      "n_trades": 8,
+      "sum_dollar_pnl": 53.56,
+      "win_rate": 0.625
+    },
+    {
+      "month": "2024-12",
+      "n_trades": 22,
+      "sum_dollar_pnl": 242.45,
+      "win_rate": 0.591
+    },
+    {
+      "month": "2025-01",
+      "n_trades": 23,
+      "sum_dollar_pnl": 276.59,
+      "win_rate": 0.565
+    },
+    {
+      "month": "2025-02",
+      "n_trades": 9,
+      "sum_dollar_pnl": 159.29,
+      "win_rate": 0.778
+    },
+    {
+      "month": "2025-03",
+      "n_trades": 5,
+      "sum_dollar_pnl": 51.11,
+      "win_rate": 0.6
+    },
+    {
+      "month": "2025-04",
+      "n_trades": 32,
+      "sum_dollar_pnl": 150.74,
+      "win_rate": 0.688
+    },
+    {
+      "month": "2025-05",
+      "n_trades": 14,
+      "sum_dollar_pnl": -38.54,
+      "win_rate": 0.429
+    },
+    {
+      "month": "2025-06",
+      "n_trades": 12,
+      "sum_dollar_pnl": 98.88,
+      "win_rate": 0.75
+    },
+    {
+      "month": "2025-07",
+      "n_trades": 4,
+      "sum_dollar_pnl": -54.57,
+      "win_rate": 0.0
+    },
+    {
+      "month": "2025-08",
+      "n_trades": 5,
+      "sum_dollar_pnl": 19.81,
+      "win_rate": 0.6
+    },
+    {
+      "month": "2025-09",
+      "n_trades": 11,
+      "sum_dollar_pnl": -4.41,
+      "win_rate": 0.545
+    },
+    {
+      "month": "2025-10",
+      "n_trades": 8,
+      "sum_dollar_pnl": 54.68,
+      "win_rate": 0.75
+    },
+    {
+      "month": "2025-11",
+      "n_trades": 3,
+      "sum_dollar_pnl": -6.93,
+      "win_rate": 0.667
+    },
+    {
+      "month": "2025-12",
+      "n_trades": 1,
+      "sum_dollar_pnl": -11.76,
+      "win_rate": 0.0
+    },
+    {
+      "month": "2026-01",
+      "n_trades": 7,
+      "sum_dollar_pnl": 123.98,
+      "win_rate": 1.0
+    },
+    {
+      "month": "2026-02",
+      "n_trades": 26,
+      "sum_dollar_pnl": 148.09,
+      "win_rate": 0.731
+    },
+    {
+      "month": "2026-03",
+      "n_trades": 9,
+      "sum_dollar_pnl": 0.24,
+      "win_rate": 0.556
+    },
+    {
+      "month": "2026-04",
+      "n_trades": 7,
+      "sum_dollar_pnl": 27.33,
+      "win_rate": 0.571
+    },
+    {
+      "month": "2026-05",
+      "n_trades": 22,
+      "sum_dollar_pnl": 73.78,
+      "win_rate": 0.545
+    },
+    {
+      "month": "2026-06",
+      "n_trades": 43,
+      "sum_dollar_pnl": 57.04,
+      "win_rate": 0.558
+    },
+    {
+      "month": "2026-07",
+      "n_trades": 14,
+      "sum_dollar_pnl": 66.51,
+      "win_rate": 0.643
+    },
+    {
+      "month": "2026-08",
+      "n_trades": 20,
+      "sum_dollar_pnl": 564.51,
+      "win_rate": 0.95
+    }
+  ]
+}
