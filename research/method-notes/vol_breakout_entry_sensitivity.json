@@ -1,0 +1,314 @@
+{
+  "generated_at": "2026-08-20T11:40:02.682997",
+  "train_period": [
+    "2023-11-01",
+    "2025-03-31"
+  ],
+  "selected_pairs": [
+    "USD_JPY",
+    "EUR_JPY",
+    "GBP_JPY",
+    "AUD_JPY"
+  ],
+  "stop_buffer_atr_m5": 0.703,
+  "current_params": {
+    "n_breakout": 3.5,
+    "zigzag_threshold_atr_m5": 1.0,
+    "buffer_hours": 24,
+    "meeting_scope": "boj_fomc"
+  },
+  "part_a_grid": [
+    {
+      "n_trend_events": 181,
+      "n_trades_total": 568,
+      "trades_per_currency": {
+        "USD_JPY": 213,
+        "EUR_JPY": 136,
+        "GBP_JPY": 132,
+        "AUD_JPY": 87
+      },
+      "mean_r": 0.4735,
+      "win_rate": 0.641,
+      "profit_factor_r": 2.318,
+      "n_trades_effective": 165.9,
+      "permutation_p_clustered": 0.3894805259737013,
+      "n_breakout": 3.5,
+      "zigzag_threshold_atr_m5": 1.0
+    },
+    {
+      "n_trend_events": 181,
+      "n_trades_total": 584,
+      "trades_per_currency": {
+        "USD_JPY": 215,
+        "EUR_JPY": 142,
+        "GBP_JPY": 136,
+        "AUD_JPY": 91
+      },
+      "mean_r": 0.5285,
+      "win_rate": 0.658,
+      "profit_factor_r": 2.543,
+      "n_trades_effective": 170.5,
+      "permutation_p_clustered": 0.3894805259737013,
+      "n_breakout": 3.5,
+      "zigzag_threshold_atr_m5": 0.8
+    },
+    {
+      "n_trend_events": 181,
+      "n_trades_total": 610,
+      "trades_per_currency": {
+        "USD_JPY": 225,
+        "EUR_JPY": 149,
+        "GBP_JPY": 147,
+        "AUD_JPY": 89
+      },
+      "mean_r": 0.5537,
+      "win_rate": 0.656,
+      "profit_factor_r": 2.608,
+      "n_trades_effective": 178.1,
+      "permutation_p_clustered": 0.3894805259737013,
+      "n_breakout": 3.5,
+      "zigzag_threshold_atr_m5": 0.6
+    },
+    {
+      "n_trend_events": 352,
+      "n_trades_total": 1089,
+      "trades_per_currency": {
+        "USD_JPY": 365,
+        "EUR_JPY": 276,
+        "GBP_JPY": 212,
+        "AUD_JPY": 236
+      },
+      "mean_r": 0.4282,
+      "win_rate": 0.624,
+      "profit_factor_r": 2.132,
+      "n_trades_effective": 318.0,
+      "permutation_p_clustered": 0.3894805259737013,
+      "n_breakout": 3.0,
+      "zigzag_threshold_atr_m5": 1.0
+    },
+    {
+      "n_trend_events": 352,
+      "n_trades_total": 1130,
+      "trades_per_currency": {
+        "USD_JPY": 373,
+        "EUR_JPY": 291,
+        "GBP_JPY": 220,
+        "AUD_JPY": 246
+      },
+      "mean_r": 0.4696,
+      "win_rate": 0.631,
+      "profit_factor_r": 2.269,
+      "n_trades_effective": 330.0,
+      "permutation_p_clustered": 0.3894805259737013,
+      "n_breakout": 3.0,
+      "zigzag_threshold_atr_m5": 0.8
+    },
+    {
+      "n_trend_events": 352,
+      "n_trades_total": 1172,
+      "trades_per_currency": {
+        "USD_JPY": 384,
+        "EUR_JPY": 308,
+        "GBP_JPY": 231,
+        "AUD_JPY": 249
+      },
+      "mean_r": 0.5049,
+      "win_rate": 0.634,
+      "profit_factor_r": 2.376,
+      "n_trades_effective": 342.2,
+      "permutation_p_clustered": 0.3894805259737013,
+      "n_breakout": 3.0,
+      "zigzag_threshold_atr_m5": 0.6
+    },
+    {
+      "n_trend_events": 698,
+      "n_trades_total": 2433,
+      "trades_per_currency": {
+        "USD_JPY": 741,
+        "EUR_JPY": 589,
+        "GBP_JPY": 600,
+        "AUD_JPY": 503
+      },
+      "mean_r": 0.4433,
+      "win_rate": 0.624,
+      "profit_factor_r": 2.177,
+      "n_trades_effective": 710.4,
+      "permutation_p_clustered": 0.4488275586220689,
+      "n_breakout": 2.5,
+      "zigzag_threshold_atr_m5": 1.0
+    },
+    {
+      "n_trend_events": 698,
+      "n_trades_total": 2509,
+      "trades_per_currency": {
+        "USD_JPY": 744,
+        "EUR_JPY": 616,
+        "GBP_JPY": 616,
+        "AUD_JPY": 533
+      },
+      "mean_r": 0.4892,
+      "win_rate": 0.633,
+      "profit_factor_r": 2.33,
+      "n_trades_effective": 732.6,
+      "permutation_p_clustered": 0.4488275586220689,
+      "n_breakout": 2.5,
+      "zigzag_threshold_atr_m5": 0.8
+    },
+    {
+      "n_trend_events": 698,
+      "n_trades_total": 2621,
+      "trades_per_currency": {
+        "USD_JPY": 764,
+        "EUR_JPY": 650,
+        "GBP_JPY": 650,
+        "AUD_JPY": 557
+      },
+      "mean_r": 0.5176,
+      "win_rate": 0.633,
+      "profit_factor_r": 2.41,
+      "n_trades_effective": 765.3,
+      "permutation_p_clustered": 0.4488275586220689,
+      "n_breakout": 2.5,
+      "zigzag_threshold_atr_m5": 0.6
+    }
+  ],
+  "part_a_selected": {
+    "n_trend_events": 698,
+    "n_trades_total": 2621,
+    "trades_per_currency": {
+      "USD_JPY": 764,
+      "EUR_JPY": 650,
+      "GBP_JPY": 650,
+      "AUD_JPY": 557
+    },
+    "mean_r": 0.5176,
+    "win_rate": 0.633,
+    "profit_factor_r": 2.41,
+    "n_trades_effective": 765.3,
+    "permutation_p_clustered": 0.4488275586220689,
+    "n_breakout": 2.5,
+    "zigzag_threshold_atr_m5": 0.6
+  },
+  "part_b_grid": [
+    {
+      "n_trend_events": 181,
+      "n_trades_total": 387,
+      "trades_per_currency": {
+        "USD_JPY": 151,
+        "EUR_JPY": 80,
+        "GBP_JPY": 93,
+        "AUD_JPY": 63
+      },
+      "mean_r": 0.4277,
+      "win_rate": 0.625,
+      "profit_factor_r": 2.142,
+      "n_trades_effective": 113.0,
+      "permutation_p_clustered": 0.3894805259737013,
+      "buffer_hours": 24,
+      "meeting_scope": "boj_fomc"
+    },
+    {
+      "n_trend_events": 181,
+      "n_trades_total": 441,
+      "trades_per_currency": {
+        "USD_JPY": 172,
+        "EUR_JPY": 94,
+        "GBP_JPY": 102,
+        "AUD_JPY": 73
+      },
+      "mean_r": 0.3992,
+      "win_rate": 0.621,
+      "profit_factor_r": 2.054,
+      "n_trades_effective": 128.8,
+      "permutation_p_clustered": 0.3894805259737013,
+      "buffer_hours": 24,
+      "meeting_scope": "boj_only"
+    },
+    {
+      "n_trend_events": 181,
+      "n_trades_total": 411,
+      "trades_per_currency": {
+        "USD_JPY": 155,
+        "EUR_JPY": 91,
+        "GBP_JPY": 98,
+        "AUD_JPY": 67
+      },
+      "mean_r": 0.4306,
+      "win_rate": 0.623,
+      "profit_factor_r": 2.142,
+      "n_trades_effective": 120.0,
+      "permutation_p_clustered": 0.3894805259737013,
+      "buffer_hours": 12,
+      "meeting_scope": "boj_fomc"
+    },
+    {
+      "n_trend_events": 181,
+      "n_trades_total": 461,
+      "trades_per_currency": {
+        "USD_JPY": 176,
+        "EUR_JPY": 102,
+        "GBP_JPY": 108,
+        "AUD_JPY": 75
+      },
+      "mean_r": 0.3874,
+      "win_rate": 0.618,
+      "profit_factor_r": 2.015,
+      "n_trades_effective": 134.6,
+      "permutation_p_clustered": 0.3894805259737013,
+      "buffer_hours": 12,
+      "meeting_scope": "boj_only"
+    },
+    {
+      "n_trend_events": 181,
+      "n_trades_total": 434,
+      "trades_per_currency": {
+        "USD_JPY": 166,
+        "EUR_JPY": 96,
+        "GBP_JPY": 101,
+        "AUD_JPY": 71
+      },
+      "mean_r": 0.4231,
+      "win_rate": 0.624,
+      "profit_factor_r": 2.127,
+      "n_trades_effective": 126.7,
+      "permutation_p_clustered": 0.3894805259737013,
+      "buffer_hours": 6,
+      "meeting_scope": "boj_fomc"
+    },
+    {
+      "n_trend_events": 181,
+      "n_trades_total": 463,
+      "trades_per_currency": {
+        "USD_JPY": 178,
+        "EUR_JPY": 105,
+        "GBP_JPY": 106,
+        "AUD_JPY": 74
+      },
+      "mean_r": 0.4076,
+      "win_rate": 0.624,
+      "profit_factor_r": 2.085,
+      "n_trades_effective": 135.2,
+      "permutation_p_clustered": 0.3894805259737013,
+      "buffer_hours": 6,
+      "meeting_scope": "boj_only"
+    }
+  ],
+  "part_b_selected": {
+    "n_trend_events": 181,
+    "n_trades_total": 463,
+    "trades_per_currency": {
+      "USD_JPY": 178,
+      "EUR_JPY": 105,
+      "GBP_JPY": 106,
+      "AUD_JPY": 74
+    },
+    "mean_r": 0.4076,
+    "win_rate": 0.624,
+    "profit_factor_r": 2.085,
+    "n_trades_effective": 135.2,
+    "permutation_p_clustered": 0.3894805259737013,
+    "buffer_hours": 6,
+    "meeting_scope": "boj_only"
+  },
+  "selection_rule": "各パートで現行よりトレード数が増加し、かつpooled mean_Rが正を維持する候補のうち、n_trades_effectiveが最大のものを選定。該当なしの場合は拡大不採用。選定はTrainのみに基づく(HARKing防止)。Validation確認は別途1回だけ実施する。"
+}
