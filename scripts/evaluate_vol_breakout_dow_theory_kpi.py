@@ -5,6 +5,24 @@ H1継続確認再開ロジック、エントリー=成行/SL・トレーリン�
 MAX_HOLD=成行という確定済みコストモデル)を対象に、`00-spec.md`のK1m〜K7m閾値
 +実効サンプル数+permutation有意性の全ゲートで正式判定する。
 
+## 修正 (2026-08-20、司令塔指摘): DDをピーク比で評価するよう変更
+
+司令塔「複利により増えた資産の中でリスク比率からトレードするのでDDの額が
+増えるのは問題なく、元本に対してDD比率を評価するのはおかしくないですか」
+との指摘を受けて調査した結果、その通りと判明した。本サイジング方式は
+「その時点の残高の1%」というリスクベースであり、実際のリスク管理上意味を
+持つのは「直近ピークからどれだけ削られたか」(ピーク比DD)である。本PJ標準の
+`backtest.metrics.max_drawdown()`/`monthly_max_dd_pct()`は**初期資金比**で
+計算するため、複利で大きく資産が増えた後の変動を実態より大きく見せてしまう
+(Trainの実測: 金額として最大のDDはピーク$3,836→$2,929の23.7%だが、初期資金
+$1,000比では90.7%という、ほぼ全損に近い誤った印象になっていた)。この問題は
+SYS-FX007〜010がリターン数%〜十数%程度に留まっていたため表面化しなかった
+だけで、SYS-FX011のような大幅な複利成長を伴う戦略で初めて露呈した。
+
+本スクリプトはピーク比DD(`peak_relative_max_dd_pct`/
+`peak_relative_monthly_max_dd_pct`)を正式判定に使用し、初期資金比の数値は
+参考として並記する。
+
 出力: research/method-notes/vol_breakout_dow_theory_kpi_evaluation.json
 """
 
@@ -19,12 +37,31 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 sys.path.insert(0, str(SRC))
 
+import numpy as np
 import pandas as pd
 
 from minmax_fx_dt.backtest.metrics import (
     max_drawdown, monthly_max_dd_pct, monthly_sharpe, payoff_ratio, profit_factor,
 )
 from minmax_fx_dt.decision.criteria import compute_n_trades_effective
+
+
+def peak_relative_dd_series(eq_curve: pd.DataFrame) -> pd.Series:
+    """各時点の直近ピークからの下落率(%)を返す(複利サイジング戦略向け)."""
+    eq = eq_curve.set_index("timestamp")["equity"]
+    running_max = eq.cummax()
+    return (running_max - eq) / running_max * 100.0
+
+
+def peak_relative_max_dd_pct(eq_curve: pd.DataFrame) -> float:
+    dd = peak_relative_dd_series(eq_curve)
+    return float(dd.max()) if len(dd) > 0 else 0.0
+
+
+def peak_relative_monthly_max_dd_pct(eq_curve: pd.DataFrame) -> float:
+    dd = peak_relative_dd_series(eq_curve)
+    monthly_max = dd.resample("ME").max().dropna()
+    return float(monthly_max.max()) if len(monthly_max) > 0 else 0.0
 
 # 00-spec.md のKPI閾値
 KPI_THRESHOLDS = {
@@ -60,8 +97,10 @@ def evaluate_period(period_name: str, p: dict) -> dict:
     eq_curve["equity"] = eq_curve["balance"]
 
     m_sharpe = monthly_sharpe(eq_curve)
-    _dd_usd, dd_pct = max_drawdown(eq_curve)
-    dd_monthly_pct = monthly_max_dd_pct(eq_curve, INITIAL_CAPITAL_USD)
+    _dd_usd, dd_pct_of_initial = max_drawdown(eq_curve)
+    dd_monthly_pct_of_initial = monthly_max_dd_pct(eq_curve, INITIAL_CAPITAL_USD)
+    dd_pct = peak_relative_max_dd_pct(eq_curve)
+    dd_monthly_pct = peak_relative_monthly_max_dd_pct(eq_curve)
 
     dollar_pnls = [t["dollar_pnl"] for t in p["trades"]]
     pf = profit_factor(dollar_pnls)
@@ -103,6 +142,8 @@ def evaluate_period(period_name: str, p: dict) -> dict:
         "monthly_sharpe": round(m_sharpe, 3),
         "max_dd_pct": round(dd_pct, 2),
         "max_dd_monthly_pct": round(dd_monthly_pct, 2),
+        "max_dd_pct_of_initial_capital_reference": round(dd_pct_of_initial, 2),
+        "max_dd_monthly_pct_of_initial_capital_reference": round(dd_monthly_pct_of_initial, 2),
         "profit_factor": round(pf, 3),
         "payoff_ratio": round(payoff, 3),
         "max_consecutive_losses": max_losses,
@@ -126,7 +167,8 @@ def main() -> int:
         r = evaluate_period(period_name, backtest["periods"][period_name])
         results[period_name] = r
         print(f"--- {period_name} ---")
-        print(f"  月次シャープ={r['monthly_sharpe']}  最大DD={r['max_dd_pct']}%(月間{r['max_dd_monthly_pct']}%)  "
+        print(f"  月次シャープ={r['monthly_sharpe']}  最大DD(ピーク比)={r['max_dd_pct']}%(月間{r['max_dd_monthly_pct']}%)  "
+              f"[参考:初期資金比={r['max_dd_pct_of_initial_capital_reference']}%]  "
               f"PF={r['profit_factor']}  ペイオフ={r['payoff_ratio']}  最大連敗={r['max_consecutive_losses']}")
         print(f"  スプレッドコスト倍率={r['spread_cost_multiplier']}  実効n={r['n_trades_effective']}  "
               f"perm_p={r['permutation_p_clustered']}")

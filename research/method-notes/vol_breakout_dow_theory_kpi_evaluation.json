@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-20T07:13:36.339000",
+  "generated_at": "2026-08-20T07:53:04.252874",
   "kpi_thresholds": {
     "monthly_sharpe": 0.4,
     "profit_factor": 1.2,
@@ -16,8 +16,10 @@
     "train": {
       "period": "train",
       "monthly_sharpe": 1.857,
-      "max_dd_pct": 90.73,
-      "max_dd_monthly_pct": 39.96,
+      "max_dd_pct": 23.65,
+      "max_dd_monthly_pct": 23.65,
+      "max_dd_pct_of_initial_capital_reference": 90.73,
+      "max_dd_monthly_pct_of_initial_capital_reference": 39.96,
       "profit_factor": 1.427,
       "payoff_ratio": 0.919,
       "max_consecutive_losses": 8,
@@ -30,7 +32,7 @@
         "profit_factor": true,
         "monthly_expectancy_positive": true,
         "max_dd_monthly_pct": false,
-        "max_dd_yearly_pct": "False",
+        "max_dd_yearly_pct": false,
         "max_consecutive_losses": false,
         "payoff_ratio": false,
         "spread_cost_multiplier": false,
@@ -42,8 +44,10 @@
     "validation": {
       "period": "validation",
       "monthly_sharpe": -1.617,
-      "max_dd_pct": 41.37,
-      "max_dd_monthly_pct": 29.24,
+      "max_dd_pct": 27.57,
+      "max_dd_monthly_pct": 27.57,
+      "max_dd_pct_of_initial_capital_reference": 41.37,
+      "max_dd_monthly_pct_of_initial_capital_reference": 29.24,
       "profit_factor": 1.176,
       "payoff_ratio": 1.005,
       "max_consecutive_losses": 7,
@@ -56,7 +60,7 @@
         "profit_factor": false,
         "monthly_expectancy_positive": false,
         "max_dd_monthly_pct": false,
-        "max_dd_yearly_pct": "False",
+        "max_dd_yearly_pct": false,
         "max_consecutive_losses": false,
         "payoff_ratio": false,
         "spread_cost_multiplier": false,
@@ -68,8 +72,10 @@
     "test": {
       "period": "test",
       "monthly_sharpe": 6.322,
-      "max_dd_pct": 24.38,
-      "max_dd_monthly_pct": 4.42,
+      "max_dd_pct": 9.06,
+      "max_dd_monthly_pct": 9.06,
+      "max_dd_pct_of_initial_capital_reference": 24.38,
+      "max_dd_monthly_pct_of_initial_capital_reference": 4.42,
       "profit_factor": 1.736,
       "payoff_ratio": 1.021,
       "max_consecutive_losses": 9,
@@ -82,14 +88,14 @@
         "profit_factor": true,
         "monthly_expectancy_positive": true,
         "max_dd_monthly_pct": true,
-        "max_dd_yearly_pct": "False",
+        "max_dd_yearly_pct": true,
         "max_consecutive_losses": false,
         "payoff_ratio": false,
         "spread_cost_multiplier": false,
         "min_n_trades_effective": false,
         "permutation_p_value": false
       },
-      "kpi_pass_count": "4/10"
+      "kpi_pass_count": "5/10"
     }
   },
   "all_periods_all_kpi_pass": false,
