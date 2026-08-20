@@ -261,6 +261,60 @@ def counterfactual_breakeven_sweep() -> dict:
     return results
 
 
+def counterfactual_tp_level_sweep() -> dict:
+    """TP3水準を引き上げた場合のTrain単独感度確認(HARKing防止、Trainのみ選定)。
+    配分比率(40/35/25%)とTP1/TP2(1R/2R)は不変、TP3のみ3R/4R/5R/6Rで比較する。"""
+    from minmax_fx_dt.backtest.permutation import permutation_test_clustered
+    from minmax_fx_dt.decision.criteria import compute_n_trades_effective
+
+    start, end = PERIODS["train"]
+    variants = {
+        "current(TP3=3R)": [(1.0, 0.40), (2.0, 0.35), (3.0, 0.25)],
+        "TP3=4R": [(1.0, 0.40), (2.0, 0.35), (4.0, 0.25)],
+        "TP3=5R": [(1.0, 0.40), (2.0, 0.35), (5.0, 0.25)],
+        "TP3=6R": [(1.0, 0.40), (2.0, 0.35), (6.0, 0.25)],
+    }
+    results = {}
+    for label, tp_levels in variants.items():
+        all_r = []
+        trades_per_currency: dict[str, int] = {}
+        for pair in SELECTED_PAIRS:
+            m5 = load_m5_period(pair, start, end)
+            h1 = to_h1(m5)
+            atr_h1 = atr_ind(h1["high"], h1["low"], h1["close"], length=14)
+            atr_m5 = atr_ind(m5["high"], m5["low"], m5["close"], length=14)
+            ratio = ((h1["high"] - h1["low"]) / atr_h1).dropna()
+            idxs = np.where(ratio.values >= N_BREAKOUT)[0]
+            pair_rs = []
+            for i in idxs:
+                pos = h1.index.get_loc(ratio.index[i])
+                bar = h1.iloc[pos]
+                direction = "UP" if bar["close"] > bar["open"] else "DOWN"
+                trades = simulate_dow_theory_trend(
+                    m5, atr_m5, h1, atr_h1, pos, direction, STOP_BUFFER_ATR_M5, ATR_TRAIL_MULTIPLIER,
+                    blackout_check=is_blackout, tp_levels=tp_levels,
+                )
+                pair_rs.extend(t["r"] for t in trades)
+            all_r.extend(pair_rs)
+            trades_per_currency[pair] = len(pair_rs)
+        n = len(all_r)
+        wins = [r for r in all_r if r > 0]
+        losses = [r for r in all_r if r < 0]
+        pf = (sum(wins) / abs(sum(losses))) if losses else None
+        n_eff = compute_n_trades_effective(trades_per_currency, n)
+        pairs_flat = sum([[p] * c for p, c in trades_per_currency.items()], [])
+        perm = permutation_test_clustered(all_r, pairs_flat, n_permutations=20000, seed=42) if n >= 4 else None
+        results[label] = {
+            "tp_levels": tp_levels, "n_trades": n,
+            "mean_r": round(float(np.mean(all_r)), 4) if n else None,
+            "win_rate": round(float(np.mean([r > 0 for r in all_r])), 4) if n else None,
+            "profit_factor": round(pf, 3) if pf else None,
+            "n_trades_effective": round(n_eff, 1),
+            "permutation_p_clustered": perm.p_value if perm else None,
+        }
+    return results
+
+
 def main() -> int:
     print("=== EXP-FX000005 エントリー/イグジット診断分析 ===\n")
     print("トレードデータ収集中(Train/Validation/Test、4通貨、カレンダーフィルター適用)...")
@@ -297,6 +351,12 @@ def main() -> int:
         print(f"  {label}: n={v['n_trades']} mean_r={v['mean_r']} win_rate={v['win_rate']} "
               f"PF={v['profit_factor']} n_eff={v['n_trades_effective']} perm_p={v['permutation_p_clustered']}")
 
+    print("\n--- 論点3補足: TP3水準引き上げのTrain単独感度確認 ---")
+    cf_tp = counterfactual_tp_level_sweep()
+    for label, v in cf_tp.items():
+        print(f"  {label}: n={v['n_trades']} mean_r={v['mean_r']} win_rate={v['win_rate']} "
+              f"PF={v['profit_factor']} n_eff={v['n_trades_effective']} perm_p={v['permutation_p_clustered']}")
+
     out_path = ROOT / "research" / "method-notes" / "entry_exit_diagnostics.json"
     out_path.write_text(
         json.dumps({
@@ -308,6 +368,7 @@ def main() -> int:
             "point3_tp_full_extension_room": p3,
             "point4_early_breakeven_analysis": p4,
             "point4_counterfactual_breakeven_sweep_train_only": cf,
+            "point3_counterfactual_tp_level_sweep_train_only": cf_tp,
         }, indent=2, ensure_ascii=False, default=str),
         encoding="utf-8",
     )

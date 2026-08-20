@@ -87,7 +87,8 @@ def is_weekend_close_time(ts: pd.Timestamp) -> bool:
 
 
 def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, trail_mult: float,
-                            breakeven_trigger_r: float | None = None) -> dict:
+                            breakeven_trigger_r: float | None = None,
+                            tp_levels: list[tuple[float, float]] | None = None) -> dict:
     """段階利確(40/35/25%)、1R到達後BE+ATRトレーリング。exit_timeを含めて返す
     (ポジション保有中判定=1通貨1ポジション制約のゲーティングに必要なため、
     `analyze_scaled_exit_diagnostic.simulate_scaled_scheme`をexit_time付きで
@@ -103,14 +104,17 @@ def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, tra
 
     breakeven_trigger_r: 省略時(None)は現行仕様どおりTP1到達(1.0R)時に建値へ移動する。
     数値を指定すると、TP到達とは独立に「含み益がこのR値に達した時点」で建値へ移動する
-    (高ボラ想定に対しトレーリング開始を早める効果を検証する診断用パラメータ、2026-08-20追加)。"""
+    (高ボラ想定に対しトレーリング開始を早める効果を検証する診断用パラメータ、2026-08-20追加)。
+
+    tp_levels: 省略時(None)はモジュール定数TP_LEVELS(1R/2R/3R×40/35/25%)を使用。
+    TP水準を引き上げた場合の効果を検証する診断用パラメータ(2026-08-20追加)。"""
     direction = entry["direction"]
     entry_price = entry["entry_price"]
     risk = entry["initial_risk"]
     stop = entry["stop0"]
     entry_ts = entry.get("entry_ts")
     levels = [(r, frac, entry_price + r * risk if direction == "UP" else entry_price - r * risk, False)
-              for r, frac in TP_LEVELS]
+              for r, frac in (tp_levels if tp_levels is not None else TP_LEVELS)]
     remaining_fraction = 1.0
     realized_r = 0.0
     be_moved = False
@@ -161,7 +165,7 @@ def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, tra
                 else:
                     stop = min(stop, o + trail_mult * float(atr_i))
         if remaining_fraction <= 1e-9:
-            return {"r": realized_r, "exit_reason": "TP_FULL", "n_levels_hit": 3, "exit_time": ts}
+            return {"r": realized_r, "exit_reason": "TP_FULL", "n_levels_hit": len(levels), "exit_time": ts}
     ts_last = h1.index[end - 1]
     c = float(h1["close"].iloc[end - 1])
     exit_r = (c - entry_price) / risk if direction == "UP" else (entry_price - c) / risk
@@ -174,7 +178,8 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                                break_idx: int, direction: str, stop_buffer_atr_m5: float,
                                trail_mult: float, blackout_check=None,
                                zigzag_threshold_atr_m5: float | None = None,
-                               breakeven_trigger_r: float | None = None) -> list[dict]:
+                               breakeven_trigger_r: float | None = None,
+                               tp_levels: list[tuple[float, float]] | None = None) -> list[dict]:
     """1トレンドイベントをM5ダウ理論で追跡し、1通貨1ポジション制約下で連続的に
     押し目買い/戻り売りをシミュレートする。M5で型崩れしてもH1が型崩れ前の高値
     (UP)/安値(DOWN)を更新したら追跡を再開する。
@@ -283,7 +288,7 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                             if initial_risk > 0 and 0 <= entry_h1_idx < len(h1):
                                 entry = dict(direction=direction, entry_idx=entry_h1_idx, entry_price=entry_price,
                                              stop0=stop0, initial_risk=initial_risk, entry_ts=ts)
-                                res = simulate_scaled_scheme(h1, atr_h1, entry, trail_mult, breakeven_trigger_r=breakeven_trigger_r)
+                                res = simulate_scaled_scheme(h1, atr_h1, entry, trail_mult, breakeven_trigger_r=breakeven_trigger_r, tp_levels=tp_levels)
                                 res["entry_time"] = str(ts)
                                 res["direction"] = direction
                                 res["entry_price"] = entry_price
@@ -327,7 +332,7 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                             if initial_risk > 0 and 0 <= entry_h1_idx < len(h1):
                                 entry = dict(direction=direction, entry_idx=entry_h1_idx, entry_price=entry_price,
                                              stop0=stop0, initial_risk=initial_risk, entry_ts=ts)
-                                res = simulate_scaled_scheme(h1, atr_h1, entry, trail_mult, breakeven_trigger_r=breakeven_trigger_r)
+                                res = simulate_scaled_scheme(h1, atr_h1, entry, trail_mult, breakeven_trigger_r=breakeven_trigger_r, tp_levels=tp_levels)
                                 res["entry_time"] = str(ts)
                                 res["direction"] = direction
                                 res["entry_price"] = entry_price

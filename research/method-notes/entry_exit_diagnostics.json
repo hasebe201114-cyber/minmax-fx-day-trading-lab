@@ -1,0 +1,256 @@
+{
+  "generated_at": "2026-08-20T14:01:22.911279",
+  "source": "改善ループ第3試行(4通貨版+BOJ/FOMCブラックアウト窓)の全期間トレード",
+  "n_trades_total": 690,
+  "point1_direction_discrimination": {
+    "n_continued": 419,
+    "n_reversed": 270,
+    "features": {
+      "entry_seq": {
+        "mean_continued": 2.8783,
+        "mean_reversed": 2.6333,
+        "median_continued": 2.0,
+        "median_reversed": 2.0,
+        "diff": 0.2449,
+        "perm_p": 0.1664
+      },
+      "bars_since_tracking_start": {
+        "mean_continued": 212.5442,
+        "mean_reversed": 172.137,
+        "median_continued": 102.0,
+        "median_reversed": 56.0,
+        "diff": 40.4071,
+        "perm_p": 0.0254
+      },
+      "atr_h1_ratio": {
+        "mean_continued": 1.1838,
+        "mean_reversed": 1.1897,
+        "median_continued": 1.0244,
+        "median_reversed": 1.033,
+        "diff": -0.0059,
+        "perm_p": 0.8298
+      },
+      "price_move_from_breakout_r": {
+        "mean_continued": 3.531,
+        "mean_reversed": 4.5059,
+        "median_continued": 1.0386,
+        "median_reversed": 1.4944,
+        "diff": -0.9749,
+        "perm_p": 0.099
+      }
+    },
+    "resumed_since_last_entry_rate": {
+      "continued": 0.5656,
+      "reversed": 0.4963
+    }
+  },
+  "point2_sl_breakdown_by_entry_seq": {
+    "1(初回)": {
+      "n_trades": 269,
+      "n_sl_initial": 115,
+      "sl_rate": 0.4275,
+      "mean_r": 0.2331
+    },
+    "2": {
+      "n_trades": 143,
+      "n_sl_initial": 47,
+      "sl_rate": 0.3287,
+      "mean_r": 0.4877
+    },
+    "3": {
+      "n_trades": 95,
+      "n_sl_initial": 37,
+      "sl_rate": 0.3895,
+      "mean_r": 0.4542
+    },
+    "4+": {
+      "n_trades": 183,
+      "n_sl_initial": 71,
+      "sl_rate": 0.388,
+      "mean_r": 0.4964
+    },
+    "_resumed_vs_not": {
+      "resumed": {
+        "n": 371,
+        "sl_rate": 0.3612
+      },
+      "not_resumed": {
+        "n": 319,
+        "sl_rate": 0.4263
+      }
+    }
+  },
+  "point3_tp_full_extension_room": {
+    "n": 219,
+    "percentiles": {
+      "p10": 5.02,
+      "p25": 7.828,
+      "p50": 13.604,
+      "p75": 26.97,
+      "p90": 59.897
+    },
+    "reach_rate": {
+      ">=3.0R": 1.0,
+      ">=4.0R": 0.9543,
+      ">=5.0R": 0.8995,
+      ">=6.0R": 0.8265,
+      ">=8.0R": 0.7443
+    }
+  },
+  "point4_early_breakeven_analysis": {
+    "n_sl_trades": 270,
+    "mfe_before_reversal": {
+      "percentiles": {
+        "p10": -0.727,
+        "p25": -0.193,
+        "p50": 0.275,
+        "p75": 0.747,
+        "p90": 1.382
+      },
+      "reach_rate": {
+        ">=0.2R": 0.537,
+        ">=0.3R": 0.4741,
+        ">=0.5R": 0.3926,
+        ">=0.7R": 0.2778,
+        ">=0.9R": 0.1852
+      }
+    }
+  },
+  "point4_counterfactual_breakeven_sweep_train_only": {
+    "current(TP1=1.0R相当)": {
+      "breakeven_trigger_r": null,
+      "n_trades": 387,
+      "mean_r": 0.4277,
+      "win_rate": 0.6253,
+      "profit_factor": 2.142,
+      "n_trades_effective": 113.0,
+      "permutation_p_clustered": 0.3894805259737013
+    },
+    "0.3R": {
+      "breakeven_trigger_r": 0.3,
+      "n_trades": 446,
+      "mean_r": 0.3784,
+      "win_rate": 0.5224,
+      "profit_factor": 2.156,
+      "n_trades_effective": 130.2,
+      "permutation_p_clustered": 0.3894805259737013
+    },
+    "0.5R": {
+      "breakeven_trigger_r": 0.5,
+      "n_trades": 428,
+      "mean_r": 0.3923,
+      "win_rate": 0.5444,
+      "profit_factor": 2.191,
+      "n_trades_effective": 125.0,
+      "permutation_p_clustered": 0.3894805259737013
+    },
+    "0.7R": {
+      "breakeven_trigger_r": 0.7,
+      "n_trades": 407,
+      "mean_r": 0.4055,
+      "win_rate": 0.5749,
+      "profit_factor": 2.162,
+      "n_trades_effective": 118.8,
+      "permutation_p_clustered": 0.3894805259737013
+    },
+    "1.0R": {
+      "breakeven_trigger_r": 1.0,
+      "n_trades": 387,
+      "mean_r": 0.4277,
+      "win_rate": 0.6253,
+      "profit_factor": 2.142,
+      "n_trades_effective": 113.0,
+      "permutation_p_clustered": 0.3894805259737013
+    }
+  },
+  "point3_counterfactual_tp_level_sweep_train_only": {
+    "current(TP3=3R)": {
+      "tp_levels": [
+        [
+          1.0,
+          0.4
+        ],
+        [
+          2.0,
+          0.35
+        ],
+        [
+          3.0,
+          0.25
+        ]
+      ],
+      "n_trades": 387,
+      "mean_r": 0.4277,
+      "win_rate": 0.6253,
+      "profit_factor": 2.142,
+      "n_trades_effective": 113.0,
+      "permutation_p_clustered": 0.3894805259737013
+    },
+    "TP3=4R": {
+      "tp_levels": [
+        [
+          1.0,
+          0.4
+        ],
+        [
+          2.0,
+          0.35
+        ],
+        [
+          4.0,
+          0.25
+        ]
+      ],
+      "n_trades": 345,
+      "mean_r": 0.4846,
+      "win_rate": 0.6377,
+      "profit_factor": 2.337,
+      "n_trades_effective": 100.7,
+      "permutation_p_clustered": 0.3894805259737013
+    },
+    "TP3=5R": {
+      "tp_levels": [
+        [
+          1.0,
+          0.4
+        ],
+        [
+          2.0,
+          0.35
+        ],
+        [
+          5.0,
+          0.25
+        ]
+      ],
+      "n_trades": 330,
+      "mean_r": 0.4823,
+      "win_rate": 0.6212,
+      "profit_factor": 2.273,
+      "n_trades_effective": 96.4,
+      "permutation_p_clustered": 0.3894805259737013
+    },
+    "TP3=6R": {
+      "tp_levels": [
+        [
+          1.0,
+          0.4
+        ],
+        [
+          2.0,
+          0.35
+        ],
+        [
+          6.0,
+          0.25
+        ]
+      ],
+      "n_trades": 301,
+      "mean_r": 0.5057,
+      "win_rate": 0.6346,
+      "profit_factor": 2.384,
+      "n_trades_effective": 87.9,
+      "permutation_p_clustered": 0.3894805259737013
+    }
+  }
+}
