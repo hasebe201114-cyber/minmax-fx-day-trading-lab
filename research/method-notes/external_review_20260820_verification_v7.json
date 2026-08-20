@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-08-20T23:26:10.186559",
-  "source_backtest": "research/method-notes/vol_breakout_dow_theory_4pairs_v6_1000usd_backtest.json",
+  "generated_at": "2026-08-20T23:26:18.540901",
+  "source_backtest": "research/method-notes/vol_breakout_dow_theory_4pairs_v7_1000usd_backtest.json",
   "review_document": "obs/minmax_fx_day_trading_lab/85外部レビュー/2026-08-20_EXP-FX000005_External_Review/00_REVIEW_SUMMARY.md",
   "results": [
     {
@@ -8,42 +8,42 @@
       "claim": "週末強制クローズが一度も発動しておらず、週末跨ぎのトレードが存在する",
       "per_period": {
         "train": {
-          "n_trades": 345,
-          "n_spanning_weekend": 27,
-          "pct_spanning_weekend": 7.8,
+          "n_trades": 417,
+          "n_spanning_weekend": 26,
+          "pct_spanning_weekend": 6.2,
           "n_weekend_exits": 0,
           "exit_reasons": {
-            "SL_INITIAL_NO_TP": 125,
-            "TP_THEN_SL_TRAIL": 125,
-            "TP_FULL": 95
+            "SL_INITIAL_NO_TP": 159,
+            "TP_THEN_SL_TRAIL": 122,
+            "TP_FULL": 136
           }
         },
         "validation": {
-          "n_trades": 104,
-          "n_spanning_weekend": 6,
-          "pct_spanning_weekend": 5.8,
+          "n_trades": 89,
+          "n_spanning_weekend": 4,
+          "pct_spanning_weekend": 4.5,
           "n_weekend_exits": 0,
           "exit_reasons": {
-            "TP_FULL": 19,
-            "TP_THEN_SL_TRAIL": 41,
-            "SL_INITIAL_NO_TP": 44
+            "TP_FULL": 20,
+            "TP_THEN_SL_TRAIL": 34,
+            "SL_INITIAL_NO_TP": 35
           }
         },
         "test": {
-          "n_trades": 173,
-          "n_spanning_weekend": 8,
-          "pct_spanning_weekend": 4.6,
+          "n_trades": 149,
+          "n_spanning_weekend": 21,
+          "pct_spanning_weekend": 14.1,
           "n_weekend_exits": 0,
           "exit_reasons": {
-            "SL_INITIAL_NO_TP": 69,
-            "TP_FULL": 44,
-            "TP_THEN_SL_TRAIL": 59,
+            "SL_INITIAL_NO_TP": 47,
+            "TP_FULL": 54,
+            "TP_THEN_SL_TRAIL": 47,
             "MAX_HOLD": 1
           }
         }
       },
-      "total_trades": 622,
-      "total_spanning_weekend": 41,
+      "total_trades": 655,
+      "total_spanning_weekend": 51,
       "total_weekend_exits": 0,
       "verdict": "REPRODUCED"
     },
@@ -94,11 +94,11 @@
     {
       "finding": "F3",
       "claim": "ATR トレーリングは建値ストップより有利な位置に来ず、実質的に作動していない",
-      "n_tp_then_sl_trail": 225,
-      "pct_exactly_at_breakeven": 89.3,
-      "n_at_breakeven_after_tp1": 116,
-      "n_at_breakeven_after_tp2": 85,
-      "max_r_gross_in_trail_exits": 1.531,
+      "n_tp_then_sl_trail": 203,
+      "pct_exactly_at_breakeven": 92.6,
+      "n_at_breakeven_after_tp1": 97,
+      "n_at_breakeven_after_tp2": 91,
+      "max_r_gross_in_trail_exits": 1.861,
       "exit_reason_r_stats": {
         "MAX_HOLD": {
           "n": 1,
@@ -108,25 +108,25 @@
           "max_r": -0.006
         },
         "SL_INITIAL_NO_TP": {
-          "n": 238,
+          "n": 241,
           "median_r": -1.0,
           "mean_r": -1.0,
           "min_r": -1.0,
           "max_r": -1.0
         },
         "TP_FULL": {
-          "n": 158,
+          "n": 210,
           "median_r": 2.1,
           "mean_r": 2.1,
           "min_r": 2.1,
           "max_r": 2.1
         },
         "TP_THEN_SL_TRAIL": {
-          "n": 225,
-          "median_r": 0.4,
-          "mean_r": 0.73,
+          "n": 203,
+          "median_r": 1.1,
+          "mean_r": 0.769,
           "min_r": 0.4,
-          "max_r": 1.531
+          "max_r": 1.861
         }
       },
       "verdict": "REPRODUCED"
@@ -137,36 +137,36 @@
       "threshold": 5,
       "per_period": {
         "train": {
-          "n_trades": 345,
-          "win_rate": 0.6377,
-          "observed_max_consecutive_losses": 6,
-          "iid_null_mean": 5.41,
-          "iid_null_median": 5,
-          "prob_pass_threshold_under_iid": 0.593,
-          "observed_percentile_in_null": 0.593
+          "n_trades": 417,
+          "win_rate": 0.6187,
+          "observed_max_consecutive_losses": 8,
+          "iid_null_mean": 5.88,
+          "iid_null_median": 6,
+          "prob_pass_threshold_under_iid": 0.443,
+          "observed_percentile_in_null": 0.892
         },
         "validation": {
-          "n_trades": 104,
-          "win_rate": 0.5769,
-          "observed_max_consecutive_losses": 6,
-          "iid_null_mean": 4.96,
-          "iid_null_median": 5,
-          "prob_pass_threshold_under_iid": 0.717,
-          "observed_percentile_in_null": 0.717
+          "n_trades": 89,
+          "win_rate": 0.6067,
+          "observed_max_consecutive_losses": 5,
+          "iid_null_mean": 4.41,
+          "iid_null_median": 4,
+          "prob_pass_threshold_under_iid": 0.821,
+          "observed_percentile_in_null": 0.597
         },
         "test": {
-          "n_trades": 173,
-          "win_rate": 0.5838,
+          "n_trades": 149,
+          "win_rate": 0.6644,
           "observed_max_consecutive_losses": 5,
-          "iid_null_mean": 5.41,
-          "iid_null_median": 5,
-          "prob_pass_threshold_under_iid": 0.598,
-          "observed_percentile_in_null": 0.279
+          "iid_null_mean": 4.2,
+          "iid_null_median": 4,
+          "prob_pass_threshold_under_iid": 0.884,
+          "observed_percentile_in_null": 0.665
         }
       },
       "pass_prob_range_across_periods": [
-        0.593,
-        0.717
+        0.443,
+        0.884
       ],
       "observed_indistinguishable_from_iid": true,
       "pass_prob_is_scale_dependent": true,
@@ -181,19 +181,19 @@
       "required_nominal_trades_for_300_effective": 1027,
       "per_period": {
         "train": {
-          "n_trades_nominal": 345,
-          "n_trades_effective": 100.7,
-          "shortfall_nominal_trades": 682
+          "n_trades_nominal": 417,
+          "n_trades_effective": 121.8,
+          "shortfall_nominal_trades": 610
         },
         "validation": {
-          "n_trades_nominal": 104,
-          "n_trades_effective": 30.4,
-          "shortfall_nominal_trades": 923
+          "n_trades_nominal": 89,
+          "n_trades_effective": 26.0,
+          "shortfall_nominal_trades": 938
         },
         "test": {
-          "n_trades_nominal": 173,
-          "n_trades_effective": 50.5,
-          "shortfall_nominal_trades": 854
+          "n_trades_nominal": 149,
+          "n_trades_effective": 43.5,
+          "shortfall_nominal_trades": 878
         }
       },
       "verdict": "REPRODUCED"

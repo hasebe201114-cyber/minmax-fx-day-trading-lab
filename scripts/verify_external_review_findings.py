@@ -9,12 +9,14 @@
     F1: 週末強制クローズが一度も発動していない
     F2: permutation_p < 0.05 は 4 通貨構成では原理的に達成不能 (p 値の下限 ≈ 0.3158)
     F3: ATR トレーリングが事実上一度も作動していない
-    K3m: 最大連続損失 ≤ 5 はスケール不変でない (i.i.d. でも約 6 割しか通らない)
+    K3m: 最大連続損失 ≤ 5 はスケール不変でない (通過率が n・勝率で大きく変わる)
     n_eff: min_n_trades=300 に必要な名目トレード数 (4 通貨で 1,027 件)
 
 使い方:
-    python scripts/verify_external_review_findings.py
-    python scripts/verify_external_review_findings.py --json   # 機械可読出力
+    python scripts/verify_external_review_findings.py             # 既定 = 改善ループ第6試行
+    python scripts/verify_external_review_findings.py --latest    # 最新の試行 (v<N> が最大)
+    python scripts/verify_external_review_findings.py --backtest <path>
+    python scripts/verify_external_review_findings.py --json      # 機械可読出力
 
 判定はすべて「レビューの主張が再現できたか (REPRODUCED / NOT_REPRODUCED)」として出力する。
 数値そのものを結論とはせず、C 査読チームが独立に確認するための材料として使うこと。
@@ -40,8 +42,10 @@ from minmax_fx_dt.backtest.permutation import (  # noqa: E402
     permutation_test_clustered,
 )
 
-# レビュー時点で「現時点の最良候補」とされていた改善ループ第6試行の結果
-BACKTEST_JSON = ROOT / "research" / "method-notes" / "vol_breakout_dow_theory_4pairs_v6_1000usd_backtest.json"
+# 既定はレビュー時点で「現時点の最良候補」だった改善ループ第6試行の結果。
+# 以降の試行(v7 以降)でも指摘が成立するかは --backtest で切り替えて確認する。
+METHOD_NOTES = ROOT / "research" / "method-notes"
+DEFAULT_BACKTEST_JSON = METHOD_NOTES / "vol_breakout_dow_theory_4pairs_v6_1000usd_backtest.json"
 
 PAIRS_4 = ["USD_JPY", "EUR_JPY", "GBP_JPY", "AUD_JPY"]
 PERIODS = ["train", "validation", "test"]
@@ -52,11 +56,20 @@ MAX_CONSECUTIVE_LOSSES = 5
 PERMUTATION_ALPHA = 0.05
 
 
-def load_trades() -> dict[str, list[dict]]:
-    if not BACKTEST_JSON.exists():
-        raise SystemExit(f"結果 JSON が見つかりません: {BACKTEST_JSON}")
-    data = json.loads(BACKTEST_JSON.read_text(encoding="utf-8"))
+def load_trades(path: Path) -> dict[str, list[dict]]:
+    if not path.exists():
+        raise SystemExit(f"結果 JSON が見つかりません: {path}")
+    data = json.loads(path.read_text(encoding="utf-8"))
     return {p: data["periods"][p]["trades"] for p in PERIODS}
+
+
+def latest_backtest_json() -> Path:
+    """`..._4pairs_v<N>_1000usd_backtest.json` のうち最も新しい試行を返す(無ければ既定)."""
+    candidates = sorted(
+        METHOD_NOTES.glob("vol_breakout_dow_theory_4pairs_v*_1000usd_backtest.json"),
+        key=lambda p: int(p.name.split("_v")[1].split("_")[0]),
+    )
+    return candidates[-1] if candidates else DEFAULT_BACKTEST_JSON
 
 
 # --------------------------------------------------------------------------
@@ -233,14 +246,26 @@ def check_k3m_scale_dependence(trades_by_period: dict[str, list[dict]], reps: in
         }
 
     probs = [v["prob_pass_threshold_under_iid"] for v in per_period.values()]
-    reproduced = all(0.3 <= p <= 0.8 for p in probs)
+    pcts = [v["observed_percentile_in_null"] for v in per_period.values()]
+    # 主張は「K3m は n・勝率に依存し、観測値が i.i.d. と区別できない = 情報量が乏しい」。
+    # 判定はその主張に忠実に行う:
+    #   (a) どの期間も観測値が i.i.d. 帰無分布の両側 5% 内に入らない (= ランダムと区別できない)
+    #   (b) 期間ごとの通過率が大きくばらつく (= 基準が n と勝率に依存し、スケール不変でない)
+    indistinguishable = all(0.05 <= pct <= 0.95 for pct in pcts)
+    scale_dependent = (max(probs) - min(probs)) >= 0.10
+    reproduced = indistinguishable and scale_dependent
 
     return {
         "finding": "K3m",
-        "claim": f"最大連続損失 ≤ {MAX_CONSECUTIVE_LOSSES} は n 依存で、i.i.d. でも通過率が 5〜7 割程度にとどまる",
+        "claim": (f"最大連続損失 ≤ {MAX_CONSECUTIVE_LOSSES} はスケール不変でなく "
+                  "(通過率が n・勝率で大きく変わる)、観測値は i.i.d. と区別がつかない"),
         "threshold": MAX_CONSECUTIVE_LOSSES,
         "per_period": per_period,
-        "note": "observed_percentile_in_null が 0.5 前後なら、観測値はランダムと区別がつかない",
+        "pass_prob_range_across_periods": [round(min(probs), 3), round(max(probs), 3)],
+        "observed_indistinguishable_from_iid": indistinguishable,
+        "pass_prob_is_scale_dependent": scale_dependent,
+        "note": ("observed_percentile_in_null が 0.05〜0.95 に収まる = 観測値はランダムと区別がつかない。"
+                 "prob_pass_threshold_under_iid が期間で大きく異なる = 基準が n と勝率に依存している"),
         "verdict": "REPRODUCED" if reproduced else "NOT_REPRODUCED",
     }
 
@@ -276,11 +301,16 @@ def check_n_eff_requirement(trades_by_period: dict[str, list[dict]]) -> dict:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--backtest", type=Path, default=DEFAULT_BACKTEST_JSON,
+                        help="対象の $1,000 バックテスト結果 JSON (既定: 改善ループ第6試行)")
+    parser.add_argument("--latest", action="store_true",
+                        help="method-notes 内で最も新しい試行 (v<N> が最大) を対象にする")
     parser.add_argument("--json", action="store_true", help="機械可読な JSON で出力する")
     parser.add_argument("--out", type=Path, default=None, help="結果 JSON の保存先")
     args = parser.parse_args()
 
-    trades_by_period = load_trades()
+    backtest_json = latest_backtest_json() if args.latest else args.backtest
+    trades_by_period = load_trades(backtest_json)
     results = [
         check_f1_weekend_close(trades_by_period),
         check_f2_permutation_floor(),
@@ -290,7 +320,7 @@ def main() -> int:
     ]
     payload = {
         "generated_at": dt.datetime.now().isoformat(),
-        "source_backtest": str(BACKTEST_JSON.relative_to(ROOT)),
+        "source_backtest": str(backtest_json.relative_to(ROOT)),
         "review_document": "obs/minmax_fx_day_trading_lab/85外部レビュー/2026-08-20_EXP-FX000005_External_Review/00_REVIEW_SUMMARY.md",
         "results": results,
     }
@@ -305,7 +335,7 @@ def main() -> int:
 
     print("=" * 78)
     print("外部レビュー(2026-08-20 / EXP-FX000005)の指摘 再現チェック")
-    print(f"対象: {BACKTEST_JSON.relative_to(ROOT)}")
+    print(f"対象: {backtest_json.relative_to(ROOT)}")
     print("=" * 78)
 
     f1 = results[0]

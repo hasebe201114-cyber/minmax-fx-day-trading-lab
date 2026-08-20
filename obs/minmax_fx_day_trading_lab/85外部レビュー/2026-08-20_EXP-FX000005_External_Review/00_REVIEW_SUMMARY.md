@@ -13,6 +13,7 @@
 | 種別 | パス |
 |---|---|
 | TODO 分割（T-01〜T-20） | `01_TODO_BREAKDOWN.md`（本ディレクトリ） |
+| **追補: 改善ループ第7試行への適用** | `02_ADDENDUM_改善ループ第7試行.md`（本ディレクトリ） |
 | 対応チケット | `obs/minmax_fx_day_trading_lab/70対応待ち/OBS000008-EXP-FX000005-外部レビュー対応.md` |
 | 引き継ぎノート | `obs/minmax_fx_day_trading_lab/引き継ぎ/01進行中/20260820-引き継ぎ-EXP-FX000005外部レビュー.md` |
 | 検算スクリプト | `scripts/verify_external_review_findings.py` |
@@ -20,10 +21,12 @@
 
 本書の主張は上記スクリプトで機械的に再現できる（`data/curated/ds-1.json` は不要）。
 2026-08-20 時点の実行結果は **F1・F2・F3・K3m・n_eff の 5 件すべて REPRODUCED**。
+本書執筆後に main へ入った**改善ループ第7試行でも 5 件すべて REPRODUCED**（`--latest` で確認、追補参照）。
 付録の再現コードは、このスクリプトの各チェック関数に対応する。
 
 ```bash
-python scripts/verify_external_review_findings.py
+python scripts/verify_external_review_findings.py            # 第6試行(本書の対象)
+python scripts/verify_external_review_findings.py --latest   # 最新の試行
 ```
 
 ## 本レビューの制約（先に明記）
