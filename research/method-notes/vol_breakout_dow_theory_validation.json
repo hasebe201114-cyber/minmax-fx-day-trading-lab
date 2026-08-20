@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-19T23:48:57.786844",
+  "generated_at": "2026-08-20T01:45:54.348270",
   "validation_period": [
     "2025-04-01",
     "2025-11-30"
@@ -12,1653 +12,1986 @@
     "atr_trail_multiplier": 3.23
   },
   "n_trend_events": 74,
-  "n_pullback_candidates": 203,
-  "n_trades_total": 203,
+  "n_trades_total": 178,
   "trades_per_currency": {
-    "USD_JPY": 56,
-    "EUR_JPY": 24,
-    "GBP_JPY": 34,
-    "AUD_JPY": 39,
-    "EUR_USD": 50
+    "USD_JPY": 50,
+    "EUR_JPY": 14,
+    "GBP_JPY": 17,
+    "AUD_JPY": 48,
+    "EUR_USD": 49
   },
-  "mean_r": 0.1767,
-  "win_rate": 0.547,
-  "profit_factor_r": 1.39,
-  "payoff_ratio_r": 1.152,
+  "mean_r": 0.224,
+  "win_rate": 0.539,
+  "profit_factor_r": 1.486,
+  "payoff_ratio_r": 1.27,
   "exit_reason_counts": {
-    "TP_FULL": 44,
-    "TP_THEN_SL_TRAIL": 67,
-    "SL_INITIAL_NO_TP": 92
+    "TP_FULL": 48,
+    "TP_THEN_SL_TRAIL": 48,
+    "SL_INITIAL_NO_TP": 82
   },
-  "n_trades_effective": 68.95755204087179,
+  "n_trades_effective": 60.46524267623241,
   "min_n_trades_pass": false,
-  "permutation_p_clustered": 0.4345282735863207,
-  "train_mean_r_for_comparison": 0.0908,
+  "permutation_p_clustered": 0.4504274786260687,
+  "train_mean_r_for_comparison": 0.4018,
   "_note": "パラメータはTrain導出値を再学習せずそのまま使用(過学習検出のためのSYS-FX009/010踏襲プロトコル)。この結果はTrainの符号(+0.091)がValidationで再現するかどうかの判定材料",
   "trades": [
     {
       "r": 1.85,
       "exit_reason": "TP_FULL",
       "n_levels_hit": 3,
-      "pair": "USD_JPY",
+      "exit_time": "2025-04-03 08:00:00+09:00",
+      "entry_time": "2025-04-03 05:40:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-04-03 05:40:00+09:00"
+      "entry_price": 149.42,
+      "initial_risk": 0.5121970714285737,
+      "pair": "USD_JPY"
     },
     {
       "r": 1.85,
       "exit_reason": "TP_FULL",
       "n_levels_hit": 3,
-      "pair": "USD_JPY",
+      "exit_time": "2025-04-03 12:00:00+09:00",
+      "entry_time": "2025-04-03 08:05:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-04-03 06:40:00+09:00"
+      "entry_price": 148.295,
+      "initial_risk": 0.2966335000000129,
+      "pair": "USD_JPY"
     },
     {
       "r": 1.85,
       "exit_reason": "TP_FULL",
       "n_levels_hit": 3,
-      "pair": "USD_JPY",
+      "exit_time": "2025-04-03 15:00:00+09:00",
+      "entry_time": "2025-04-03 14:10:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-04-03 06:55:00+09:00"
+      "entry_price": 147.502,
+      "initial_risk": 0.20739328571428928,
+      "pair": "USD_JPY"
     },
     {
       "r": 1.85,
       "exit_reason": "TP_FULL",
       "n_levels_hit": 3,
-      "pair": "USD_JPY",
+      "exit_time": "2025-04-03 17:00:00+09:00",
+      "entry_time": "2025-04-03 16:10:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-04-03 07:05:00+09:00"
+      "entry_price": 147.261,
+      "initial_risk": 0.14587242857143679,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-04-03 20:00:00+09:00",
+      "entry_time": "2025-04-03 17:20:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 147.139,
+      "initial_risk": 0.31677235714283825,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-04-03 22:00:00+09:00",
+      "entry_time": "2025-04-03 21:10:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 146.261,
+      "initial_risk": 0.16855200000000536,
+      "pair": "USD_JPY"
     },
     {
       "r": 0.4,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 1,
-      "pair": "USD_JPY",
+      "exit_time": "2025-04-04 00:00:00+09:00",
+      "entry_time": "2025-04-03 22:05:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-04-03 07:15:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-21 07:40:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-21 08:05:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-21 08:15:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-21 08:45:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-21 09:00:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-21 09:10:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-21 09:25:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-21 09:35:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "USD_JPY",
-      "direction": "UP",
-      "entry_time": "2025-05-12 16:45:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "USD_JPY",
-      "direction": "UP",
-      "entry_time": "2025-05-12 17:15:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-05-23 20:40:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-05-23 20:50:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-05-23 21:00:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "USD_JPY",
-      "direction": "UP",
-      "entry_time": "2025-05-29 08:40:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "USD_JPY",
-      "direction": "UP",
-      "entry_time": "2025-05-29 09:00:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-06-11 21:40:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "USD_JPY",
-      "direction": "UP",
-      "entry_time": "2025-07-03 21:40:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-07-17 00:55:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-07-17 01:10:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-07-17 01:45:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-07-17 02:10:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-07-17 02:50:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-08-01 21:40:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-08-01 21:50:00+09:00"
-    },
-    {
-      "r": 1.3613245580173283,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 2,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-08-01 22:10:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-08-01 22:25:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-08-01 22:50:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-08-01 23:05:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-08-23 00:20:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-08-26 09:45:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "USD_JPY",
-      "direction": "UP",
-      "entry_time": "2025-09-02 16:40:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "USD_JPY",
-      "direction": "UP",
-      "entry_time": "2025-09-02 16:50:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "USD_JPY",
-      "direction": "UP",
-      "entry_time": "2025-09-02 17:05:00+09:00"
+      "entry_price": 145.785,
+      "initial_risk": 0.4015205000000037,
+      "pair": "USD_JPY"
     },
     {
       "r": 1.1,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 2,
-      "pair": "USD_JPY",
+      "exit_time": "2025-04-05 00:00:00+09:00",
+      "entry_time": "2025-04-04 19:10:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-09-05 21:40:00+09:00"
+      "entry_price": 145.917,
+      "initial_risk": 0.5168367142857164,
+      "pair": "USD_JPY"
     },
     {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "USD_JPY",
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-04-21 10:00:00+09:00",
+      "entry_time": "2025-04-21 07:40:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-09-05 21:55:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-09-05 22:20:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-09-05 22:35:00+09:00"
+      "entry_price": 141.777,
+      "initial_risk": 0.2513932857143004,
+      "pair": "USD_JPY"
     },
     {
       "r": 1.1,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 2,
-      "pair": "USD_JPY",
+      "exit_time": "2025-04-21 20:00:00+09:00",
+      "entry_time": "2025-04-21 10:45:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-09-05 23:20:00+09:00"
+      "entry_price": 141.059,
+      "initial_risk": 0.20468228571428426,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-04-22 17:00:00+09:00",
+      "entry_time": "2025-04-22 12:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 140.197,
+      "initial_risk": 0.411931214285687,
+      "pair": "USD_JPY"
     },
     {
       "r": 0.4,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 1,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-09-05 23:30:00+09:00"
+      "exit_time": "2025-05-12 18:00:00+09:00",
+      "entry_time": "2025-05-12 16:45:00+09:00",
+      "direction": "UP",
+      "entry_price": 147.772,
+      "initial_risk": 0.43174357142856934,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-05-12 20:00:00+09:00",
+      "entry_time": "2025-05-12 19:15:00+09:00",
+      "direction": "UP",
+      "entry_price": 148.176,
+      "initial_risk": 0.20336178571429286,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-05-13 03:00:00+09:00",
+      "entry_time": "2025-05-13 02:10:00+09:00",
+      "direction": "UP",
+      "entry_price": 148.552,
+      "initial_risk": 0.13158642857143832,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-05-13 04:00:00+09:00",
+      "entry_time": "2025-05-13 03:10:00+09:00",
+      "direction": "UP",
+      "entry_price": 148.571,
+      "initial_risk": 0.10787114285713528,
+      "pair": "USD_JPY"
     },
     {
       "r": 0.4,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 1,
-      "pair": "USD_JPY",
+      "exit_time": "2025-05-23 22:00:00+09:00",
+      "entry_time": "2025-05-23 20:40:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-09-05 23:40:00+09:00"
+      "entry_price": 142.894,
+      "initial_risk": 0.26681528571430135,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-05-26 07:00:00+09:00",
+      "entry_time": "2025-05-24 03:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 142.532,
+      "initial_risk": 0.12689978571427218,
+      "pair": "USD_JPY"
     },
     {
       "r": 1.85,
       "exit_reason": "TP_FULL",
       "n_levels_hit": 3,
-      "pair": "USD_JPY",
+      "exit_time": "2025-05-26 11:00:00+09:00",
+      "entry_time": "2025-05-26 10:10:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-09-11 21:40:00+09:00"
+      "entry_price": 142.635,
+      "initial_risk": 0.11248628571431141,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-05-26 12:00:00+09:00",
+      "entry_time": "2025-05-26 11:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 142.279,
+      "initial_risk": 0.18604564285715242,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-05-29 15:00:00+09:00",
+      "entry_time": "2025-05-29 08:40:00+09:00",
+      "direction": "UP",
+      "entry_price": 146.072,
+      "initial_risk": 0.5420369999999934,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-06-11 22:00:00+09:00",
+      "entry_time": "2025-06-11 21:40:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 144.513,
+      "initial_risk": 0.20350478571427288,
+      "pair": "USD_JPY"
     },
     {
       "r": 1.85,
       "exit_reason": "TP_FULL",
       "n_levels_hit": 3,
-      "pair": "USD_JPY",
-      "direction": "UP",
-      "entry_time": "2025-09-18 03:40:00+09:00"
-    },
-    {
-      "r": 1.4010412962411354,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 2,
-      "pair": "USD_JPY",
-      "direction": "UP",
-      "entry_time": "2025-09-18 03:50:00+09:00"
+      "exit_time": "2025-06-12 10:00:00+09:00",
+      "entry_time": "2025-06-12 07:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 144.433,
+      "initial_risk": 0.17788692857143928,
+      "pair": "USD_JPY"
     },
     {
       "r": 1.85,
       "exit_reason": "TP_FULL",
       "n_levels_hit": 3,
-      "pair": "USD_JPY",
-      "direction": "UP",
-      "entry_time": "2025-09-18 04:35:00+09:00"
+      "exit_time": "2025-06-12 15:00:00+09:00",
+      "entry_time": "2025-06-12 14:15:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 143.954,
+      "initial_risk": 0.06559935714287235,
+      "pair": "USD_JPY"
     },
     {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "USD_JPY",
-      "direction": "UP",
-      "entry_time": "2025-09-18 05:20:00+09:00"
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "exit_time": "2025-06-12 20:00:00+09:00",
+      "entry_time": "2025-06-12 18:10:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 143.712,
+      "initial_risk": 0.22032749999999623,
+      "pair": "USD_JPY"
     },
     {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "USD_JPY",
-      "direction": "UP",
-      "entry_time": "2025-09-18 05:50:00+09:00"
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "exit_time": "2025-06-12 23:00:00+09:00",
+      "entry_time": "2025-06-12 21:15:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 143.599,
+      "initial_risk": 0.20503278571430883,
+      "pair": "USD_JPY"
     },
     {
       "r": 1.85,
       "exit_reason": "TP_FULL",
       "n_levels_hit": 3,
-      "pair": "USD_JPY",
+      "exit_time": "2025-06-13 09:00:00+09:00",
+      "entry_time": "2025-06-13 08:10:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-09-19 12:40:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-11-14 21:40:00+09:00"
+      "entry_price": 143.422,
+      "initial_risk": 0.1054505714285483,
+      "pair": "USD_JPY"
     },
     {
       "r": -1.0,
       "exit_reason": "SL_INITIAL_NO_TP",
       "n_levels_hit": 0,
-      "pair": "USD_JPY",
+      "exit_time": "2025-06-13 10:00:00+09:00",
+      "entry_time": "2025-06-13 09:05:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-11-14 21:55:00+09:00"
+      "entry_price": 142.913,
+      "initial_risk": 0.3503389285714036,
+      "pair": "USD_JPY"
     },
     {
       "r": -1.0,
       "exit_reason": "SL_INITIAL_NO_TP",
       "n_levels_hit": 0,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-11-14 22:10:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "USD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-11-14 22:30:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "EUR_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-03 05:40:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "EUR_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-03 06:10:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "EUR_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-03 06:50:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-03 07:05:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-03 07:15:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-05-23 20:45:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "EUR_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-05-23 20:55:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-05-23 21:05:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-06-13 09:40:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "EUR_JPY",
+      "exit_time": "2025-07-03 22:00:00+09:00",
+      "entry_time": "2025-07-03 21:40:00+09:00",
       "direction": "UP",
-      "entry_time": "2025-07-03 21:40:00+09:00"
+      "entry_price": 145.061,
+      "initial_risk": 0.41756914285716107,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-07-17 15:00:00+09:00",
+      "entry_time": "2025-07-17 00:55:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 148.109,
+      "initial_risk": 0.6501882857142789,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-08-01 23:00:00+09:00",
+      "entry_time": "2025-08-01 21:40:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 149.029,
+      "initial_risk": 0.4945905714285743,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-08-04 07:00:00+09:00",
+      "entry_time": "2025-08-01 23:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 148.047,
+      "initial_risk": 0.27630292857142535,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-08-04 08:00:00+09:00",
+      "entry_time": "2025-08-04 07:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 147.214,
+      "initial_risk": 0.1594920000000002,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-08-23 04:00:00+09:00",
+      "entry_time": "2025-08-23 00:20:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 146.633,
+      "initial_risk": 0.2718152142856809,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-08-26 10:00:00+09:00",
+      "entry_time": "2025-08-26 09:45:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 147.071,
+      "initial_risk": 0.18655485714285192,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-08-28 20:00:00+09:00",
+      "entry_time": "2025-08-28 19:10:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 147.11,
+      "initial_risk": 0.08783971428567838,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-08-28 21:00:00+09:00",
+      "entry_time": "2025-08-28 20:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 146.913,
+      "initial_risk": 0.06290835714284526,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-08-29 04:00:00+09:00",
+      "entry_time": "2025-08-29 02:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 146.684,
+      "initial_risk": 0.2073017857142645,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-09-02 17:00:00+09:00",
+      "entry_time": "2025-09-02 16:40:00+09:00",
+      "direction": "UP",
+      "entry_price": 148.468,
+      "initial_risk": 0.12851771428572079,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-09-02 18:00:00+09:00",
+      "entry_time": "2025-09-02 17:05:00+09:00",
+      "direction": "UP",
+      "entry_price": 148.704,
+      "initial_risk": 0.22850050000002398,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-09-02 22:00:00+09:00",
+      "entry_time": "2025-09-02 21:05:00+09:00",
+      "direction": "UP",
+      "entry_price": 148.636,
+      "initial_risk": 0.15157642857141695,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-09-03 17:00:00+09:00",
+      "entry_time": "2025-09-03 16:05:00+09:00",
+      "direction": "UP",
+      "entry_price": 148.759,
+      "initial_risk": 0.1857094999999731,
+      "pair": "USD_JPY"
     },
     {
       "r": 1.1,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 2,
-      "pair": "EUR_JPY",
-      "direction": "UP",
-      "entry_time": "2025-07-03 22:00:00+09:00"
+      "exit_time": "2025-09-06 03:00:00+09:00",
+      "entry_time": "2025-09-05 21:40:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 147.402,
+      "initial_risk": 0.26919578571428815,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-09-11 23:00:00+09:00",
+      "entry_time": "2025-09-11 21:40:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 147.61,
+      "initial_risk": 0.1328152857142868,
+      "pair": "USD_JPY"
     },
     {
       "r": 0.4,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 1,
-      "pair": "EUR_JPY",
-      "direction": "UP",
-      "entry_time": "2025-07-03 22:40:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_JPY",
-      "direction": "UP",
-      "entry_time": "2025-07-03 22:55:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "EUR_JPY",
-      "direction": "UP",
-      "entry_time": "2025-07-03 23:05:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_JPY",
+      "exit_time": "2025-09-12 02:00:00+09:00",
+      "entry_time": "2025-09-11 23:10:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-08-11 16:40:00+09:00"
+      "entry_price": 147.21,
+      "initial_risk": 0.15769514285713626,
+      "pair": "USD_JPY"
     },
     {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-08-11 16:55:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-08-11 17:05:00+09:00"
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-09-18 22:00:00+09:00",
+      "entry_time": "2025-09-18 03:40:00+09:00",
+      "direction": "UP",
+      "entry_price": 146.479,
+      "initial_risk": 0.5601355714285887,
+      "pair": "USD_JPY"
     },
     {
       "r": 1.1,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 2,
-      "pair": "EUR_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-09-09 17:50:00+09:00"
+      "exit_time": "2025-09-19 02:00:00+09:00",
+      "entry_time": "2025-09-18 22:05:00+09:00",
+      "direction": "UP",
+      "entry_price": 147.85,
+      "initial_risk": 0.11923735714285044,
+      "pair": "USD_JPY"
     },
     {
       "r": -1.0,
       "exit_reason": "SL_INITIAL_NO_TP",
       "n_levels_hit": 0,
-      "pair": "EUR_JPY",
+      "exit_time": "2025-09-19 22:00:00+09:00",
+      "entry_time": "2025-09-19 21:15:00+09:00",
+      "direction": "UP",
+      "entry_price": 148.059,
+      "initial_risk": 0.08576385714286516,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-09-19 13:00:00+09:00",
+      "entry_time": "2025-09-19 12:40:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-09-09 18:25:00+09:00"
+      "entry_price": 147.748,
+      "initial_risk": 0.09245057142859991,
+      "pair": "USD_JPY"
     },
     {
       "r": -1.0,
       "exit_reason": "SL_INITIAL_NO_TP",
       "n_levels_hit": 0,
-      "pair": "EUR_JPY",
+      "exit_time": "2025-09-19 15:00:00+09:00",
+      "entry_time": "2025-09-19 13:05:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-09-09 18:45:00+09:00"
+      "entry_price": 147.324,
+      "initial_risk": 0.39928021428571014,
+      "pair": "USD_JPY"
     },
     {
       "r": 0.4,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 1,
-      "pair": "EUR_JPY",
+      "exit_time": "2025-11-14 23:00:00+09:00",
+      "entry_time": "2025-11-14 21:40:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-09-09 19:15:00+09:00"
+      "entry_price": 154.039,
+      "initial_risk": 0.2965306428571637,
+      "pair": "USD_JPY"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "exit_time": "2025-04-03 15:00:00+09:00",
+      "entry_time": "2025-04-03 05:40:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 161.662,
+      "initial_risk": 1.0794871428571469,
+      "pair": "EUR_JPY"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "exit_time": "2025-04-04 21:00:00+09:00",
+      "entry_time": "2025-04-04 19:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 160.338,
+      "initial_risk": 0.6260569285714155,
+      "pair": "EUR_JPY"
     },
     {
       "r": -1.0,
       "exit_reason": "SL_INITIAL_NO_TP",
       "n_levels_hit": 0,
-      "pair": "EUR_JPY",
+      "exit_time": "2025-04-05 00:00:00+09:00",
+      "entry_time": "2025-04-04 23:25:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-09-09 19:30:00+09:00"
+      "entry_price": 159.867,
+      "initial_risk": 0.5123085714286049,
+      "pair": "EUR_JPY"
     },
     {
       "r": -1.0,
       "exit_reason": "SL_INITIAL_NO_TP",
       "n_levels_hit": 0,
-      "pair": "EUR_JPY",
+      "exit_time": "2025-05-26 07:00:00+09:00",
+      "entry_time": "2025-05-23 20:45:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-09-09 19:55:00+09:00"
+      "entry_price": 161.544,
+      "initial_risk": 1.1465777857142712,
+      "pair": "EUR_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-06-13 10:00:00+09:00",
+      "entry_time": "2025-06-13 09:40:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 165.076,
+      "initial_risk": 0.33970935714287975,
+      "pair": "EUR_JPY"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "exit_time": "2025-07-04 09:00:00+09:00",
+      "entry_time": "2025-07-03 21:40:00+09:00",
+      "direction": "UP",
+      "entry_price": 170.234,
+      "initial_risk": 0.32585250000002475,
+      "pair": "EUR_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-08-11 17:00:00+09:00",
+      "entry_time": "2025-08-11 16:40:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 171.752,
+      "initial_risk": 0.2313089285714227,
+      "pair": "EUR_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-08-11 18:00:00+09:00",
+      "entry_time": "2025-08-11 17:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 171.735,
+      "initial_risk": 0.08522735714282703,
+      "pair": "EUR_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-08-12 03:00:00+09:00",
+      "entry_time": "2025-08-11 23:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 171.774,
+      "initial_risk": 0.1621100714285717,
+      "pair": "EUR_JPY"
     },
     {
       "r": 1.85,
       "exit_reason": "TP_FULL",
       "n_levels_hit": 3,
-      "pair": "EUR_JPY",
+      "exit_time": "2025-08-14 15:00:00+09:00",
+      "entry_time": "2025-08-14 10:05:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-09-19 12:40:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "GBP_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-03 05:40:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "GBP_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-03 06:10:00+09:00"
+      "entry_price": 171.698,
+      "initial_risk": 0.18705564285713194,
+      "pair": "EUR_JPY"
     },
     {
       "r": 1.1,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 2,
-      "pair": "GBP_JPY",
+      "exit_time": "2025-08-14 19:00:00+09:00",
+      "entry_time": "2025-08-14 15:05:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-04-03 06:50:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "GBP_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-03 07:05:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "GBP_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-03 07:15:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "GBP_JPY",
-      "direction": "UP",
-      "entry_time": "2025-04-10 02:45:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "GBP_JPY",
-      "direction": "UP",
-      "entry_time": "2025-04-10 02:55:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "GBP_JPY",
-      "direction": "UP",
-      "entry_time": "2025-04-10 03:10:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "GBP_JPY",
-      "direction": "UP",
-      "entry_time": "2025-04-10 04:00:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "GBP_JPY",
-      "direction": "UP",
-      "entry_time": "2025-04-10 04:15:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "GBP_JPY",
-      "direction": "UP",
-      "entry_time": "2025-04-10 05:20:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "GBP_JPY",
-      "direction": "UP",
-      "entry_time": "2025-04-10 05:30:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "GBP_JPY",
-      "direction": "UP",
-      "entry_time": "2025-04-10 05:45:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "GBP_JPY",
-      "direction": "UP",
-      "entry_time": "2025-04-10 05:55:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "GBP_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-05-23 20:45:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "GBP_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-05-23 20:55:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "GBP_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-06-13 09:40:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "GBP_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-07-02 21:45:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "GBP_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-07-02 22:10:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "GBP_JPY",
-      "direction": "UP",
-      "entry_time": "2025-07-03 21:40:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "GBP_JPY",
-      "direction": "UP",
-      "entry_time": "2025-07-03 22:50:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "GBP_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-08-11 16:40:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "GBP_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-08-11 16:50:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "GBP_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-08-23 00:25:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "GBP_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-09-02 16:40:00+09:00"
+      "entry_price": 171.34,
+      "initial_risk": 0.12765657142855957,
+      "pair": "EUR_JPY"
     },
     {
       "r": 1.1,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 2,
-      "pair": "GBP_JPY",
+      "exit_time": "2025-09-09 23:00:00+09:00",
+      "entry_time": "2025-09-09 17:50:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-09-02 16:55:00+09:00"
+      "entry_price": 172.5,
+      "initial_risk": 0.15878092857144566,
+      "pair": "EUR_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-09-19 13:00:00+09:00",
+      "entry_time": "2025-09-19 12:40:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 174.169,
+      "initial_risk": 0.1219470000000058,
+      "pair": "EUR_JPY"
     },
     {
       "r": -1.0,
       "exit_reason": "SL_INITIAL_NO_TP",
       "n_levels_hit": 0,
-      "pair": "GBP_JPY",
+      "exit_time": "2025-09-19 15:00:00+09:00",
+      "entry_time": "2025-09-19 13:05:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-09-02 17:25:00+09:00"
+      "entry_price": 173.676,
+      "initial_risk": 0.35982242857141955,
+      "pair": "EUR_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-04-04 16:00:00+09:00",
+      "entry_time": "2025-04-03 05:40:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 193.927,
+      "initial_risk": 1.225172428571426,
+      "pair": "GBP_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-04-04 19:00:00+09:00",
+      "entry_time": "2025-04-04 16:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 190.53,
+      "initial_risk": 0.31054621428572204,
+      "pair": "GBP_JPY"
     },
     {
       "r": 1.1,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 2,
-      "pair": "GBP_JPY",
+      "exit_time": "2025-04-04 21:00:00+09:00",
+      "entry_time": "2025-04-04 19:10:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-09-02 17:55:00+09:00"
+      "entry_price": 189.49,
+      "initial_risk": 0.7181227142856983,
+      "pair": "GBP_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-04-05 00:00:00+09:00",
+      "entry_time": "2025-04-04 23:15:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 188.413,
+      "initial_risk": 0.7660767142857026,
+      "pair": "GBP_JPY"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "exit_time": "2025-04-10 18:00:00+09:00",
+      "entry_time": "2025-04-10 02:45:00+09:00",
+      "direction": "UP",
+      "entry_price": 187.972,
+      "initial_risk": 1.056451285714303,
+      "pair": "GBP_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-05-26 07:00:00+09:00",
+      "entry_time": "2025-05-23 20:45:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 192.317,
+      "initial_risk": 1.0136478571428427,
+      "pair": "GBP_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-06-13 10:00:00+09:00",
+      "entry_time": "2025-06-13 09:40:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 194.001,
+      "initial_risk": 0.2796864285714378,
+      "pair": "GBP_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-07-03 06:00:00+09:00",
+      "entry_time": "2025-07-02 21:45:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 195.623,
+      "initial_risk": 0.4223601428571442,
+      "pair": "GBP_JPY"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "exit_time": "2025-07-04 13:00:00+09:00",
+      "entry_time": "2025-07-03 21:40:00+09:00",
+      "direction": "UP",
+      "entry_price": 197.297,
+      "initial_risk": 0.4165062142857039,
+      "pair": "GBP_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-08-11 17:00:00+09:00",
+      "entry_time": "2025-08-11 16:40:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 198.323,
+      "initial_risk": 0.32337185714285965,
+      "pair": "GBP_JPY"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "exit_time": "2025-08-23 03:00:00+09:00",
+      "entry_time": "2025-08-23 00:25:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 198.563,
+      "initial_risk": 0.12106707142859818,
+      "pair": "GBP_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-09-02 20:00:00+09:00",
+      "entry_time": "2025-09-02 16:40:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 199.547,
+      "initial_risk": 0.2967580000000112,
+      "pair": "GBP_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-09-02 21:00:00+09:00",
+      "entry_time": "2025-09-02 20:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 198.677,
+      "initial_risk": 0.2400985714286037,
+      "pair": "GBP_JPY"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "exit_time": "2025-09-03 01:00:00+09:00",
+      "entry_time": "2025-09-02 22:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 198.582,
+      "initial_risk": 0.22202414285715122,
+      "pair": "GBP_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-09-10 00:00:00+09:00",
+      "entry_time": "2025-09-09 17:45:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 199.003,
+      "initial_risk": 0.2544060714285763,
+      "pair": "GBP_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-09-23 19:00:00+09:00",
+      "entry_time": "2025-09-23 18:00:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 199.229,
+      "initial_risk": 0.19524735714284702,
+      "pair": "GBP_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-10-22 21:00:00+09:00",
+      "entry_time": "2025-10-22 16:00:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 202.184,
+      "initial_risk": 0.3514203571428425,
+      "pair": "GBP_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-04-04 12:00:00+09:00",
+      "entry_time": "2025-04-03 05:40:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 93.694,
+      "initial_risk": 0.710380071428574,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-04-04 13:00:00+09:00",
+      "entry_time": "2025-04-04 12:15:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 91.518,
+      "initial_risk": 0.1761057142857254,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "exit_time": "2025-04-04 15:00:00+09:00",
+      "entry_time": "2025-04-04 13:10:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 90.969,
+      "initial_risk": 0.2713174285714359,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-04-04 20:00:00+09:00",
+      "entry_time": "2025-04-04 19:10:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 90.374,
+      "initial_risk": 0.46357492857143257,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-04-04 23:00:00+09:00",
+      "entry_time": "2025-04-04 20:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 89.074,
+      "initial_risk": 0.489328714285719,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-04-05 00:00:00+09:00",
+      "entry_time": "2025-04-04 23:25:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 88.259,
+      "initial_risk": 0.5764230714285787,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-04-04 20:00:00+09:00",
+      "entry_time": "2025-04-04 19:45:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 89.482,
+      "initial_risk": 0.4732272142857141,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-04-04 23:00:00+09:00",
+      "entry_time": "2025-04-04 20:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 89.074,
+      "initial_risk": 0.489328714285719,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-04-05 00:00:00+09:00",
+      "entry_time": "2025-04-04 23:25:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 88.259,
+      "initial_risk": 0.5764230714285787,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-04-07 10:00:00+09:00",
+      "entry_time": "2025-04-07 07:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 86.555,
+      "initial_risk": 1.1280038571428435,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "exit_time": "2025-04-10 09:00:00+09:00",
+      "entry_time": "2025-04-10 02:40:00+09:00",
+      "direction": "UP",
+      "entry_price": 89.878,
+      "initial_risk": 0.9751567142857169,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-04-21 11:00:00+09:00",
+      "entry_time": "2025-04-21 08:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 90.458,
+      "initial_risk": 0.15124307142856708,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-04-21 12:00:00+09:00",
+      "entry_time": "2025-04-21 11:10:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 90.091,
+      "initial_risk": 0.12890407142857896,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-04-22 15:00:00+09:00",
+      "entry_time": "2025-04-22 14:10:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 90.149,
+      "initial_risk": 0.11305857142858144,
+      "pair": "AUD_JPY"
     },
     {
       "r": 1.1,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 2,
-      "pair": "GBP_JPY",
+      "exit_time": "2025-04-22 23:00:00+09:00",
+      "entry_time": "2025-04-22 18:20:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-09-02 18:40:00+09:00"
+      "entry_price": 89.963,
+      "initial_risk": 0.12970950000000414,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-05-07 09:00:00+09:00",
+      "entry_time": "2025-05-07 07:40:00+09:00",
+      "direction": "UP",
+      "entry_price": 93.191,
+      "initial_risk": 0.23718149999999127,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-05-09 01:00:00+09:00",
+      "entry_time": "2025-05-09 00:15:00+09:00",
+      "direction": "UP",
+      "entry_price": 92.981,
+      "initial_risk": 0.11573664285714358,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "exit_time": "2025-05-09 07:00:00+09:00",
+      "entry_time": "2025-05-09 01:10:00+09:00",
+      "direction": "UP",
+      "entry_price": 93.329,
+      "initial_risk": 0.12423307142856288,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-05-24 02:00:00+09:00",
+      "entry_time": "2025-05-23 20:45:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 92.007,
+      "initial_risk": 0.5834390714285718,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-05-28 11:00:00+09:00",
+      "entry_time": "2025-05-28 10:45:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 92.844,
+      "initial_risk": 0.17344478571428112,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-05-28 12:00:00+09:00",
+      "entry_time": "2025-05-28 11:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 92.813,
+      "initial_risk": 0.1400027142857141,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-05-30 09:00:00+09:00",
+      "entry_time": "2025-05-30 08:20:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 92.85,
+      "initial_risk": 0.06488692857142553,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "exit_time": "2025-05-30 23:00:00+09:00",
+      "entry_time": "2025-05-30 10:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 92.533,
+      "initial_risk": 0.25864935714284343,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-06-10 15:00:00+09:00",
+      "entry_time": "2025-06-10 14:40:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 94.198,
+      "initial_risk": 0.0631715714285832,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-06-10 17:00:00+09:00",
+      "entry_time": "2025-06-10 15:10:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 93.976,
+      "initial_risk": 0.203150071428567,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-06-12 10:00:00+09:00",
+      "entry_time": "2025-06-12 03:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 94.099,
+      "initial_risk": 0.15999421428570315,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "exit_time": "2025-06-12 12:00:00+09:00",
+      "entry_time": "2025-06-12 10:15:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 93.566,
+      "initial_risk": 0.1805077857142834,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-06-12 17:00:00+09:00",
+      "entry_time": "2025-06-12 16:15:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 93.531,
+      "initial_risk": 0.0472073571428524,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-06-12 18:00:00+09:00",
+      "entry_time": "2025-06-12 17:25:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 93.275,
+      "initial_risk": 0.10095414285713389,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "exit_time": "2025-06-13 11:00:00+09:00",
+      "entry_time": "2025-06-13 09:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 92.982,
+      "initial_risk": 0.5317795714285722,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-06-13 10:00:00+09:00",
+      "entry_time": "2025-06-13 09:40:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 92.549,
+      "initial_risk": 0.27945042857142255,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-06-13 11:00:00+09:00",
+      "entry_time": "2025-06-13 10:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 92.657,
+      "initial_risk": 0.16386378571429816,
+      "pair": "AUD_JPY"
     },
     {
       "r": 1.1,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 2,
-      "pair": "GBP_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-09-02 19:00:00+09:00"
+      "exit_time": "2025-07-04 12:00:00+09:00",
+      "entry_time": "2025-07-03 21:40:00+09:00",
+      "direction": "UP",
+      "entry_price": 94.921,
+      "initial_risk": 0.17071664285715826,
+      "pair": "AUD_JPY"
     },
     {
       "r": -1.0,
       "exit_reason": "SL_INITIAL_NO_TP",
       "n_levels_hit": 0,
-      "pair": "GBP_JPY",
+      "exit_time": "2025-08-26 10:00:00+09:00",
+      "entry_time": "2025-08-26 09:40:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-09-09 17:45:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "GBP_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-09-23 18:00:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "GBP_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-10-22 16:00:00+09:00"
+      "entry_price": 95.409,
+      "initial_risk": 0.17277528571428036,
+      "pair": "AUD_JPY"
     },
     {
       "r": 0.4,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 1,
-      "pair": "GBP_JPY",
+      "exit_time": "2025-09-06 01:00:00+09:00",
+      "entry_time": "2025-09-05 23:40:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-10-22 16:10:00+09:00"
+      "entry_price": 96.448,
+      "initial_risk": 0.11568085714286269,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "exit_time": "2025-10-10 17:00:00+09:00",
+      "entry_time": "2025-10-10 15:40:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 100.136,
+      "initial_risk": 0.15576385714285834,
+      "pair": "AUD_JPY"
     },
     {
       "r": 1.85,
       "exit_reason": "TP_FULL",
       "n_levels_hit": 3,
-      "pair": "AUD_JPY",
+      "exit_time": "2025-10-11 00:00:00+09:00",
+      "entry_time": "2025-10-10 23:05:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-04-03 05:40:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "AUD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-04 19:45:00+09:00"
+      "entry_price": 99.968,
+      "initial_risk": 0.041193071428565986,
+      "pair": "AUD_JPY"
     },
     {
       "r": 1.1,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 2,
-      "pair": "AUD_JPY",
+      "exit_time": "2025-10-13 10:00:00+09:00",
+      "entry_time": "2025-10-11 00:05:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-04-04 19:55:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "AUD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-04 20:05:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "AUD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-04 20:15:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "AUD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-04 20:30:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "AUD_JPY",
-      "direction": "UP",
-      "entry_time": "2025-04-10 02:40:00+09:00"
+      "entry_price": 99.166,
+      "initial_risk": 0.5979054285714227,
+      "pair": "AUD_JPY"
     },
     {
       "r": 1.1,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 2,
-      "pair": "AUD_JPY",
-      "direction": "UP",
-      "entry_time": "2025-04-10 03:50:00+09:00"
+      "exit_time": "2025-10-13 07:00:00+09:00",
+      "entry_time": "2025-10-11 00:55:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 98.667,
+      "initial_risk": 0.31242457142857916,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-10-16 10:00:00+09:00",
+      "entry_time": "2025-10-16 09:40:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 97.707,
+      "initial_risk": 0.0940542142857197,
+      "pair": "AUD_JPY"
     },
     {
       "r": 1.85,
       "exit_reason": "TP_FULL",
       "n_levels_hit": 3,
-      "pair": "AUD_JPY",
+      "exit_time": "2025-10-17 03:00:00+09:00",
+      "entry_time": "2025-10-17 01:15:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-04-21 08:05:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "AUD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-21 08:15:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "AUD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-21 08:55:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "AUD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-21 09:05:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "AUD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-04-21 09:15:00+09:00"
+      "entry_price": 97.808,
+      "initial_risk": 0.18076814285713283,
+      "pair": "AUD_JPY"
     },
     {
       "r": -1.0,
       "exit_reason": "SL_INITIAL_NO_TP",
       "n_levels_hit": 0,
-      "pair": "AUD_JPY",
-      "direction": "UP",
-      "entry_time": "2025-05-07 07:40:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "AUD_JPY",
-      "direction": "UP",
-      "entry_time": "2025-05-07 08:25:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "AUD_JPY",
+      "exit_time": "2025-10-17 05:00:00+09:00",
+      "entry_time": "2025-10-17 03:05:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-05-23 20:45:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "AUD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-05-23 20:55:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "AUD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-05-23 21:05:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "AUD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-05-28 10:45:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "AUD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-05-28 11:05:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "AUD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-06-10 14:40:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "AUD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-06-10 14:50:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "AUD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-06-10 15:10:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "AUD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-06-13 09:40:00+09:00"
+      "entry_price": 97.379,
+      "initial_risk": 0.22176235714286463,
+      "pair": "AUD_JPY"
     },
     {
       "r": 1.1,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 2,
-      "pair": "AUD_JPY",
+      "exit_time": "2025-10-17 10:00:00+09:00",
+      "entry_time": "2025-10-17 08:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 97.447,
+      "initial_risk": 0.08254357142855895,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-10-17 15:00:00+09:00",
+      "entry_time": "2025-10-17 11:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 97.236,
+      "initial_risk": 0.13366514285714004,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-10-17 16:00:00+09:00",
+      "entry_time": "2025-10-17 15:10:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 96.975,
+      "initial_risk": 0.19411578571430255,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-10-17 18:00:00+09:00",
+      "entry_time": "2025-10-17 16:05:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 96.531,
+      "initial_risk": 0.3257952857142925,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-11-13 13:00:00+09:00",
+      "entry_time": "2025-11-13 09:45:00+09:00",
       "direction": "UP",
-      "entry_time": "2025-07-03 21:40:00+09:00"
+      "entry_price": 101.555,
+      "initial_risk": 0.17854207142858058,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "exit_time": "2025-11-13 18:00:00+09:00",
+      "entry_time": "2025-11-13 16:10:00+09:00",
+      "direction": "UP",
+      "entry_price": 101.701,
+      "initial_risk": 0.1144934999999947,
+      "pair": "AUD_JPY"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-04-03 15:00:00+09:00",
+      "entry_time": "2025-04-03 14:15:00+09:00",
+      "direction": "UP",
+      "entry_price": 1.09203,
+      "initial_risk": 0.0010513728571428516,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-04-03 19:00:00+09:00",
+      "entry_time": "2025-04-03 17:40:00+09:00",
+      "direction": "UP",
+      "entry_price": 1.10094,
+      "initial_risk": 0.0024564935714286307,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "exit_time": "2025-04-04 00:00:00+09:00",
+      "entry_time": "2025-04-03 19:05:00+09:00",
+      "direction": "UP",
+      "entry_price": 1.10579,
+      "initial_risk": 0.003907880714285605,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-04-21 11:00:00+09:00",
+      "entry_time": "2025-04-21 07:45:00+09:00",
+      "direction": "UP",
+      "entry_price": 1.1435,
+      "initial_risk": 0.0019105135714283517,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-04-21 12:00:00+09:00",
+      "entry_time": "2025-04-21 11:10:00+09:00",
+      "direction": "UP",
+      "entry_price": 1.14785,
+      "initial_risk": 0.0010015442857143064,
+      "pair": "EUR_USD"
     },
     {
       "r": 1.1,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 2,
-      "pair": "AUD_JPY",
+      "exit_time": "2025-04-21 15:00:00+09:00",
+      "entry_time": "2025-04-21 12:10:00+09:00",
       "direction": "UP",
-      "entry_time": "2025-07-03 22:05:00+09:00"
+      "entry_price": 1.15077,
+      "initial_risk": 0.0011755350000000053,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-04-21 17:00:00+09:00",
+      "entry_time": "2025-04-21 16:15:00+09:00",
+      "direction": "UP",
+      "entry_price": 1.15169,
+      "initial_risk": 0.0011717300000000375,
+      "pair": "EUR_USD"
     },
     {
       "r": 1.1,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 2,
-      "pair": "AUD_JPY",
+      "exit_time": "2025-04-21 19:00:00+09:00",
+      "entry_time": "2025-04-21 17:25:00+09:00",
       "direction": "UP",
-      "entry_time": "2025-07-03 22:15:00+09:00"
+      "entry_price": 1.15444,
+      "initial_risk": 0.0012674378571428946,
+      "pair": "EUR_USD"
     },
     {
       "r": 1.1,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 2,
-      "pair": "AUD_JPY",
+      "exit_time": "2025-04-21 15:00:00+09:00",
+      "entry_time": "2025-04-21 12:10:00+09:00",
       "direction": "UP",
-      "entry_time": "2025-07-03 22:25:00+09:00"
+      "entry_price": 1.15077,
+      "initial_risk": 0.0011755350000000053,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-04-21 17:00:00+09:00",
+      "entry_time": "2025-04-21 16:15:00+09:00",
+      "direction": "UP",
+      "entry_price": 1.15169,
+      "initial_risk": 0.0011717300000000375,
+      "pair": "EUR_USD"
     },
     {
       "r": 1.1,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 2,
-      "pair": "AUD_JPY",
+      "exit_time": "2025-04-21 19:00:00+09:00",
+      "entry_time": "2025-04-21 17:25:00+09:00",
       "direction": "UP",
-      "entry_time": "2025-07-03 22:40:00+09:00"
+      "entry_price": 1.15444,
+      "initial_risk": 0.0012674378571428946,
+      "pair": "EUR_USD"
     },
     {
       "r": -1.0,
       "exit_reason": "SL_INITIAL_NO_TP",
       "n_levels_hit": 0,
-      "pair": "AUD_JPY",
+      "exit_time": "2025-05-12 17:00:00+09:00",
+      "entry_time": "2025-05-12 16:45:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-08-26 09:40:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "AUD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-09-05 23:40:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "AUD_JPY",
-      "direction": "DOWN",
-      "entry_time": "2025-10-10 15:40:00+09:00"
+      "entry_price": 1.11102,
+      "initial_risk": 0.0028116428571427488,
+      "pair": "EUR_USD"
     },
     {
       "r": -1.0,
       "exit_reason": "SL_INITIAL_NO_TP",
       "n_levels_hit": 0,
-      "pair": "AUD_JPY",
+      "exit_time": "2025-05-12 18:00:00+09:00",
+      "entry_time": "2025-05-12 17:10:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-10-10 15:50:00+09:00"
+      "entry_price": 1.10938,
+      "initial_risk": 0.0036377371428570893,
+      "pair": "EUR_USD"
     },
     {
       "r": -1.0,
       "exit_reason": "SL_INITIAL_NO_TP",
       "n_levels_hit": 0,
-      "pair": "AUD_JPY",
+      "exit_time": "2025-05-12 20:00:00+09:00",
+      "entry_time": "2025-05-12 19:20:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-10-10 16:10:00+09:00"
+      "entry_price": 1.10895,
+      "initial_risk": 0.0021653064285711565,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-05-13 04:00:00+09:00",
+      "entry_time": "2025-05-13 03:10:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 1.10728,
+      "initial_risk": 0.0007384685714286743,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-05-23 22:00:00+09:00",
+      "entry_time": "2025-05-23 21:10:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 1.13096,
+      "initial_risk": 0.002585304999999982,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-05-29 15:00:00+09:00",
+      "entry_time": "2025-05-29 08:40:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 1.12146,
+      "initial_risk": 0.005680399285714399,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-06-06 00:00:00+09:00",
+      "entry_time": "2025-06-05 23:15:00+09:00",
+      "direction": "UP",
+      "entry_price": 1.14733,
+      "initial_risk": 0.0015972085714286433,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-07-03 22:00:00+09:00",
+      "entry_time": "2025-07-03 21:40:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 1.17356,
+      "initial_risk": 0.0023485964285716587,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-07-17 01:00:00+09:00",
+      "entry_time": "2025-07-17 00:45:00+09:00",
+      "direction": "UP",
+      "entry_price": 1.16822,
+      "initial_risk": 0.0030780078571428504,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-07-29 16:00:00+09:00",
+      "entry_time": "2025-07-29 15:40:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 1.15633,
+      "initial_risk": 0.0008016442857141648,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-07-29 17:00:00+09:00",
+      "entry_time": "2025-07-29 16:10:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 1.15322,
+      "initial_risk": 0.0020949628571429457,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-07-29 22:00:00+09:00",
+      "entry_time": "2025-07-29 21:10:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 1.15349,
+      "initial_risk": 0.0011736042857142248,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-07-29 23:00:00+09:00",
+      "entry_time": "2025-07-29 22:10:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 1.15201,
+      "initial_risk": 0.0015155785714284775,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": 1.85,
+      "exit_reason": "TP_FULL",
+      "n_levels_hit": 3,
+      "exit_time": "2025-07-30 22:00:00+09:00",
+      "entry_time": "2025-07-30 21:10:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 1.15221,
+      "initial_risk": 0.0015014585714285822,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-07-31 03:00:00+09:00",
+      "entry_time": "2025-07-30 22:10:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 1.14626,
+      "initial_risk": 0.0026665935714285105,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-07-31 15:00:00+09:00",
+      "entry_time": "2025-07-31 04:20:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 1.14205,
+      "initial_risk": 0.0025798978571429654,
+      "pair": "EUR_USD"
     },
     {
       "r": 1.1,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 2,
-      "pair": "AUD_JPY",
+      "exit_time": "2025-07-31 03:00:00+09:00",
+      "entry_time": "2025-07-30 21:40:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-10-11 00:55:00+09:00"
+      "entry_price": 1.14894,
+      "initial_risk": 0.001276293571428333,
+      "pair": "EUR_USD"
     },
     {
       "r": -1.0,
       "exit_reason": "SL_INITIAL_NO_TP",
       "n_levels_hit": 0,
-      "pair": "AUD_JPY",
+      "exit_time": "2025-07-31 15:00:00+09:00",
+      "entry_time": "2025-07-31 04:20:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-10-16 09:40:00+09:00"
+      "entry_price": 1.14205,
+      "initial_risk": 0.0025798978571429654,
+      "pair": "EUR_USD"
     },
     {
       "r": -1.0,
       "exit_reason": "SL_INITIAL_NO_TP",
       "n_levels_hit": 0,
-      "pair": "AUD_JPY",
-      "direction": "UP",
-      "entry_time": "2025-11-13 09:45:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "AUD_JPY",
-      "direction": "UP",
-      "entry_time": "2025-11-13 10:10:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "AUD_JPY",
-      "direction": "UP",
-      "entry_time": "2025-11-13 10:50:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "EUR_USD",
-      "direction": "UP",
-      "entry_time": "2025-04-21 07:45:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "EUR_USD",
-      "direction": "UP",
-      "entry_time": "2025-04-21 08:00:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "EUR_USD",
-      "direction": "UP",
-      "entry_time": "2025-04-21 08:30:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "EUR_USD",
-      "direction": "UP",
-      "entry_time": "2025-04-21 08:50:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "EUR_USD",
-      "direction": "UP",
-      "entry_time": "2025-04-21 09:00:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "EUR_USD",
-      "direction": "UP",
-      "entry_time": "2025-04-21 09:10:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "EUR_USD",
-      "direction": "UP",
-      "entry_time": "2025-04-21 09:20:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "EUR_USD",
-      "direction": "UP",
-      "entry_time": "2025-04-21 09:30:00+09:00"
-    },
-    {
-      "r": 1.1,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 2,
-      "pair": "EUR_USD",
-      "direction": "UP",
-      "entry_time": "2025-04-21 12:10:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_USD",
-      "direction": "UP",
-      "entry_time": "2025-04-21 12:45:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_USD",
+      "exit_time": "2025-08-01 19:00:00+09:00",
+      "entry_time": "2025-08-01 18:15:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-05-12 16:45:00+09:00"
+      "entry_price": 1.14069,
+      "initial_risk": 0.0009209007142856329,
+      "pair": "EUR_USD"
     },
     {
       "r": -1.0,
       "exit_reason": "SL_INITIAL_NO_TP",
       "n_levels_hit": 0,
-      "pair": "EUR_USD",
+      "exit_time": "2025-08-01 22:00:00+09:00",
+      "entry_time": "2025-08-01 21:20:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-05-12 17:10:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_USD",
-      "direction": "DOWN",
-      "entry_time": "2025-05-12 17:20:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_USD",
-      "direction": "DOWN",
-      "entry_time": "2025-05-29 08:40:00+09:00"
-    },
-    {
-      "r": 1.1,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 2,
-      "pair": "EUR_USD",
-      "direction": "DOWN",
-      "entry_time": "2025-05-29 08:50:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_USD",
-      "direction": "UP",
-      "entry_time": "2025-06-05 23:15:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_USD",
-      "direction": "UP",
-      "entry_time": "2025-06-05 23:30:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_USD",
-      "direction": "DOWN",
-      "entry_time": "2025-07-03 21:40:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_USD",
-      "direction": "DOWN",
-      "entry_time": "2025-07-03 21:55:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_USD",
-      "direction": "UP",
-      "entry_time": "2025-07-17 00:45:00+09:00"
-    },
-    {
-      "r": 1.85,
-      "exit_reason": "TP_FULL",
-      "n_levels_hit": 3,
-      "pair": "EUR_USD",
-      "direction": "DOWN",
-      "entry_time": "2025-07-29 15:40:00+09:00"
+      "entry_price": 1.13969,
+      "initial_risk": 0.0013670235714284829,
+      "pair": "EUR_USD"
     },
     {
       "r": 0.4,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 1,
-      "pair": "EUR_USD",
-      "direction": "DOWN",
-      "entry_time": "2025-07-29 15:50:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_USD",
-      "direction": "DOWN",
-      "entry_time": "2025-07-29 16:00:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_USD",
-      "direction": "DOWN",
-      "entry_time": "2025-07-29 16:10:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_USD",
-      "direction": "DOWN",
-      "entry_time": "2025-07-29 16:30:00+09:00"
-    },
-    {
-      "r": 1.1,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 2,
-      "pair": "EUR_USD",
-      "direction": "DOWN",
-      "entry_time": "2025-07-30 21:40:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "EUR_USD",
-      "direction": "DOWN",
-      "entry_time": "2025-07-30 21:50:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_USD",
-      "direction": "DOWN",
-      "entry_time": "2025-07-30 22:10:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_USD",
-      "direction": "DOWN",
-      "entry_time": "2025-07-30 22:25:00+09:00"
-    },
-    {
-      "r": -1.0,
-      "exit_reason": "SL_INITIAL_NO_TP",
-      "n_levels_hit": 0,
-      "pair": "EUR_USD",
-      "direction": "DOWN",
-      "entry_time": "2025-07-30 22:50:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "EUR_USD",
+      "exit_time": "2025-08-02 02:00:00+09:00",
+      "entry_time": "2025-08-01 21:40:00+09:00",
       "direction": "UP",
-      "entry_time": "2025-08-01 21:40:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "EUR_USD",
-      "direction": "UP",
-      "entry_time": "2025-08-01 21:50:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "EUR_USD",
-      "direction": "UP",
-      "entry_time": "2025-08-01 22:05:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "EUR_USD",
-      "direction": "UP",
-      "entry_time": "2025-08-01 22:45:00+09:00"
+      "entry_price": 1.15305,
+      "initial_risk": 0.00387863857142845,
+      "pair": "EUR_USD"
     },
     {
       "r": -1.0,
       "exit_reason": "SL_INITIAL_NO_TP",
       "n_levels_hit": 0,
-      "pair": "EUR_USD",
+      "exit_time": "2025-08-04 07:00:00+09:00",
+      "entry_time": "2025-08-02 05:35:00+09:00",
       "direction": "UP",
-      "entry_time": "2025-08-12 21:40:00+09:00"
+      "entry_price": 1.15954,
+      "initial_risk": 0.0012148914285714518,
+      "pair": "EUR_USD"
     },
     {
       "r": -1.0,
       "exit_reason": "SL_INITIAL_NO_TP",
       "n_levels_hit": 0,
-      "pair": "EUR_USD",
+      "exit_time": "2025-08-12 22:00:00+09:00",
+      "entry_time": "2025-08-12 21:40:00+09:00",
       "direction": "UP",
-      "entry_time": "2025-08-12 21:50:00+09:00"
+      "entry_price": 1.16489,
+      "initial_risk": 0.0030414864285714938,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "exit_time": "2025-08-13 03:00:00+09:00",
+      "entry_time": "2025-08-13 00:05:00+09:00",
+      "direction": "UP",
+      "entry_price": 1.16665,
+      "initial_risk": 0.0014861935714285401,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": 0.4,
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_levels_hit": 1,
+      "exit_time": "2025-08-13 20:00:00+09:00",
+      "entry_time": "2025-08-13 16:10:00+09:00",
+      "direction": "UP",
+      "entry_price": 1.17104,
+      "initial_risk": 0.001916537142857333,
+      "pair": "EUR_USD"
     },
     {
       "r": -1.0,
       "exit_reason": "SL_INITIAL_NO_TP",
       "n_levels_hit": 0,
-      "pair": "EUR_USD",
+      "exit_time": "2025-08-25 09:00:00+09:00",
+      "entry_time": "2025-08-23 00:20:00+09:00",
       "direction": "UP",
-      "entry_time": "2025-08-23 00:20:00+09:00"
+      "entry_price": 1.17277,
+      "initial_risk": 0.0019085964285716628,
+      "pair": "EUR_USD"
     },
     {
       "r": 0.4,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 1,
-      "pair": "EUR_USD",
+      "exit_time": "2025-09-02 23:00:00+09:00",
+      "entry_time": "2025-09-02 16:50:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-09-02 16:50:00+09:00"
+      "entry_price": 1.16524,
+      "initial_risk": 0.0028217728571426903,
+      "pair": "EUR_USD"
     },
     {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "EUR_USD",
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-09-03 17:00:00+09:00",
+      "entry_time": "2025-09-03 16:05:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-09-02 17:00:00+09:00"
+      "entry_price": 1.16313,
+      "initial_risk": 0.0005828892857142609,
+      "pair": "EUR_USD"
     },
     {
       "r": 0.4,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 1,
-      "pair": "EUR_USD",
-      "direction": "DOWN",
-      "entry_time": "2025-09-02 17:25:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "EUR_USD",
+      "exit_time": "2025-09-06 00:00:00+09:00",
+      "entry_time": "2025-09-05 21:40:00+09:00",
       "direction": "UP",
-      "entry_time": "2025-09-05 21:40:00+09:00"
+      "entry_price": 1.17354,
+      "initial_risk": 0.0020290542857142047,
+      "pair": "EUR_USD"
     },
     {
       "r": 1.241277512323309,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 2,
-      "pair": "EUR_USD",
+      "exit_time": "2025-09-12 18:00:00+09:00",
+      "entry_time": "2025-09-11 21:40:00+09:00",
       "direction": "UP",
-      "entry_time": "2025-09-11 21:40:00+09:00"
+      "entry_price": 1.17056,
+      "initial_risk": 0.0017011857142859022,
+      "pair": "EUR_USD"
     },
     {
       "r": 1.85,
       "exit_reason": "TP_FULL",
       "n_levels_hit": 3,
-      "pair": "EUR_USD",
+      "exit_time": "2025-09-19 21:00:00+09:00",
+      "entry_time": "2025-09-18 03:40:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-09-18 03:40:00+09:00"
+      "entry_price": 1.18514,
+      "initial_risk": 0.003910097857142691,
+      "pair": "EUR_USD"
     },
     {
-      "r": 1.4216994171579311,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 2,
-      "pair": "EUR_USD",
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-09-19 22:00:00+09:00",
+      "entry_time": "2025-09-19 21:05:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-09-18 03:50:00+09:00"
+      "entry_price": 1.17367,
+      "initial_risk": 0.0009895271428572716,
+      "pair": "EUR_USD"
     },
     {
       "r": 1.85,
       "exit_reason": "TP_FULL",
       "n_levels_hit": 3,
-      "pair": "EUR_USD",
+      "exit_time": "2025-09-26 02:00:00+09:00",
+      "entry_time": "2025-09-25 21:40:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-09-25 21:40:00+09:00"
-    },
-    {
-      "r": 1.1,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 2,
-      "pair": "EUR_USD",
-      "direction": "DOWN",
-      "entry_time": "2025-09-25 21:50:00+09:00"
+      "entry_price": 1.17019,
+      "initial_risk": 0.001438668571428492,
+      "pair": "EUR_USD"
     },
     {
       "r": -1.0,
       "exit_reason": "SL_INITIAL_NO_TP",
       "n_levels_hit": 0,
-      "pair": "EUR_USD",
-      "direction": "UP",
-      "entry_time": "2025-10-11 01:00:00+09:00"
+      "exit_time": "2025-09-26 10:00:00+09:00",
+      "entry_time": "2025-09-26 02:20:00+09:00",
+      "direction": "DOWN",
+      "entry_price": 1.1659,
+      "initial_risk": 0.0014524457142859326,
+      "pair": "EUR_USD"
     },
     {
       "r": -1.0,
       "exit_reason": "SL_INITIAL_NO_TP",
       "n_levels_hit": 0,
-      "pair": "EUR_USD",
+      "exit_time": "2025-10-11 02:00:00+09:00",
+      "entry_time": "2025-10-11 01:00:00+09:00",
       "direction": "UP",
-      "entry_time": "2025-10-24 21:40:00+09:00"
+      "entry_price": 1.16199,
+      "initial_risk": 0.0018801414285714024,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-10-13 07:00:00+09:00",
+      "entry_time": "2025-10-11 05:15:00+09:00",
+      "direction": "UP",
+      "entry_price": 1.16109,
+      "initial_risk": 0.0003492842857142353,
+      "pair": "EUR_USD"
+    },
+    {
+      "r": -1.0,
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_levels_hit": 0,
+      "exit_time": "2025-10-24 22:00:00+09:00",
+      "entry_time": "2025-10-24 21:40:00+09:00",
+      "direction": "UP",
+      "entry_price": 1.16424,
+      "initial_risk": 0.0013147771428569932,
+      "pair": "EUR_USD"
     },
     {
       "r": 1.5370902008833296,
       "exit_reason": "TP_THEN_SL_TRAIL",
       "n_levels_hit": 2,
-      "pair": "EUR_USD",
+      "exit_time": "2025-11-06 10:00:00+09:00",
+      "entry_time": "2025-10-30 03:40:00+09:00",
       "direction": "DOWN",
-      "entry_time": "2025-10-30 03:40:00+09:00"
-    },
-    {
-      "r": 0.4,
-      "exit_reason": "TP_THEN_SL_TRAIL",
-      "n_levels_hit": 1,
-      "pair": "EUR_USD",
-      "direction": "DOWN",
-      "entry_time": "2025-10-30 03:50:00+09:00"
+      "entry_price": 1.15999,
+      "initial_risk": 0.00528057071428556,
+      "pair": "EUR_USD"
     }
   ]
 }

@@ -3,7 +3,8 @@
 司令塔依頼: 銘柄別・方向(買い/売り)別のトレード内訳、1つの初動(トレンドイベント)
 あたりの平均トレード数、初動確定からトレードエントリーまでの経過時間(平均・最大)。
 
-`backtest_vol_breakout_dow_theory.py`/`_validation.py`と同じ検出・追跡ロジックを
+`backtest_vol_breakout_dow_theory.py`の`simulate_dow_theory_trend()`(1通貨1ポジション
+制約 + M5型崩れ後のH1継続確認による再開ロジック込み、2026-08-20修正版)をそのまま
 再利用し、Train・Validation両期間について集計する(新たなバックテストではなく
 既存結果の内訳を出す集計スクリプト、KPI判定は行わない)。
 
@@ -27,13 +28,14 @@ import pandas as pd
 
 import derive_vol_breakout_entry_params as base  # noqa: E402
 
-from backtest_vol_breakout_dow_theory import track_dow_theory_pullbacks  # noqa: E402
+from backtest_vol_breakout_dow_theory import simulate_dow_theory_trend  # noqa: E402
 from derive_vol_breakout_entry_params import N_BREAKOUT, to_h1, PAIRS as ALL_PAIRS  # noqa: E402
 from minmax_fx_dt.strategy.indicators import atr as atr_ind  # noqa: E402
 
 with (ROOT / "research" / "method-notes" / "vol_breakout_dow_theory_train.json").open(encoding="utf-8") as f:
     TRAIN_RESULT = json.load(f)
 STOP_BUFFER_ATR_M5 = TRAIN_RESULT["params"]["stop_buffer_atr_m5"]
+ATR_TRAIL_MULTIPLIER = TRAIN_RESULT["params"]["atr_trail_multiplier"]
 
 PERIODS = {
     "train": ("2023-11-01", "2025-03-31"),
@@ -59,13 +61,14 @@ def collect_events(period_start: str, period_end: str) -> list[dict]:
             bar = h1.iloc[pos]
             direction = "UP" if bar["close"] > bar["open"] else "DOWN"
             break_time = h1.index[pos]
-            pullbacks = track_dow_theory_pullbacks(m5, atr_m5, h1, pos, direction)
+            trades = simulate_dow_theory_trend(m5, atr_m5, h1, atr_h1, pos, direction,
+                                                STOP_BUFFER_ATR_M5, ATR_TRAIL_MULTIPLIER)
             elapsed_hours = [
-                (pb["confirm_time"] - break_time).total_seconds() / 3600.0 for pb in pullbacks
+                (pd.Timestamp(t["entry_time"]) - break_time).total_seconds() / 3600.0 for t in trades
             ]
             records.append({
                 "pair": pair, "direction": direction, "break_time": str(break_time),
-                "n_trades": len(pullbacks), "elapsed_hours": elapsed_hours,
+                "n_trades": len(trades), "elapsed_hours": elapsed_hours,
             })
     return records
 

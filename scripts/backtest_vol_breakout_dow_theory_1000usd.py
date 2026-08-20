@@ -9,7 +9,9 @@ Train/Validation/Test 3期間・$1,000初期資金・実運用コスト込みバ
 atr_trail_multiplier=3.23)はTrainデータから導出済みの値をそのまま使用し
 (`vol_breakout_dow_theory_train.json`)、Validation/Testでも再導出しない
 (TVT分離の既存方針)。各期間は独立に$1,000からスタートする(複利は期間を
-跨がない)。
+跨がない)。エントリー・イグジットロジックは`backtest_vol_breakout_dow_theory.py`
+の`simulate_dow_theory_trend()`(1通貨1ポジション制約 + M5型崩れ後のH1継続確認
+による再開ロジック込み、2026-08-20修正版)をそのまま再利用する。
 
 コスト・サイジング設計(事前登録、`backtest_h1_tighter_stop_1000usd.py`と同一):
     - ポジションサイジング: エントリー時点の口座残高の1%をリスク額とする
@@ -37,7 +39,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import numpy as np
 import pandas as pd
 
-from backtest_vol_breakout_dow_theory import is_weekend_close_time, track_dow_theory_pullbacks  # noqa: E402
+from backtest_vol_breakout_dow_theory import simulate_dow_theory_trend  # noqa: E402
 from derive_vol_breakout_entry_params import N_BREAKOUT, PAIRS, to_h1  # noqa: E402
 from minmax_fx_dt.backtest.permutation import permutation_test_clustered  # noqa: E402
 from minmax_fx_dt.strategy.indicators import atr as atr_ind  # noqa: E402
@@ -55,7 +57,6 @@ PERIODS = {
 }
 
 TP_LEVELS = [(1.0, 0.40), (2.0, 0.35), (3.0, 0.25)]
-MAX_HOLD_BARS = 24 * 10  # H1、10日相当(暴走ループ防止の安全上限、既存スクリプト踏襲)
 
 SPREAD_PIPS = {"USD_JPY": 0.3, "EUR_JPY": 0.5, "GBP_JPY": 0.7, "AUD_JPY": 0.6, "EUR_USD": 0.3}
 SLIPPAGE_PIPS_ROUND_TRIP = 1.0
@@ -78,7 +79,7 @@ def load_m5_period(pair: str, start: str, end: str) -> pd.DataFrame:
     return df[(df.index >= start) & (df.index <= end)]
 
 
-def find_entries_for_period(pair: str, m5: pd.DataFrame) -> tuple[list[dict], pd.DataFrame, pd.Series]:
+def find_trades_for_period(pair: str, m5: pd.DataFrame) -> tuple[list[dict], pd.DataFrame, pd.Series]:
     h1 = to_h1(m5)
     atr_h1 = atr_ind(h1["high"], h1["low"], h1["close"], length=14)
     atr_m5 = atr_ind(m5["high"], m5["low"], m5["close"], length=14)
@@ -86,83 +87,14 @@ def find_entries_for_period(pair: str, m5: pd.DataFrame) -> tuple[list[dict], pd
     ratio = ((h1["high"] - h1["low"]) / atr_h1).dropna()
     idxs = np.where(ratio.values >= N_BREAKOUT)[0]
 
-    entries = []
+    trades = []
     for i in idxs:
         pos = h1.index.get_loc(ratio.index[i])
         bar = h1.iloc[pos]
         direction = "UP" if bar["close"] > bar["open"] else "DOWN"
-        pullbacks = track_dow_theory_pullbacks(m5, atr_m5, h1, pos, direction)
-        for pb in pullbacks:
-            buffer = STOP_BUFFER_ATR_M5 * pb["pivot_atr"]
-            stop0 = pb["pivot_price"] - buffer if direction == "UP" else pb["pivot_price"] + buffer
-            entry_price = pb["confirm_price"]
-            initial_risk = abs(entry_price - stop0)
-            if initial_risk <= 0:
-                continue
-            entry_h1_idx = int(h1.index.searchsorted(pb["confirm_time"], side="right") - 1)
-            if entry_h1_idx < 0 or entry_h1_idx >= len(h1):
-                continue
-            entries.append(dict(pair=pair, direction=direction, entry_idx=entry_h1_idx,
-                                 entry_time=pb["confirm_time"], entry_price=entry_price,
-                                 initial_risk=initial_risk))
-    return entries, h1, atr_h1
-
-
-def simulate_trade(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, trail_mult: float) -> dict:
-    """段階利確(40/35/25%)、1R到達後BE+ATRトレーリング。exit_timeも返す。"""
-    direction = entry["direction"]
-    entry_price = entry["entry_price"]
-    risk = entry["initial_risk"]
-    stop = entry_price - risk if direction == "UP" else entry_price + risk
-    levels = [(r, frac, entry_price + r * risk if direction == "UP" else entry_price - r * risk, False)
-              for r, frac in TP_LEVELS]
-    remaining_fraction = 1.0
-    realized_r = 0.0
-    be_moved = False
-    n = len(h1)
-    start = entry["entry_idx"] + 1
-    end = min(n, start + MAX_HOLD_BARS)
-    for i in range(start, end):
-        ts = h1.index[i]
-        o, h, low, c = float(h1["open"].iloc[i]), float(h1["high"].iloc[i]), float(h1["low"].iloc[i]), float(h1["close"].iloc[i])
-        n_levels_hit = sum(1 for lv in levels if lv[3])
-        if is_weekend_close_time(ts):
-            exit_r = (c - entry_price) / risk if direction == "UP" else (entry_price - c) / risk
-            reason = "WEEKEND_NO_TP" if n_levels_hit == 0 else "TP_THEN_WEEKEND"
-            return {"r": realized_r + remaining_fraction * exit_r, "exit_reason": reason,
-                    "n_levels_hit": n_levels_hit, "exit_time": ts}
-        stop_hit = (low <= stop) if direction == "UP" else (h >= stop)
-        if stop_hit:
-            exit_r = (stop - entry_price) / risk if direction == "UP" else (entry_price - stop) / risk
-            reason = "SL_INITIAL_NO_TP" if n_levels_hit == 0 else "TP_THEN_SL_TRAIL"
-            return {"r": realized_r + remaining_fraction * exit_r, "exit_reason": reason,
-                    "n_levels_hit": n_levels_hit, "exit_time": ts}
-        for idx_lv, (r_level, frac, price_level, hit) in enumerate(levels):
-            if hit or remaining_fraction <= 0:
-                continue
-            reached = (h >= price_level) if direction == "UP" else (low <= price_level)
-            if reached:
-                realized_r += frac * r_level
-                remaining_fraction -= frac
-                levels[idx_lv] = (r_level, frac, price_level, True)
-                if not be_moved:
-                    stop = max(stop, entry_price) if direction == "UP" else min(stop, entry_price)
-                    be_moved = True
-        if be_moved and remaining_fraction > 0:
-            atr_i = atr_h1.asof(ts)
-            if pd.notna(atr_i) and atr_i > 0:
-                if direction == "UP":
-                    stop = max(stop, o - trail_mult * float(atr_i))
-                else:
-                    stop = min(stop, o + trail_mult * float(atr_i))
-        if remaining_fraction <= 1e-9:
-            return {"r": realized_r, "exit_reason": "TP_FULL", "n_levels_hit": 3, "exit_time": ts}
-    ts_last = h1.index[end - 1]
-    c = float(h1["close"].iloc[end - 1])
-    exit_r = (c - entry_price) / risk if direction == "UP" else (entry_price - c) / risk
-    n_levels_hit = sum(1 for lv in levels if lv[3])
-    return {"r": realized_r + remaining_fraction * exit_r, "exit_reason": "MAX_HOLD",
-            "n_levels_hit": n_levels_hit, "exit_time": ts_last}
+        trades.extend(simulate_dow_theory_trend(m5, atr_m5, h1, atr_h1, pos, direction,
+                                                  STOP_BUFFER_ATR_M5, ATR_TRAIL_MULTIPLIER))
+    return trades, h1, atr_h1
 
 
 def run_period(period_name: str, start: str, end: str) -> dict:
@@ -173,25 +105,24 @@ def run_period(period_name: str, start: str, end: str) -> dict:
         if len(m5) < 1000:
             print(f"  [{pair}] データ不足 ({len(m5)}bars)、スキップ")
             continue
-        entries, h1, atr_h1 = find_entries_for_period(pair, m5)
+        trades, h1, atr_h1 = find_trades_for_period(pair, m5)
         spread = SPREAD_PIPS.get(pair, 0.5)
         pip = pip_size(pair)
         cost_price = (2 * spread + SLIPPAGE_PIPS_ROUND_TRIP) * pip
-        for e in entries:
-            sim = simulate_trade(h1, atr_h1, e, ATR_TRAIL_MULTIPLIER)
-            cost_r = cost_price / e["initial_risk"]
-            leverage_ratio = e["entry_price"] / e["initial_risk"]
+        for sim in trades:
+            cost_r = cost_price / sim["initial_risk"]
+            leverage_ratio = sim["entry_price"] / sim["initial_risk"]
             commission_r = COMMISSION_RATE_ROUND_TRIP * leverage_ratio
             r_net = sim["r"] - cost_r - commission_r
             all_trades.append({
-                "pair": pair, "direction": e["direction"],
-                "entry_time": e["entry_time"], "exit_time": sim["exit_time"],
-                "entry_price": e["entry_price"], "initial_risk": e["initial_risk"],
+                "pair": pair, "direction": sim["direction"],
+                "entry_time": pd.Timestamp(sim["entry_time"]), "exit_time": sim["exit_time"],
+                "entry_price": sim["entry_price"], "initial_risk": sim["initial_risk"],
                 "exit_reason": sim["exit_reason"], "n_levels_hit": sim["n_levels_hit"],
                 "r_gross": sim["r"], "cost_r": cost_r, "commission_r": commission_r,
                 "r_net": r_net, "leverage_ratio": leverage_ratio,
             })
-        print(f"  [{pair}] トレード={len(entries)}件")
+        print(f"  [{pair}] トレード={len(trades)}件")
 
     all_trades.sort(key=lambda t: t["entry_time"])
     events = []

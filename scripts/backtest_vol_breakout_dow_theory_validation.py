@@ -8,8 +8,9 @@ SYS-FX009(k=0.5タイトストップ)・SYS-FX010(k_stop=1.5)で「Train最良�
 重要: パラメータ(N=3.5, zigzag_threshold_atr_m5=1.0, stop_buffer_atr_m5,
 atr_trail_multiplier)は`vol_breakout_dow_theory_train.json`のTrain導出値を
 **そのまま**使用し、Validationデータから再導出は行わない(再学習禁止、事前登録の
-趣旨)。`backtest_vol_breakout_dow_theory.py`の検出・追跡ロジックをそのまま再利用し、
-対象期間のみTrain→Validationに切り替える。
+趣旨)。`backtest_vol_breakout_dow_theory.py`の`simulate_dow_theory_trend()`
+(1通貨1ポジション制約 + M5型崩れ後のH1継続確認による再開ロジック込み、
+2026-08-20修正版)をそのまま再利用し、対象期間のみTrain→Validationに切り替える。
 
 出力: research/method-notes/vol_breakout_dow_theory_validation.json
 """
@@ -34,8 +35,7 @@ import derive_vol_breakout_entry_params as base  # noqa: E402
 VALIDATION_START, VALIDATION_END = "2025-04-01", "2025-11-30"
 base.TRAIN_START, base.TRAIN_END = VALIDATION_START, VALIDATION_END
 
-from analyze_scaled_exit_diagnostic import simulate_scaled_scheme  # noqa: E402
-from backtest_vol_breakout_dow_theory import track_dow_theory_pullbacks  # noqa: E402
+from backtest_vol_breakout_dow_theory import simulate_dow_theory_trend  # noqa: E402
 from derive_vol_breakout_entry_params import N_BREAKOUT, load_m5, to_h1, PAIRS as ALL_PAIRS  # noqa: E402
 from minmax_fx_dt.backtest.permutation import permutation_test_clustered  # noqa: E402
 from minmax_fx_dt.decision.criteria import compute_n_trades_effective  # noqa: E402
@@ -57,7 +57,6 @@ def main() -> int:
     all_results: list[dict] = []
     trades_per_currency: dict[str, int] = {}
     n_trend_events = 0
-    n_pullback_candidates = 0
 
     for pair in ALL_PAIRS:
         m5 = load_m5(pair)
@@ -77,26 +76,11 @@ def main() -> int:
 
         pair_results = []
         for break_idx, direction in events:
-            pullbacks = track_dow_theory_pullbacks(m5, atr_m5, h1, break_idx, direction)
-            n_pullback_candidates += len(pullbacks)
-            for pb in pullbacks:
-                buffer = STOP_BUFFER_ATR_M5 * pb["pivot_atr"]
-                stop0 = pb["pivot_price"] - buffer if direction == "UP" else pb["pivot_price"] + buffer
-                entry_price = pb["confirm_price"]
-                initial_risk = abs(entry_price - stop0)
-                if initial_risk <= 0:
-                    continue
-                entry_h1_idx = int(h1.index.searchsorted(pb["confirm_time"], side="right") - 1)
-                if entry_h1_idx < 0 or entry_h1_idx >= len(h1):
-                    continue
-                entry = dict(pair=pair, direction=direction, entry_idx=entry_h1_idx,
-                             entry_time=str(pb["confirm_time"]), entry_price=entry_price,
-                             stop0=stop0, initial_risk=initial_risk)
-                res = simulate_scaled_scheme(h1, atr_h1, entry, ATR_TRAIL_MULTIPLIER)
-                res["pair"] = pair
-                res["direction"] = direction
-                res["entry_time"] = entry["entry_time"]
-                pair_results.append(res)
+            trades = simulate_dow_theory_trend(m5, atr_m5, h1, atr_h1, break_idx, direction,
+                                                STOP_BUFFER_ATR_M5, ATR_TRAIL_MULTIPLIER)
+            for t in trades:
+                t["pair"] = pair
+            pair_results.extend(trades)
         all_results.extend(pair_results)
         trades_per_currency[pair] = len(pair_results)
         mean_r = float(np.mean([r["r"] for r in pair_results])) if pair_results else None
@@ -104,7 +88,7 @@ def main() -> int:
               (f"  mean_R={mean_r:.4f}" if pair_results else ""))
 
     n_total = len(all_results)
-    print(f"\n全体: トレンドイベント={n_trend_events}件  押し目買い候補={n_pullback_candidates}件")
+    print(f"\n全体: トレンドイベント={n_trend_events}件  トレード={n_total}件")
 
     rs, exit_reason_counts, n_eff, perm_p = [], {}, 0.0, None
     profit_factor_val = payoff_val = None
@@ -145,7 +129,6 @@ def main() -> int:
             "validation_period": [VALIDATION_START, VALIDATION_END],
             "params_from_train": TRAIN_PARAMS,
             "n_trend_events": n_trend_events,
-            "n_pullback_candidates": n_pullback_candidates,
             "n_trades_total": n_total,
             "trades_per_currency": trades_per_currency,
             "mean_r": round(float(np.mean(rs)), 4) if rs else None,
