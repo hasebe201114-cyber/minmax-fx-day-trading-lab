@@ -1,0 +1,874 @@
+{
+  "generated_at": "2026-08-20T13:05:00.633263",
+  "source": "vol_breakout_dow_theory_4pairs_calendar_1000usd_backtest.json(改善ループ第3試行、採用中の最良候補)",
+  "overall": {
+    "n_trades": 690,
+    "win_rate": 0.606,
+    "mean_r_net": 0.2422,
+    "mean_r_gross": 0.3861,
+    "sum_dollar_pnl": 2582.94,
+    "profit_factor": 1.556,
+    "max_win_streak": 22,
+    "max_loss_streak": 7,
+    "hold_hours_median": 1.38,
+    "hold_hours_p75": 4.23,
+    "hold_hours_max": 176.33
+  },
+  "by_pair": [
+    {
+      "pair": "USD_JPY",
+      "n_trades": 269,
+      "win_rate": 0.584,
+      "mean_r_net": 0.219,
+      "mean_r_gross": 0.3566,
+      "sum_dollar_pnl": 894.2,
+      "mean_dollar_pnl": 3.32
+    },
+    {
+      "pair": "GBP_JPY",
+      "n_trades": 153,
+      "win_rate": 0.621,
+      "mean_r_net": 0.2407,
+      "mean_r_gross": 0.3797,
+      "sum_dollar_pnl": 569.91,
+      "mean_dollar_pnl": 3.72
+    },
+    {
+      "pair": "AUD_JPY",
+      "n_trades": 138,
+      "win_rate": 0.623,
+      "mean_r_net": 0.2749,
+      "mean_r_gross": 0.4374,
+      "sum_dollar_pnl": 554.58,
+      "mean_dollar_pnl": 4.02
+    },
+    {
+      "pair": "EUR_JPY",
+      "n_trades": 130,
+      "win_rate": 0.615,
+      "mean_r_net": 0.2572,
+      "mean_r_gross": 0.4004,
+      "sum_dollar_pnl": 564.26,
+      "mean_dollar_pnl": 4.34
+    }
+  ],
+  "by_direction": [
+    {
+      "direction": "DOWN",
+      "n_trades": 485,
+      "win_rate": 0.584,
+      "mean_r_net": 0.2527,
+      "mean_r_gross": 0.3839,
+      "sum_dollar_pnl": 1894.83,
+      "mean_dollar_pnl": 3.91
+    },
+    {
+      "direction": "UP",
+      "n_trades": 205,
+      "win_rate": 0.659,
+      "mean_r_net": 0.2174,
+      "mean_r_gross": 0.3914,
+      "sum_dollar_pnl": 688.1,
+      "mean_dollar_pnl": 3.36
+    }
+  ],
+  "by_exit_reason": [
+    {
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "n_trades": 270,
+      "win_rate": 0.0,
+      "mean_r_net": -1.1473,
+      "mean_r_gross": -1.0,
+      "sum_dollar_pnl": -4642.72,
+      "mean_dollar_pnl": -17.2
+    },
+    {
+      "exit_reason": "TP_FULL",
+      "n_trades": 219,
+      "win_rate": 1.0,
+      "mean_r_net": 1.6736,
+      "mean_r_gross": 1.85,
+      "sum_dollar_pnl": 5453.16,
+      "mean_dollar_pnl": 24.9
+    },
+    {
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "n_trades": 200,
+      "win_rate": 0.995,
+      "mean_r_net": 0.5527,
+      "mean_r_gross": 0.6565,
+      "sum_dollar_pnl": 1774.39,
+      "mean_dollar_pnl": 8.87
+    },
+    {
+      "exit_reason": "MAX_HOLD",
+      "n_trades": 1,
+      "win_rate": 0.0,
+      "mean_r_net": -0.1358,
+      "mean_r_gross": -0.0058,
+      "sum_dollar_pnl": -1.89,
+      "mean_dollar_pnl": -1.89
+    }
+  ],
+  "by_n_levels_hit": [
+    {
+      "n_levels_hit": 0,
+      "n_trades": 271,
+      "win_rate": 0.0,
+      "mean_r_net": -1.1436,
+      "mean_r_gross": -0.9963,
+      "sum_dollar_pnl": -4644.61,
+      "mean_dollar_pnl": -17.14
+    },
+    {
+      "n_levels_hit": 3,
+      "n_trades": 219,
+      "win_rate": 1.0,
+      "mean_r_net": 1.6736,
+      "mean_r_gross": 1.85,
+      "sum_dollar_pnl": 5453.16,
+      "mean_dollar_pnl": 24.9
+    },
+    {
+      "n_levels_hit": 1,
+      "n_trades": 133,
+      "win_rate": 0.992,
+      "mean_r_net": 0.3252,
+      "mean_r_gross": 0.4185,
+      "sum_dollar_pnl": 695.55,
+      "mean_dollar_pnl": 5.23
+    },
+    {
+      "n_levels_hit": 2,
+      "n_trades": 67,
+      "win_rate": 1.0,
+      "mean_r_net": 1.0041,
+      "mean_r_gross": 1.1289,
+      "sum_dollar_pnl": 1078.85,
+      "mean_dollar_pnl": 16.1
+    }
+  ],
+  "by_period": [
+    {
+      "period": "train",
+      "n_trades": 387,
+      "win_rate": 0.625,
+      "mean_r_net": 0.3005,
+      "mean_r_gross": 0.4277,
+      "sum_dollar_pnl": 1997.69,
+      "mean_dollar_pnl": 5.16
+    },
+    {
+      "period": "test",
+      "n_trades": 183,
+      "win_rate": 0.59,
+      "mean_r_net": 0.1722,
+      "mean_r_gross": 0.3755,
+      "sum_dollar_pnl": 393.42,
+      "mean_dollar_pnl": 2.15
+    },
+    {
+      "period": "validation",
+      "n_trades": 120,
+      "win_rate": 0.567,
+      "mean_r_net": 0.1609,
+      "mean_r_gross": 0.2683,
+      "sum_dollar_pnl": 191.83,
+      "mean_dollar_pnl": 1.6
+    }
+  ],
+  "monthly": [
+    {
+      "month": "2023-11",
+      "n_trades": 50,
+      "sum_dollar_pnl": 220.92,
+      "win_rate": 0.68
+    },
+    {
+      "month": "2023-12",
+      "n_trades": 8,
+      "sum_dollar_pnl": -19.3,
+      "win_rate": 0.375
+    },
+    {
+      "month": "2024-01",
+      "n_trades": 6,
+      "sum_dollar_pnl": -26.96,
+      "win_rate": 0.333
+    },
+    {
+      "month": "2024-02",
+      "n_trades": 14,
+      "sum_dollar_pnl": 65.79,
+      "win_rate": 0.714
+    },
+    {
+      "month": "2024-03",
+      "n_trades": 16,
+      "sum_dollar_pnl": 19.76,
+      "win_rate": 0.625
+    },
+    {
+      "month": "2024-04",
+      "n_trades": 57,
+      "sum_dollar_pnl": 362.22,
+      "win_rate": 0.684
+    },
+    {
+      "month": "2024-05",
+      "n_trades": 43,
+      "sum_dollar_pnl": -125.66,
+      "win_rate": 0.395
+    },
+    {
+      "month": "2024-06",
+      "n_trades": 12,
+      "sum_dollar_pnl": 5.92,
+      "win_rate": 0.583
+    },
+    {
+      "month": "2024-07",
+      "n_trades": 57,
+      "sum_dollar_pnl": 759.65,
+      "win_rate": 0.772
+    },
+    {
+      "month": "2024-08",
+      "n_trades": 42,
+      "sum_dollar_pnl": 275.55,
+      "win_rate": 0.595
+    },
+    {
+      "month": "2024-09",
+      "n_trades": 12,
+      "sum_dollar_pnl": 126.2,
+      "win_rate": 0.833
+    },
+    {
+      "month": "2024-10",
+      "n_trades": 8,
+      "sum_dollar_pnl": 49.94,
+      "win_rate": 0.625
+    },
+    {
+      "month": "2024-11",
+      "n_trades": 8,
+      "sum_dollar_pnl": -40.48,
+      "win_rate": 0.5
+    },
+    {
+      "month": "2024-12",
+      "n_trades": 22,
+      "sum_dollar_pnl": 45.4,
+      "win_rate": 0.591
+    },
+    {
+      "month": "2025-01",
+      "n_trades": 20,
+      "sum_dollar_pnl": 221.83,
+      "win_rate": 0.6
+    },
+    {
+      "month": "2025-02",
+      "n_trades": 12,
+      "sum_dollar_pnl": 56.9,
+      "win_rate": 0.583
+    },
+    {
+      "month": "2025-04",
+      "n_trades": 34,
+      "sum_dollar_pnl": 285.98,
+      "win_rate": 0.765
+    },
+    {
+      "month": "2025-05",
+      "n_trades": 18,
+      "sum_dollar_pnl": -74.48,
+      "win_rate": 0.389
+    },
+    {
+      "month": "2025-06",
+      "n_trades": 18,
+      "sum_dollar_pnl": 24.22,
+      "win_rate": 0.556
+    },
+    {
+      "month": "2025-07",
+      "n_trades": 6,
+      "sum_dollar_pnl": -18.34,
+      "win_rate": 0.5
+    },
+    {
+      "month": "2025-08",
+      "n_trades": 15,
+      "sum_dollar_pnl": -61.55,
+      "win_rate": 0.333
+    },
+    {
+      "month": "2025-09",
+      "n_trades": 14,
+      "sum_dollar_pnl": -17.53,
+      "win_rate": 0.5
+    },
+    {
+      "month": "2025-10",
+      "n_trades": 12,
+      "sum_dollar_pnl": 60.3,
+      "win_rate": 0.667
+    },
+    {
+      "month": "2025-11",
+      "n_trades": 3,
+      "sum_dollar_pnl": -6.77,
+      "win_rate": 0.667
+    },
+    {
+      "month": "2025-12",
+      "n_trades": 1,
+      "sum_dollar_pnl": -11.76,
+      "win_rate": 0.0
+    },
+    {
+      "month": "2026-01",
+      "n_trades": 4,
+      "sum_dollar_pnl": -13.34,
+      "win_rate": 0.25
+    },
+    {
+      "month": "2026-02",
+      "n_trades": 30,
+      "sum_dollar_pnl": 60.13,
+      "win_rate": 0.667
+    },
+    {
+      "month": "2026-03",
+      "n_trades": 3,
+      "sum_dollar_pnl": 25.49,
+      "win_rate": 1.0
+    },
+    {
+      "month": "2026-04",
+      "n_trades": 10,
+      "sum_dollar_pnl": 13.51,
+      "win_rate": 0.5
+    },
+    {
+      "month": "2026-05",
+      "n_trades": 52,
+      "sum_dollar_pnl": 166.16,
+      "win_rate": 0.596
+    },
+    {
+      "month": "2026-06",
+      "n_trades": 49,
+      "sum_dollar_pnl": 82.42,
+      "win_rate": 0.592
+    },
+    {
+      "month": "2026-07",
+      "n_trades": 18,
+      "sum_dollar_pnl": 95.27,
+      "win_rate": 0.667
+    },
+    {
+      "month": "2026-08",
+      "n_trades": 16,
+      "sum_dollar_pnl": -24.46,
+      "win_rate": 0.438
+    }
+  ],
+  "hold_hours_by_exit_reason": [
+    {
+      "exit_reason": "MAX_HOLD",
+      "median_hours": 1.67,
+      "max_hours": 1.67,
+      "n": 1
+    },
+    {
+      "exit_reason": "SL_INITIAL_NO_TP",
+      "median_hours": 0.92,
+      "max_hours": 90.25,
+      "n": 270
+    },
+    {
+      "exit_reason": "TP_FULL",
+      "median_hours": 0.92,
+      "max_hours": 70.33,
+      "n": 219
+    },
+    {
+      "exit_reason": "TP_THEN_SL_TRAIL",
+      "median_hours": 3.92,
+      "max_hours": 176.33,
+      "n": 200
+    }
+  ],
+  "notable_trades": {
+    "worst_loss_streak": [
+      {
+        "pair": "USD_JPY",
+        "direction": "DOWN",
+        "entry_time": "2025-06-13 09:05:00+09:00",
+        "exit_time": "2025-06-13 10:00:00+09:00",
+        "entry_price": 142.913,
+        "initial_risk": 0.350517,
+        "exit_reason": "SL_INITIAL_NO_TP",
+        "n_levels_hit": 0,
+        "fraction_via_tp": 0.0,
+        "r_gross": -1.0,
+        "cost_r": 0.031382,
+        "commission_r": 0.016309,
+        "r_net": -1.047691,
+        "leverage_ratio": 407.720845,
+        "risk_dollars": 13.007252,
+        "effective_risk_pct": 0.01,
+        "leverage_capped": false,
+        "skipped_ruin": false,
+        "dollar_pnl": -13.627581,
+        "balance_after": 1287.097579,
+        "period": "validation",
+        "hold_hours": 0.9166666666666666,
+        "is_win": false,
+        "month": "2025-06"
+      },
+      {
+        "pair": "EUR_JPY",
+        "direction": "DOWN",
+        "entry_time": "2025-06-13 09:40:00+09:00",
+        "exit_time": "2025-06-13 10:00:00+09:00",
+        "entry_price": 165.076,
+        "initial_risk": 0.340028,
+        "exit_reason": "SL_INITIAL_NO_TP",
+        "n_levels_hit": 0,
+        "fraction_via_tp": 0.0,
+        "r_gross": -1.0,
+        "cost_r": 0.044114,
+        "commission_r": 0.019419,
+        "r_net": -1.063533,
+        "leverage_ratio": 485.477565,
+        "risk_dollars": 13.007252,
+        "effective_risk_pct": 0.01,
+        "leverage_capped": false,
+        "skipped_ruin": false,
+        "dollar_pnl": -13.833643,
+        "balance_after": 1273.263936,
+        "period": "validation",
+        "hold_hours": 0.3333333333333333,
+        "is_win": false,
+        "month": "2025-06"
+      },
+      {
+        "pair": "GBP_JPY",
+        "direction": "DOWN",
+        "entry_time": "2025-06-13 09:40:00+09:00",
+        "exit_time": "2025-06-13 10:00:00+09:00",
+        "entry_price": 194.001,
+        "initial_risk": 0.280059,
+        "exit_reason": "SL_INITIAL_NO_TP",
+        "n_levels_hit": 0,
+        "fraction_via_tp": 0.0,
+        "r_gross": -1.0,
+        "cost_r": 0.067843,
+        "commission_r": 0.027709,
+        "r_net": -1.095551,
+        "leverage_ratio": 692.714043,
+        "risk_dollars": 13.007252,
+        "effective_risk_pct": 0.01,
+        "leverage_capped": false,
+        "skipped_ruin": false,
+        "dollar_pnl": -14.250112,
+        "balance_after": 1259.013824,
+        "period": "validation",
+        "hold_hours": 0.3333333333333333,
+        "is_win": false,
+        "month": "2025-06"
+      },
+      {
+        "pair": "AUD_JPY",
+        "direction": "DOWN",
+        "entry_time": "2025-06-13 09:40:00+09:00",
+        "exit_time": "2025-06-13 10:00:00+09:00",
+        "entry_price": 92.549,
+        "initial_risk": 0.279751,
+        "exit_reason": "SL_INITIAL_NO_TP",
+        "n_levels_hit": 0,
+        "fraction_via_tp": 0.0,
+        "r_gross": -1.0,
+        "cost_r": 0.060768,
+        "commission_r": 0.013233,
+        "r_net": -1.074001,
+        "leverage_ratio": 330.826004,
+        "risk_dollars": 13.007252,
+        "effective_risk_pct": 0.01,
+        "leverage_capped": false,
+        "skipped_ruin": false,
+        "dollar_pnl": -13.969805,
+        "balance_after": 1245.044019,
+        "period": "validation",
+        "hold_hours": 0.3333333333333333,
+        "is_win": false,
+        "month": "2025-06"
+      },
+      {
+        "pair": "AUD_JPY",
+        "direction": "DOWN",
+        "entry_time": "2025-06-13 10:05:00+09:00",
+        "exit_time": "2025-06-13 11:00:00+09:00",
+        "entry_price": 92.657,
+        "initial_risk": 0.164291,
+        "exit_reason": "SL_INITIAL_NO_TP",
+        "n_levels_hit": 0,
+        "fraction_via_tp": 0.0,
+        "r_gross": -1.0,
+        "cost_r": 0.103475,
+        "commission_r": 0.022559,
+        "r_net": -1.126034,
+        "leverage_ratio": 563.979759,
+        "risk_dollars": 12.45044,
+        "effective_risk_pct": 0.01,
+        "leverage_capped": false,
+        "skipped_ruin": false,
+        "dollar_pnl": -14.019618,
+        "balance_after": 1235.720663,
+        "period": "validation",
+        "hold_hours": 0.9166666666666666,
+        "is_win": false,
+        "month": "2025-06"
+      },
+      {
+        "pair": "GBP_JPY",
+        "direction": "DOWN",
+        "entry_time": "2025-07-02 21:45:00+09:00",
+        "exit_time": "2025-07-03 06:00:00+09:00",
+        "entry_price": 195.623,
+        "initial_risk": 0.42288,
+        "exit_reason": "SL_INITIAL_NO_TP",
+        "n_levels_hit": 0,
+        "fraction_via_tp": 0.0,
+        "r_gross": -1.0,
+        "cost_r": 0.04493,
+        "commission_r": 0.018504,
+        "r_net": -1.063434,
+        "leverage_ratio": 462.596485,
+        "risk_dollars": 12.357207,
+        "effective_risk_pct": 0.01,
+        "leverage_capped": false,
+        "skipped_ruin": false,
+        "dollar_pnl": -13.141071,
+        "balance_after": 1222.579591,
+        "period": "validation",
+        "hold_hours": 8.25,
+        "is_win": false,
+        "month": "2025-07"
+      },
+      {
+        "pair": "USD_JPY",
+        "direction": "UP",
+        "entry_time": "2025-07-03 21:40:00+09:00",
+        "exit_time": "2025-07-03 22:00:00+09:00",
+        "entry_price": 145.061,
+        "initial_risk": 0.417907,
+        "exit_reason": "SL_INITIAL_NO_TP",
+        "n_levels_hit": 0,
+        "fraction_via_tp": 0.0,
+        "r_gross": -1.0,
+        "cost_r": 0.026322,
+        "commission_r": 0.013885,
+        "r_net": -1.040206,
+        "leverage_ratio": 347.112758,
+        "risk_dollars": 12.225796,
+        "effective_risk_pct": 0.01,
+        "leverage_capped": false,
+        "skipped_ruin": false,
+        "dollar_pnl": -12.717348,
+        "balance_after": 1209.862243,
+        "period": "validation",
+        "hold_hours": 0.3333333333333333,
+        "is_win": false,
+        "month": "2025-07"
+      }
+    ],
+    "best_win_streak": [
+      {
+        "pair": "USD_JPY",
+        "direction": "DOWN",
+        "entry_time": "2023-11-14 22:10:00+09:00",
+        "exit_time": "2023-11-14 23:00:00+09:00",
+        "entry_price": 151.707,
+        "initial_risk": 0.027064,
+        "exit_reason": "TP_FULL",
+        "n_levels_hit": 3,
+        "fraction_via_tp": 1.0,
+        "r_gross": 1.85,
+        "cost_r": 0.40644,
+        "commission_r": 0.224217,
+        "r_net": 1.219343,
+        "leverage_ratio": 5605.431512,
+        "risk_dollars": 4.339353,
+        "effective_risk_pct": 0.00446,
+        "leverage_capped": true,
+        "skipped_ruin": false,
+        "dollar_pnl": 5.29116,
+        "balance_after": 978.249077,
+        "period": "train",
+        "hold_hours": 0.8333333333333334,
+        "is_win": true,
+        "month": "2023-11"
+      },
+      {
+        "pair": "AUD_JPY",
+        "direction": "UP",
+        "entry_time": "2023-11-14 22:40:00+09:00",
+        "exit_time": "2023-11-14 23:00:00+09:00",
+        "entry_price": 97.217,
+        "initial_risk": 0.109543,
+        "exit_reason": "TP_FULL",
+        "n_levels_hit": 3,
+        "fraction_via_tp": 1.0,
+        "r_gross": 1.85,
+        "cost_r": 0.155191,
+        "commission_r": 0.035499,
+        "r_net": 1.65931,
+        "leverage_ratio": 887.482028,
+        "risk_dollars": 9.729579,
+        "effective_risk_pct": 0.01,
+        "leverage_capped": false,
+        "skipped_ruin": false,
+        "dollar_pnl": 16.144386,
+        "balance_after": 1026.615758,
+        "period": "train",
+        "hold_hours": 0.3333333333333333,
+        "is_win": true,
+        "month": "2023-11"
+      },
+      {
+        "pair": "GBP_JPY",
+        "direction": "UP",
+        "entry_time": "2023-11-14 22:40:00+09:00",
+        "exit_time": "2023-11-14 23:00:00+09:00",
+        "entry_price": 187.107,
+        "initial_risk": 0.13634,
+        "exit_reason": "TP_FULL",
+        "n_levels_hit": 3,
+        "fraction_via_tp": 1.0,
+        "r_gross": 1.85,
+        "cost_r": 0.139358,
+        "commission_r": 0.054894,
+        "r_net": 1.655748,
+        "leverage_ratio": 1372.358032,
+        "risk_dollars": 9.729579,
+        "effective_risk_pct": 0.01,
+        "leverage_capped": false,
+        "skipped_ruin": false,
+        "dollar_pnl": 16.109731,
+        "balance_after": 1010.471372,
+        "period": "train",
+        "hold_hours": 0.3333333333333333,
+        "is_win": true,
+        "month": "2023-11"
+      },
+      {
+        "pair": "USD_JPY",
+        "direction": "DOWN",
+        "entry_time": "2023-11-14 22:40:00+09:00",
+        "exit_time": "2023-11-15 22:00:00+09:00",
+        "entry_price": 150.936,
+        "initial_risk": 0.337052,
+        "exit_reason": "TP_THEN_SL_TRAIL",
+        "n_levels_hit": 2,
+        "fraction_via_tp": 0.75,
+        "r_gross": 1.160353,
+        "cost_r": 0.032636,
+        "commission_r": 0.017912,
+        "r_net": 1.109804,
+        "leverage_ratio": 447.812207,
+        "risk_dollars": 9.729579,
+        "effective_risk_pct": 0.01,
+        "leverage_capped": false,
+        "skipped_ruin": false,
+        "dollar_pnl": 10.797928,
+        "balance_after": 1080.802931,
+        "period": "train",
+        "hold_hours": 23.333333333333332,
+        "is_win": true,
+        "month": "2023-11"
+      },
+      {
+        "pair": "EUR_JPY",
+        "direction": "UP",
+        "entry_time": "2023-11-14 22:40:00+09:00",
+        "exit_time": "2023-11-14 23:00:00+09:00",
+        "entry_price": 162.95,
+        "initial_risk": 0.11094,
+        "exit_reason": "TP_FULL",
+        "n_levels_hit": 3,
+        "fraction_via_tp": 1.0,
+        "r_gross": 1.85,
+        "cost_r": 0.135208,
+        "commission_r": 0.058753,
+        "r_net": 1.656039,
+        "leverage_ratio": 1468.812916,
+        "risk_dollars": 9.729579,
+        "effective_risk_pct": 0.01,
+        "leverage_capped": false,
+        "skipped_ruin": false,
+        "dollar_pnl": 16.112564,
+        "balance_after": 994.361641,
+        "period": "train",
+        "hold_hours": 0.3333333333333333,
+        "is_win": true,
+        "month": "2023-11"
+      },
+      {
+        "pair": "EUR_JPY",
+        "direction": "UP",
+        "entry_time": "2023-11-14 23:05:00+09:00",
+        "exit_time": "2023-11-15 18:00:00+09:00",
+        "entry_price": 163.139,
+        "initial_risk": 0.328478,
+        "exit_reason": "TP_THEN_SL_TRAIL",
+        "n_levels_hit": 2,
+        "fraction_via_tp": 0.75,
+        "r_gross": 1.231935,
+        "cost_r": 0.045665,
+        "commission_r": 0.019866,
+        "r_net": 1.166404,
+        "leverage_ratio": 496.65187,
+        "risk_dollars": 10.266158,
+        "effective_risk_pct": 0.01,
+        "leverage_capped": false,
+        "skipped_ruin": false,
+        "dollar_pnl": 11.974484,
+        "balance_after": 1070.005003,
+        "period": "train",
+        "hold_hours": 18.916666666666668,
+        "is_win": true,
+        "month": "2023-11"
+      },
+      {
+        "pair": "GBP_JPY",
+        "direction": "UP",
+        "entry_time": "2023-11-14 23:05:00+09:00",
+        "exit_time": "2023-11-15 00:00:00+09:00",
+        "entry_price": 187.374,
+        "initial_risk": 0.232338,
+        "exit_reason": "TP_FULL",
+        "n_levels_hit": 3,
+        "fraction_via_tp": 1.0,
+        "r_gross": 1.85,
+        "cost_r": 0.081777,
+        "commission_r": 0.032259,
+        "r_net": 1.735964,
+        "leverage_ratio": 806.471854,
+        "risk_dollars": 10.266158,
+        "effective_risk_pct": 0.01,
+        "leverage_capped": false,
+        "skipped_ruin": false,
+        "dollar_pnl": 17.821677,
+        "balance_after": 1044.437435,
+        "period": "train",
+        "hold_hours": 0.9166666666666666,
+        "is_win": true,
+        "month": "2023-11"
+      },
+      {
+        "pair": "AUD_JPY",
+        "direction": "UP",
+        "entry_time": "2023-11-14 23:05:00+09:00",
+        "exit_time": "2023-11-15 22:00:00+09:00",
+        "entry_price": 97.449,
+        "initial_risk": 0.267849,
+        "exit_reason": "TP_FULL",
+        "n_levels_hit": 3,
+        "fraction_via_tp": 1.0,
+        "r_gross": 1.85,
+        "cost_r": 0.063469,
+        "commission_r": 0.014553,
+        "r_net": 1.771979,
+        "leverage_ratio": 363.820272,
+        "risk_dollars": 10.266158,
+        "effective_risk_pct": 0.01,
+        "leverage_capped": false,
+        "skipped_ruin": false,
+        "dollar_pnl": 18.191412,
+        "balance_after": 1098.994343,
+        "period": "train",
+        "hold_hours": 22.916666666666668,
+        "is_win": true,
+        "month": "2023-11"
+      }
+    ],
+    "top_5_winners": [
+      {
+        "period": "train",
+        "pair": "AUD_JPY",
+        "direction": "UP",
+        "entry_time": "2025-02-04 00:45:00+09:00",
+        "exit_time": "2025-02-04 08:00:00+09:00",
+        "entry_price": 95.653,
+        "initial_risk": 0.334297,
+        "exit_reason": "TP_FULL",
+        "n_levels_hit": 3,
+        "r_net": 1.787702,
+        "dollar_pnl": 52.572573,
+        "hold_hours": 7.25
+      },
+      {
+        "period": "train",
+        "pair": "AUD_JPY",
+        "direction": "UP",
+        "entry_time": "2025-01-17 23:40:00+09:00",
+        "exit_time": "2025-01-20 22:00:00+09:00",
+        "entry_price": 96.633,
+        "initial_risk": 0.317705,
+        "exit_reason": "TP_FULL",
+        "n_levels_hit": 3,
+        "r_net": 1.784325,
+        "dollar_pnl": 51.769694,
+        "hold_hours": 70.33333333333333
+      },
+      {
+        "period": "train",
+        "pair": "EUR_JPY",
+        "direction": "UP",
+        "entry_time": "2025-02-04 06:20:00+09:00",
+        "exit_time": "2025-02-04 08:00:00+09:00",
+        "entry_price": 159.582,
+        "initial_risk": 0.279583,
+        "exit_reason": "TP_FULL",
+        "n_levels_hit": 3,
+        "r_net": 1.773517,
+        "dollar_pnl": 51.608945,
+        "hold_hours": 1.6666666666666667
+      },
+      {
+        "period": "train",
+        "pair": "GBP_JPY",
+        "direction": "DOWN",
+        "entry_time": "2025-01-10 23:35:00+09:00",
+        "exit_time": "2025-01-13 12:00:00+09:00",
+        "entry_price": 193.39,
+        "initial_risk": 0.618307,
+        "exit_reason": "TP_FULL",
+        "n_levels_hit": 3,
+        "r_net": 1.80676,
+        "dollar_pnl": 51.304319,
+        "hold_hours": 60.416666666666664
+      },
+      {
+        "period": "train",
+        "pair": "GBP_JPY",
+        "direction": "DOWN",
+        "entry_time": "2025-01-09 16:05:00+09:00",
+        "exit_time": "2025-01-09 21:00:00+09:00",
+        "entry_price": 194.522,
+        "initial_risk": 0.30358,
+        "exit_reason": "TP_FULL",
+        "n_levels_hit": 3,
+        "r_net": 1.761783,
+        "dollar_pnl": 50.828639,
+        "hold_hours": 4.916666666666667
+      }
+    ]
+  }
+}
