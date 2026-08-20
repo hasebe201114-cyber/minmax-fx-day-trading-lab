@@ -15,11 +15,32 @@ atr_trail_multiplier=3.23)はTrainデータから導出済みの値をそのま�
 
 コスト・サイジング設計(事前登録、`backtest_h1_tighter_stop_1000usd.py`と同一):
     - ポジションサイジング: エントリー時点の口座残高の1%をリスク額とする
-    - コスト: スプレッド往復(通貨別SPREAD_PIPS) + スリッページ往復1.0pip +
-      手数料往復0.004%。Rマルチプル換算してからドルP&Lへ変換
+    - コスト: スプレッド(通貨別SPREAD_PIPS) + スリッページ + 手数料往復0.004%。
+      Rマルチプル換算してからドルP&Lへ変換
     - 複数ポジションの同時保有はイベント駆動(エントリー/エグジット時刻順)で
       処理。残高が0以下になったら以降の新規エントリーをスキップ(破産ガード)
     - 統計的有意性: permutation_test_clustered()を各期間で実行
+
+## 修正 (2026-08-20、司令塔指摘): エントリー/イグジットの決済方式による区別
+
+司令塔「すべて成行決済を想定してますか？区別したいです」を受け、当初モデル
+(往復1.0pipのスリッページを決済理由に関わらず一律適用)を修正した。
+
+    - **エントリー**: M5反転確認バーの終値で反応的に約定するため、常に成行注文
+      とみなしスリッページ0.5pipを適用
+    - **イグジット**: TPで決済された部分は指値注文(価格が目標に達したら約定、
+      理論上スリッページなし)、SL・トレーリングストップ・週末強制クローズ・
+      MAX_HOLDで決済された部分は成行注文(ストップ到達で成行に切り替わる、
+      またはその場で即時決済)とみなし0.5pipのスリッページを適用
+    - 1トレード内でTP1/TP2/TP3が部分的に成立した場合(段階利確)、成立済み
+      TP分の数量比率(n_levels_hitに対応する累積配分、40%/75%/100%)は指値扱い、
+      残数量は成行扱いとして按分し、コストをブレンドする
+    - スプレッドは決済方式によらず常に発生(市場の売買気配差そのものであり、
+      指値・成行いずれでも回避できないため)
+    - 簡略化(正直に明記): ニュース急変時等、成行決済でも0.5pipを大きく超える
+      滑りが発生しうる事例(2024-07-11 BOJ介入等、本PJで過去に確認済み)は
+      定数モデルのため反映していない。指値(TP)側もスリッページ0固定で、
+      実際にはガチガチの指値でも約定拒否・遅延が起こり得る点は考慮していない
 
 出力: research/method-notes/vol_breakout_dow_theory_1000usd_backtest.json
 """
@@ -59,8 +80,15 @@ PERIODS = {
 TP_LEVELS = [(1.0, 0.40), (2.0, 0.35), (3.0, 0.25)]
 
 SPREAD_PIPS = {"USD_JPY": 0.3, "EUR_JPY": 0.5, "GBP_JPY": 0.7, "AUD_JPY": 0.6, "EUR_USD": 0.3}
-SLIPPAGE_PIPS_ROUND_TRIP = 1.0
+SLIPPAGE_PIPS_MARKET_LEG = 0.5  # 成行約定1回あたり(エントリー、および成行型イグジット)
 COMMISSION_RATE_ROUND_TRIP = 0.00004
+
+# TP到達数(n_levels_hit)ごとの累積決済比率(指値=TP分)。TP_LEVELSの配分から導出
+_cum = 0.0
+TP_CUM_FRACTION = [0.0]
+for _r_level, _frac in TP_LEVELS:
+    _cum += _frac
+    TP_CUM_FRACTION.append(_cum)
 
 RISK_PCT_PER_TRADE = 0.01
 INITIAL_CAPITAL_USD = 1000.0
@@ -108,8 +136,12 @@ def run_period(period_name: str, start: str, end: str) -> dict:
         trades, h1, atr_h1 = find_trades_for_period(pair, m5)
         spread = SPREAD_PIPS.get(pair, 0.5)
         pip = pip_size(pair)
-        cost_price = (2 * spread + SLIPPAGE_PIPS_ROUND_TRIP) * pip
         for sim in trades:
+            fraction_via_tp = TP_CUM_FRACTION[sim["n_levels_hit"]]
+            fraction_via_market_exit = 1.0 - fraction_via_tp
+            entry_pips = spread + SLIPPAGE_PIPS_MARKET_LEG
+            exit_pips = spread + fraction_via_market_exit * SLIPPAGE_PIPS_MARKET_LEG
+            cost_price = (entry_pips + exit_pips) * pip
             cost_r = cost_price / sim["initial_risk"]
             leverage_ratio = sim["entry_price"] / sim["initial_risk"]
             commission_r = COMMISSION_RATE_ROUND_TRIP * leverage_ratio
@@ -119,6 +151,7 @@ def run_period(period_name: str, start: str, end: str) -> dict:
                 "entry_time": pd.Timestamp(sim["entry_time"]), "exit_time": sim["exit_time"],
                 "entry_price": sim["entry_price"], "initial_risk": sim["initial_risk"],
                 "exit_reason": sim["exit_reason"], "n_levels_hit": sim["n_levels_hit"],
+                "fraction_via_tp": fraction_via_tp,
                 "r_gross": sim["r"], "cost_r": cost_r, "commission_r": commission_r,
                 "r_net": r_net, "leverage_ratio": leverage_ratio,
             })
@@ -236,7 +269,7 @@ def main() -> int:
                 "stop_buffer_atr_m5": STOP_BUFFER_ATR_M5, "atr_trail_multiplier": ATR_TRAIL_MULTIPLIER,
                 "risk_pct_per_trade": RISK_PCT_PER_TRADE, "initial_capital_usd": INITIAL_CAPITAL_USD,
                 "tp_levels": TP_LEVELS, "spread_pips": SPREAD_PIPS,
-                "slippage_pips_round_trip": SLIPPAGE_PIPS_ROUND_TRIP,
+                "slippage_pips_per_market_leg": SLIPPAGE_PIPS_MARKET_LEG,
                 "commission_rate_round_trip": COMMISSION_RATE_ROUND_TRIP,
             },
             "periods": period_results,
