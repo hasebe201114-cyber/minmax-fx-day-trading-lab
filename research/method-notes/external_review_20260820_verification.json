@@ -1,0 +1,202 @@
+{
+  "generated_at": "2026-08-20T23:26:10.186559",
+  "source_backtest": "research/method-notes/vol_breakout_dow_theory_4pairs_v6_1000usd_backtest.json",
+  "review_document": "obs/minmax_fx_day_trading_lab/85外部レビュー/2026-08-20_EXP-FX000005_External_Review/00_REVIEW_SUMMARY.md",
+  "results": [
+    {
+      "finding": "F1",
+      "claim": "週末強制クローズが一度も発動しておらず、週末跨ぎのトレードが存在する",
+      "per_period": {
+        "train": {
+          "n_trades": 345,
+          "n_spanning_weekend": 27,
+          "pct_spanning_weekend": 7.8,
+          "n_weekend_exits": 0,
+          "exit_reasons": {
+            "SL_INITIAL_NO_TP": 125,
+            "TP_THEN_SL_TRAIL": 125,
+            "TP_FULL": 95
+          }
+        },
+        "validation": {
+          "n_trades": 104,
+          "n_spanning_weekend": 6,
+          "pct_spanning_weekend": 5.8,
+          "n_weekend_exits": 0,
+          "exit_reasons": {
+            "TP_FULL": 19,
+            "TP_THEN_SL_TRAIL": 41,
+            "SL_INITIAL_NO_TP": 44
+          }
+        },
+        "test": {
+          "n_trades": 173,
+          "n_spanning_weekend": 8,
+          "pct_spanning_weekend": 4.6,
+          "n_weekend_exits": 0,
+          "exit_reasons": {
+            "SL_INITIAL_NO_TP": 69,
+            "TP_FULL": 44,
+            "TP_THEN_SL_TRAIL": 59,
+            "MAX_HOLD": 1
+          }
+        }
+      },
+      "total_trades": 622,
+      "total_spanning_weekend": 41,
+      "total_weekend_exits": 0,
+      "verdict": "REPRODUCED"
+    },
+    {
+      "finding": "F2",
+      "claim": "4通貨プールでは全勝ケースでも permutation_p < 0.05 に到達しない (p の下限が存在し n に依存しない)",
+      "cases_all_wins_4pairs": [
+        {
+          "n_pairs": 4,
+          "n_trades": 100,
+          "observed_mean": 1.0,
+          "p_value": 0.3158,
+          "significant_at_0.05": false
+        },
+        {
+          "n_pairs": 4,
+          "n_trades": 300,
+          "observed_mean": 1.0,
+          "p_value": 0.3158,
+          "significant_at_0.05": false
+        },
+        {
+          "n_pairs": 4,
+          "n_trades": 1000,
+          "observed_mean": 1.0,
+          "p_value": 0.3158,
+          "significant_at_0.05": false
+        },
+        {
+          "n_pairs": 4,
+          "n_trades": 4000,
+          "observed_mean": 1.0,
+          "p_value": 0.3158,
+          "significant_at_0.05": false
+        },
+        {
+          "n_pairs": 4,
+          "n_trades": 20000,
+          "observed_mean": 1.0,
+          "p_value": 0.3158,
+          "significant_at_0.05": false
+        }
+      ],
+      "p_value_floor_observed": 0.3158,
+      "reference_single_pair_all_wins_n100_p": 5e-05,
+      "verdict": "REPRODUCED"
+    },
+    {
+      "finding": "F3",
+      "claim": "ATR トレーリングは建値ストップより有利な位置に来ず、実質的に作動していない",
+      "n_tp_then_sl_trail": 225,
+      "pct_exactly_at_breakeven": 89.3,
+      "n_at_breakeven_after_tp1": 116,
+      "n_at_breakeven_after_tp2": 85,
+      "max_r_gross_in_trail_exits": 1.531,
+      "exit_reason_r_stats": {
+        "MAX_HOLD": {
+          "n": 1,
+          "median_r": -0.006,
+          "mean_r": -0.006,
+          "min_r": -0.006,
+          "max_r": -0.006
+        },
+        "SL_INITIAL_NO_TP": {
+          "n": 238,
+          "median_r": -1.0,
+          "mean_r": -1.0,
+          "min_r": -1.0,
+          "max_r": -1.0
+        },
+        "TP_FULL": {
+          "n": 158,
+          "median_r": 2.1,
+          "mean_r": 2.1,
+          "min_r": 2.1,
+          "max_r": 2.1
+        },
+        "TP_THEN_SL_TRAIL": {
+          "n": 225,
+          "median_r": 0.4,
+          "mean_r": 0.73,
+          "min_r": 0.4,
+          "max_r": 1.531
+        }
+      },
+      "verdict": "REPRODUCED"
+    },
+    {
+      "finding": "K3m",
+      "claim": "最大連続損失 ≤ 5 はスケール不変でなく (通過率が n・勝率で大きく変わる)、観測値は i.i.d. と区別がつかない",
+      "threshold": 5,
+      "per_period": {
+        "train": {
+          "n_trades": 345,
+          "win_rate": 0.6377,
+          "observed_max_consecutive_losses": 6,
+          "iid_null_mean": 5.41,
+          "iid_null_median": 5,
+          "prob_pass_threshold_under_iid": 0.593,
+          "observed_percentile_in_null": 0.593
+        },
+        "validation": {
+          "n_trades": 104,
+          "win_rate": 0.5769,
+          "observed_max_consecutive_losses": 6,
+          "iid_null_mean": 4.96,
+          "iid_null_median": 5,
+          "prob_pass_threshold_under_iid": 0.717,
+          "observed_percentile_in_null": 0.717
+        },
+        "test": {
+          "n_trades": 173,
+          "win_rate": 0.5838,
+          "observed_max_consecutive_losses": 5,
+          "iid_null_mean": 5.41,
+          "iid_null_median": 5,
+          "prob_pass_threshold_under_iid": 0.598,
+          "observed_percentile_in_null": 0.279
+        }
+      },
+      "pass_prob_range_across_periods": [
+        0.593,
+        0.717
+      ],
+      "observed_indistinguishable_from_iid": true,
+      "pass_prob_is_scale_dependent": true,
+      "note": "observed_percentile_in_null が 0.05〜0.95 に収まる = 観測値はランダムと区別がつかない。prob_pass_threshold_under_iid が期間で大きく異なる = 基準が n と勝率に依存している",
+      "verdict": "REPRODUCED"
+    },
+    {
+      "finding": "n_eff",
+      "claim": "min_n_trades=300 は 4 通貨構成では名目 1,000 件超を要求し、戦略コンセプト(週1回の厳選)と両立しない",
+      "effective_pair_count": 1.168,
+      "shrink_factor": 0.292,
+      "required_nominal_trades_for_300_effective": 1027,
+      "per_period": {
+        "train": {
+          "n_trades_nominal": 345,
+          "n_trades_effective": 100.7,
+          "shortfall_nominal_trades": 682
+        },
+        "validation": {
+          "n_trades_nominal": 104,
+          "n_trades_effective": 30.4,
+          "shortfall_nominal_trades": 923
+        },
+        "test": {
+          "n_trades_nominal": 173,
+          "n_trades_effective": 50.5,
+          "shortfall_nominal_trades": 854
+        }
+      },
+      "verdict": "REPRODUCED"
+    }
+  ]
+}
