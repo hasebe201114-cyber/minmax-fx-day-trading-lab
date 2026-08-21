@@ -82,13 +82,27 @@ with (ROOT / "research" / "EXP-FX000005" / "10-result" / "vol_breakout_entry_par
 ATR_TRAIL_MULTIPLIER = H1_PARAMS["atr_trail_multiplier"]
 
 
-def is_weekend_close_time(ts: pd.Timestamp) -> bool:
-    return ts.weekday() == 5 and ts.hour >= 6
+def is_weekend_close_time(index: pd.DatetimeIndex, pos: int) -> bool:
+    """`index[pos]`が「週内の最終バー」(=次のバーが週明けになるバー)ならTrueを返す。
+
+    修正(2026-08-21、外部レビューF1対応、T-01): 旧実装は`ts.weekday()==5 and
+    ts.hour>=6`(土曜06:00 JST以降)だった。DS-1は市場が閉まっている土曜06:00
+    JST以降のH1/M5バー自体を含まないため、この条件は一度も真にならず、週末
+    強制クローズが622件中一度も発動していなかった(622件中41件=6.6%が週末を
+    跨いで保有、WEEKEND_*決済は3期間とも0件)。次バーとのISO週番号を比較する
+    方式に変更し、市場休場中に存在しないタイムスタンプへの依存を無くした。"""
+    if pos + 1 >= len(index):
+        return False
+    cur_year, cur_week, _ = index[pos].isocalendar()
+    nxt_year, nxt_week, _ = index[pos + 1].isocalendar()
+    return (nxt_year, nxt_week) != (cur_year, cur_week)
 
 
 def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, trail_mult: float,
                             breakeven_trigger_r: float | None = None,
-                            tp_levels: list[tuple[float, float]] | None = None) -> dict:
+                            tp_levels: list[tuple[float, float]] | None = None,
+                            atr_trail_series: pd.Series | None = None,
+                            m5_exit: pd.DataFrame | None = None) -> dict:
     """段階利確(40/35/25%)、1R到達後BE+ATRトレーリング。exit_timeを含めて返す
     (ポジション保有中判定=1通貨1ポジション制約のゲーティングに必要なため、
     `analyze_scaled_exit_diagnostic.simulate_scaled_scheme`をexit_time付きで
@@ -107,7 +121,25 @@ def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, tra
     (高ボラ想定に対しトレーリング開始を早める効果を検証する診断用パラメータ、2026-08-20追加)。
 
     tp_levels: 省略時(None)はモジュール定数TP_LEVELS(1R/2R/3R×40/35/25%)を使用。
-    TP水準を引き上げた場合の効果を検証する診断用パラメータ(2026-08-20追加)。"""
+    TP水準を引き上げた場合の効果を検証する診断用パラメータ(2026-08-20追加)。
+
+    atr_trail_series: 省略時(None)はトレーリング幅の計算に`atr_h1`(H1バーのATR)を
+    使用する(旧仕様)。外部レビューF3対応(T-02、2026-08-21): `atr_trail_multiplier
+    =3.23`はSYS-FX009のH1設計から転用した値だが、本戦略の1Rは
+    `stop_buffer_atr_m5×ATR(M5)`というM5スケールで定義されており、3.23×ATR(H1)は
+    概ね3〜4R相当になるためTP3(4R)の全量利確に先に到達しトレールが原理的に
+    噛まなかった(TP_THEN_SL_TRAIL 225件の89.3%が建値ストップの値ちょうど)。
+    `atr_trail_series`にATR(M5)系列を渡すと、`trail_mult`をM5スケール向けの値
+    (1Rの0.5〜1.5倍レンジで事前登録)として、バーごとにATR(M5)のasof値で
+    トレール幅を計算するようになる。
+
+    m5_exit: 省略時(None)は従来通りH1バー単位で決済判定する(旧仕様)。外部レビュー
+    §1-2対応(T-03、2026-08-21): エントリーはM5時刻で決定するが決済判定はH1バー
+    単位(`entry_idx+1`から)で回っていたため、エントリーした H1 バーの残り
+    (平均約30分)が不可視だった。M5の`DataFrame`を渡すと、決済判定もM5バー単位
+    (`entry["entry_m5_idx"]+1`から)で回るようになり、この空白窓が解消される。
+    MAX_HOLD_BARSはH1本数として定義されているため、M5モードでは同じ時間長を
+    保つよう12倍(1時間=M5 12本)してバー数に換算する。"""
     direction = entry["direction"]
     entry_price = entry["entry_price"]
     risk = entry["initial_risk"]
@@ -118,19 +150,23 @@ def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, tra
     remaining_fraction = 1.0
     realized_r = 0.0
     be_moved = False
-    n = len(h1)
-    start = entry["entry_idx"] + 1
-    end = min(n, start + MAX_HOLD_BARS)
+    bars = m5_exit if m5_exit is not None else h1
+    max_hold_bars = MAX_HOLD_BARS * 12 if m5_exit is not None else MAX_HOLD_BARS
+    n = len(bars)
+    start = (entry["entry_m5_idx"] if m5_exit is not None else entry["entry_idx"]) + 1
+    end = min(n, start + max_hold_bars)
+    exit_data_missing_reason = "NO_M5_DATA_AFTER_ENTRY" if m5_exit is not None else "NO_H1_DATA_AFTER_ENTRY"
     if start >= end:
-        # H1データが尽きている(エントリーが利用可能な最終バー付近で発生)。
-        # 追加の値動きを観測できないため、エントリー時刻でフラット(r=0)決済とする。
-        ts_last = entry_ts if entry_ts is not None else h1.index[min(max(end - 1, 0), n - 1)]
-        return {"r": 0.0, "exit_reason": "NO_H1_DATA_AFTER_ENTRY", "n_levels_hit": 0, "exit_time": ts_last}
+        # 決済判定に使うバーのデータが尽きている(エントリーが利用可能な最終バー
+        # 付近で発生)。追加の値動きを観測できないため、エントリー時刻でフラット
+        # (r=0)決済とする。
+        ts_last = entry_ts if entry_ts is not None else bars.index[min(max(end - 1, 0), n - 1)]
+        return {"r": 0.0, "exit_reason": exit_data_missing_reason, "n_levels_hit": 0, "exit_time": ts_last}
     for i in range(start, end):
-        ts = h1.index[i]
-        o, h, low, c = float(h1["open"].iloc[i]), float(h1["high"].iloc[i]), float(h1["low"].iloc[i]), float(h1["close"].iloc[i])
+        ts = bars.index[i]
+        o, h, low, c = float(bars["open"].iloc[i]), float(bars["high"].iloc[i]), float(bars["low"].iloc[i]), float(bars["close"].iloc[i])
         n_levels_hit = sum(1 for lv in levels if lv[3])
-        if is_weekend_close_time(ts):
+        if is_weekend_close_time(bars.index, i):
             exit_r = (c - entry_price) / risk if direction == "UP" else (entry_price - c) / risk
             reason = "WEEKEND_NO_TP" if n_levels_hit == 0 else "TP_THEN_WEEKEND"
             return {"r": realized_r + remaining_fraction * exit_r, "exit_reason": reason,
@@ -158,7 +194,7 @@ def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, tra
                     stop = max(stop, entry_price) if direction == "UP" else min(stop, entry_price)
                     be_moved = True
         if be_moved and remaining_fraction > 0:
-            atr_i = atr_h1.asof(ts)
+            atr_i = (atr_trail_series if atr_trail_series is not None else atr_h1).asof(ts)
             if pd.notna(atr_i) and atr_i > 0:
                 if direction == "UP":
                     stop = max(stop, o - trail_mult * float(atr_i))
@@ -166,8 +202,8 @@ def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, tra
                     stop = min(stop, o + trail_mult * float(atr_i))
         if remaining_fraction <= 1e-9:
             return {"r": realized_r, "exit_reason": "TP_FULL", "n_levels_hit": len(levels), "exit_time": ts}
-    ts_last = h1.index[end - 1]
-    c = float(h1["close"].iloc[end - 1])
+    ts_last = bars.index[end - 1]
+    c = float(bars["close"].iloc[end - 1])
     exit_r = (c - entry_price) / risk if direction == "UP" else (entry_price - c) / risk
     n_levels_hit = sum(1 for lv in levels if lv[3])
     return {"r": realized_r + remaining_fraction * exit_r, "exit_reason": "MAX_HOLD",
@@ -180,10 +216,20 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                                zigzag_threshold_atr_m5: float | None = None,
                                breakeven_trigger_r: float | None = None,
                                tp_levels: list[tuple[float, float]] | None = None,
-                               skip_first_entry: bool = False) -> list[dict]:
+                               skip_first_entry: bool = False,
+                               atr_trail_series: pd.Series | None = None,
+                               m5_exit: bool = False) -> list[dict]:
     """1トレンドイベントをM5ダウ理論で追跡し、1通貨1ポジション制約下で連続的に
     押し目買い/戻り売りをシミュレートする。M5で型崩れしてもH1が型崩れ前の高値
     (UP)/安値(DOWN)を更新したら追跡を再開する。
+
+    atr_trail_series: `simulate_scaled_scheme`へそのまま渡す(外部レビューF3対応、
+    T-02)。省略時(None)は従来通りATR(H1)でトレール幅を計算する。
+
+    m5_exit: Trueの場合、決済判定をH1バー単位ではなくM5バー単位で行う(外部レビュー
+    §1-2対応、T-03)。エントリーはM5時刻で決まるが、旧仕様では決済判定が
+    `entry_h1_idx+1`(=エントリーした H1 バーの次のバー)から始まるため、エントリー
+    直後〜そのH1バー終了まで(平均約30分)のSL/TP到達が見えていなかった。
 
     blackout_check: Optional[Callable[[pd.Timestamp], bool]]。Trueを返す時刻は
     新規エントリーを見送る(経済指標カレンダーのブラックアウト窓フィルター用、
@@ -232,7 +278,7 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
 
     for i in range(start_pos, end_pos):
         ts = m5.index[i]
-        if is_weekend_close_time(ts):
+        if is_weekend_close_time(m5.index, i):
             break
         h_i, l_i, c_i = float(m5["high"].iloc[i]), float(m5["low"].iloc[i]), float(m5["close"].iloc[i])
 
@@ -294,9 +340,9 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                             if initial_risk > 0 and 0 <= entry_h1_idx < len(h1):
                                 entry_seq += 1
                                 if not (skip_first_entry and entry_seq == 1):
-                                    entry = dict(direction=direction, entry_idx=entry_h1_idx, entry_price=entry_price,
+                                    entry = dict(direction=direction, entry_idx=entry_h1_idx, entry_m5_idx=i, entry_price=entry_price,
                                                  stop0=stop0, initial_risk=initial_risk, entry_ts=ts)
-                                    res = simulate_scaled_scheme(h1, atr_h1, entry, trail_mult, breakeven_trigger_r=breakeven_trigger_r, tp_levels=tp_levels)
+                                    res = simulate_scaled_scheme(h1, atr_h1, entry, trail_mult, breakeven_trigger_r=breakeven_trigger_r, tp_levels=tp_levels, atr_trail_series=atr_trail_series, m5_exit=(m5 if m5_exit else None))
                                     res["entry_time"] = str(ts)
                                     res["direction"] = direction
                                     res["entry_price"] = entry_price
@@ -339,9 +385,9 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                             if initial_risk > 0 and 0 <= entry_h1_idx < len(h1):
                                 entry_seq += 1
                                 if not (skip_first_entry and entry_seq == 1):
-                                    entry = dict(direction=direction, entry_idx=entry_h1_idx, entry_price=entry_price,
+                                    entry = dict(direction=direction, entry_idx=entry_h1_idx, entry_m5_idx=i, entry_price=entry_price,
                                                  stop0=stop0, initial_risk=initial_risk, entry_ts=ts)
-                                    res = simulate_scaled_scheme(h1, atr_h1, entry, trail_mult, breakeven_trigger_r=breakeven_trigger_r, tp_levels=tp_levels)
+                                    res = simulate_scaled_scheme(h1, atr_h1, entry, trail_mult, breakeven_trigger_r=breakeven_trigger_r, tp_levels=tp_levels, atr_trail_series=atr_trail_series, m5_exit=(m5 if m5_exit else None))
                                     res["entry_time"] = str(ts)
                                     res["direction"] = direction
                                     res["entry_price"] = entry_price

@@ -84,7 +84,7 @@ def window_price_stats(m5: pd.DataFrame, break_idx_time: pd.Timestamp, direction
     # 週末クローズで打ち切り
     actual_end = start_pos
     for i in range(start_pos, end_pos):
-        if is_weekend_close_time(m5.index[i]):
+        if is_weekend_close_time(m5.index, i):
             break
         actual_end = i + 1
     if actual_end <= start_pos:
