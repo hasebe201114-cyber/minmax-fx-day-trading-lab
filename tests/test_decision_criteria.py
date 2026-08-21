@@ -279,6 +279,15 @@ def test_compute_n_trades_effective_shrinks_pooled_multi_pair_count() -> None:
     assert n_eff == pytest.approx(200.0 * (1.698 / 5), abs=1.0)
 
 
+def test_compute_n_trades_effective_discount_disabled_returns_nominal() -> None:
+    """外部レビューT-07対応: apply_correlation_discount=Falseの場合、相関補正が
+    permutation_test_block()(検定側)に一本化されている前提で、nは名目値のまま返す
+    (二重計上の解消)。"""
+    per_currency = {"USD_JPY": 40, "EUR_JPY": 40, "GBP_JPY": 40, "AUD_JPY": 40}
+    n_eff = compute_n_trades_effective(per_currency, 160, apply_correlation_discount=False)
+    assert n_eff == 160.0
+
+
 def test_evaluate_kpis_min_n_trades_uses_effective_count_for_pooled_stats() -> None:
     """名目n_trades=320 (min_n_trades=300 を上回る) でも、5通貨均等プールの実効値は
     300を大きく下回るため min_n_trades ゲートは fail になるべき."""

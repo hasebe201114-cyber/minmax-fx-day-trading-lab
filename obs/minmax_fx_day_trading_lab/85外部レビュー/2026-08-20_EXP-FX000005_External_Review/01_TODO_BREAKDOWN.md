@@ -71,7 +71,7 @@
 - **優先度**: **他のどの作業よりも先。宣言が遅れるほど汚染が進む**
 - **完了（2026-08-21）**: `research/EXP-FX000005/00-spec.md`「Test凍結宣言」節に明記。第7試行（14回目の参照）を最後にTestを凍結。以後はT-01〜T-04含めTrain+Validationのみで意思決定する。`ACTIVE.md`に反映。
 
-### [ ] T-06: permutation 検定の差し替え（F2）
+### [x] T-06: permutation 検定の差し替え（F2）
 
 - **件名**: `permutation_test_clustered()` は通貨ペアごとに符号を 1 個引いて全トレードへ一括適用するため、検定の実効標本サイズが「通貨ペア数」になり、**4 通貨では全勝ケースでも p の下限が 0.3158**
 - **影響**: KPI 10 項目のうち 1 項目が構造的に永久 FAIL。報告されている p=0.39〜0.47 は戦略の情報をほぼ含まない
@@ -81,14 +81,16 @@
   - トレードの **ブロック順列**（クラスタ = 日、または同一トレンドイベント）
 - **完了条件**: 「全勝ケースで p < 0.05 になる」ことを回帰テストで担保する（現行実装ではならない）
 - **波及**: SYS-FX010 以降の判定に効いている。過去判定への影響を `portfolio-ledger.md` に追記
+- **完了（2026-08-21）**: `permutation_test_block()`を新設（クラスタ=エントリー日のJST暦日）。旧`permutation_test_clustered()`は後方互換のため残す。回帰テスト`tests/test_permutation_block.py`(6件)で完了条件を確認(300クラスタ規模で全勝ケースp<0.05を達成)。現行最良候補への適用結果: Train perm_p 0.4146→**0.0669**（大幅改善したが依然0.05未達）、Validation 0.3626→0.1608、Test 0.4805→0.1938（参考）。SYS-FX010への波及確認: 同システムはpermutation_p_valueを「参考値」と位置付けており不採用判断には影響なし(`portfolio-ledger.md`に追記)。詳細: `00-spec.md`「T-06+T-07」節。
 
-### [ ] T-07: min_n_trades と実効 n の二重計上の解消
+### [x] T-07: min_n_trades と実効 n の二重計上の解消
 
 - **件名**: `n_eff = 名目n × 0.292`（4 通貨）で、`min_n_trades=300` には**名目 1,027 件**が必要。「週 1 回の高ボラを厳選」という戦略コンセプトと定義上両立しない
 - **加えて**: `MIN_N_TRADES_STATISTICAL = 300` 自体が独立トレード前提の検出力シミュレーション（勝率 60%）から出た値。同分析は勝率 50.95% では n=4,000 でも検出力 0.19 と示している
 - **対象**: `src/minmax_fx_dt/decision/criteria.py`
 - **作業**: 相関補正は「n」と「検定」の**どちらか一方**に入れる。両方に入れない
 - **完了条件**: 方針を `criteria.py` の docstring と `00-spec.md` に明記
+- **完了（2026-08-21）**: `compute_n_trades_effective()`に`apply_correlation_discount: bool = True`引数を追加(既定Trueは既存SYS向け後方互換)。T-06のブロック順列を使う判定では`apply_correlation_discount=False`を指定し、n側の相関割引を撤廃(検定側で依存構造を捕捉するため二重計上を回避)。方針は`criteria.py`のdocstringと`00-spec.md`「T-06+T-07」節に明記。適用結果: TrainのTrain n_eff 180.7→**619.0**(名目値)となり、min_n_trades_effective(≥300)を初めて達成。Train+Validation合計KPI 10/20→11/20。
 
 ### [ ] T-08: K3m（最大連続損失）をスケール不変な定義へ
 

@@ -182,20 +182,45 @@ class Stats(TypedDict, total=False):
     n_trades_effective: float  # 実効トレード数 (2026-08-18 提案5対応、明示指定時はこちらを優先)
 
 
-def compute_n_trades_effective(n_trades_per_currency: dict[str, int] | None, n_trades_fallback: int) -> float:
+def compute_n_trades_effective(
+    n_trades_per_currency: dict[str, int] | None,
+    n_trades_fallback: int,
+    *,
+    apply_correlation_discount: bool = True,
+) -> float:
     """通貨間相関を考慮した実効トレード数を算出する (2026-08-18 提案5対応).
 
     `n_trades_per_currency` から実際にトレードが発生した通貨の組み合わせを特定し、
     `backtest.permutation.effective_pair_count()` (market_character.json の実測相関から
     N_eff = k/(1+(k-1)*rho_bar) で算出) を使って名目トレード数を実効値へ縮小する。
     通貨別内訳が無い場合 (単一通貨評価など) は名目値をそのまま返す (後方互換)。
+
+    apply_correlation_discount (2026-08-21、外部レビューT-07対応): 既定Trueは
+    従来通りの挙動 (SYS-FX007〜010等、既存の判定結果を再現する用途の後方互換)。
+
+    外部レビュー(F2)・C査読(`research/EXP-FX000005/20-c-review.md`)が共通して
+    指摘した通り、通貨間相関による罰則を「実効トレード数(この関数)」と
+    「permutation検定(`permutation_test_clustered`)」の両方に別々に適用すると、
+    同じ相関構造に対して二重にペナルティが掛かる(min_n_trades=300に対し
+    4通貨では名目1,027件を要求する一方、検定側もp値の下限が0.3158に張り付く)。
+
+    T-07の方針: 相関補正は「検定」と「n」のどちらか一方にのみ入れる。新規の
+    判定で`permutation_test_block()`(クラスタ=エントリー日、外部レビューT-06
+    対応)を使う場合は、依存構造が検定側(ブロック順列のクラスタリング)で
+    直接捕捉されるため、`apply_correlation_discount=False`を指定してnを
+    名目値のまま扱うこと(相関ハンデを二重計上しない)。旧`permutation_test_
+    clustered()`(通貨ペア相関行列によるガウス・コピュラ)を使い続ける場合は、
+    そちらは依存構造を「検定」側で明示的に扱わないため、引き続き
+    `apply_correlation_discount=True`(既定)でnを縮小しておくこと。
     """
     if not n_trades_per_currency:
         return float(n_trades_fallback)
     active = {pair: n for pair, n in n_trades_per_currency.items() if n > 0}
+    n_total = sum(active.values()) if active else float(n_trades_fallback)
+    if not apply_correlation_discount:
+        return float(n_total)
     if len(active) <= 1:
-        return float(sum(active.values())) if active else float(n_trades_fallback)
-    n_total = sum(active.values())
+        return float(n_total)
     n_pairs = len(active)
     eff_count = effective_pair_count(list(active.keys()))
     return n_total * (eff_count / n_pairs)

@@ -1,0 +1,109 @@
+{
+  "generated_at": "2026-08-21T10:52:40.224056",
+  "selected_pairs": [
+    "USD_JPY",
+    "EUR_JPY",
+    "GBP_JPY",
+    "AUD_JPY"
+  ],
+  "kpi_thresholds": {
+    "monthly_sharpe": 0.4,
+    "profit_factor": 1.2,
+    "monthly_expectancy_positive": true,
+    "max_dd_monthly_pct": 10.0,
+    "max_dd_yearly_pct": 20.0,
+    "max_consecutive_losses": 5,
+    "payoff_ratio": 1.5,
+    "spread_cost_multiplier": 3.0,
+    "min_n_trades_effective": 300,
+    "permutation_p_value": 0.05
+  },
+  "periods": {
+    "train": {
+      "period": "train",
+      "monthly_sharpe": 2.736,
+      "max_dd_pct": 14.07,
+      "max_dd_monthly_pct": 14.07,
+      "max_dd_pct_of_initial_capital_reference": 35.84,
+      "max_dd_monthly_pct_of_initial_capital_reference": 18.28,
+      "profit_factor": 1.435,
+      "payoff_ratio": 0.791,
+      "max_consecutive_losses": 9,
+      "monthly_expectancy_positive": true,
+      "spread_cost_multiplier": 2.01,
+      "n_trades_effective": 619.0,
+      "permutation_p_clustered": 0.0669,
+      "kpi_pass": {
+        "monthly_sharpe": true,
+        "profit_factor": true,
+        "monthly_expectancy_positive": true,
+        "max_dd_monthly_pct": false,
+        "max_dd_yearly_pct": true,
+        "max_consecutive_losses": false,
+        "payoff_ratio": false,
+        "spread_cost_multiplier": false,
+        "min_n_trades_effective": true,
+        "permutation_p_value": false
+      },
+      "kpi_pass_count": "5/10"
+    },
+    "validation": {
+      "period": "validation",
+      "monthly_sharpe": 1.451,
+      "max_dd_pct": 7.17,
+      "max_dd_monthly_pct": 7.17,
+      "max_dd_pct_of_initial_capital_reference": 9.38,
+      "max_dd_monthly_pct_of_initial_capital_reference": 2.15,
+      "profit_factor": 1.68,
+      "payoff_ratio": 0.772,
+      "max_consecutive_losses": 4,
+      "monthly_expectancy_positive": true,
+      "spread_cost_multiplier": 2.62,
+      "n_trades_effective": 143.0,
+      "permutation_p_clustered": 0.1608,
+      "kpi_pass": {
+        "monthly_sharpe": true,
+        "profit_factor": true,
+        "monthly_expectancy_positive": true,
+        "max_dd_monthly_pct": true,
+        "max_dd_yearly_pct": true,
+        "max_consecutive_losses": true,
+        "payoff_ratio": false,
+        "spread_cost_multiplier": false,
+        "min_n_trades_effective": false,
+        "permutation_p_value": false
+      },
+      "kpi_pass_count": "6/10"
+    },
+    "test": {
+      "period": "test",
+      "monthly_sharpe": 4.004,
+      "max_dd_pct": 10.05,
+      "max_dd_monthly_pct": 10.05,
+      "max_dd_pct_of_initial_capital_reference": 11.81,
+      "max_dd_monthly_pct_of_initial_capital_reference": 5.96,
+      "profit_factor": 1.487,
+      "payoff_ratio": 0.744,
+      "max_consecutive_losses": 4,
+      "monthly_expectancy_positive": true,
+      "spread_cost_multiplier": 1.59,
+      "n_trades_effective": 204.0,
+      "permutation_p_clustered": 0.1938,
+      "kpi_pass": {
+        "monthly_sharpe": true,
+        "profit_factor": true,
+        "monthly_expectancy_positive": true,
+        "max_dd_monthly_pct": false,
+        "max_dd_yearly_pct": true,
+        "max_consecutive_losses": true,
+        "payoff_ratio": false,
+        "spread_cost_multiplier": false,
+        "min_n_trades_effective": false,
+        "permutation_p_value": false
+      },
+      "kpi_pass_count": "5/10"
+    }
+  },
+  "all_periods_all_kpi_pass": false,
+  "_note": "T-01+T-02+T-03+T-09に加え、外部レビューT-06(permutation検定をブロック順列(クラスタ=エントリー日)へ差し替え)+T-07(実効n二重計上の解消、apply_n_correlation_discount=False)を適用した正式KPI判定。Test凍結宣言によりTestの数値も算出するが、結論・意思決定にはTrain+Validationのみを用いる。"
+}

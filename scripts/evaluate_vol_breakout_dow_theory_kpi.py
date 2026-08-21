@@ -91,7 +91,22 @@ def max_consecutive_losses(trades: list[dict]) -> int:
     return worst
 
 
-def evaluate_period(period_name: str, p: dict) -> dict:
+def evaluate_period(
+    period_name: str,
+    p: dict,
+    *,
+    perm_p_field: str = "perm_p_clustered",
+    apply_n_correlation_discount: bool = True,
+) -> dict:
+    """perm_p_field: 参照するpermutation p値のフィールド名。既定は旧
+    `permutation_test_clustered()`由来の"perm_p_clustered"(後方互換)。外部レビュー
+    T-06対応でブロック順列(`permutation_test_block()`)を使う場合は
+    "perm_p_block"を指定する。
+
+    apply_n_correlation_discount: 実効トレード数(n_eff)算出時に通貨間相関による
+    割引を適用するか。既定True(後方互換)。T-07対応: ブロック順列(T-06)を使う
+    場合、依存構造は検定側で直接捕捉されるため、Falseを指定してnの相関割引と
+    検定側の相関補正の二重計上を避けること。"""
     eq_curve = pd.DataFrame(p["equity_curve"])
     eq_curve["timestamp"] = pd.to_datetime(eq_curve["time"], format="mixed", utc=True).dt.tz_localize(None)
     eq_curve["equity"] = eq_curve["balance"]
@@ -120,9 +135,11 @@ def evaluate_period(period_name: str, p: dict) -> dict:
     trades_per_currency: dict[str, int] = {}
     for t in p["trades"]:
         trades_per_currency[t["pair"]] = trades_per_currency.get(t["pair"], 0) + 1
-    n_eff = compute_n_trades_effective(trades_per_currency, len(p["trades"]))
+    n_eff = compute_n_trades_effective(
+        trades_per_currency, len(p["trades"]), apply_correlation_discount=apply_n_correlation_discount
+    )
 
-    perm_p = p["perm_p_clustered"]
+    perm_p = p[perm_p_field]
 
     kpi_pass = {
         "monthly_sharpe": m_sharpe >= KPI_THRESHOLDS["monthly_sharpe"],

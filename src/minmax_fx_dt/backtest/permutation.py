@@ -39,6 +39,26 @@
     通貨ペアごとの実測相関行列(`PAIR_CORRELATION_MATRIX`)をガウス・コピュラの
     相関としてそのまま使い、通貨ペア単位(5ペア→最大32通りの符号組み合わせ)で
     相関した符号を生成する方式に修正し、粗い離散化を解消した。
+
+追記2 (2026-08-21、外部レビューT-06対応):
+    `permutation_test_clustered()`は通貨ペア単位(最大5個)でしか符号を独立に
+    引かないため、検定の実効標本サイズが実質「通貨ペア数」まで縮小する。4通貨
+    構成では、全トレード勝ちという理論上最強のケースでもp値の下限が0.3158に
+    留まり、nをいくら増やしても1桁も動かないという構造的欠陥が外部レビュー(F2)
+    で指摘された。またC査読(`research/EXP-FX000005/20-c-review.md`)も同じ結論を
+    独自に再現した。
+
+    原因は「通貨ペア」という粒度が粗すぎること(4〜5種類しかない)。真の依存構造は
+    「同じ日・同じショックイベントで複数通貨が同時に反応する」ことであり、通貨
+    ペアという固定属性そのものではない。そこで`permutation_test_block()`を追加した:
+    クラスタキーを通貨ペアではなく「エントリー日(JST暦日)」等、トレード側で決まる
+    任意のキーにできる汎用版で、日次クラスタなら実務上は数百通りのクラスタが
+    生成されるため、離散化の粗さが解消される。地政学ショック等で複数通貨が同日に
+    エントリーした場合はそのクラスタ内で符号が連動するため、依存構造は
+    (ガウス・コピュラによる仮定ではなく)実際の共起パターンとして自然に捉えられる。
+
+    `permutation_test_clustered()`は後方互換のため残す(SYS-FX007〜010等、既存の
+    判定結果を再現する用途)。新規の判定には`permutation_test_block()`を使うこと。
 """
 
 from __future__ import annotations
@@ -260,10 +280,92 @@ def permutation_test_clustered(
     )
 
 
+def permutation_test_block(
+    trade_pnls: Sequence[float],
+    cluster_keys: Sequence,
+    *,
+    n_permutations: int = DEFAULT_N_PERMUTATIONS,
+    seed: int | None = None,
+) -> PermutationTestResult:
+    """クラスタ単位のブロック順列検定 (外部レビューT-06対応).
+
+    `permutation_test_clustered()`は通貨ペア(高々4〜5種類)を符号シャッフルの
+    単位とするため、帰無分布の分解能が粗く(最大32通り)、4通貨構成では全勝
+    ケースでもp値が0.3158までしか下がらないという構造的欠陥があった(外部
+    レビューF2、`research/EXP-FX000005/20-c-review.md`でも再確認)。
+
+    本関数は「通貨ペア」という固定属性ではなく、呼び出し側が渡す任意の
+    `cluster_keys`(典型的にはエントリー日のJST暦日文字列)を符号シャッフルの
+    単位とする。1回のpermutation試行につき、ユニークなクラスタキーの数だけ
+    独立に符号を引き(±1、五分五分)、同一クラスタに属する全トレードへ一括
+    適用する。クラスタ数が通貨ペア数より遥かに多い(実務上は数百営業日)ため
+    離散化の粗さが解消される一方、同一クラスタ内(例: 同じ日に複数通貨が
+    エントリーした場合)の相関構造は自然に保存される — ガウス・コピュラの
+    ような相関行列の仮定を必要としない、より直接的な依存構造の捕捉方法。
+
+    Args:
+        trade_pnls: 各トレードの損益 (円 or pips、符号付き)。
+        cluster_keys: trade_pnls と同じ長さの、各トレードのクラスタキー
+            (例: エントリー日の"YYYY-MM-DD"文字列)。同一キーのトレードは
+            常に同じ符号を引く。
+        n_permutations: シャッフル回数。
+        seed: 乱数シード。
+
+    Returns:
+        PermutationTestResult。method フィールドにクラスタ数を明記する。
+    """
+    n = len(trade_pnls)
+    if len(cluster_keys) != n:
+        raise ValueError(f"trade_pnls({n}件)とcluster_keys({len(cluster_keys)}件)の長さが一致しません")
+    if n == 0:
+        return PermutationTestResult(
+            n_trades=0,
+            n_permutations=n_permutations,
+            observed_statistic=0.0,
+            null_mean=0.0,
+            null_std=0.0,
+            p_value=1.0,
+            p_value_two_sided=1.0,
+            method="block_sign_flip(k_clusters=0)",
+        )
+
+    unique_keys = sorted(set(cluster_keys), key=lambda k: str(k))
+    k = len(unique_keys)
+    key_index = {key: i for i, key in enumerate(unique_keys)}
+    trade_key_idx = np.array([key_index[key] for key in cluster_keys])
+
+    pnls = np.asarray(trade_pnls, dtype=float)
+    magnitudes = np.abs(pnls)
+    observed = float(pnls.mean())
+
+    rng = np.random.default_rng(seed)
+    cluster_signs = rng.choice(np.array([-1.0, 1.0]), size=(n_permutations, k))
+    signs = cluster_signs[:, trade_key_idx]  # (n_permutations, n)
+
+    null_stats = (signs * magnitudes).mean(axis=1)
+
+    p_value = float((np.sum(null_stats >= observed) + 1) / (n_permutations + 1))
+    p_value_two_sided = float(
+        (np.sum(np.abs(null_stats) >= abs(observed)) + 1) / (n_permutations + 1)
+    )
+
+    return PermutationTestResult(
+        n_trades=n,
+        n_permutations=n_permutations,
+        observed_statistic=observed,
+        null_mean=float(null_stats.mean()),
+        null_std=float(null_stats.std()),
+        p_value=p_value,
+        p_value_two_sided=p_value_two_sided,
+        method=f"block_sign_flip(k_clusters={k})",
+    )
+
+
 __all__ = [
     "PermutationTestResult",
     "permutation_test",
     "permutation_test_clustered",
+    "permutation_test_block",
     "effective_pair_count",
     "PAIR_CORRELATION_MATRIX",
     "DEFAULT_N_PERMUTATIONS",
