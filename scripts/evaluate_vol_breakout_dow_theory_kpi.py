@@ -65,6 +65,33 @@ KPI_THRESHOLDS = {
 }
 INITIAL_CAPITAL_USD = 1000.0
 
+# KPI必須/参考ゲート区分 (2026-08-21 T-11対応、外部レビュー指摘)。
+# 「5/10」「7/10」という単純な達成数の羅列は、統計的検出力の乏しい指標
+# (K3m)を、Sharpe・PF・permutation p値のような比較的頑健な指標と同列に
+# 1票として扱っており、採否判断の透明性を損なっていた。
+#
+# K3m(最大連続損失)を「参考」に分類する根拠: 外部レビュー(2026-08-20)・
+# T-16再査読が指摘した通り、i.i.d.帰無仮説下でも観測される最大連敗が
+# 通過率の変動要因になりやすく(検出力が乏しい)、T-08でスケール不変な
+# パーセンタイル判定へ再定義した後もなお「ランダムと区別がつかない」
+# ケースが多い(観測パーセンタイルが帰無分布の中央付近に来ることが多い)。
+# 最大連敗自体はリスク管理上の実務的な意味を持つため参考指標としては
+# 有用だが、単独でGO/REJECTを左右する必須ゲートとしては扱わない。
+# 他の9項目(K1m・K2m・K4m・K5m・実効n・permutation)は、いずれかが単独で
+# 不合格になれば戦略の構造的な欠陥を示す可能性が高いため「必須」とする。
+KPI_GATE_TIER: dict[str, str] = {
+    "monthly_sharpe": "必須",
+    "profit_factor": "必須",
+    "monthly_expectancy_positive": "必須",
+    "max_dd_monthly_pct": "必須",
+    "max_dd_yearly_pct": "必須",
+    "max_consecutive_losses": "参考",
+    "payoff_ratio": "必須",
+    "spread_cost_multiplier": "必須",
+    "min_n_trades_effective": "必須",
+    "permutation_p_value": "必須",
+}
+
 
 def max_consecutive_losses(trades: list[dict]) -> int:
     trades_sorted = sorted(trades, key=lambda t: t["entry_time"])
@@ -158,6 +185,9 @@ def evaluate_period(
         "permutation_p_value": (perm_p is not None) and (perm_p < KPI_THRESHOLDS["permutation_p_value"]),
     }
 
+    required_pass = {k: v for k, v in kpi_pass.items() if KPI_GATE_TIER[k] == "必須"}
+    reference_pass = {k: v for k, v in kpi_pass.items() if KPI_GATE_TIER[k] == "参考"}
+
     return {
         "period": period_name,
         "monthly_sharpe": round(m_sharpe, 3),
@@ -175,6 +205,11 @@ def evaluate_period(
         "permutation_p_clustered": perm_p,
         "kpi_pass": kpi_pass,
         "kpi_pass_count": f"{sum(kpi_pass.values())}/{len(kpi_pass)}",
+        # T-11対応(2026-08-21): 必須ゲート(9項目、全てPASS必須)と参考指標
+        # (K3mのみ、GO/REJECTを単独では左右しない)を分離した集計。
+        "kpi_required_pass_count": f"{sum(required_pass.values())}/{len(required_pass)}",
+        "kpi_required_all_pass": all(required_pass.values()),
+        "kpi_reference_pass_count": f"{sum(reference_pass.values())}/{len(reference_pass)}" if reference_pass else None,
     }
 
 

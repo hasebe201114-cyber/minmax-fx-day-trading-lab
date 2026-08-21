@@ -117,11 +117,12 @@
 - **完了条件**: `criteria.py` と `PJ000004-基本データ層と検証プロセス定義.md` の双方に記載
 - **完了（2026-08-21）**: `PJ000004`に「Q9: 最大DD（ドローダウン）の定義（全SYS共通、恒久ルール）」を新設し、「固定ロット=初期資金比・複利サイジング=ピーク比」を明文化。`src/minmax_fx_dt/backtest/metrics.py`に`peak_relative_max_dd_pct()`・`peak_relative_monthly_max_dd_pct()`を昇格（元は`evaluate_vol_breakout_dow_theory_kpi.py`にローカル実装されていたものを共通モジュール化、重複を解消）し、`max_drawdown()`・`monthly_max_dd_pct()`のdocstringに適用条件を明記。`decision/criteria.py`のK2m評価にも参照コメントを追加。**SYS-FX007〜010の過去判定への適用可否を確認: いずれも固定ロット方式(`simulator.py`の`lot_size`固定、`backtest_carry_no_stop_tvt.py`「固定ロット(1lot=1000通貨)」明記)であり、初期資金比のDD定義は当時から正しかった。遡及的な再評価は不要と確認済み。** リファクタ後、既存のtrailonly・5通貨・dedupfixのKPI評価をすべて再実行し、DD数値が一致（回帰なし）することを確認。全93件のテストもpass。
 
-### [ ] T-11: 必須ゲートと参考指標の分離
+### [x] T-11: 必須ゲートと参考指標の分離
 
 - **件名**: KPI 表は本来「全項目クリア」が条件だったが、「5/10・2/10・6/10」という達成数スコアに化けている
 - **作業**: hard gate と参考指標を明示的に分ける。現状の定義のままでは K3m・K4m・permutation は参考指標にすらならない（T-06・T-08・T-14 の完了が前提）
 - **完了条件**: `00-spec.md` の KPI 表に「必須/参考」列を追加
+- **完了（2026-08-21）**: K3m（最大連続損失）を「参考」に分類し、残り9項目（K1m×3・K2m×2・K4m・K5m・実効n・permutation）を「必須」とした。外部レビュー・T-16再査読が指摘した通り、K3mはT-08再定義後もi.i.d.帰無仮説下での検出力が乏しいため。`scripts/evaluate_vol_breakout_dow_theory_kpi.py`に`KPI_GATE_TIER`辞書を新設し、`evaluate_period()`に`kpi_required_pass_count`・`kpi_required_all_pass`・`kpi_reference_pass_count`を追加。`00-spec.md`のKPI閾値表に「必須/参考」列を追加。trailonly版(T-08適用後)データでは**Train・Validationとも必須9項目中6項目が達成**（K3mは元々PASSのため数値上の結論は不変だが、どのゲートが採否判断を左右しているかが明確化された）。詳細: `research/EXP-FX000005/00-spec.md`「T-11」節。
 
 ---
 

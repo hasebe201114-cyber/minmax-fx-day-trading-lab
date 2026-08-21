@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-21T14:07:30.164719",
+  "generated_at": "2026-08-21T14:12:36.438730",
   "selected_pairs": [
     "USD_JPY",
     "EUR_JPY",
@@ -56,7 +56,10 @@
         "min_n_trades_effective": true,
         "permutation_p_value": false
       },
-      "kpi_pass_count": "5/10"
+      "kpi_pass_count": "5/10",
+      "kpi_required_pass_count": "5/9",
+      "kpi_required_all_pass": false,
+      "kpi_reference_pass_count": "0/1"
     },
     "validation": {
       "period": "validation",
@@ -94,7 +97,10 @@
         "min_n_trades_effective": false,
         "permutation_p_value": false
       },
-      "kpi_pass_count": "5/10"
+      "kpi_pass_count": "5/10",
+      "kpi_required_pass_count": "4/9",
+      "kpi_required_all_pass": false,
+      "kpi_reference_pass_count": "1/1"
     },
     "test": {
       "period": "test",
@@ -132,7 +138,10 @@
         "min_n_trades_effective": false,
         "permutation_p_value": false
       },
-      "kpi_pass_count": "5/10"
+      "kpi_pass_count": "5/10",
+      "kpi_required_pass_count": "4/9",
+      "kpi_required_all_pass": false,
+      "kpi_reference_pass_count": "1/1"
     }
   },
   "all_periods_all_kpi_pass": false,
