@@ -53,6 +53,7 @@ import json
 import sys
 from datetime import datetime
 from pathlib import Path
+from typing import Sequence
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
@@ -96,6 +97,55 @@ def is_weekend_close_time(index: pd.DatetimeIndex, pos: int) -> bool:
     cur_year, cur_week, _ = index[pos].isocalendar()
     nxt_year, nxt_week, _ = index[pos + 1].isocalendar()
     return (nxt_year, nxt_week) != (cur_year, cur_week)
+
+
+def select_non_overlapping_breakout_events(
+    h1_index: pd.DatetimeIndex,
+    positions: Sequence[int],
+    directions: Sequence[str],
+    max_trend_hours: float = MAX_TREND_HOURS,
+) -> list[int]:
+    """重複トレード生成バグの修正(2026-08-21、司令塔指摘・自己発見).
+
+    背景: `find_trades_for_period()`(各`backtest_vol_breakout_dow_theory_*.py`)は
+    H1ブレイク検知バー(N_BREAKOUT以上)ごとに独立して`simulate_dow_theory_trend()`
+    を呼び出していた。持続的な高ボラ局面では複数のH1バーが連続してN_BREAKOUT
+    以上を満たすことが多く、それぞれが独立した追跡チェーン(`position_open_until`
+    による1通貨1ポジション制約はチェーン内でのみ有効で、チェーンをまたいでは
+    共有されない)を開始する。これらのチェーンが同一のM5構造ピボットに収束すると、
+    エントリー価格・方向・時刻・決済理由・r_grossまで完全に一致する「同一
+    トレード」が複数回生成され、それぞれが(成長し続ける)口座残高に対して個別に
+    サイジング・複利計算されてしまう(実測: 2026-07-29〜31にUSD/JPYで5本のH1
+    ブレイクバーが連続発生し、同一トレードが5回生成された。改善ループ第7試行の
+    時点で既に存在していたバグで、Testで総利益の36.4%が重複計上由来だった)。
+
+    修正方針: 同一方向のブレイクイベントが、直前の同一方向イベントの追跡窓
+    (`break_time + max_trend_hours`)内で発生した場合はスキップする(=既に
+    追跡中の同じ継続的な動きとみなし、新規チェーンを開始しない)。異なる方向の
+    イベント(=真の反転)は窓内でも新規チェーンとして許可する。`positions`は
+    時系列順(昇順)であることを前提とする。
+
+    Args:
+        h1_index: H1バーのDatetimeIndex。
+        positions: ブレイク検知されたH1バーの位置(`h1_index`内、時系列昇順)。
+        directions: `positions`と同じ長さの各イベントの方向("UP"/"DOWN")。
+        max_trend_hours: 追跡窓の長さ(時間)。
+
+    Returns:
+        重複を除いた位置のリスト(元の順序を維持)。
+    """
+    if len(positions) != len(directions):
+        raise ValueError(f"positions({len(positions)}件)とdirections({len(directions)}件)の長さが一致しません")
+    active_until: dict[str, pd.Timestamp] = {}
+    selected: list[int] = []
+    for pos, direction in zip(positions, directions):
+        break_time = h1_index[pos]
+        prev_until = active_until.get(direction)
+        if prev_until is not None and break_time <= prev_until:
+            continue
+        selected.append(pos)
+        active_until[direction] = break_time + pd.Timedelta(hours=max_trend_hours)
+    return selected
 
 
 def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, trail_mult: float,
