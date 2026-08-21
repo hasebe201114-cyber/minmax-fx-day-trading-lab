@@ -1,0 +1,2748 @@
+{
+ "generated_at": "2026-08-21T22:08:59.741585",
+ "analyst": "independent exploratory pass (Opus) - EDA only, NOT part of the pre-registered decision protocol",
+ "source": "research/method-notes/vol_breakout_dow_theory_4pairs_v7_trailonly_1000usd_backtest.json",
+ "caveats": [
+  "HARKing注意: 事前登録外の探索的分析。多重比較未補正の切り口を含む。新戦略・パラメータ変更の根拠として単独使用しないこと",
+  "Validation n=133 / Test n=170 と小さく、サブグループ分割後の各セルは n<60 が多い",
+  "Test は凍結宣言下。ここでは「パターンの3期間一貫性の確認」にのみ用い、意思決定には用いていない"
+ ],
+ "headline_findings": [
+  {
+   "id": "F1",
+   "title": "約10%の>=2Rトレードが利益の全部を稼ぎ、残り約90%は合計でほぼゼロ",
+   "consistency": "train/validation/test 全てで一貫",
+   "numbers": {
+    "train": {
+     "frac_ge2R": 0.111,
+     "share_of_total_R": 1.113,
+     "mean_R_of_rest": -0.0418
+    },
+    "validation": {
+     "frac_ge2R": 0.09,
+     "share_of_total_R": 0.919,
+     "mean_R_of_rest": 0.0372
+    },
+    "test": {
+     "frac_ge2R": 0.112,
+     "share_of_total_R": 1.307,
+     "mean_R_of_rest": -0.1089
+    }
+   }
+  },
+  {
+   "id": "F2",
+   "title": "コストが総R利益の44-51%を消費。K4mペイオフ未達はコスト起因が支配的",
+   "numbers": {
+    "payoff_gross_vs_net": {
+     "train": [
+      1.562,
+      1.158
+     ],
+     "validation": [
+      1.499,
+      1.208
+     ],
+     "test": [
+      1.597,
+      1.151
+     ]
+    },
+    "mean_cost_r": {
+     "train": 0.2574,
+     "validation": 0.1983,
+     "test": 0.3327
+    },
+    "cost_x2_mean_r_net": {
+     "train": 0.0712,
+     "validation": 0.2224,
+     "test": -0.0172
+    }
+   }
+  },
+  {
+   "id": "F3",
+   "title": "同一通貨で直前トレード決済から2h未満の再エントリーは3期間ともほぼゼロエッジ",
+   "numbers": {
+    "fast_lt2h_mean_r": {
+     "train": 0.151,
+     "validation": 0.1986,
+     "test": -0.0062
+    },
+    "slow_ge2h_mean_r": {
+     "train": 0.5273,
+     "validation": 0.6087,
+     "test": 0.5916
+    },
+    "pooled_val_test_welch_p": 0.0105,
+    "fast_share_of_trades": 0.52
+   }
+  },
+  {
+   "id": "F4",
+   "title": "保有期間中央値45分。設計スコープ(数日〜数週間の中期スイング)と実挙動が乖離",
+   "numbers": {
+    "hold_h_p50": 0.75,
+    "hold_h_p90": 2.83,
+    "hold_h_p99": 11.66,
+    "frac_under_6h_train": 0.96,
+    "weekend_exit_count": {
+     "train": 8,
+     "validation": 2,
+     "test": 4
+    }
+   }
+  },
+  {
+   "id": "F5",
+   "title": "低ボラ(相対リスク幅が狭い)ほど勝率は低いがペイオフは高い、高ボラは逆。3期間一貫",
+   "numbers": {
+    "payoff_lo_vs_hi": {
+     "train": [
+      1.453,
+      1.022
+     ],
+     "validation": [
+      1.441,
+      1.046
+     ],
+     "test": [
+      1.483,
+      0.923
+     ]
+    },
+    "cost_r_lo_vs_hi": {
+     "train": [
+      0.4342,
+      0.1149
+     ],
+     "validation": [
+      0.3111,
+      0.0996
+     ],
+     "test": [
+      0.6144,
+      0.1293
+     ]
+    }
+   }
+  },
+  {
+   "id": "F6",
+   "title": "Validation期間の方向構成が極端に偏っている(DOWN 111 / UP 22)",
+   "numbers": {
+    "train": {
+     "UP": 289,
+     "DOWN": 235
+    },
+    "validation": {
+     "UP": 22,
+     "DOWN": 111
+    },
+    "test": {
+     "UP": 75,
+     "DOWN": 95
+    }
+   }
+  }
+ ],
+ "null_findings": [
+  "時間帯(JST セッション)別: max-t順列検定 p=0.41/0.46/0.38 で3期間とも多重比較補正後に有意差なし",
+  "曜日別: max-t順列検定 p=0.28/0.048/0.34。Validationのみ名目有意だが n=133 で Wed n=6 等が寄与、3期間で符号一貫せず",
+  "系列相関: 同一通貨の直前トレードとのlag-1自己相関は train -0.022 / validation -0.128 / test -0.034 でほぼ無相関。Train全体のlag-1 0.246は同時建玉(最大3)由来で、val/testでは -0.08/-0.04 と再現せず",
+  "同時建玉数別のパフォーマンス差: 3期間で符号が一貫せず(train 1本併走が最良、testは最悪)",
+  "initial_risk と r_net の within-pair Spearman: train rho=0.106(p=0.015) / test rho=0.234(p=0.002) だが validation rho=0.029(p=0.74) で非一貫",
+  "コスト・相対リスク幅・保有時間の時系列トレンド: Spearman |rho|<0.06、p>0.08 で有意なドリフトなし",
+  "決済理由: 実質 SL_INITIAL_NO_TP のみ(98%超)。WEEKEND_NO_TP は 3期間合計14件で週末制約はほぼ非拘束"
+ ],
+ "note_leverage_field_semantics": "leverage_ratio フィールドは entry_price/initial_risk であり「名目/証拠金」ではない。実効レバレッジ = effective_risk_pct * leverage_ratio。実効値の中央値は train 10.7x / validation 7.5x / test 12.5x、25x上限に張り付くのは train 7.6% / test 17.6%。25x上限ロジック自体は正しく機能しておりバグではないが、フィールド名は誤読を招きやすい",
+ "suggested_followups_if_formalized": [
+  "F3(2h未満再エントリー除外)を事前登録した上で Train のみで閾値を導出し、Validation で盲検適用する。ただし約半数のトレードが除去され実効n問題が悪化するトレードオフを先に見積もること",
+  "F2 について、スプレッド/スリッページの実測値(GMO の実約定ログ)でコストモデルを再校正する。現行モデルの1.5倍で Test の t 値が 1.06 まで低下するため、コスト前提の精度がそのまま採否を決める",
+  "F1 の含意として、K4m(ペイオフ>=1.5)や K3m(最大連続損失<=5)といった中心的モーメント基準はロングテール型戦略の評価軸として妥当か、KPI 定義自体を再検討する余地がある",
+  "F4 について、実挙動が日中トレードである以上、KPI・コスト・スワップの前提を中期スイング前提のまま流用してよいかを確認する"
+ ],
+ "raw": {
+  "descriptive_cuts": {
+   "session": {
+    "train": {
+     "tokyo_am": {
+      "n": 81,
+      "mean": 0.4788,
+      "med": 0.5357,
+      "sd": 1.3939,
+      "wr": 0.679,
+      "payoff": 1.126,
+      "pf": 2.383,
+      "tstat": 3.09,
+      "sum": 38.79
+     },
+     "tokyo_pm": {
+      "n": 72,
+      "mean": 0.3062,
+      "med": 0.2425,
+      "sd": 1.5122,
+      "wr": 0.5972,
+      "payoff": 1.136,
+      "pf": 1.684,
+      "tstat": 1.72,
+      "sum": 22.04
+     },
+     "london": {
+      "n": 103,
+      "mean": 0.5857,
+      "med": 0.5343,
+      "sd": 1.7461,
+      "wr": 0.6408,
+      "payoff": 1.38,
+      "pf": 2.462,
+      "tstat": 3.4,
+      "sum": 60.33
+     },
+     "ldn_ny_overlap": {
+      "n": 114,
+      "mean": 0.0782,
+      "med": 0.1781,
+      "sd": 1.2615,
+      "wr": 0.5439,
+      "payoff": 0.977,
+      "pf": 1.165,
+      "tstat": 0.66,
+      "sum": 8.91
+     },
+     "ny_late": {
+      "n": 144,
+      "mean": 0.2972,
+      "med": 0.3816,
+      "sd": 1.4834,
+      "wr": 0.5903,
+      "payoff": 1.159,
+      "pf": 1.67,
+      "tstat": 2.4,
+      "sum": 42.79
+     },
+     "quiet": {
+      "n": 10,
+      "mean": -0.0654,
+      "med": -0.3076,
+      "sd": 1.4776,
+      "wr": 0.5,
+      "payoff": 0.909,
+      "pf": 0.909,
+      "tstat": -0.14,
+      "sum": -0.65
+     }
+    },
+    "validation": {
+     "tokyo_am": {
+      "n": 19,
+      "mean": 0.5135,
+      "med": 0.4285,
+      "sd": 1.6429,
+      "wr": 0.6842,
+      "payoff": 1.172,
+      "pf": 2.54,
+      "tstat": 1.36,
+      "sum": 9.76
+     },
+     "tokyo_pm": {
+      "n": 18,
+      "mean": 0.6795,
+      "med": 0.6447,
+      "sd": 1.0402,
+      "wr": 0.8333,
+      "payoff": 0.907,
+      "pf": 4.536,
+      "tstat": 2.77,
+      "sum": 12.23
+     },
+     "london": {
+      "n": 31,
+      "mean": 0.2403,
+      "med": 0.3924,
+      "sd": 1.283,
+      "wr": 0.6774,
+      "payoff": 0.771,
+      "pf": 1.619,
+      "tstat": 1.04,
+      "sum": 7.45
+     },
+     "ldn_ny_overlap": {
+      "n": 33,
+      "mean": 0.6512,
+      "med": 0.4961,
+      "sd": 2.25,
+      "wr": 0.697,
+      "payoff": 1.429,
+      "pf": 3.288,
+      "tstat": 1.66,
+      "sum": 21.49
+     },
+     "ny_late": {
+      "n": 26,
+      "mean": -0.0831,
+      "med": -1.0855,
+      "sd": 1.9282,
+      "wr": 0.3077,
+      "payoff": 1.99,
+      "pf": 0.884,
+      "tstat": -0.22,
+      "sum": -2.16
+     },
+     "quiet": {
+      "n": 6,
+      "mean": 1.1985,
+      "med": 0.7501,
+      "sd": 2.3478,
+      "wr": 0.6667,
+      "payoff": 2.052,
+      "pf": 4.104,
+      "tstat": 1.25,
+      "sum": 7.19
+     }
+    },
+    "test": {
+     "tokyo_am": {
+      "n": 26,
+      "mean": 0.7282,
+      "med": 0.6433,
+      "sd": 2.2946,
+      "wr": 0.6538,
+      "payoff": 1.902,
+      "pf": 3.593,
+      "tstat": 1.62,
+      "sum": 18.93
+     },
+     "tokyo_pm": {
+      "n": 20,
+      "mean": -0.2084,
+      "med": -1.1116,
+      "sd": 1.4454,
+      "wr": 0.45,
+      "payoff": 0.858,
+      "pf": 0.702,
+      "tstat": -0.64,
+      "sum": -4.17
+     },
+     "london": {
+      "n": 26,
+      "mean": 0.3269,
+      "med": 0.3666,
+      "sd": 1.6318,
+      "wr": 0.5769,
+      "payoff": 1.197,
+      "pf": 1.633,
+      "tstat": 1.02,
+      "sum": 8.5
+     },
+     "ldn_ny_overlap": {
+      "n": 35,
+      "mean": 0.3579,
+      "med": 0.1673,
+      "sd": 2.4161,
+      "wr": 0.5714,
+      "payoff": 1.357,
+      "pf": 1.809,
+      "tstat": 0.88,
+      "sum": 12.53
+     },
+     "ny_late": {
+      "n": 56,
+      "mean": 0.4147,
+      "med": 0.4851,
+      "sd": 1.3439,
+      "wr": 0.6964,
+      "payoff": 0.935,
+      "pf": 2.145,
+      "tstat": 2.31,
+      "sum": 23.22
+     },
+     "quiet": {
+      "n": 7,
+      "mean": -0.7692,
+      "med": -1.277,
+      "sd": 1.508,
+      "wr": 0.1429,
+      "payoff": 1.838,
+      "pf": 0.306,
+      "tstat": -1.35,
+      "sum": -5.38
+     }
+    },
+    "hour_bucket_all": {
+     "0": {
+      "n": 47,
+      "mean": 0.075,
+      "med": 0.3286,
+      "sd": 1.2446,
+      "wr": 0.5532,
+      "payoff": 0.927,
+      "pf": 1.148,
+      "tstat": 0.41,
+      "sum": 3.53
+     },
+     "1": {
+      "n": 47,
+      "mean": 0.2058,
+      "med": 0.4953,
+      "sd": 1.1068,
+      "wr": 0.617,
+      "payoff": 0.964,
+      "pf": 1.554,
+      "tstat": 1.27,
+      "sum": 9.67
+     },
+     "2": {
+      "n": 34,
+      "mean": 0.5847,
+      "med": 0.4788,
+      "sd": 1.391,
+      "wr": 0.7059,
+      "payoff": 1.183,
+      "pf": 2.839,
+      "tstat": 2.45,
+      "sum": 19.88
+     },
+     "3": {
+      "n": 41,
+      "mean": 0.1543,
+      "med": -0.2251,
+      "sd": 1.594,
+      "wr": 0.4878,
+      "payoff": 1.363,
+      "pf": 1.298,
+      "tstat": 0.62,
+      "sum": 6.32
+     },
+     "4": {
+      "n": 25,
+      "mean": 0.1635,
+      "med": 0.4102,
+      "sd": 1.2442,
+      "wr": 0.6,
+      "payoff": 0.907,
+      "pf": 1.361,
+      "tstat": 0.66,
+      "sum": 4.09
+     },
+     "5": {
+      "n": 32,
+      "mean": 0.6364,
+      "med": 0.3003,
+      "sd": 2.3468,
+      "wr": 0.5625,
+      "payoff": 1.652,
+      "pf": 2.124,
+      "tstat": 1.53,
+      "sum": 20.36
+     },
+     "6": {
+      "n": 14,
+      "mean": -0.4885,
+      "med": -1.2923,
+      "sd": 1.3256,
+      "wr": 0.2857,
+      "payoff": 1.151,
+      "pf": 0.46,
+      "tstat": -1.38,
+      "sum": -6.84
+     },
+     "7": {
+      "n": 9,
+      "mean": 0.8879,
+      "med": 0.6924,
+      "sd": 2.2465,
+      "wr": 0.6667,
+      "payoff": 1.371,
+      "pf": 2.742,
+      "tstat": 1.19,
+      "sum": 7.99
+     },
+     "8": {
+      "n": 23,
+      "mean": 0.3482,
+      "med": 0.4917,
+      "sd": 1.1532,
+      "wr": 0.6957,
+      "payoff": 0.886,
+      "pf": 2.026,
+      "tstat": 1.45,
+      "sum": 8.01
+     },
+     "9": {
+      "n": 39,
+      "mean": 0.7312,
+      "med": 0.5772,
+      "sd": 2.1714,
+      "wr": 0.6923,
+      "payoff": 1.389,
+      "pf": 3.125,
+      "tstat": 2.1,
+      "sum": 28.51
+     },
+     "10": {
+      "n": 37,
+      "mean": 0.4266,
+      "med": 0.5093,
+      "sd": 1.3119,
+      "wr": 0.6486,
+      "payoff": 1.276,
+      "pf": 2.355,
+      "tstat": 1.98,
+      "sum": 15.78
+     },
+     "11": {
+      "n": 27,
+      "mean": 0.5618,
+      "med": 0.519,
+      "sd": 1.5655,
+      "wr": 0.6667,
+      "payoff": 1.36,
+      "pf": 2.721,
+      "tstat": 1.86,
+      "sum": 15.17
+     },
+     "12": {
+      "n": 35,
+      "mean": 0.355,
+      "med": 0.4707,
+      "sd": 1.5708,
+      "wr": 0.6286,
+      "payoff": 1.024,
+      "pf": 1.733,
+      "tstat": 1.34,
+      "sum": 12.42
+     },
+     "13": {
+      "n": 19,
+      "mean": 0.5626,
+      "med": 0.6828,
+      "sd": 1.5816,
+      "wr": 0.6842,
+      "payoff": 1.207,
+      "pf": 2.616,
+      "tstat": 1.55,
+      "sum": 10.69
+     },
+     "14": {
+      "n": 32,
+      "mean": 0.0312,
+      "med": 0.1965,
+      "sd": 1.0576,
+      "wr": 0.5938,
+      "payoff": 0.735,
+      "pf": 1.074,
+      "tstat": 0.17,
+      "sum": 1.0
+     },
+     "15": {
+      "n": 24,
+      "mean": 0.2498,
+      "med": 0.218,
+      "sd": 1.6263,
+      "wr": 0.5417,
+      "payoff": 1.251,
+      "pf": 1.478,
+      "tstat": 0.75,
+      "sum": 5.99
+     },
+     "16": {
+      "n": 43,
+      "mean": 0.5883,
+      "med": 0.4498,
+      "sd": 1.7048,
+      "wr": 0.6512,
+      "payoff": 1.306,
+      "pf": 2.438,
+      "tstat": 2.26,
+      "sum": 25.3
+     },
+     "17": {
+      "n": 38,
+      "mean": 0.1967,
+      "med": 0.3974,
+      "sd": 1.4788,
+      "wr": 0.5526,
+      "payoff": 1.123,
+      "pf": 1.387,
+      "tstat": 0.82,
+      "sum": 7.47
+     },
+     "18": {
+      "n": 31,
+      "mean": 0.358,
+      "med": 0.4839,
+      "sd": 1.2216,
+      "wr": 0.7097,
+      "payoff": 0.825,
+      "pf": 2.017,
+      "tstat": 1.63,
+      "sum": 11.1
+     },
+     "19": {
+      "n": 24,
+      "mean": 1.2622,
+      "med": 0.771,
+      "sd": 2.3481,
+      "wr": 0.75,
+      "payoff": 1.643,
+      "pf": 4.928,
+      "tstat": 2.63,
+      "sum": 30.29
+     },
+     "20": {
+      "n": 24,
+      "mean": 0.0881,
+      "med": 0.3111,
+      "sd": 1.2072,
+      "wr": 0.5417,
+      "payoff": 1.006,
+      "pf": 1.189,
+      "tstat": 0.36,
+      "sum": 2.12
+     },
+     "21": {
+      "n": 74,
+      "mean": 0.3423,
+      "med": 0.3713,
+      "sd": 1.9139,
+      "wr": 0.6351,
+      "payoff": 1.094,
+      "pf": 1.904,
+      "tstat": 1.54,
+      "sum": 25.33
+     },
+     "22": {
+      "n": 54,
+      "mean": 0.0505,
+      "med": 0.0621,
+      "sd": 1.2002,
+      "wr": 0.5,
+      "payoff": 1.103,
+      "pf": 1.103,
+      "tstat": 0.31,
+      "sum": 2.73
+     },
+     "23": {
+      "n": 54,
+      "mean": 0.2754,
+      "med": 0.3588,
+      "sd": 1.9562,
+      "wr": 0.5741,
+      "payoff": 1.191,
+      "pf": 1.605,
+      "tstat": 1.03,
+      "sum": 14.87
+     }
+    }
+   },
+   "weekday": {
+    "train": {
+     "Mon": {
+      "n": 22,
+      "mean": 0.0069,
+      "med": 0.2044,
+      "sd": 1.2177,
+      "wr": 0.5455,
+      "payoff": 0.845,
+      "pf": 1.014,
+      "tstat": 0.03,
+      "sum": 0.15
+     },
+     "Tue": {
+      "n": 61,
+      "mean": 0.723,
+      "med": 0.6995,
+      "sd": 1.4852,
+      "wr": 0.7377,
+      "payoff": 1.147,
+      "pf": 3.227,
+      "tstat": 3.8,
+      "sum": 44.1
+     },
+     "Wed": {
+      "n": 147,
+      "mean": 0.0255,
+      "med": 0.3418,
+      "sd": 1.0958,
+      "wr": 0.5918,
+      "payoff": 0.727,
+      "pf": 1.055,
+      "tstat": 0.28,
+      "sum": 3.75
+     },
+     "Thu": {
+      "n": 139,
+      "mean": 0.2987,
+      "med": 0.2354,
+      "sd": 1.5742,
+      "wr": 0.554,
+      "payoff": 1.298,
+      "pf": 1.613,
+      "tstat": 2.24,
+      "sum": 41.52
+     },
+     "Fri": {
+      "n": 112,
+      "mean": 0.5898,
+      "med": 0.5921,
+      "sd": 1.7916,
+      "wr": 0.6071,
+      "payoff": 1.596,
+      "pf": 2.466,
+      "tstat": 3.48,
+      "sum": 66.06
+     },
+     "Sat": {
+      "n": 43,
+      "mean": 0.3866,
+      "med": 0.3577,
+      "sd": 1.4646,
+      "wr": 0.6279,
+      "payoff": 1.274,
+      "pf": 2.15,
+      "tstat": 1.73,
+      "sum": 16.62
+     }
+    },
+    "validation": {
+     "Mon": {
+      "n": 5,
+      "mean": 0.3345,
+      "med": 0.5091,
+      "sd": 0.9777,
+      "wr": 0.8,
+      "payoff": 0.571,
+      "pf": 2.286,
+      "tstat": 0.77,
+      "sum": 1.67
+     },
+     "Tue": {
+      "n": 16,
+      "mean": -0.4221,
+      "med": -1.1459,
+      "sd": 1.0703,
+      "wr": 0.375,
+      "payoff": 0.715,
+      "pf": 0.429,
+      "tstat": -1.58,
+      "sum": -6.75
+     },
+     "Wed": {
+      "n": 6,
+      "mean": -0.7377,
+      "med": -1.1174,
+      "sd": 0.9518,
+      "wr": 0.1667,
+      "payoff": 1.069,
+      "pf": 0.214,
+      "tstat": -1.9,
+      "sum": -4.43
+     },
+     "Thu": {
+      "n": 46,
+      "mean": 0.5669,
+      "med": 0.6131,
+      "sd": 1.2977,
+      "wr": 0.7391,
+      "payoff": 1.097,
+      "pf": 3.109,
+      "tstat": 2.96,
+      "sum": 26.08
+     },
+     "Fri": {
+      "n": 52,
+      "mean": 0.6731,
+      "med": 0.4649,
+      "sd": 2.106,
+      "wr": 0.7115,
+      "payoff": 1.285,
+      "pf": 3.17,
+      "tstat": 2.3,
+      "sum": 35.0
+     },
+     "Sat": {
+      "n": 8,
+      "mean": 0.5483,
+      "med": -0.4827,
+      "sd": 2.9723,
+      "wr": 0.25,
+      "payoff": 5.636,
+      "pf": 1.879,
+      "tstat": 0.52,
+      "sum": 4.39
+     }
+    },
+    "test": {
+     "Mon": {
+      "n": 3,
+      "mean": -0.6,
+      "med": -1.0913,
+      "sd": 1.0595,
+      "wr": 0.3333,
+      "payoff": 0.51,
+      "pf": 0.255,
+      "tstat": -0.98,
+      "sum": -1.8
+     },
+     "Tue": {
+      "n": 28,
+      "mean": 0.6362,
+      "med": 0.3935,
+      "sd": 2.4096,
+      "wr": 0.6429,
+      "payoff": 1.473,
+      "pf": 2.651,
+      "tstat": 1.4,
+      "sum": 17.81
+     },
+     "Wed": {
+      "n": 61,
+      "mean": -0.0643,
+      "med": 0.2476,
+      "sd": 1.2418,
+      "wr": 0.5574,
+      "payoff": 0.702,
+      "pf": 0.884,
+      "tstat": -0.4,
+      "sum": -3.92
+     },
+     "Thu": {
+      "n": 36,
+      "mean": 0.2081,
+      "med": 0.2858,
+      "sd": 1.3526,
+      "wr": 0.5833,
+      "payoff": 1.036,
+      "pf": 1.45,
+      "tstat": 0.92,
+      "sum": 7.49
+     },
+     "Fri": {
+      "n": 27,
+      "mean": 0.8901,
+      "med": 0.5072,
+      "sd": 2.8008,
+      "wr": 0.5926,
+      "payoff": 2.245,
+      "pf": 3.266,
+      "tstat": 1.65,
+      "sum": 24.03
+     },
+     "Sat": {
+      "n": 15,
+      "mean": 0.6677,
+      "med": 0.8534,
+      "sd": 1.2872,
+      "wr": 0.7333,
+      "payoff": 1.244,
+      "pf": 3.421,
+      "tstat": 2.01,
+      "sum": 10.01
+     }
+    }
+   },
+   "hold": {
+    "train": {
+     "a_<6h": {
+      "n": 503,
+      "mean": 0.3411,
+      "med": 0.3977,
+      "sd": 1.5069,
+      "wr": 0.6083,
+      "payoff": 1.151,
+      "pf": 1.787,
+      "tstat": 5.08,
+      "sum": 171.55
+     },
+     "b_6-24h": {
+      "n": 19,
+      "mean": 0.0487,
+      "med": -0.039,
+      "sd": 0.9638,
+      "wr": 0.4737,
+      "payoff": 1.245,
+      "pf": 1.12,
+      "tstat": 0.22,
+      "sum": 0.92
+     },
+     "c_1-3d": {
+      "n": 2,
+      "mean": -0.1367,
+      "med": -0.1367,
+      "sd": 1.3024,
+      "wr": 0.5,
+      "payoff": 0.742,
+      "pf": 0.742,
+      "tstat": null,
+      "sum": -0.27
+     },
+     "d_>3d": {
+      "n": 0
+     }
+    },
+    "validation": {
+     "a_<6h": {
+      "n": 129,
+      "mean": 0.4495,
+      "med": 0.4594,
+      "sd": 1.781,
+      "wr": 0.6434,
+      "payoff": 1.209,
+      "pf": 2.182,
+      "tstat": 2.87,
+      "sum": 57.99
+     },
+     "b_6-24h": {
+      "n": 4,
+      "mean": -0.5075,
+      "med": -1.0454,
+      "sd": 1.1038,
+      "wr": 0.25,
+      "payoff": 1.084,
+      "pf": 0.361,
+      "tstat": -0.92,
+      "sum": -2.03
+     },
+     "c_1-3d": {
+      "n": 0
+     },
+     "d_>3d": {
+      "n": 0
+     }
+    },
+    "test": {
+     "a_<6h": {
+      "n": 165,
+      "mean": 0.3445,
+      "med": 0.3084,
+      "sd": 1.8483,
+      "wr": 0.6061,
+      "payoff": 1.148,
+      "pf": 1.767,
+      "tstat": 2.39,
+      "sum": 56.85
+     },
+     "b_6-24h": {
+      "n": 5,
+      "mean": -0.6434,
+      "med": -1.0977,
+      "sd": 0.8858,
+      "wr": 0.2,
+      "payoff": 0.881,
+      "pf": 0.22,
+      "tstat": -1.62,
+      "sum": -3.22
+     },
+     "c_1-3d": {
+      "n": 0
+     },
+     "d_>3d": {
+      "n": 0
+     }
+    },
+    "quantiles_all": {
+     "10": 0.25,
+     "25": 0.42,
+     "50": 0.75,
+     "75": 1.33,
+     "90": 2.83,
+     "99": 11.66
+    }
+   },
+   "exit_reason": {
+    "train": {
+     "WEEKEND_NO_TP": {
+      "n": 8,
+      "mean": -0.307,
+      "med": -0.2953,
+      "sd": 0.2354,
+      "wr": 0.0,
+      "payoff": null,
+      "pf": 0.0,
+      "tstat": -3.69,
+      "sum": -2.46
+     },
+     "SL_INITIAL_NO_TP": {
+      "n": 516,
+      "mean": 0.3385,
+      "med": 0.4325,
+      "sd": 1.4987,
+      "wr": 0.6124,
+      "payoff": 1.126,
+      "pf": 1.779,
+      "tstat": 5.13,
+      "sum": 174.66
+     }
+    },
+    "validation": {
+     "SL_INITIAL_NO_TP": {
+      "n": 131,
+      "mean": 0.377,
+      "med": 0.4498,
+      "sd": 1.6714,
+      "wr": 0.6336,
+      "payoff": 1.134,
+      "pf": 1.96,
+      "tstat": 2.58,
+      "sum": 49.39
+     },
+     "WEEKEND_NO_TP": {
+      "n": 2,
+      "mean": 3.2815,
+      "med": 3.2815,
+      "sd": 5.7843,
+      "wr": 0.5,
+      "payoff": 9.116,
+      "pf": 9.116,
+      "tstat": null,
+      "sum": 6.56
+     }
+    },
+    "test": {
+     "SL_INITIAL_NO_TP": {
+      "n": 166,
+      "mean": 0.3249,
+      "med": 0.3041,
+      "sd": 1.8458,
+      "wr": 0.6024,
+      "payoff": 1.128,
+      "pf": 1.709,
+      "tstat": 2.27,
+      "sum": 53.93
+     },
+     "WEEKEND_NO_TP": {
+      "n": 4,
+      "mean": -0.0748,
+      "med": -0.6474,
+      "sd": 1.3353,
+      "wr": 0.25,
+      "payoff": 2.595,
+      "pf": 0.865,
+      "tstat": -0.11,
+      "sum": -0.3
+     }
+    }
+   },
+   "sl_split": {
+    "train": {
+     "n": 516,
+     "frac_trailed_profit": 0.6434,
+     "trailed_profit": {
+      "n": 332,
+      "mean": 1.1926,
+      "med": 0.8023,
+      "sd": 1.1847,
+      "wr": 0.9518,
+      "payoff": 6.812,
+      "pf": 134.537,
+      "tstat": 18.34,
+      "sum": 395.93
+     },
+     "pure_stop": {
+      "n": 184,
+      "mean": -1.2026,
+      "med": -1.1939,
+      "sd": 0.2668,
+      "wr": 0.0,
+      "payoff": null,
+      "pf": 0.0,
+      "tstat": -61.13,
+      "sum": -221.27
+     },
+     "pure_stop_rgross_mean": -0.9457
+    },
+    "validation": {
+     "n": 131,
+     "frac_trailed_profit": 0.6641,
+     "trailed_profit": {
+      "n": 87,
+      "mean": 1.155,
+      "med": 0.7996,
+      "sd": 1.5422,
+      "wr": 0.954,
+      "payoff": 13.92,
+      "pf": 288.835,
+      "tstat": 6.99,
+      "sum": 100.48
+     },
+     "pure_stop": {
+      "n": 44,
+      "mean": -1.1612,
+      "med": -1.1681,
+      "sd": 0.2082,
+      "wr": 0.0,
+      "payoff": null,
+      "pf": 0.0,
+      "tstat": -37.0,
+      "sum": -51.09
+     },
+     "pure_stop_rgross_mean": -0.9545
+    },
+    "test": {
+     "n": 166,
+     "frac_trailed_profit": 0.6627,
+     "trailed_profit": {
+      "n": 110,
+      "mean": 1.1537,
+      "med": 0.7223,
+      "sd": 1.7428,
+      "wr": 0.9091,
+      "payoff": 4.217,
+      "pf": 42.166,
+      "tstat": 6.94,
+      "sum": 126.9
+     },
+     "pure_stop": {
+      "n": 56,
+      "mean": -1.3031,
+      "med": -1.2546,
+      "sd": 0.359,
+      "wr": 0.0,
+      "payoff": null,
+      "pf": 0.0,
+      "tstat": -27.16,
+      "sum": -72.97
+     },
+     "pure_stop_rgross_mean": -0.9464
+    }
+   },
+   "volbucket": {
+    "train": {
+     "lo": {
+      "n": 174,
+      "mean": 0.3596,
+      "med": 0.1793,
+      "sd": 1.8793,
+      "wr": 0.5345,
+      "payoff": 1.453,
+      "pf": 1.668,
+      "tstat": 2.52,
+      "sum": 62.57
+     },
+     "mid": {
+      "n": 176,
+      "mean": 0.3832,
+      "med": 0.4801,
+      "sd": 1.2885,
+      "wr": 0.6648,
+      "payoff": 1.053,
+      "pf": 2.088,
+      "tstat": 3.95,
+      "sum": 67.44
+     },
+     "hi": {
+      "n": 174,
+      "mean": 0.2425,
+      "med": 0.5307,
+      "sd": 1.2185,
+      "wr": 0.6092,
+      "payoff": 1.022,
+      "pf": 1.594,
+      "tstat": 2.63,
+      "sum": 42.2
+     }
+    },
+    "train_perm_hi_vs_lo": 0.4898,
+    "validation": {
+     "lo": {
+      "n": 44,
+      "mean": 0.4487,
+      "med": 0.4704,
+      "sd": 1.8354,
+      "wr": 0.5682,
+      "payoff": 1.441,
+      "pf": 1.896,
+      "tstat": 1.62,
+      "sum": 19.74
+     },
+     "mid": {
+      "n": 45,
+      "mean": 0.3613,
+      "med": 0.2956,
+      "sd": 2.1332,
+      "wr": 0.6,
+      "payoff": 1.235,
+      "pf": 1.853,
+      "tstat": 1.14,
+      "sum": 16.26
+     },
+     "hi": {
+      "n": 44,
+      "mean": 0.4534,
+      "med": 0.5003,
+      "sd": 1.2568,
+      "wr": 0.7273,
+      "payoff": 1.046,
+      "pf": 2.79,
+      "tstat": 2.39,
+      "sum": 19.95
+     }
+    },
+    "test": {
+     "lo": {
+      "n": 57,
+      "mean": 0.2642,
+      "med": -0.01,
+      "sd": 2.6359,
+      "wr": 0.4912,
+      "payoff": 1.483,
+      "pf": 1.432,
+      "tstat": 0.76,
+      "sum": 15.06
+     },
+     "mid": {
+      "n": 56,
+      "mean": 0.488,
+      "med": 0.4173,
+      "sd": 1.3602,
+      "wr": 0.6786,
+      "payoff": 1.141,
+      "pf": 2.408,
+      "tstat": 2.68,
+      "sum": 27.33
+     },
+     "hi": {
+      "n": 57,
+      "mean": 0.1973,
+      "med": 0.5072,
+      "sd": 1.1545,
+      "wr": 0.614,
+      "payoff": 0.923,
+      "pf": 1.468,
+      "tstat": 1.29,
+      "sum": 11.25
+     }
+    },
+    "spearman_withinpair": {
+     "train": {
+      "rho": 0.1058,
+      "p": 0.0154,
+      "n": 524
+     },
+     "validation": {
+      "rho": 0.0294,
+      "p": 0.7366,
+      "n": 133
+     },
+     "test": {
+      "rho": 0.2335,
+      "p": 0.0022,
+      "n": 170
+     }
+    }
+   },
+   "serial": {
+    "train": {
+     "lag1_ac": 0.246,
+     "samepair_lag1_ac": -0.0218,
+     "mean_concurrent": 0.431,
+     "max_concurrent": 3,
+     "by_concurrency": {
+      "0": {
+       "n": 362,
+       "mean": 0.287,
+       "med": 0.422,
+       "sd": 1.4717,
+       "wr": 0.6077,
+       "payoff": 1.063,
+       "pf": 1.646,
+       "tstat": 3.71,
+       "sum": 103.89
+      },
+      "1": {
+       "n": 109,
+       "mean": 0.534,
+       "med": 0.4607,
+       "sd": 1.5862,
+       "wr": 0.6055,
+       "payoff": 1.562,
+       "pf": 2.398,
+       "tstat": 3.51,
+       "sum": 58.2
+      },
+      "2": {
+       "n": 42,
+       "mean": 0.1428,
+       "med": 0.1993,
+       "sd": 1.3681,
+       "wr": 0.5476,
+       "payoff": 1.083,
+       "pf": 1.312,
+       "tstat": 0.68,
+       "sum": 6.0
+      },
+      "3": {
+       "n": 11,
+       "mean": 0.3743,
+       "med": 0.3418,
+       "sd": 1.5259,
+       "wr": 0.6364,
+       "payoff": 1.039,
+       "pf": 1.818,
+       "tstat": 0.81,
+       "sum": 4.12
+      }
+     }
+    },
+    "validation": {
+     "lag1_ac": -0.0779,
+     "samepair_lag1_ac": -0.1279,
+     "mean_concurrent": 0.195,
+     "max_concurrent": 2,
+     "by_concurrency": {
+      "0": {
+       "n": 110,
+       "mean": 0.421,
+       "med": 0.3931,
+       "sd": 1.9119,
+       "wr": 0.6,
+       "payoff": 1.306,
+       "pf": 1.96,
+       "tstat": 2.31,
+       "sum": 46.31
+      },
+      "1": {
+       "n": 20,
+       "mean": 0.3018,
+       "med": 0.5128,
+       "sd": 0.7732,
+       "wr": 0.75,
+       "payoff": 0.838,
+       "pf": 2.513,
+       "tstat": 1.75,
+       "sum": 6.04
+      }
+     }
+    },
+    "test": {
+     "lag1_ac": -0.0416,
+     "samepair_lag1_ac": -0.0342,
+     "mean_concurrent": 0.271,
+     "max_concurrent": 3,
+     "by_concurrency": {
+      "0": {
+       "n": 134,
+       "mean": 0.4531,
+       "med": 0.3268,
+       "sd": 1.9401,
+       "wr": 0.6269,
+       "payoff": 1.263,
+       "pf": 2.122,
+       "tstat": 2.7,
+       "sum": 60.71
+      },
+      "1": {
+       "n": 28,
+       "mean": -0.3953,
+       "med": -1.0467,
+       "sd": 1.1538,
+       "wr": 0.4286,
+       "payoff": 0.628,
+       "pf": 0.471,
+       "tstat": -1.81,
+       "sum": -11.07
+      }
+     }
+    }
+   },
+   "tail": {
+    "train": {
+     "total_R": 172.2,
+     "top1_share": 0.176,
+     "top5_share": 0.649,
+     "top10_share": 1.04,
+     "max_r": 6.414,
+     "n_above_3R": 24,
+     "n_above_5R": 8,
+     "skew": 1.021,
+     "kurt": 1.634,
+     "mean_ex_top5": 0.1213
+    },
+    "validation": {
+     "total_R": 55.95,
+     "top1_share": 0.213,
+     "top5_share": 0.671,
+     "top10_share": 0.955,
+     "max_r": 11.921,
+     "n_above_3R": 6,
+     "n_above_5R": 3,
+     "skew": 2.832,
+     "kurt": 13.946,
+     "mean_ex_top5": 0.1449
+    },
+    "test": {
+     "total_R": 53.63,
+     "top1_share": 0.239,
+     "top5_share": 0.837,
+     "top10_share": 1.232,
+     "max_r": 12.799,
+     "n_above_3R": 8,
+     "n_above_5R": 2,
+     "skew": 3.039,
+     "kurt": 16.951,
+     "mean_ex_top5": 0.054
+    }
+   },
+   "cost": {
+    "train": {
+     "mean_total_cost_r": 0.2574,
+     "mean_r_gross": 0.5861,
+     "mean_r_net": 0.3286,
+     "cost_as_pct_of_gross": 43.9,
+     "wr_gross": 0.6374,
+     "wr_net": 0.6031
+    },
+    "by_pair_train": {
+     "AUD_JPY": {
+      "mean_cost_r": 0.3785,
+      "n": 88
+     },
+     "EUR_JPY": {
+      "mean_cost_r": 0.2636,
+      "n": 118
+     },
+     "GBP_JPY": {
+      "mean_cost_r": 0.2491,
+      "n": 124
+     },
+     "USD_JPY": {
+      "mean_cost_r": 0.2041,
+      "n": 194
+     }
+    },
+    "validation": {
+     "mean_total_cost_r": 0.1983,
+     "mean_r_gross": 0.619,
+     "mean_r_net": 0.4207,
+     "cost_as_pct_of_gross": 32.0,
+     "wr_gross": 0.6617,
+     "wr_net": 0.6316
+    },
+    "by_pair_validation": {
+     "AUD_JPY": {
+      "mean_cost_r": 0.2764,
+      "n": 49
+     },
+     "EUR_JPY": {
+      "mean_cost_r": 0.1842,
+      "n": 6
+     },
+     "GBP_JPY": {
+      "mean_cost_r": 0.1501,
+      "n": 23
+     },
+     "USD_JPY": {
+      "mean_cost_r": 0.1504,
+      "n": 55
+     }
+    },
+    "test": {
+     "mean_total_cost_r": 0.3327,
+     "mean_r_gross": 0.6481,
+     "mean_r_net": 0.3155,
+     "cost_as_pct_of_gross": 51.3,
+     "wr_gross": 0.6529,
+     "wr_net": 0.5941
+    },
+    "by_pair_test": {
+     "AUD_JPY": {
+      "mean_cost_r": 0.368,
+      "n": 46
+     },
+     "EUR_JPY": {
+      "mean_cost_r": 0.2688,
+      "n": 23
+     },
+     "GBP_JPY": {
+      "mean_cost_r": 0.2836,
+      "n": 35
+     },
+     "USD_JPY": {
+      "mean_cost_r": 0.3563,
+      "n": 66
+     }
+    }
+   },
+   "direction": {
+    "train": {
+     "UP": {
+      "n": 289,
+      "mean": 0.2814,
+      "med": 0.3362,
+      "sd": 1.5091,
+      "wr": 0.5917,
+      "payoff": 1.123,
+      "pf": 1.628,
+      "tstat": 3.17,
+      "sum": 81.32
+     },
+     "DOWN": {
+      "n": 235,
+      "mean": 0.3867,
+      "med": 0.5241,
+      "sd": 1.4662,
+      "wr": 0.617,
+      "payoff": 1.201,
+      "pf": 1.935,
+      "tstat": 4.04,
+      "sum": 90.88
+     }
+    },
+    "validation": {
+     "UP": {
+      "n": 22,
+      "mean": 0.2194,
+      "med": 0.3505,
+      "sd": 1.3612,
+      "wr": 0.5909,
+      "payoff": 0.997,
+      "pf": 1.44,
+      "tstat": 0.76,
+      "sum": 4.83
+     },
+     "DOWN": {
+      "n": 111,
+      "mean": 0.4606,
+      "med": 0.4498,
+      "sd": 1.8421,
+      "wr": 0.6396,
+      "payoff": 1.261,
+      "pf": 2.238,
+      "tstat": 2.63,
+      "sum": 51.13
+     }
+    },
+    "test": {
+     "UP": {
+      "n": 75,
+      "mean": 0.1474,
+      "med": 0.286,
+      "sd": 1.742,
+      "wr": 0.5733,
+      "payoff": 0.96,
+      "pf": 1.29,
+      "tstat": 0.73,
+      "sum": 11.05
+     },
+     "DOWN": {
+      "n": 95,
+      "mean": 0.4482,
+      "med": 0.3695,
+      "sd": 1.9012,
+      "wr": 0.6105,
+      "payoff": 1.314,
+      "pf": 2.06,
+      "tstat": 2.3,
+      "sum": 42.58
+     }
+    }
+   },
+   "reentry_gap": {
+    "train": {
+     "1-7d": {
+      "n": 53,
+      "mean": 0.7674,
+      "med": 0.6995,
+      "sd": 1.7717,
+      "wr": 0.6792,
+      "payoff": 1.551,
+      "pf": 3.285,
+      "tstat": 3.15,
+      "sum": 40.67
+     },
+     "2-24h": {
+      "n": 114,
+      "mean": 0.3074,
+      "med": 0.4696,
+      "sd": 1.3766,
+      "wr": 0.6053,
+      "payoff": 1.126,
+      "pf": 1.726,
+      "tstat": 2.38,
+      "sum": 35.04
+     },
+     ">7d": {
+      "n": 67,
+      "mean": 0.7115,
+      "med": 0.6963,
+      "sd": 1.6784,
+      "wr": 0.7164,
+      "payoff": 1.325,
+      "pf": 3.346,
+      "tstat": 3.47,
+      "sum": 47.67
+     },
+     "imm_<2h": {
+      "n": 286,
+      "mean": 0.151,
+      "med": 0.2522,
+      "sd": 1.3946,
+      "wr": 0.5594,
+      "payoff": 1.03,
+      "pf": 1.308,
+      "tstat": 1.83,
+      "sum": 43.19
+     }
+    },
+    "validation": {
+     "1-7d": {
+      "n": 11,
+      "mean": 0.5655,
+      "med": 0.6063,
+      "sd": 1.0693,
+      "wr": 0.8182,
+      "payoff": 0.804,
+      "pf": 3.616,
+      "tstat": 1.75,
+      "sum": 6.22
+     },
+     "2-24h": {
+      "n": 36,
+      "mean": 1.1088,
+      "med": 0.8359,
+      "sd": 1.5952,
+      "wr": 0.8333,
+      "payoff": 1.523,
+      "pf": 7.613,
+      "tstat": 4.17,
+      "sum": 39.92
+     },
+     ">7d": {
+      "n": 21,
+      "mean": -0.2259,
+      "med": -0.8087,
+      "sd": 1.0635,
+      "wr": 0.4286,
+      "payoff": 0.824,
+      "pf": 0.618,
+      "tstat": -0.97,
+      "sum": -4.74
+     },
+     "imm_<2h": {
+      "n": 61,
+      "mean": 0.1986,
+      "med": 0.133,
+      "sd": 2.0834,
+      "wr": 0.5246,
+      "payoff": 1.256,
+      "pf": 1.386,
+      "tstat": 0.74,
+      "sum": 12.12
+     }
+    },
+    "test": {
+     "1-7d": {
+      "n": 11,
+      "mean": 0.3497,
+      "med": 0.8489,
+      "sd": 1.3303,
+      "wr": 0.5455,
+      "payoff": 1.517,
+      "pf": 1.82,
+      "tstat": 0.87,
+      "sum": 3.85
+     },
+     "2-24h": {
+      "n": 40,
+      "mean": 0.3376,
+      "med": 0.4509,
+      "sd": 1.3822,
+      "wr": 0.625,
+      "payoff": 1.147,
+      "pf": 1.912,
+      "tstat": 1.54,
+      "sum": 13.5
+     },
+     ">7d": {
+      "n": 34,
+      "mean": 0.9687,
+      "med": 0.4434,
+      "sd": 2.9856,
+      "wr": 0.7059,
+      "payoff": 1.666,
+      "pf": 3.998,
+      "tstat": 1.89,
+      "sum": 32.94
+     },
+     "imm_<2h": {
+      "n": 81,
+      "mean": -0.0062,
+      "med": 0.1673,
+      "sd": 1.3596,
+      "wr": 0.5309,
+      "payoff": 0.874,
+      "pf": 0.989,
+      "tstat": -0.04,
+      "sum": -0.5
+     }
+    }
+   }
+  },
+  "followups": {
+   "A_payoff_vs_cost": {
+    "train": {
+     "payoff_net": 1.158,
+     "payoff_gross": 1.562,
+     "payoff_halfcost": 1.312,
+     "mean_win_net": 1.262,
+     "mean_loss_net": -1.09,
+     "mean_win_gross": 1.446,
+     "mean_loss_gross": -0.925,
+     "mean_cost_r": 0.2574,
+     "cost_r_p90": 0.4998,
+     "cost_r_max": 1.0654
+    },
+    "validation": {
+     "payoff_net": 1.208,
+     "payoff_gross": 1.499,
+     "payoff_halfcost": 1.345,
+     "mean_win_net": 1.288,
+     "mean_loss_net": -1.066,
+     "mean_win_gross": 1.42,
+     "mean_loss_gross": -0.948,
+     "mean_cost_r": 0.1983,
+     "cost_r_p90": 0.3624,
+     "cost_r_max": 0.751
+    },
+    "test": {
+     "payoff_net": 1.151,
+     "payoff_gross": 1.597,
+     "payoff_halfcost": 1.322,
+     "mean_win_net": 1.306,
+     "mean_loss_net": -1.134,
+     "mean_win_gross": 1.488,
+     "mean_loss_gross": -0.932,
+     "mean_cost_r": 0.3327,
+     "cost_r_p90": 0.6832,
+     "cost_r_max": 1.5359
+    }
+   },
+   "B_reentry": {
+    "train": {
+     "fast_n": 286,
+     "fast_mean": 0.151,
+     "fast_wr": 0.559,
+     "fast_payoff": 1.03,
+     "fast_sumR": 43.19,
+     "slow_n": 234,
+     "slow_mean": 0.5273,
+     "slow_wr": 0.654,
+     "slow_payoff": 1.286,
+     "slow_sumR": 123.39,
+     "first_n": 4,
+     "first_mean": 1.4079,
+     "first_sumR": 5.63,
+     "perm_p_fast_vs_rest": 0.0029,
+     "fast_mean_cost_r": 0.276,
+     "slow_mean_cost_r": 0.2352,
+     "fast_mean_hold_h": 1.27,
+     "slow_mean_hold_h": 1.76
+    },
+    "validation": {
+     "fast_n": 61,
+     "fast_mean": 0.1986,
+     "fast_wr": 0.525,
+     "fast_payoff": 1.256,
+     "fast_sumR": 12.12,
+     "slow_n": 68,
+     "slow_mean": 0.6087,
+     "slow_wr": 0.706,
+     "slow_payoff": 1.244,
+     "slow_sumR": 41.39,
+     "first_n": 4,
+     "first_mean": 0.6114,
+     "first_sumR": 2.45,
+     "perm_p_fast_vs_rest": 0.1856,
+     "fast_mean_cost_r": 0.1929,
+     "slow_mean_cost_r": 0.2029,
+     "fast_mean_hold_h": 0.95,
+     "slow_mean_hold_h": 1.48
+    },
+    "test": {
+     "fast_n": 81,
+     "fast_mean": -0.0062,
+     "fast_wr": 0.531,
+     "fast_payoff": 0.874,
+     "fast_sumR": -0.5,
+     "slow_n": 85,
+     "slow_mean": 0.5916,
+     "slow_wr": 0.647,
+     "slow_payoff": 1.445,
+     "slow_sumR": 50.29,
+     "first_n": 4,
+     "first_mean": 0.9611,
+     "first_sumR": 3.84,
+     "perm_p_fast_vs_rest": 0.0269,
+     "fast_mean_cost_r": 0.3664,
+     "slow_mean_cost_r": 0.3019,
+     "fast_mean_hold_h": 1.22,
+     "slow_mean_hold_h": 1.39
+    },
+    "pooled_val_test": {
+     "fast_n": 142,
+     "fast_mean": 0.0818,
+     "fast_sumR": 11.62,
+     "rest_n": 161,
+     "rest_mean": 0.6085,
+     "rest_sumR": 97.97,
+     "t_welch": -2.57,
+     "p_welch": 0.0105
+    }
+   },
+   "C_vol": {
+    "train": {
+     "lo": {
+      "n": 174,
+      "wr": 0.534,
+      "payoff": 1.453,
+      "mean": 0.3596,
+      "cost_r": 0.4342,
+      "hold_h": 0.58
+     },
+     "mid": {
+      "n": 176,
+      "wr": 0.665,
+      "payoff": 1.053,
+      "mean": 0.3832,
+      "cost_r": 0.2237,
+      "hold_h": 0.75
+     },
+     "hi": {
+      "n": 174,
+      "wr": 0.609,
+      "payoff": 1.022,
+      "mean": 0.2425,
+      "cost_r": 0.1149,
+      "hold_h": 1.08
+     }
+    },
+    "validation": {
+     "lo": {
+      "n": 44,
+      "wr": 0.568,
+      "payoff": 1.441,
+      "mean": 0.4487,
+      "cost_r": 0.3111,
+      "hold_h": 0.67
+     },
+     "mid": {
+      "n": 45,
+      "wr": 0.6,
+      "payoff": 1.235,
+      "mean": 0.3613,
+      "cost_r": 0.1846,
+      "hold_h": 0.58
+     },
+     "hi": {
+      "n": 44,
+      "wr": 0.727,
+      "payoff": 1.046,
+      "mean": 0.4534,
+      "cost_r": 0.0996,
+      "hold_h": 0.83
+     }
+    },
+    "test": {
+     "lo": {
+      "n": 57,
+      "wr": 0.491,
+      "payoff": 1.483,
+      "mean": 0.2642,
+      "cost_r": 0.6144,
+      "hold_h": 0.5
+     },
+     "mid": {
+      "n": 56,
+      "wr": 0.679,
+      "payoff": 1.141,
+      "mean": 0.488,
+      "cost_r": 0.2529,
+      "hold_h": 0.83
+     },
+     "hi": {
+      "n": 57,
+      "wr": 0.614,
+      "payoff": 0.923,
+      "mean": 0.1973,
+      "cost_r": 0.1293,
+      "hold_h": 1.0
+     }
+    }
+   },
+   "D_tail": {
+    "train": {
+     "drop_top1_mean": 0.317,
+     "drop_top3_mean": 0.2945,
+     "drop_top5_mean": 0.2733,
+     "drop_top10_mean": 0.228,
+     "mean": 0.3286,
+     "n": 524,
+     "n_months": 17,
+     "pos_months": 12,
+     "best_month_share": 0.189,
+     "sumR_ex_best_month": 139.68
+    },
+    "validation": {
+     "drop_top1_mean": 0.3336,
+     "drop_top3_mean": 0.2362,
+     "drop_top5_mean": 0.172,
+     "drop_top10_mean": 0.0697,
+     "mean": 0.4207,
+     "n": 133,
+     "n_months": 8,
+     "pos_months": 5,
+     "best_month_share": 0.385,
+     "sumR_ex_best_month": 34.4
+    },
+    "test": {
+     "drop_top1_mean": 0.2416,
+     "drop_top3_mean": 0.1552,
+     "drop_top5_mean": 0.1105,
+     "drop_top10_mean": 0.0207,
+     "mean": 0.3155,
+     "n": 170,
+     "n_months": 9,
+     "pos_months": 7,
+     "best_month_share": 0.442,
+     "sumR_ex_best_month": 29.92
+    }
+   },
+   "E_direction": {
+    "train": {
+     "AUD_JPY": {
+      "UP": 69,
+      "DOWN": 19
+     },
+     "EUR_JPY": {
+      "UP": 60,
+      "DOWN": 58
+     },
+     "GBP_JPY": {
+      "UP": 66,
+      "DOWN": 58
+     },
+     "USD_JPY": {
+      "UP": 94,
+      "DOWN": 100
+     },
+     "_total": {
+      "UP": 289,
+      "DOWN": 235
+     }
+    },
+    "validation": {
+     "AUD_JPY": {
+      "UP": 7,
+      "DOWN": 42
+     },
+     "EUR_JPY": {
+      "UP": 0,
+      "DOWN": 6
+     },
+     "GBP_JPY": {
+      "UP": 2,
+      "DOWN": 21
+     },
+     "USD_JPY": {
+      "UP": 13,
+      "DOWN": 42
+     },
+     "_total": {
+      "UP": 22,
+      "DOWN": 111
+     }
+    },
+    "test": {
+     "AUD_JPY": {
+      "UP": 14,
+      "DOWN": 32
+     },
+     "EUR_JPY": {
+      "UP": 10,
+      "DOWN": 13
+     },
+     "GBP_JPY": {
+      "UP": 17,
+      "DOWN": 18
+     },
+     "USD_JPY": {
+      "UP": 34,
+      "DOWN": 32
+     },
+     "_total": {
+      "UP": 75,
+      "DOWN": 95
+     }
+    }
+   },
+   "F_maxt": {
+    "weekday": {
+     "train": {
+      "obs_max_dev": 0.3944,
+      "maxt_p": 0.2787
+     },
+     "validation": {
+      "obs_max_dev": 0.8429,
+      "maxt_p": 0.0482
+     },
+     "test": {
+      "obs_max_dev": 0.5746,
+      "maxt_p": 0.3357
+     }
+    },
+    "session": {
+     "train": {
+      "obs_max_dev": 0.394,
+      "maxt_p": 0.4091
+     },
+     "validation": {
+      "obs_max_dev": 0.5039,
+      "maxt_p": 0.4631
+     },
+     "test": {
+      "obs_max_dev": 0.5239,
+      "maxt_p": 0.3793
+     }
+    },
+    "reentry_gap": {
+     "train": null,
+     "validation": null,
+     "test": null
+    }
+   },
+   "G_leverage": {
+    "train": {
+     "mean": 1249.5,
+     "med": 1074.5,
+     "p90": 2235.2,
+     "max": 5441.5,
+     "n_capped": 40,
+     "frac_over_25x": 1.0
+    },
+    "validation": {
+     "mean": 838.1,
+     "med": 751.3,
+     "p90": 1476.1,
+     "max": 2421.8,
+     "n_capped": 0,
+     "frac_over_25x": 1.0
+    },
+    "test": {
+     "mean": 1702.5,
+     "med": 1250.3,
+     "p90": 3510.0,
+     "max": 8957.8,
+     "n_capped": 30,
+     "frac_over_25x": 1.0
+    }
+   }
+  },
+  "cost_and_drift": {
+   "lev_actual": {
+    "train": {
+     "med": 10.74,
+     "p90": 22.35,
+     "max": 25.0,
+     "frac_at_cap": 0.076,
+     "note": "actual_leverage = effective_risk_pct * leverage_ratio (leverage_ratio field is notional-per-risk-dollar, NOT notional/equity)"
+    },
+    "validation": {
+     "med": 7.51,
+     "p90": 14.76,
+     "max": 24.22,
+     "frac_at_cap": 0.0,
+     "note": "actual_leverage = effective_risk_pct * leverage_ratio (leverage_ratio field is notional-per-risk-dollar, NOT notional/equity)"
+    },
+    "test": {
+     "med": 12.5,
+     "p90": 25.0,
+     "max": 25.0,
+     "frac_at_cap": 0.176,
+     "note": "actual_leverage = effective_risk_pct * leverage_ratio (leverage_ratio field is notional-per-risk-dollar, NOT notional/equity)"
+    }
+   },
+   "cost_sensitivity": {
+    "train": {
+     "x0.0": {
+      "mean": 0.5861,
+      "wr": 0.637,
+      "payoff": 1.562,
+      "pf": 2.746,
+      "t": 8.95
+     },
+     "x0.5": {
+      "mean": 0.4574,
+      "wr": 0.626,
+      "payoff": 1.312,
+      "pf": 2.196,
+      "t": 7.02
+     },
+     "x1.0": {
+      "mean": 0.3286,
+      "wr": 0.603,
+      "payoff": 1.158,
+      "pf": 1.76,
+      "t": 5.05
+     },
+     "x1.25": {
+      "mean": 0.2643,
+      "wr": 0.595,
+      "payoff": 1.07,
+      "pf": 1.575,
+      "t": 4.06
+     },
+     "x1.5": {
+      "mean": 0.1999,
+      "wr": 0.574,
+      "payoff": 1.044,
+      "pf": 1.409,
+      "t": 3.07
+     },
+     "x2.0": {
+      "mean": 0.0712,
+      "wr": 0.536,
+      "payoff": 0.976,
+      "pf": 1.129,
+      "t": 1.09
+     }
+    },
+    "validation": {
+     "x0.0": {
+      "mean": 0.619,
+      "wr": 0.662,
+      "payoff": 1.499,
+      "pf": 2.931,
+      "t": 3.97
+     },
+     "x0.5": {
+      "mean": 0.5199,
+      "wr": 0.647,
+      "payoff": 1.345,
+      "pf": 2.462,
+      "t": 3.36
+     },
+     "x1.0": {
+      "mean": 0.4207,
+      "wr": 0.632,
+      "payoff": 1.208,
+      "pf": 2.071,
+      "t": 2.74
+     },
+     "x1.25": {
+      "mean": 0.3711,
+      "wr": 0.632,
+      "payoff": 1.109,
+      "pf": 1.901,
+      "t": 2.43
+     },
+     "x1.5": {
+      "mean": 0.3216,
+      "wr": 0.632,
+      "payoff": 1.019,
+      "pf": 1.747,
+      "t": 2.11
+     },
+     "x2.0": {
+      "mean": 0.2224,
+      "wr": 0.602,
+      "payoff": 0.976,
+      "pf": 1.473,
+      "t": 1.47
+     }
+    },
+    "test": {
+     "x0.0": {
+      "mean": 0.6481,
+      "wr": 0.653,
+      "payoff": 1.597,
+      "pf": 3.004,
+      "t": 4.58
+     },
+     "x0.5": {
+      "mean": 0.4818,
+      "wr": 0.629,
+      "payoff": 1.322,
+      "pf": 2.245,
+      "t": 3.42
+     },
+     "x1.0": {
+      "mean": 0.3155,
+      "wr": 0.594,
+      "payoff": 1.151,
+      "pf": 1.685,
+      "t": 2.24
+     },
+     "x1.25": {
+      "mean": 0.2323,
+      "wr": 0.582,
+      "payoff": 1.05,
+      "pf": 1.465,
+      "t": 1.65
+     },
+     "x1.5": {
+      "mean": 0.1492,
+      "wr": 0.553,
+      "payoff": 1.031,
+      "pf": 1.275,
+      "t": 1.06
+     },
+     "x2.0": {
+      "mean": -0.0172,
+      "wr": 0.494,
+      "payoff": 0.996,
+      "pf": 0.973,
+      "t": -0.12
+     }
+    }
+   },
+   "monthly": [
+    {
+     "m": "2023-11",
+     "n": 55,
+     "rel_risk_bp": 10.03,
+     "cost_r": 0.298,
+     "r_net": 0.222,
+     "sumR": 12.2,
+     "hold_med_h": 0.75
+    },
+    {
+     "m": "2023-12",
+     "n": 30,
+     "rel_risk_bp": 14.29,
+     "cost_r": 0.22,
+     "r_net": 0.521,
+     "sumR": 15.62,
+     "hold_med_h": 0.83
+    },
+    {
+     "m": "2024-01",
+     "n": 10,
+     "rel_risk_bp": 16.86,
+     "cost_r": 0.153,
+     "r_net": -0.067,
+     "sumR": -0.67,
+     "hold_med_h": 0.54
+    },
+    {
+     "m": "2024-02",
+     "n": 21,
+     "rel_risk_bp": 10.01,
+     "cost_r": 0.247,
+     "r_net": 0.261,
+     "sumR": 5.49,
+     "hold_med_h": 1.17
+    },
+    {
+     "m": "2024-03",
+     "n": 60,
+     "rel_risk_bp": 8.82,
+     "cost_r": 0.344,
+     "r_net": 0.421,
+     "sumR": 25.28,
+     "hold_med_h": 1.0
+    },
+    {
+     "m": "2024-04",
+     "n": 80,
+     "rel_risk_bp": 8.27,
+     "cost_r": 0.329,
+     "r_net": 0.407,
+     "sumR": 32.53,
+     "hold_med_h": 0.83
+    },
+    {
+     "m": "2024-05",
+     "n": 30,
+     "rel_risk_bp": 10.4,
+     "cost_r": 0.278,
+     "r_net": 0.319,
+     "sumR": 9.58,
+     "hold_med_h": 0.67
+    },
+    {
+     "m": "2024-06",
+     "n": 17,
+     "rel_risk_bp": 8.88,
+     "cost_r": 0.406,
+     "r_net": -0.07,
+     "sumR": -1.19,
+     "hold_med_h": 0.67
+    },
+    {
+     "m": "2024-07",
+     "n": 64,
+     "rel_risk_bp": 15.02,
+     "cost_r": 0.182,
+     "r_net": 0.482,
+     "sumR": 30.84,
+     "hold_med_h": 0.67
+    },
+    {
+     "m": "2024-08",
+     "n": 30,
+     "rel_risk_bp": 15.63,
+     "cost_r": 0.205,
+     "r_net": 0.308,
+     "sumR": 9.25,
+     "hold_med_h": 0.83
+    },
+    {
+     "m": "2024-09",
+     "n": 18,
+     "rel_risk_bp": 14.27,
+     "cost_r": 0.179,
+     "r_net": 0.912,
+     "sumR": 16.42,
+     "hold_med_h": 0.67
+    },
+    {
+     "m": "2024-10",
+     "n": 8,
+     "rel_risk_bp": 14.56,
+     "cost_r": 0.154,
+     "r_net": -0.145,
+     "sumR": -1.16,
+     "hold_med_h": 1.33
+    },
+    {
+     "m": "2024-11",
+     "n": 15,
+     "rel_risk_bp": 14.71,
+     "cost_r": 0.161,
+     "r_net": -0.013,
+     "sumR": -0.2,
+     "hold_med_h": 0.58
+    },
+    {
+     "m": "2024-12",
+     "n": 35,
+     "rel_risk_bp": 9.9,
+     "cost_r": 0.272,
+     "r_net": 0.189,
+     "sumR": 6.6,
+     "hold_med_h": 0.58
+    },
+    {
+     "m": "2025-01",
+     "n": 23,
+     "rel_risk_bp": 17.15,
+     "cost_r": 0.173,
+     "r_net": 0.492,
+     "sumR": 11.31,
+     "hold_med_h": 0.58
+    },
+    {
+     "m": "2025-02",
+     "n": 18,
+     "rel_risk_bp": 15.95,
+     "cost_r": 0.181,
+     "r_net": -0.156,
+     "sumR": -2.8,
+     "hold_med_h": 0.58
+    },
+    {
+     "m": "2025-03",
+     "n": 10,
+     "rel_risk_bp": 17.8,
+     "cost_r": 0.166,
+     "r_net": 0.312,
+     "sumR": 3.12,
+     "hold_med_h": 1.12
+    },
+    {
+     "m": "2025-04",
+     "n": 45,
+     "rel_risk_bp": 20.73,
+     "cost_r": 0.147,
+     "r_net": 0.479,
+     "sumR": 21.56,
+     "hold_med_h": 0.67
+    },
+    {
+     "m": "2025-05",
+     "n": 14,
+     "rel_risk_bp": 16.49,
+     "cost_r": 0.222,
+     "r_net": -0.169,
+     "sumR": -2.36,
+     "hold_med_h": 0.88
+    },
+    {
+     "m": "2025-06",
+     "n": 17,
+     "rel_risk_bp": 11.01,
+     "cost_r": 0.265,
+     "r_net": 0.799,
+     "sumR": 13.58,
+     "hold_med_h": 0.67
+    },
+    {
+     "m": "2025-07",
+     "n": 4,
+     "rel_risk_bp": 20.07,
+     "cost_r": 0.203,
+     "r_net": -1.203,
+     "sumR": -4.81,
+     "hold_med_h": 5.96
+    },
+    {
+     "m": "2025-08",
+     "n": 10,
+     "rel_risk_bp": 14.6,
+     "cost_r": 0.188,
+     "r_net": 0.555,
+     "sumR": 5.55,
+     "hold_med_h": 0.67
+    },
+    {
+     "m": "2025-09",
+     "n": 23,
+     "rel_risk_bp": 13.06,
+     "cost_r": 0.188,
+     "r_net": 0.071,
+     "sumR": 1.64,
+     "hold_med_h": 0.67
+    },
+    {
+     "m": "2025-10",
+     "n": 16,
+     "rel_risk_bp": 13.17,
+     "cost_r": 0.278,
+     "r_net": 1.33,
+     "sumR": 21.28,
+     "hold_med_h": 0.67
+    },
+    {
+     "m": "2025-11",
+     "n": 4,
+     "rel_risk_bp": 15.36,
+     "cost_r": 0.167,
+     "r_net": -0.12,
+     "sumR": -0.48,
+     "hold_med_h": 0.38
+    },
+    {
+     "m": "2025-12",
+     "n": 1,
+     "rel_risk_bp": 7.42,
+     "cost_r": 0.24,
+     "r_net": -1.24,
+     "sumR": -1.24,
+     "hold_med_h": 1.08
+    },
+    {
+     "m": "2026-01",
+     "n": 13,
+     "rel_risk_bp": 19.19,
+     "cost_r": 0.133,
+     "r_net": 0.396,
+     "sumR": 5.15,
+     "hold_med_h": 0.83
+    },
+    {
+     "m": "2026-02",
+     "n": 39,
+     "rel_risk_bp": 9.73,
+     "cost_r": 0.287,
+     "r_net": 0.114,
+     "sumR": 4.45,
+     "hold_med_h": 0.67
+    },
+    {
+     "m": "2026-03",
+     "n": 10,
+     "rel_risk_bp": 20.25,
+     "cost_r": 0.133,
+     "r_net": 0.339,
+     "sumR": 3.39,
+     "hold_med_h": 0.96
+    },
+    {
+     "m": "2026-04",
+     "n": 11,
+     "rel_risk_bp": 11.84,
+     "cost_r": 0.183,
+     "r_net": 1.32,
+     "sumR": 14.52,
+     "hold_med_h": 0.67
+    },
+    {
+     "m": "2026-05",
+     "n": 22,
+     "rel_risk_bp": 7.09,
+     "cost_r": 0.41,
+     "r_net": -0.062,
+     "sumR": -1.35,
+     "hold_med_h": 0.67
+    },
+    {
+     "m": "2026-06",
+     "n": 44,
+     "rel_risk_bp": 6.02,
+     "cost_r": 0.498,
+     "r_net": 0.539,
+     "sumR": 23.71,
+     "hold_med_h": 0.92
+    },
+    {
+     "m": "2026-07",
+     "n": 22,
+     "rel_risk_bp": 7.69,
+     "cost_r": 0.313,
+     "r_net": 0.053,
+     "sumR": 1.16,
+     "hold_med_h": 0.58
+    },
+    {
+     "m": "2026-08",
+     "n": 8,
+     "rel_risk_bp": 20.05,
+     "cost_r": 0.279,
+     "r_net": 0.481,
+     "sumR": 3.85,
+     "hold_med_h": 0.62
+    }
+   ],
+   "time_trend": {
+    "cost_tot": {
+     "spearman_rho": -0.0453,
+     "p": 0.193
+    },
+    "rel_risk": {
+     "spearman_rho": 0.059,
+     "p": 0.0899
+    },
+    "hold_h": {
+     "spearman_rho": -0.0592,
+     "p": 0.0891
+    }
+   },
+   "freq": {
+    "train": {
+     "n": 524,
+     "span_days": 503,
+     "trades_per_month": 31.7,
+     "sr_per_trade": 0.2206,
+     "ann_sharpe_naive": 4.3
+    },
+    "validation": {
+     "n": 133,
+     "span_days": 225,
+     "trades_per_month": 18.0,
+     "sr_per_trade": 0.2378,
+     "ann_sharpe_naive": 3.49
+    },
+    "test": {
+     "n": 170,
+     "span_days": 226,
+     "trades_per_month": 22.9,
+     "sr_per_trade": 0.1721,
+     "ann_sharpe_naive": 2.85
+    }
+   }
+  },
+  "r_distribution_shape": {
+   "rnet_bins": {
+    "train": {
+     "a_full_stop<=-1R": {
+      "n": 174,
+      "frac": 0.332,
+      "sumR": -217.64,
+      "share_of_totR": -1.264
+     },
+     "b_-1..-0.2R": {
+      "n": 21,
+      "frac": 0.04,
+      "sumR": -8.16,
+      "share_of_totR": -0.047
+     },
+     "c_breakeven+-0.2R": {
+      "n": 31,
+      "frac": 0.059,
+      "sumR": 1.21,
+      "share_of_totR": 0.007
+     },
+     "d_0.2..1R": {
+      "n": 166,
+      "frac": 0.317,
+      "sumR": 101.15,
+      "share_of_totR": 0.587
+     },
+     "e_1..2R": {
+      "n": 74,
+      "frac": 0.141,
+      "sumR": 103.97,
+      "share_of_totR": 0.604
+     },
+     "f_2..3R": {
+      "n": 34,
+      "frac": 0.065,
+      "sumR": 85.82,
+      "share_of_totR": 0.498
+     },
+     "g_>3R": {
+      "n": 24,
+      "frac": 0.046,
+      "sumR": 105.85,
+      "share_of_totR": 0.615
+     }
+    },
+    "validation": {
+     "a_full_stop<=-1R": {
+      "n": 42,
+      "frac": 0.316,
+      "sumR": -50.4,
+      "share_of_totR": -0.901
+     },
+     "b_-1..-0.2R": {
+      "n": 3,
+      "frac": 0.023,
+      "sumR": -1.5,
+      "share_of_totR": -0.027
+     },
+     "c_breakeven+-0.2R": {
+      "n": 9,
+      "frac": 0.068,
+      "sumR": 0.38,
+      "share_of_totR": 0.007
+     },
+     "d_0.2..1R": {
+      "n": 45,
+      "frac": 0.338,
+      "sumR": 26.17,
+      "share_of_totR": 0.468
+     },
+     "e_1..2R": {
+      "n": 22,
+      "frac": 0.165,
+      "sumR": 29.85,
+      "share_of_totR": 0.533
+     },
+     "f_2..3R": {
+      "n": 6,
+      "frac": 0.045,
+      "sumR": 13.89,
+      "share_of_totR": 0.248
+     },
+     "g_>3R": {
+      "n": 6,
+      "frac": 0.045,
+      "sumR": 37.56,
+      "share_of_totR": 0.671
+     }
+    },
+    "test": {
+     "a_full_stop<=-1R": {
+      "n": 54,
+      "frac": 0.318,
+      "sumR": -72.8,
+      "share_of_totR": -1.357
+     },
+     "b_-1..-0.2R": {
+      "n": 9,
+      "frac": 0.053,
+      "sumR": -4.89,
+      "share_of_totR": -0.091
+     },
+     "c_breakeven+-0.2R": {
+      "n": 13,
+      "frac": 0.076,
+      "sumR": 0.4,
+      "share_of_totR": 0.008
+     },
+     "d_0.2..1R": {
+      "n": 55,
+      "frac": 0.324,
+      "sumR": 32.41,
+      "share_of_totR": 0.604
+     },
+     "e_1..2R": {
+      "n": 20,
+      "frac": 0.118,
+      "sumR": 28.45,
+      "share_of_totR": 0.53
+     },
+     "f_2..3R": {
+      "n": 11,
+      "frac": 0.065,
+      "sumR": 25.18,
+      "share_of_totR": 0.47
+     },
+     "g_>3R": {
+      "n": 8,
+      "frac": 0.047,
+      "sumR": 44.89,
+      "share_of_totR": 0.837
+     }
+    }
+   },
+   "winner_shape": {
+    "train": {
+     "n_win": 316,
+     "med_win": 0.835,
+     "frac_wins_below_1R": 0.582,
+     "frac_wins_below_1R_of_all": 0.351,
+     "frac_all_ge_2R": 0.111
+    },
+    "validation": {
+     "n_win": 84,
+     "med_win": 0.821,
+     "frac_wins_below_1R": 0.595,
+     "frac_wins_below_1R_of_all": 0.376,
+     "frac_all_ge_2R": 0.09
+    },
+    "test": {
+     "n_win": 101,
+     "med_win": 0.786,
+     "frac_wins_below_1R": 0.614,
+     "frac_wins_below_1R_of_all": 0.365,
+     "frac_all_ge_2R": 0.112
+    }
+   },
+   "breakeven_exits": {
+    "train": {
+     "n": 17,
+     "frac": 0.032,
+     "mean_rnet": -0.337,
+     "sumR": -5.72
+    },
+    "validation": {
+     "n": 5,
+     "frac": 0.038,
+     "mean_rnet": -0.194,
+     "sumR": -0.97
+    },
+    "test": {
+     "n": 4,
+     "frac": 0.024,
+     "mean_rnet": -0.416,
+     "sumR": -1.66
+    }
+   },
+   "big_trade_dependence": {
+    "train": {
+     "n_ge2R": 58,
+     "frac": 0.111,
+     "sumR_ge2R": 191.67,
+     "share": 1.113,
+     "mean_rest": -0.0418
+    },
+    "validation": {
+     "n_ge2R": 12,
+     "frac": 0.09,
+     "sumR_ge2R": 51.45,
+     "share": 0.919,
+     "mean_rest": 0.0372
+    },
+    "test": {
+     "n_ge2R": 19,
+     "frac": 0.112,
+     "sumR_ge2R": 70.07,
+     "share": 1.307,
+     "mean_rest": -0.1089
+    }
+   }
+  }
+ }
+}
