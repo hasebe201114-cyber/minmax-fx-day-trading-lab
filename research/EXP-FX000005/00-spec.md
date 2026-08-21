@@ -468,3 +468,41 @@ T-09対応により、C査読の懸念（コストモデルの楽観バイアス
 
 ### 総括
 T-06+T-07により、統計的検定・実効n算出の構造的欠陥(F2・二重計上)は是正された。Train+Validation合計KPIは11/20へ小幅改善したが、依然として全期間でpermutation有意性は未達であり、Validationのmin_n_trades_effectiveも未達のまま。**採否判断は依然保留のまま。** 引き続きC査読の差し戻し優先順に従い、T-13(出口設計の方向性)を司令塔に確認する。
+
+## 通貨別均質性の検証（2026-08-21、C査読の新規指摘対応）
+
+### 背景
+C査読(`research/EXP-FX000005/20-c-review.md`)が独立集計で発見: 「Validation期間でEUR/JPYはn=6件しかなく勝率100%・mean_r=0.748と際立って良いが、サンプルサイズが極端に小さいことに起因する可能性がある。GBP/JPYはValidation期間でn=23件・勝率56.5%・mean_r=0.0625とほぼ横ばい。4通貨に一様なエッジがあるという前提に疑義がある」。
+
+### 方法
+`scripts/analyze_currency_homogeneity.py`。現行最良候補(T-01〜T-03+T-09+T-06/T-07)の全トレード明細を対象に、(1) 通貨別のn・勝率・mean_r_net・sum_r_netを期間ごとに再集計、(2) leave-one-pair-out分析(各通貨を1つずつ除外して残り3通貨の合計損益がALLの何%を維持するか)で特定通貨への依存度を定量化した。leave-one-pair-outは既存トレード明細の事後的な再集計であり、対象通貨を除いた状態で戦略(価格反応型ショック抑制フィルターの同時ブレイク判定は対象通貨集合に依存する)を再実行したものではない近似値である点に留意。
+
+### 結果
+
+| 期間 | 除外通貨 | 残存sum_r(ALL比) |
+|---|---|---|
+| Train | USD/JPY | 67.8% |
+| Train | EUR/JPY | 65.6% |
+| Train | GBP/JPY | 71.7% |
+| Train | AUD/JPY | 94.9% |
+| Validation | USD/JPY | 62.9% |
+| Validation | EUR/JPY | **89.2%** |
+| Validation | GBP/JPY | 98.0% |
+| Validation | AUD/JPY | **49.9%** |
+| Test | USD/JPY | **37.7%** |
+| Test | EUR/JPY | 99.3% |
+| Test | GBP/JPY | 84.2% |
+| Test | AUD/JPY | 78.8% |
+
+出力: `research/method-notes/currency_homogeneity.json`
+
+### 解釈
+
+**Trainは4通貨とも均質に寄与しており、特定通貨への依存はない**（どの1通貨を除いても65.6%以上が残存）。AUD/JPYの寄与は相対的に小さい（sum_r=6.99、ALL比5.1%）が、除外時にmean_r_netはむしろ改善するため足を引っ張ってもいない。
+
+**C査読が懸念したEUR/JPYのValidation依存は、独自の再検証では裏付けられなかった。** EUR/JPYを除外してもValidationの合計損益は89.2%残存し（除外時mean_r_netはむしろ0.2768→0.2577とわずかな低下に留まる）、n=6・勝率100%という際立った数字自体は事実だが、Validation全体の結論を左右するほどの寄与ではない。GBP/JPYも同様に、C査読が「ほぼ横ばい」と指摘した通り単体では最も弱い（mean_r=0.0344）が、そもそも寄与が小さい（sum_r=0.79、ALL比2%）ため、除外してもValidationの結論(98.0%残存)は変わらない。
+
+**一方、C査読が指摘しなかった、より重要な集中リスクを新たに発見した: TestはUSD/JPYへの依存度が高い。** USD/JPYを除外するとTestの合計損益は37.7%まで減少する(sum_r 34.20→12.88)。Validationも同様にAUD/JPY除外で49.9%まで減少し、USD/JPY除外でも62.9%までしか残らない。**Validation・Testはいずれも、特定の1〜2通貨(Validation: AUD/JPY・USD/JPY、Test: USD/JPY)への依存度がTrainより明確に高く、「4通貨に一様なエッジがある」という前提はTrain以外では成立していない。**
+
+### 総括
+C査読が名指ししたEUR/JPY・GBP/JPYへの依存疑義は、独自の再検証では確認されなかった（誤検知として棄却）。しかし均質性そのものへの疑義は正しく、**より深刻な形（Validation: AUD/JPY・USD/JPY集中、Test: USD/JPY集中）で存在する**ことが新たに判明した。これは通貨ペア拡大(T-14)の必要性を追加で裏付ける結果であり、現行4通貨構成のまま採用GOを出すことには慎重であるべきという結論を補強する。**採否判断は依然保留のまま。**
