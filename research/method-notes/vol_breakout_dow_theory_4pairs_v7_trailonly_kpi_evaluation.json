@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-21T11:38:33.314113",
+  "generated_at": "2026-08-21T14:07:29.265917",
   "selected_pairs": [
     "USD_JPY",
     "EUR_JPY",
@@ -29,6 +29,7 @@
       "profit_factor": 1.651,
       "payoff_ratio": 1.087,
       "max_consecutive_losses": 6,
+      "k3m_scale_invariant": null,
       "monthly_expectancy_positive": true,
       "spread_cost_multiplier": 2.28,
       "n_trades_effective": 524.0,
@@ -57,6 +58,7 @@
       "profit_factor": 2.023,
       "payoff_ratio": 1.18,
       "max_consecutive_losses": 4,
+      "k3m_scale_invariant": null,
       "monthly_expectancy_positive": true,
       "spread_cost_multiplier": 3.12,
       "n_trades_effective": 133.0,
@@ -85,6 +87,7 @@
       "profit_factor": 1.66,
       "payoff_ratio": 1.134,
       "max_consecutive_losses": 6,
+      "k3m_scale_invariant": null,
       "monthly_expectancy_positive": true,
       "spread_cost_multiplier": 1.95,
       "n_trades_effective": 170.0,

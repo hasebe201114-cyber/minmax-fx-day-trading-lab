@@ -23,6 +23,11 @@ SYS-FX007〜010がリターン数%〜十数%程度に留まっていたため表
 `peak_relative_monthly_max_dd_pct`)を正式判定に使用し、初期資金比の数値は
 参考として並記する。
 
+2026-08-21(T-10対応): 上記2関数は元は本スクリプトにローカル実装されていたが、
+「固定ロット=初期資金比DD、複利サイジング=ピーク比DD」という全SYS共通の
+恒久ルール(`PJ000004-基本データ層と検証プロセス定義.md`「Q9」)として
+`minmax_fx_dt.backtest.metrics`へ昇格した。本スクリプトはそちらをimportする。
+
 出力: research/method-notes/vol_breakout_dow_theory_kpi_evaluation.json
 """
 
@@ -37,31 +42,13 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 sys.path.insert(0, str(SRC))
 
-import numpy as np
 import pandas as pd
 
 from minmax_fx_dt.backtest.metrics import (
-    max_drawdown, monthly_max_dd_pct, monthly_sharpe, payoff_ratio, profit_factor,
+    max_drawdown, monthly_max_dd_pct, monthly_sharpe, payoff_ratio,
+    peak_relative_max_dd_pct, peak_relative_monthly_max_dd_pct, profit_factor,
 )
 from minmax_fx_dt.decision.criteria import compute_k3m_scale_invariant, compute_n_trades_effective
-
-
-def peak_relative_dd_series(eq_curve: pd.DataFrame) -> pd.Series:
-    """各時点の直近ピークからの下落率(%)を返す(複利サイジング戦略向け)."""
-    eq = eq_curve.set_index("timestamp")["equity"]
-    running_max = eq.cummax()
-    return (running_max - eq) / running_max * 100.0
-
-
-def peak_relative_max_dd_pct(eq_curve: pd.DataFrame) -> float:
-    dd = peak_relative_dd_series(eq_curve)
-    return float(dd.max()) if len(dd) > 0 else 0.0
-
-
-def peak_relative_monthly_max_dd_pct(eq_curve: pd.DataFrame) -> float:
-    dd = peak_relative_dd_series(eq_curve)
-    monthly_max = dd.resample("ME").max().dropna()
-    return float(monthly_max.max()) if len(monthly_max) > 0 else 0.0
 
 # 00-spec.md のKPI閾値
 KPI_THRESHOLDS = {

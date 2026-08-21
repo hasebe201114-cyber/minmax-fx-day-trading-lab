@@ -118,7 +118,15 @@ def profit_factor(trade_pnls: list[float]) -> float:
 
 
 def max_drawdown(equity_curve: pd.DataFrame) -> tuple[float, float]:
-    """最大 DD を計算 (JPY と %)."""
+    """最大 DD を計算 (JPY と、初期資金比の%).
+
+    DD定義ルール(2026-08-21、外部レビューT-10対応。恒久ルール、
+    `PJ000004-基本データ層と検証プロセス定義.md`「Q9」参照): **固定ロット
+    サイジング(残高に依存せず1トレードのリスク量が一定)の戦略にのみ使う。**
+    複利サイジング(残高の一定%をリスクに充てる)の戦略はリスク量自体が残高に
+    比例して変動するため、この関数ではなく`peak_relative_max_dd_pct()`を使うこと。
+    SYS-FX007〜010は固定ロット方式のためこの関数が正しい定義（過去判定の
+    遡及的な再評価は不要と2026-08-21に確認済み）。"""
     if len(equity_curve) < 2:
         return 0.0, 0.0
     eq = equity_curve["equity"].to_numpy()
@@ -131,7 +139,8 @@ def max_drawdown(equity_curve: pd.DataFrame) -> tuple[float, float]:
 
 
 def monthly_max_dd_pct(equity_curve: pd.DataFrame, initial_cash: float) -> float:
-    """月次の最大 DD (証拠金 %)."""
+    """月次の最大 DD (初期資金比の%)。`max_drawdown()`と同じ適用条件
+    (固定ロットサイジングのみ、DD定義ルールはそちらのdocstring参照)。"""
     if len(equity_curve) < 2:
         return 0.0
     eq = equity_curve.set_index("timestamp")["equity"]
@@ -143,6 +152,36 @@ def monthly_max_dd_pct(equity_curve: pd.DataFrame, initial_cash: float) -> float
         dd = (prev_max - mmax) / initial_cash * 100.0
         monthly_dd.append(dd)
     return float(max(monthly_dd)) if monthly_dd else 0.0
+
+
+def peak_relative_max_dd_pct(equity_curve: pd.DataFrame) -> float:
+    """最大DD(直近ピーク比の%)。複利サイジング戦略向け(DD定義ルールは
+    `max_drawdown()`のdocstring参照)。SYS-FX011(EXP-FX000005)で
+    `risk_pct_per_trade`(残高の1%)による複利サイジングを採用した際、初期
+    資金比では複利成長後の変動を実態より過大に見せてしまう問題が発覚し
+    (2026-08-20、司令塔指摘)、`scripts/evaluate_vol_breakout_dow_theory_kpi.py`
+    に一時的にローカル実装されていたものを、T-10対応(2026-08-21)で全SYS共通
+    のこのモジュールへ昇格した。
+
+    `equity_curve`は`timestamp`・`equity`列を持つDataFrameを想定する。"""
+    if len(equity_curve) < 2:
+        return 0.0
+    eq = equity_curve.set_index("timestamp")["equity"]
+    running_max = eq.cummax()
+    dd = (running_max - eq) / running_max * 100.0
+    return float(dd.max()) if len(dd) > 0 else 0.0
+
+
+def peak_relative_monthly_max_dd_pct(equity_curve: pd.DataFrame) -> float:
+    """月次の最大DD(直近ピーク比の%)。複利サイジング戦略向け(`peak_relative_max_dd_pct()`
+    参照)。"""
+    if len(equity_curve) < 2:
+        return 0.0
+    eq = equity_curve.set_index("timestamp")["equity"]
+    running_max = eq.cummax()
+    dd = (running_max - eq) / running_max * 100.0
+    monthly_max = dd.resample("ME").max().dropna()
+    return float(monthly_max.max()) if len(monthly_max) > 0 else 0.0
 
 
 def payoff_ratio(trade_pnls: list[float]) -> float:
@@ -300,6 +339,8 @@ __all__ = [
     "profit_factor",
     "max_drawdown",
     "monthly_max_dd_pct",
+    "peak_relative_max_dd_pct",
+    "peak_relative_monthly_max_dd_pct",
     "payoff_ratio",
     "compute_metrics",
     "to_dict",

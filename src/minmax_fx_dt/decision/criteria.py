@@ -355,7 +355,12 @@ def evaluate_kpis(stats: Stats) -> list[KPIEvaluation]:
         )
     )
 
-    # K2m: 月間 DD
+    # K2m: 月間 DD (2026-08-21 T-10対応: DD定義ルールは
+    # `backtest.metrics.max_drawdown()`のdocstring・`PJ000004`「Q9」参照。
+    # 固定ロットサイジングの戦略はこのまま`stats`に初期資金比の値を渡す。
+    # 複利サイジングの戦略は呼び出し側で`peak_relative_max_dd_pct()`系の値を
+    # 算出してから`max_dd_monthly_pct`にセットすること(この関数自体は
+    # どちらの定義で計算された値が渡されても同じ閾値と比較するのみ)。
     max_dd_m = abs(float(stats.get("max_dd_monthly_pct", stats.get("max_dd", 0.0))))
     evals.append(
         KPIEvaluation(
