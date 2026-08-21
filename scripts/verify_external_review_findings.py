@@ -41,6 +41,7 @@ from minmax_fx_dt.backtest.permutation import (  # noqa: E402
     effective_pair_count,
     permutation_test_clustered,
 )
+from minmax_fx_dt.decision.criteria import compute_k3m_scale_invariant  # noqa: E402
 
 # 既定はレビュー時点で「現時点の最良候補」だった改善ループ第6試行の結果。
 # 以降の試行(v7 以降)でも指摘が成立するかは --backtest で切り替えて確認する。
@@ -226,6 +227,10 @@ def check_k3m_scale_dependence(trades_by_period: dict[str, list[dict]], reps: in
     """観測された n と勝率を持つ i.i.d. 系列で最大連敗をシミュレートし、K3m の情報量を測る.
 
     「エッジが本物でも K3m ≤ 5 は約 6 割でしか通らない」= この基準はほぼコイン投げ、という主張。
+
+    2026-08-21(T-08対応): Monte Carlo本体は`decision.criteria.compute_k3m_scale_invariant()`
+    へ一本化した(判定エンジン側にも同じロジックを組み込んだため、二重実装を避ける)。
+    本関数はレビュー主張の検算(REPRODUCED/NOT_REPRODUCED判定)に特化した薄いラッパーとして残す。
     """
     rng = np.random.default_rng(seed)
     per_period = {}
@@ -234,15 +239,18 @@ def check_k3m_scale_dependence(trades_by_period: dict[str, list[dict]], reps: in
         wins = sum(1 for t in trades if t["r_net"] > 0)
         win_rate = wins / n if n else 0.0
         observed = _max_loss_run(np.array([t["r_net"] <= 0 for t in trades]))
-        runs = np.array([_max_loss_run(rng.random(n) >= win_rate) for _ in range(reps)])
+        k3m = compute_k3m_scale_invariant(n, win_rate, int(observed), reps=reps, seed=int(rng.integers(0, 2**31 - 1)))
+        # prob_pass_threshold_under_iid はレビュー主張の検算専用の補助統計量
+        # (compute_k3m_scale_invariant()の対象外)であり、ここで別途Monte Carloする。
+        runs = np.array([_max_loss_run(rng.random(n) >= win_rate) for _ in range(reps)]) if n else np.array([0])
         per_period[period] = {
             "n_trades": n,
             "win_rate": round(win_rate, 4),
             "observed_max_consecutive_losses": int(observed),
-            "iid_null_mean": round(float(runs.mean()), 2),
-            "iid_null_median": int(np.median(runs)),
+            "iid_null_mean": k3m["iid_null_mean"],
+            "iid_null_median": k3m["iid_null_median"],
             "prob_pass_threshold_under_iid": round(float((runs <= MAX_CONSECUTIVE_LOSSES).mean()), 3),
-            "observed_percentile_in_null": round(float((runs < observed).mean()), 3),
+            "observed_percentile_in_null": k3m["observed_percentile_in_null"],
         }
 
     probs = [v["prob_pass_threshold_under_iid"] for v in per_period.values()]

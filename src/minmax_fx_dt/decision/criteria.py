@@ -34,6 +34,8 @@ from enum import Enum
 from pathlib import Path
 from typing import TypedDict
 
+import numpy as np
+
 from ..backtest.permutation import effective_pair_count
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -180,6 +182,7 @@ class Stats(TypedDict, total=False):
     n_trades_per_currency: dict[str, int]  # 通貨別取引数
     hedging_enabled: bool  # 両建てロジックが実際に稼働したか (K7m の有効性判定用)
     n_trades_effective: float  # 実効トレード数 (2026-08-18 提案5対応、明示指定時はこちらを優先)
+    win_rate: float  # 勝率 (2026-08-21 T-08対応、K3mのスケール不変判定に使用。未指定なら旧来の絶対件数判定にフォールバック)
 
 
 def compute_n_trades_effective(
@@ -224,6 +227,66 @@ def compute_n_trades_effective(
     n_pairs = len(active)
     eff_count = effective_pair_count(list(active.keys()))
     return n_total * (eff_count / n_pairs)
+
+
+def _max_consecutive_true(flags: list[bool] | np.ndarray) -> int:
+    """bool 配列中の最長連続 True 区間の長さを返す (K3m 用の最大連敗長カウンタ)."""
+    best = cur = 0
+    for flag in flags:
+        cur = cur + 1 if flag else 0
+        best = max(best, cur)
+    return best
+
+
+def compute_k3m_scale_invariant(
+    n_trades: int,
+    win_rate: float,
+    observed_max_consecutive_losses: int,
+    *,
+    reps: int = 3000,
+    seed: int = 0,
+    alpha: float = 0.05,
+) -> dict:
+    """K3m(最大連続損失)のスケール不変な再定義 (T-08対応、2026-08-21).
+
+    外部レビュー(2026-08-20)が指摘: 「最大連続損失 ≤ 5」は絶対件数のため n に依存し、
+    観測勝率の i.i.d. 帰無仮説の下でも通過率が約6割前後になる(=観測値がランダムと
+    区別できない)。T-16再査読(2026-08-21)は、この指摘が外部レビュー以来一度も
+    `decision/criteria.py` に反映されず優先順位トラッキングから漏れていたことを
+    新規発見した。
+
+    再定義: 同じ n・観測勝率を持つ i.i.d. 系列(独立なベルヌーイ試行)で最大連敗を
+    Monte Carlo シミュレートし、観測された最大連敗がその帰無分布の何パーセンタイル
+    に位置するかを算出する。絶対件数ではなく相対位置で評価するためスケール不変。
+
+    事前登録(結果を見る前に固定): 片側検定として、観測された最大連敗が i.i.d.
+    帰無分布の上位 `alpha`(既定5%、他の統計的有意性判定=permutation p値と同じ
+    水準に揃える)に入る場合のみ不合格とする。すなわち「ランダムな連敗の分布より
+    明確に悪い(長い連敗が続く)場合」のみ罰則を科し、良い/ランダムと区別が
+    つかない場合はいずれも合格とする(旧来の絶対件数閾値のような機械的な足切りは
+    行わない)。
+
+    `scripts/verify_external_review_findings.py` の `check_k3m_scale_dependence()`
+    が診断目的で使っていたロジックと同一の Monte Carlo 手法をここに一本化し、
+    判定エンジン(`evaluate_kpis()`)からも呼び出せるようにした。
+    """
+    rng = np.random.default_rng(seed)
+    runs = np.array([
+        _max_consecutive_true(list(rng.random(n_trades) >= win_rate))
+        for _ in range(reps)
+    ]) if n_trades > 0 else np.array([0])
+    percentile = float((runs < observed_max_consecutive_losses).mean())
+    passed = percentile <= (1.0 - alpha)
+    return {
+        "n_trades": n_trades,
+        "win_rate": round(win_rate, 4),
+        "observed_max_consecutive_losses": observed_max_consecutive_losses,
+        "iid_null_mean": round(float(runs.mean()), 2),
+        "iid_null_median": int(np.median(runs)),
+        "observed_percentile_in_null": round(percentile, 4),
+        "alpha": alpha,
+        "pass_": passed,
+    }
 
 
 def load_regime() -> str:
@@ -316,16 +379,36 @@ def evaluate_kpis(stats: Stats) -> list[KPIEvaluation]:
         )
     )
 
-    # K3m: 最大連続損失
+    # K3m: 最大連続損失 (2026-08-21 T-08対応: win_rate が指定されていればスケール
+    # 不変なi.i.d.パーセンタイル判定に切り替える。外部レビューが指摘した通り、絶対
+    # 件数閾値(旧来の挙動)はnに依存し観測勝率のi.i.d.帰無仮説でも通過率が約6割
+    # 前後になる=ほぼノイズと区別がつかない。win_rate 未指定の場合は既存呼び出し
+    # (テストケース等)との後方互換のため旧来の絶対件数判定を維持する。)
     mcl = int(stats.get("max_consecutive_losses", 999))
-    evals.append(
-        KPIEvaluation(
-            "K3m_max_consecutive_losses",
-            float(mcl),
-            thresholds["max_consecutive_losses"],
-            float(mcl) <= thresholds["max_consecutive_losses"],
+    win_rate = stats.get("win_rate")
+    n_trades_for_k3m = int(stats.get("n_trades", 0))
+    if win_rate is not None and n_trades_for_k3m > 0:
+        k3m = compute_k3m_scale_invariant(n_trades_for_k3m, float(win_rate), mcl)
+        evals.append(
+            KPIEvaluation(
+                "K3m_max_consecutive_losses",
+                float(mcl),
+                float(thresholds["max_consecutive_losses"]),
+                k3m["pass_"],
+                f"スケール不変判定(T-08): i.i.d.帰無分布パーセンタイル={k3m['observed_percentile_in_null']:.3f}"
+                f" (n={n_trades_for_k3m}, win_rate={win_rate:.3f}, 不合格は上位{k3m['alpha']*100:.0f}%のみ)",
+            )
         )
-    )
+    else:
+        evals.append(
+            KPIEvaluation(
+                "K3m_max_consecutive_losses",
+                float(mcl),
+                thresholds["max_consecutive_losses"],
+                float(mcl) <= thresholds["max_consecutive_losses"],
+                "win_rate未指定のため旧来の絶対件数判定にフォールバック(T-08未適用)",
+            )
+        )
 
     # K4m: ペイオフレシオ
     pr = float(stats.get("payoff_ratio", 0.0))

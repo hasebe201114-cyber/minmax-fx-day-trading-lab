@@ -17,7 +17,12 @@ from minmax_fx_dt.backtest.permutation import (
     permutation_test_clustered,
 )
 from minmax_fx_dt.decision import Verdict, evaluate, evaluate_kpis, kpi_pass_summary
-from minmax_fx_dt.decision.criteria import KPI_THRESHOLDS, Stats, compute_n_trades_effective
+from minmax_fx_dt.decision.criteria import (
+    KPI_THRESHOLDS,
+    Stats,
+    compute_k3m_scale_invariant,
+    compute_n_trades_effective,
+)
 
 
 def _full_pass_stats(**overrides) -> Stats:
@@ -296,3 +301,43 @@ def test_evaluate_kpis_min_n_trades_uses_effective_count_for_pooled_stats() -> N
     gate = next(e for e in evals if e.metric == "min_n_trades")
     assert gate.pass_ is False
     assert gate.observed < 300
+
+
+# ---- compute_k3m_scale_invariant() (2026-08-21 T-08対応) ----
+
+def test_compute_k3m_scale_invariant_typical_run_passes() -> None:
+    """勝率60%・n=500程度で観測される典型的な最大連敗(i.i.d.期待値付近)は合格するはず."""
+    result = compute_k3m_scale_invariant(500, 0.6, observed_max_consecutive_losses=6, seed=1)
+    assert result["pass_"] is True
+    assert 0.0 <= result["observed_percentile_in_null"] <= 1.0
+
+
+def test_compute_k3m_scale_invariant_pathological_run_fails() -> None:
+    """i.i.d.であればほぼ起こり得ない極端な連敗(勝率60%・n=500で30連敗)は不合格になるはず."""
+    result = compute_k3m_scale_invariant(500, 0.6, observed_max_consecutive_losses=30, seed=1)
+    assert result["pass_"] is False
+    assert result["observed_percentile_in_null"] > 0.95
+
+
+def test_compute_k3m_scale_invariant_deterministic_with_seed() -> None:
+    """同じseedなら再現可能(HARKing防止・監査可能性のため)."""
+    r1 = compute_k3m_scale_invariant(200, 0.55, 7, seed=42)
+    r2 = compute_k3m_scale_invariant(200, 0.55, 7, seed=42)
+    assert r1 == r2
+
+
+def test_evaluate_kpis_k3m_falls_back_to_legacy_without_win_rate() -> None:
+    """win_rate未指定なら旧来の絶対件数判定(≤5)にフォールバックする(後方互換)."""
+    evals = evaluate_kpis(_full_pass_stats(max_consecutive_losses=6))
+    gate = next(e for e in evals if e.metric == "K3m_max_consecutive_losses")
+    assert gate.pass_ is False
+    assert "旧来の絶対件数判定" in gate.note
+
+
+def test_evaluate_kpis_k3m_scale_invariant_can_pass_where_legacy_fails() -> None:
+    """外部レビューの主張通り、observed=6(旧基準では不合格)でもn・勝率次第では
+    i.i.d.帰無分布の95パーセンタイル以内に収まり合格になりうる。"""
+    evals = evaluate_kpis(_full_pass_stats(max_consecutive_losses=6, win_rate=0.6, n_trades=524))
+    gate = next(e for e in evals if e.metric == "K3m_max_consecutive_losses")
+    assert gate.pass_ is True
+    assert "スケール不変判定(T-08)" in gate.note

@@ -92,14 +92,15 @@
 - **完了条件**: 方針を `criteria.py` の docstring と `00-spec.md` に明記
 - **完了（2026-08-21）**: `compute_n_trades_effective()`に`apply_correlation_discount: bool = True`引数を追加(既定Trueは既存SYS向け後方互換)。T-06のブロック順列を使う判定では`apply_correlation_discount=False`を指定し、n側の相関割引を撤廃(検定側で依存構造を捕捉するため二重計上を回避)。方針は`criteria.py`のdocstringと`00-spec.md`「T-06+T-07」節に明記。適用結果: TrainのTrain n_eff 180.7→**619.0**(名目値)となり、min_n_trades_effective(≥300)を初めて達成。Train+Validation合計KPI 10/20→11/20。
 
-### [ ] T-08: K3m（最大連続損失）をスケール不変な定義へ
+### [x] T-08: K3m（最大連続損失）をスケール不変な定義へ
 
 - **件名**: 「最大連続損失 ≤ 5」は絶対件数のため n 依存。観測勝率の i.i.d. 系列でも通過率は 59〜72%
 - **証拠**: Train 観測 6（i.i.d. 期待値 5.41、パーセンタイル 0.59）／Test 観測 5（同 5.41、パーセンタイル 0.28）
 - **影響**: 改善ループ第 3 試行で「Test の最大連敗が 8→5」を採用根拠の一つにしたが、主にノイズを選んでいる
 - **作業**: 「n 本中の最大連敗が、観測勝率の i.i.d. 帰無仮説の何パーセンタイルにあるか」へ置き換える
 - **完了条件**: `criteria.py` に実装し、過去 SYS の判定を再計算した表を残す
-- **未着手（T-16再査読、2026-08-21新規発見）**: T-01〜T-13の一連の対応（T-09→T-06/T-07→T-13→通貨別均質性→T-12）の中でT-08だけが優先順位トラッキング(`OBS000008-...md`)から漏れたまま一度も着手されていないことが、独立C査読の再査読で判明した。ノイズに近い基準（i.i.d.想定でも通過率6割前後）がKPI達成数の1票として算入され続けている。次の差し戻し対応時に優先着手すべき。
+- **未着手だった経緯（T-16再査読、2026-08-21新規発見）**: T-01〜T-13の一連の対応（T-09→T-06/T-07→T-13→通貨別均質性→T-12）の中でT-08だけが優先順位トラッキング(`OBS000008-...md`)から漏れたまま一度も着手されていないことが、独立C査読の再査読で判明した。
+- **完了（2026-08-21、同日中に対応）**: `src/minmax_fx_dt/decision/criteria.py`に`compute_k3m_scale_invariant()`を実装(Monte Carlo 3,000回、i.i.d.帰無分布に対する片側5%パーセンタイル判定、他の統計的判定=permutation p値と同じ有意水準に揃えた)。`evaluate_kpis()`(SYS-FX007〜009用、win_rate未指定時は旧定義へフォールバックし後方互換維持)・`evaluate_vol_breakout_dow_theory_kpi.py`の`evaluate_period()`(SYS-FX011用、`apply_k3m_scale_invariant`引数で切替え)両方に組み込んだ。診断スクリプト`verify_external_review_findings.py`の`check_k3m_scale_dependence()`もこの共通実装を呼ぶよう一本化し二重実装を解消。回帰テスト5件追加(全93件pass)。trailonly版データに適用した結果、K3mがTrain(観測6、パーセンタイル0.278)・Test参考(観測6、パーセンタイル0.631)でFAIL→PASSへ反転、KPI達成数Train6/10→7/10・Test4/10→5/10(Validationは元々PASSで不変)。過去にREJECT確定済みのSYS-FX007〜010はK3mではなくpermutation検定の明確な非有意等が主因であり、K3m再定義によって結論が変わることはないため個別の再計算は行わなかった(`portfolio-ledger.md`参照)。**K4m・実効n・permutation有意性という構造的な未達項目は解消せず、Train+Validation合計は13/20→14/20の改善に留まる。採否判断は依然保留のまま。** 詳細: `research/EXP-FX000005/00-spec.md`「T-08」節。
 
 ### [x] T-09: コストモデルの SL・トレーリングを逆指値として扱う
 

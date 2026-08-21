@@ -43,7 +43,7 @@ import pandas as pd
 from minmax_fx_dt.backtest.metrics import (
     max_drawdown, monthly_max_dd_pct, monthly_sharpe, payoff_ratio, profit_factor,
 )
-from minmax_fx_dt.decision.criteria import compute_n_trades_effective
+from minmax_fx_dt.decision.criteria import compute_k3m_scale_invariant, compute_n_trades_effective
 
 
 def peak_relative_dd_series(eq_curve: pd.DataFrame) -> pd.Series:
@@ -97,6 +97,7 @@ def evaluate_period(
     *,
     perm_p_field: str = "perm_p_clustered",
     apply_n_correlation_discount: bool = True,
+    apply_k3m_scale_invariant: bool = False,
 ) -> dict:
     """perm_p_field: 参照するpermutation p値のフィールド名。既定は旧
     `permutation_test_clustered()`由来の"perm_p_clustered"(後方互換)。外部レビュー
@@ -106,7 +107,14 @@ def evaluate_period(
     apply_n_correlation_discount: 実効トレード数(n_eff)算出時に通貨間相関による
     割引を適用するか。既定True(後方互換)。T-07対応: ブロック順列(T-06)を使う
     場合、依存構造は検定側で直接捕捉されるため、Falseを指定してnの相関割引と
-    検定側の相関補正の二重計上を避けること。"""
+    検定側の相関補正の二重計上を避けること。
+
+    apply_k3m_scale_invariant: K3m(最大連続損失)を絶対件数閾値(旧来、既定False
+    で後方互換維持)ではなく、`decision.criteria.compute_k3m_scale_invariant()`
+    によるi.i.d.帰無分布パーセンタイル判定に切り替えるか(2026-08-21 T-08対応、
+    外部レビュー指摘・T-16再査読で優先順位トラッキングから漏れていたことが判明)。
+    過去の`_t03fix`等の中間結果スクリプトとの数値再現性を保つため既定はFalseとし、
+    最新のtrailonly版評価でのみTrueを指定する。"""
     eq_curve = pd.DataFrame(p["equity_curve"])
     eq_curve["timestamp"] = pd.to_datetime(eq_curve["time"], format="mixed", utc=True).dt.tz_localize(None)
     eq_curve["equity"] = eq_curve["balance"]
@@ -121,6 +129,15 @@ def evaluate_period(
     pf = profit_factor(dollar_pnls)
     payoff = payoff_ratio(dollar_pnls)
     max_losses = max_consecutive_losses(p["trades"])
+
+    n_trades_total = len(p["trades"])
+    win_rate = (sum(1 for pnl in dollar_pnls if pnl > 0) / n_trades_total) if n_trades_total else 0.0
+    if apply_k3m_scale_invariant and n_trades_total > 0:
+        k3m_result = compute_k3m_scale_invariant(n_trades_total, win_rate, max_losses)
+        max_consecutive_losses_pass = k3m_result["pass_"]
+    else:
+        k3m_result = None
+        max_consecutive_losses_pass = max_losses <= KPI_THRESHOLDS["max_consecutive_losses"]
 
     # 月次期待値: 月ごとのドルP&L平均が正か
     eq_curve_i = eq_curve.set_index("timestamp")
@@ -147,7 +164,7 @@ def evaluate_period(
         "monthly_expectancy_positive": monthly_expectancy_positive,
         "max_dd_monthly_pct": dd_monthly_pct <= KPI_THRESHOLDS["max_dd_monthly_pct"],
         "max_dd_yearly_pct": abs(dd_pct) <= KPI_THRESHOLDS["max_dd_yearly_pct"],
-        "max_consecutive_losses": max_losses <= KPI_THRESHOLDS["max_consecutive_losses"],
+        "max_consecutive_losses": max_consecutive_losses_pass,
         "payoff_ratio": payoff >= KPI_THRESHOLDS["payoff_ratio"],
         "spread_cost_multiplier": (spread_cost_multiplier or 0) >= KPI_THRESHOLDS["spread_cost_multiplier"],
         "min_n_trades_effective": n_eff >= KPI_THRESHOLDS["min_n_trades_effective"],
@@ -164,6 +181,7 @@ def evaluate_period(
         "profit_factor": round(pf, 3),
         "payoff_ratio": round(payoff, 3),
         "max_consecutive_losses": max_losses,
+        "k3m_scale_invariant": k3m_result,
         "monthly_expectancy_positive": monthly_expectancy_positive,
         "spread_cost_multiplier": round(spread_cost_multiplier, 2) if spread_cost_multiplier else None,
         "n_trades_effective": round(n_eff, 1),
