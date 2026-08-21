@@ -1,0 +1,925 @@
+{
+  "generated_at": "2026-08-21T22:37:51.707887",
+  "analyst": "independent exploratory pass (Opus) - コスト課題の緩和策検証。事前登録プロトコルの外側であり、意思決定には使用しない",
+  "source_backtest": "research/method-notes/vol_breakout_dow_theory_4pairs_v7_trailonly_1000usd_backtest.json",
+  "baseline_reproduction_check": "公式KPI評価(vol_breakout_dow_theory_4pairs_v7_trailonly_kpi_evaluation.json)の payoff/PF/KPI達成数を独立に完全再現した上で、コストモデルのみ差し替えて再計算している",
+  "caveats": [
+    "全て探索的分析。閾値・変種は結果を見た後に構成しており、そのまま採否根拠にはできない",
+    "Test期間は00-spec.md「Test凍結宣言」の対象。参考値としてのみ記載",
+    "コスト仮定を弱める提案は、実データの裏付けがある1点(スプレッドの二重計上)に限定した"
+  ],
+  "findings": [
+    {
+      "id": "C1",
+      "title": "SL_INITIAL_NO_TP のスリッページ差別化(方向性1)は実データで支持されない — むしろ現行1.0pipは不足側",
+      "verdict": "却下",
+      "detail": {
+        "分類件数_全期間": {
+          "真の初期SL(r_gross<-0.05)": 269,
+          "建値(|r_gross|<=0.05)": 16,
+          "トレール利確(r_gross>0.05)": 528,
+          "成行決済(週末)": 14
+        },
+        "決済バーのマイクロストラクチャ": {
+          "pure_stop": {
+            "n": 269,
+            "exit_bar_range_over_atr_median": 1.337,
+            "through_trigger_pips_median": 2.603,
+            "through_trigger_pips_p90": 8.447,
+            "gap_open_beyond_trigger_frac": 0.0,
+            "gap_open_beyond_trigger_mean_pips": 0.0,
+            "initial_risk_pips_median": 14.62
+          },
+          "breakeven": {
+            "n": 16,
+            "exit_bar_range_over_atr_median": 1.21,
+            "through_trigger_pips_median": 2.7,
+            "through_trigger_pips_p90": 12.35,
+            "gap_open_beyond_trigger_frac": 0.062,
+            "gap_open_beyond_trigger_mean_pips": 0.038,
+            "initial_risk_pips_median": 9.42
+          },
+          "trail_profit": {
+            "n": 528,
+            "exit_bar_range_over_atr_median": 1.082,
+            "through_trigger_pips_median": 2.825,
+            "through_trigger_pips_p90": 11.426,
+            "gap_open_beyond_trigger_frac": 0.22,
+            "gap_open_beyond_trigger_mean_pips": 0.767,
+            "initial_risk_pips_median": 14.66
+          },
+          "market_exit": {
+            "n": 14,
+            "exit_bar_range_over_atr_median": 1.618,
+            "through_trigger_pips_median": 3.5,
+            "through_trigger_pips_p90": 7.72,
+            "gap_open_beyond_trigger_frac": 0.5,
+            "gap_open_beyond_trigger_mean_pips": 1.786,
+            "initial_risk_pips_median": 24.25
+          }
+        },
+        "mann_whitney_bar_range_over_atr_pure_vs_trail": {
+          "train_p": 0.0,
+          "validation_p": 0.4241,
+          "test_p": 0.005,
+          "all_p": 0.0,
+          "median_ratio_all": 1.24
+        },
+        "決定的所見": "トレール決済の22.0%が『次バーの寄り付き時点で既にトリガー水準を突破』しており(平均0.767pip、真の初期SLでは0.0%)、これは `stop = max(stop, bar_i.open - k*ATR)` で当該バーの寄り値基準にトレール幅を更新し、ヒット判定を次バーで行う実装構造に由来する。現行モデルはこの分の滑りを計上していない。決済バーの値幅/ATRは pure_stop の方が1.24倍高いものの、トリガー水準の突き抜け量(through_pips)はむしろトレール側が大きい(中央値2.83 vs 2.60、MWU p=0.0245)。したがって『トレール利確は穏やかだから滑りは小さい』という仮説は実データで否定される。"
+      }
+    },
+    {
+      "id": "C2",
+      "title": "スプレッドの往復二重計上を発見(コストモデルの精緻化、緩和ではない)",
+      "verdict": "有望(要正式検証)",
+      "detail": {
+        "根拠": "(1) DS-1のOHLCはGMO `/v1/klines` を `priceType` 未指定で取得しており、`GMOClient.get_klines()` の既定値は 'ASK'(src/minmax_fx_dt/data/gmo_fx_client.py:156)。scripts/data/fetch_ds1_ohlcv.py はこれを上書きしていないため、全価格系列はASK。(2) ASK系列上では、ロングのエントリー(ASKで買い)は系列価格そのままで約定するためスプレッド不要、決済(BIDで売り)で1スプレッド。ショートはエントリー(BIDで売り)で1スプレッド、決済(ASKで買い)は系列価格そのまま。どちらの方向でも**往復1スプレッド**。仮に中値系列と解釈しても片道0.5スプレッド×2=1スプレッドで同じ。(3) 現行実装は entry_pips と exit_pips の双方に満額のスプレッドを加算しており(2レッグ=2スプレッド)、01-trade-scenario-definition.md §7 自身の表記『スプレッド（往復固定pips）』とも整合しない。",
+        "影響_単独適用": {
+          "train": {
+            "n_trades": 524,
+            "payoff_ratio": 1.082,
+            "profit_factor": 1.753,
+            "spread_cost_multiplier": 2.71,
+            "mean_r_net": 0.3699945636486021,
+            "t_stat": 5.686112178790092,
+            "permutation_p_clustered": 0.016983016983016984,
+            "kpi_pass_count": "7/10",
+            "kpi_required_pass_count": "7/9",
+            "final_balance_usd": 5961.16,
+            "mean_cost_r": 0.21608032948116887,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": true,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": false,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": false,
+              "min_n_trades_effective": true,
+              "permutation_p_value": true
+            }
+          },
+          "validation": {
+            "n_trades": 133,
+            "payoff_ratio": 1.212,
+            "profit_factor": 2.146,
+            "spread_cost_multiplier": 3.75,
+            "mean_r_net": 0.45390694021003114,
+            "t_stat": 2.949918788479372,
+            "permutation_p_clustered": 0.07992007992007992,
+            "kpi_pass_count": "7/10",
+            "kpi_required_pass_count": "6/9",
+            "final_balance_usd": 1786.01,
+            "mean_cost_r": 0.16512816505312689,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": true,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": true,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": true,
+              "min_n_trades_effective": false,
+              "permutation_p_value": false
+            }
+          },
+          "test": {
+            "n_trades": 170,
+            "payoff_ratio": 1.173,
+            "profit_factor": 1.804,
+            "spread_cost_multiplier": 2.3,
+            "mean_r_net": 0.36622619398365697,
+            "t_stat": 2.607321860444104,
+            "permutation_p_clustered": 0.06893106893106893,
+            "kpi_pass_count": "5/10",
+            "kpi_required_pass_count": "5/9",
+            "final_balance_usd": 1707.76,
+            "mean_cost_r": 0.2819114707222254,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": true,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": false,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": false,
+              "min_n_trades_effective": false,
+              "permutation_p_value": false
+            }
+          }
+        },
+        "重要な打ち消し": "C1で実測したトレール決済の未計上ギャップ(平均0.767pip)を同時に計上すると、コスト総額はほぼ元の水準に戻る(V1b)。つまり現行コストモデルは『過大計上(スプレッド1レッグ)』と『過小計上(トレールのギャップ突き抜け)』が偶然ほぼ相殺して、総体としては概ね正しい水準にある。",
+        "影響_両方適用": {
+          "train": {
+            "n_trades": 524,
+            "payoff_ratio": 1.101,
+            "profit_factor": 1.673,
+            "spread_cost_multiplier": 2.28,
+            "mean_r_net": 0.3291627682581807,
+            "t_stat": 5.142619449504509,
+            "permutation_p_clustered": 0.03196803196803197,
+            "kpi_pass_count": "6/10",
+            "kpi_required_pass_count": "6/9",
+            "final_balance_usd": 4869.26,
+            "mean_cost_r": 0.2569121248715902,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": false,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": false,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": false,
+              "min_n_trades_effective": true,
+              "permutation_p_value": true
+            }
+          },
+          "validation": {
+            "n_trades": 133,
+            "payoff_ratio": 1.2,
+            "profit_factor": 2.057,
+            "spread_cost_multiplier": 3.14,
+            "mean_r_net": 0.42176286014285524,
+            "t_stat": 2.770220670558093,
+            "permutation_p_clustered": 0.09490509490509491,
+            "kpi_pass_count": "7/10",
+            "kpi_required_pass_count": "6/9",
+            "final_balance_usd": 1712.55,
+            "mean_cost_r": 0.19727224512030261,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": true,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": true,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": true,
+              "min_n_trades_effective": false,
+              "permutation_p_value": false
+            }
+          },
+          "test": {
+            "n_trades": 170,
+            "payoff_ratio": 1.147,
+            "profit_factor": 1.679,
+            "spread_cost_multiplier": 1.93,
+            "mean_r_net": 0.312948285557304,
+            "t_stat": 2.2634105209950026,
+            "permutation_p_clustered": 0.1038961038961039,
+            "kpi_pass_count": "4/10",
+            "kpi_required_pass_count": "4/9",
+            "final_balance_usd": 1585.59,
+            "mean_cost_r": 0.3351893791485784,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": false,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": false,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": false,
+              "min_n_trades_effective": false,
+              "permutation_p_value": false
+            }
+          }
+        },
+        "頑健性": {
+          "train": {
+            "n_trades": 524,
+            "payoff_ratio": 1.105,
+            "profit_factor": 1.652,
+            "spread_cost_multiplier": 2.21,
+            "mean_r_net": 0.32129744894196516,
+            "t_stat": 5.018521633190652,
+            "permutation_p_clustered": 0.03596403596403597,
+            "kpi_pass_count": "6/10",
+            "kpi_required_pass_count": "6/9",
+            "final_balance_usd": 4689.99,
+            "mean_cost_r": 0.2647774441878058,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": false,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": false,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": false,
+              "min_n_trades_effective": true,
+              "permutation_p_value": true
+            }
+          },
+          "validation": {
+            "n_trades": 133,
+            "payoff_ratio": 1.189,
+            "profit_factor": 2.038,
+            "spread_cost_multiplier": 3.05,
+            "mean_r_net": 0.4157520280169329,
+            "t_stat": 2.74391446305372,
+            "permutation_p_clustered": 0.0979020979020979,
+            "kpi_pass_count": "7/10",
+            "kpi_required_pass_count": "6/9",
+            "final_balance_usd": 1699.35,
+            "mean_cost_r": 0.20328307724622507,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": true,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": true,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": true,
+              "min_n_trades_effective": false,
+              "permutation_p_value": false
+            }
+          },
+          "test": {
+            "n_trades": 170,
+            "payoff_ratio": 1.128,
+            "profit_factor": 1.652,
+            "spread_cost_multiplier": 1.88,
+            "mean_r_net": 0.30275050098836653,
+            "t_stat": 2.1829688325612,
+            "permutation_p_clustered": 0.11588411588411589,
+            "kpi_pass_count": "4/10",
+            "kpi_required_pass_count": "4/9",
+            "final_balance_usd": 1564.43,
+            "mean_cost_r": 0.3453871637175158,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": false,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": false,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": false,
+              "min_n_trades_effective": false,
+              "permutation_p_value": false
+            }
+          }
+        },
+        "早朝帯の比率": {
+          "エントリー05-07JST": 0.067,
+          "決済05-07JST": 0.094,
+          "注": "GMOの原則固定スプレッド適用外時間帯に当たる脚は1割未満で、スプレッド拡大の影響は限定的"
+        }
+      }
+    },
+    {
+      "id": "C3",
+      "title": "【最重要】コストをゼロにしてもK4m(ペイオフ≥1.5)には届かない",
+      "verdict": "コスト起因説の否定",
+      "detail": {
+        "コストゼロ時のペイオフ_公式定義(dollar_pnl基準)": {
+          "train": 1.27,
+          "validation": 1.405,
+          "test": 1.442
+        },
+        "コストゼロ時のペイオフ_R建て等加重": {
+          "train": 1.472,
+          "validation": 1.432,
+          "test": 1.516
+        },
+        "現行(コスト込み)_R建て等加重": {
+          "train": 1.158,
+          "validation": 1.208,
+          "test": 1.151
+        },
+        "含意": "コストは確かにペイオフを 1.47→1.16 (R建て) に押し下げているが、K4m閾値1.5 はコスト控除前ですらTrain/Validationで未達。したがって『K4m未達の主因はコスト』という前回分析(F2)の見立ては、少なくとも本再計算では成立しない。どんなコストモデルの見直しでもK4mは解決しない。",
+        "F2との差分": "F2のコスト控除後ペイオフ(1.158/1.208/1.151)は本再計算とR建て等加重で完全一致するが、F2の控除前ペイオフ(1.562/1.499/1.597)は、試した全ての算出定義(r_gross等加重1.472/1.432/1.516、ドル建て1.330/1.400/1.428、SL決済のみ1.454/1.347/1.481、r_net+cost 1.443/1.412/1.455)で再現できなかった。F2の gross 側の算出過程は確認が必要。",
+        "測定定義の副次論点": "公式K4mは複利加重の dollar_pnl で算出されるため、R建て等加重より系統的に低く出る(train 1.087 vs 1.158)。閾値1.5がどちらの測定を意図したものかは spec 上明示されていない。これはコストとは独立の論点だが、K4mの合否に直接影響する。"
+      }
+    },
+    {
+      "id": "C4",
+      "title": "高速再エントリー(<2h)除外は『コスト効率化』ではなく『エッジのない取引の除去』。K4m以外の全ゲートを大幅改善するが、K4mはValidationで改善しない",
+      "verdict": "有望だがK4mは解決しない(要正式検証)",
+      "detail": {
+        "コスト特性": {
+          "train": {
+            "fast_n": 286,
+            "fast_cost_r": 0.276,
+            "fast_r_gross": 0.427,
+            "fast_cost/gross": "65%",
+            "slow_n": 238,
+            "slow_cost_r": 0.235,
+            "slow_r_gross": 0.777,
+            "slow_cost/gross": "30%"
+          },
+          "validation": {
+            "fast_n": 61,
+            "fast_cost_r": 0.193,
+            "fast_r_gross": 0.392,
+            "fast_cost/gross": "49%",
+            "slow_n": 72,
+            "slow_cost_r": 0.203,
+            "slow_r_gross": 0.812,
+            "slow_cost/gross": "25%"
+          },
+          "test": {
+            "fast_n": 81,
+            "fast_cost_r": 0.366,
+            "fast_r_gross": 0.36,
+            "fast_cost/gross": "102%",
+            "slow_n": 89,
+            "slow_cost_r": 0.302,
+            "slow_r_gross": 0.91,
+            "slow_cost/gross": "33%"
+          },
+          "解釈": "fast群のcost_rはslow群と大きく変わらない。差はr_grossの低さ。つまりコスト構造の問題ではなくエッジの問題"
+        },
+        "影響": {
+          "train": {
+            "n_trades": 238,
+            "payoff_ratio": 1.247,
+            "profit_factor": 2.372,
+            "spread_cost_multiplier": 3.31,
+            "mean_r_net": 0.5420938836585572,
+            "t_stat": 5.317330476502233,
+            "permutation_p_clustered": 0.000999000999000999,
+            "kpi_pass_count": "8/10",
+            "kpi_required_pass_count": "7/9",
+            "final_balance_usd": 3408.64,
+            "mean_cost_r": 0.2351705743246362,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": true,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": true,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": true,
+              "min_n_trades_effective": false,
+              "permutation_p_value": true
+            }
+          },
+          "validation": {
+            "n_trades": 72,
+            "payoff_ratio": 1.124,
+            "profit_factor": 2.921,
+            "spread_cost_multiplier": 4.0,
+            "mean_r_net": 0.6088695670146278,
+            "t_stat": 3.587668517356707,
+            "permutation_p_clustered": 0.027972027972027972,
+            "kpi_pass_count": "8/10",
+            "kpi_required_pass_count": "7/9",
+            "final_balance_usd": 1535.45,
+            "mean_cost_r": 0.2029195579853722,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": true,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": true,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": true,
+              "min_n_trades_effective": false,
+              "permutation_p_value": true
+            }
+          },
+          "test": {
+            "n_trades": 89,
+            "payoff_ratio": 1.405,
+            "profit_factor": 2.628,
+            "spread_cost_multiplier": 3.01,
+            "mean_r_net": 0.6082172980690403,
+            "t_stat": 2.6771820809927256,
+            "permutation_p_clustered": 0.01998001998001998,
+            "kpi_pass_count": "8/10",
+            "kpi_required_pass_count": "7/9",
+            "final_balance_usd": 1574.99,
+            "mean_cost_r": 0.30193319631298204,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": true,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": true,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": true,
+              "min_n_trades_effective": false,
+              "permutation_p_value": true
+            }
+          }
+        },
+        "C2併用": {
+          "train": {
+            "n_trades": 238,
+            "payoff_ratio": 1.25,
+            "profit_factor": 2.517,
+            "spread_cost_multiplier": 3.94,
+            "mean_r_net": 0.5797781600474926,
+            "t_stat": 5.693292779761187,
+            "permutation_p_clustered": 0.000999000999000999,
+            "kpi_pass_count": "8/10",
+            "kpi_required_pass_count": "7/9",
+            "final_balance_usd": 3717.48,
+            "mean_cost_r": 0.19748629793570074,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": true,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": true,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": true,
+              "min_n_trades_effective": false,
+              "permutation_p_value": true
+            }
+          },
+          "validation": {
+            "n_trades": 72,
+            "payoff_ratio": 1.19,
+            "profit_factor": 3.095,
+            "spread_cost_multiplier": 4.81,
+            "mean_r_net": 0.6430207523938573,
+            "t_stat": 3.7663415152826363,
+            "permutation_p_clustered": 0.022977022977022976,
+            "kpi_pass_count": "8/10",
+            "kpi_required_pass_count": "7/9",
+            "final_balance_usd": 1573.28,
+            "mean_cost_r": 0.16876837260614266,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": true,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": true,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": true,
+              "min_n_trades_effective": false,
+              "permutation_p_value": true
+            }
+          },
+          "test": {
+            "n_trades": 89,
+            "payoff_ratio": 1.438,
+            "profit_factor": 2.829,
+            "spread_cost_multiplier": 3.53,
+            "mean_r_net": 0.6523833600409025,
+            "t_stat": 2.8691195877994344,
+            "permutation_p_clustered": 0.013986013986013986,
+            "kpi_pass_count": "8/10",
+            "kpi_required_pass_count": "7/9",
+            "final_balance_usd": 1628.0,
+            "mean_cost_r": 0.25776713434112003,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": true,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": true,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": true,
+              "min_n_trades_effective": false,
+              "permutation_p_value": true
+            }
+          }
+        },
+        "閾値感度スイープ(payoff/perm_p)": {
+          "train_payoff": {
+            "0.0h": 1.087,
+            "0.5h": 1.184,
+            "1h": 1.261,
+            "1.5h": 1.272,
+            "2h": 1.247,
+            "3h": 1.278,
+            "4h": 1.339,
+            "6h": 1.341,
+            "12h": 1.374,
+            "24h": 1.374
+          },
+          "validation_payoff": {
+            "0.0h": 1.18,
+            "0.5h": 1.155,
+            "1h": 1.172,
+            "1.5h": 1.096,
+            "2h": 1.124,
+            "3h": 1.042,
+            "4h": 1.025,
+            "6h": 0.903,
+            "12h": 0.917,
+            "24h": 0.79
+          },
+          "test_payoff": {
+            "0.0h": 1.134,
+            "0.5h": 1.174,
+            "1h": 1.308,
+            "1.5h": 1.354,
+            "2h": 1.405,
+            "3h": 1.432,
+            "4h": 1.453,
+            "6h": 1.545,
+            "12h": 1.517,
+            "24h": 1.478
+          },
+          "所見": "効果はなだらかで単調(ナイフエッジではない)が、K4mだけはValidationで一貫して悪化する。3期間で符号が一貫しない"
+        },
+        "トレードオフ": {
+          "実効n": {
+            "train": "524→238",
+            "validation": "133→72",
+            "test": "170→89"
+          },
+          "min_n_trades_effective=300": "全期間で未達になる",
+          "ただし": "勝率が0.603/0.632/0.594 → 0.655/0.722/0.652 に上昇するため、プロジェクト自身の min_n_trades_power_analysis.json の対応表(勝率0.60→n=300、0.65→n=115、0.70→n=85)では必要nは85〜115に下がる。min_n=300 という固定値の妥当性自体が別途論点"
+        }
+      }
+    },
+    {
+      "id": "C5",
+      "title": "コスト効率に基づく銘柄・トレード選別はいずれもK4mを悪化させる",
+      "verdict": "却下",
+      "detail": {
+        "相対スプレッド(bp、構造的にex-anteで既知)": {
+          "USD_JPY": 0.2,
+          "EUR_USD": 0.28,
+          "EUR_JPY": 0.3,
+          "GBP_JPY": 0.36,
+          "AUD_JPY": 0.61
+        },
+        "AUD_JPY除外(最も割高な通貨)": {
+          "train": {
+            "n_trades": 436,
+            "payoff_ratio": 1.155,
+            "profit_factor": 1.824,
+            "spread_cost_multiplier": 2.64,
+            "mean_r_net": 0.38124213379554234,
+            "t_stat": 5.1716270463399825,
+            "permutation_p_clustered": 0.01998001998001998,
+            "kpi_pass_count": "7/10",
+            "kpi_required_pass_count": "7/9",
+            "final_balance_usd": 4623.72,
+            "mean_cost_r": 0.23300377446133835,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": true,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": false,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": false,
+              "min_n_trades_effective": true,
+              "permutation_p_value": true
+            }
+          },
+          "validation": {
+            "n_trades": 84,
+            "payoff_ratio": 0.793,
+            "profit_factor": 1.503,
+            "spread_cost_multiplier": 2.28,
+            "mean_r_net": 0.1955306457673415,
+            "t_stat": 1.7342776150178323,
+            "permutation_p_clustered": 0.22277722277722278,
+            "kpi_pass_count": "6/10",
+            "kpi_required_pass_count": "5/9",
+            "final_balance_usd": 1172.74,
+            "mean_cost_r": 0.15276246137551566,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": true,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": true,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": false,
+              "min_n_trades_effective": false,
+              "permutation_p_value": false
+            }
+          },
+          "test": {
+            "n_trades": 124,
+            "payoff_ratio": 1.177,
+            "profit_factor": 1.742,
+            "spread_cost_multiplier": 2.14,
+            "mean_r_net": 0.3644269177056422,
+            "t_stat": 2.0463170627617244,
+            "permutation_p_clustered": 0.11988011988011989,
+            "kpi_pass_count": "6/10",
+            "kpi_required_pass_count": "5/9",
+            "final_balance_usd": 1447.57,
+            "mean_cost_r": 0.3195575581008095,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": true,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": true,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": false,
+              "min_n_trades_effective": false,
+              "permutation_p_value": false
+            }
+          }
+        },
+        "AUD除外の判定": "Validationが崩壊(payoff 1.180→0.793、PF 2.02→1.50、perm_p 0.099→0.223)。コスト効率だけで通貨を落とす判断は成立しない",
+        "相対リスク幅下位1/3除外": {
+          "train": {
+            "n_trades": 349,
+            "payoff_ratio": 0.968,
+            "profit_factor": 1.631,
+            "spread_cost_multiplier": 2.87,
+            "mean_r_net": 0.3117834762587198,
+            "t_stat": 4.558310827848905,
+            "permutation_p_clustered": 0.022977022977022976,
+            "kpi_pass_count": "8/10",
+            "kpi_required_pass_count": "7/9",
+            "final_balance_usd": 2836.21,
+            "mean_cost_r": 0.1668856612770968,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": true,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": true,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": false,
+              "min_n_trades_effective": true,
+              "permutation_p_value": true
+            }
+          },
+          "validation": {
+            "n_trades": 89,
+            "payoff_ratio": 1.071,
+            "profit_factor": 2.005,
+            "spread_cost_multiplier": 3.76,
+            "mean_r_net": 0.39319823852708824,
+            "t_stat": 2.113568450001513,
+            "permutation_p_clustered": 0.13686313686313686,
+            "kpi_pass_count": "6/10",
+            "kpi_required_pass_count": "6/9",
+            "final_balance_usd": 1397.93,
+            "mean_cost_r": 0.14223224461897915,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": true,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": false,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": true,
+              "min_n_trades_effective": false,
+              "permutation_p_value": false
+            }
+          },
+          "test": {
+            "n_trades": 113,
+            "payoff_ratio": 1.026,
+            "profit_factor": 1.872,
+            "spread_cost_multiplier": 2.81,
+            "mean_r_net": 0.3515909149779996,
+            "t_stat": 2.977576617991838,
+            "permutation_p_clustered": 0.06393606393606394,
+            "kpi_pass_count": "6/10",
+            "kpi_required_pass_count": "5/9",
+            "final_balance_usd": 1469.14,
+            "mean_cost_r": 0.19418968679191181,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": true,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": true,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": false,
+              "min_n_trades_effective": false,
+              "permutation_p_value": false
+            }
+          }
+        },
+        "cost_r>0.35除外": {
+          "train": {
+            "n_trades": 408,
+            "payoff_ratio": 1.056,
+            "profit_factor": 1.688,
+            "spread_cost_multiplier": 2.87,
+            "mean_r_net": 0.3452762343179763,
+            "t_stat": 4.886623821242674,
+            "permutation_p_clustered": 0.03296703296703297,
+            "kpi_pass_count": "6/10",
+            "kpi_required_pass_count": "6/9",
+            "final_balance_usd": 3795.29,
+            "mean_cost_r": 0.18431313823104326,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": false,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": false,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": false,
+              "min_n_trades_effective": true,
+              "permutation_p_value": true
+            }
+          },
+          "validation": {
+            "n_trades": 118,
+            "payoff_ratio": 1.03,
+            "profit_factor": 1.732,
+            "spread_cost_multiplier": 2.88,
+            "mean_r_net": 0.31026565308542503,
+            "t_stat": 2.0539468616367484,
+            "permutation_p_clustered": 0.16683316683316685,
+            "kpi_pass_count": "6/10",
+            "kpi_required_pass_count": "5/9",
+            "final_balance_usd": 1417.1,
+            "mean_cost_r": 0.16499550793152412,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": true,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": true,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": false,
+              "min_n_trades_effective": false,
+              "permutation_p_value": false
+            }
+          },
+          "test": {
+            "n_trades": 114,
+            "payoff_ratio": 1.02,
+            "profit_factor": 1.749,
+            "spread_cost_multiplier": 2.67,
+            "mean_r_net": 0.31866569663376604,
+            "t_stat": 2.6852271580002673,
+            "permutation_p_clustered": 0.1008991008991009,
+            "kpi_pass_count": "6/10",
+            "kpi_required_pass_count": "5/9",
+            "final_balance_usd": 1419.57,
+            "mean_cost_r": 0.1902888033662339,
+            "kpi_pass": {
+              "monthly_sharpe": true,
+              "profit_factor": true,
+              "monthly_expectancy_positive": true,
+              "max_dd_monthly_pct": true,
+              "max_dd_yearly_pct": true,
+              "max_consecutive_losses": true,
+              "payoff_ratio": false,
+              "spread_cost_multiplier": false,
+              "min_n_trades_effective": false,
+              "permutation_p_value": false
+            }
+          }
+        },
+        "判定": "狭いストップのトレードは cost_r は高い(最狭10%が全コストの25〜29%を占める)が、R倍率の上振れも大きいため、除外するとペイオフは悪化する(train 1.087→0.968/1.056)。K5m(コスト倍率)は改善するがK4mとトレードオフになる"
+      }
+    },
+    {
+      "id": "C6",
+      "title": "cost_r の最大レバーはストップ幅パラメータだが、r_gross と不可分のため単独では評価できない",
+      "verdict": "参考(単独実施は不可)",
+      "detail": {
+        "コスト内訳(train、平均総コスト0.2574R)": {
+          "スプレッド2レッグ": "32.2%",
+          "エントリー滑り": "16.2%",
+          "決済滑り": "32.3%",
+          "手数料": "19.4%"
+        },
+        "initial_risk分布(pips)": {
+          "train": {
+            "p10": 6.4,
+            "med": 14.3,
+            "p90": 32.7
+          },
+          "validation": {
+            "p10": 8.5,
+            "med": 17.4,
+            "p90": 45.8
+          },
+          "test": {
+            "p10": 4.4,
+            "med": 12.5,
+            "p90": 29.4
+          }
+        },
+        "ストップ幅k倍時の平均cost_r(粗利不変と仮定した参考値のみ)": {
+          "train": {
+            "1.0x": 0.2574,
+            "1.25x": 0.206,
+            "1.5x": 0.1716,
+            "2.0x": 0.1287
+          },
+          "validation": {
+            "1.0x": 0.1983,
+            "1.25x": 0.1587,
+            "1.5x": 0.1322,
+            "2.0x": 0.0992
+          }
+        },
+        "注意": "cost_r = コスト(pips) / initial_risk なので、ストップ幅を広げれば機械的に下がる。ただし r_gross(R倍率・勝率・トレール挙動)も同時に変わるため上表は成立しない仮定に基づく参考値。実施には stop_buffer_atr_m5 の再導出と全期間の再シミュレーションが必要で、事前登録済みパラメータの変更に当たる"
+      }
+    }
+  ],
+  "priority_if_formalized": [
+    {
+      "rank": 1,
+      "id": "C2+C1",
+      "action": "コストモデルの両方向の誤りを同時に是正する(スプレッド往復1回への修正 + トレールのギャップ突き抜けの明示計上)",
+      "rationale": "正味の数値影響はほぼゼロ(相殺)だが、監査上『2つの誤りが偶然打ち消し合っている』状態を解消でき、同時にC査読が最も懸念したコスト楽観バイアスが存在しないことを積極的に示せる",
+      "preregistration": [
+        "DS-1のpriceTypeを再取得ログまたはAPIで確定させる(ASKであることの一次証跡)",
+        "トレールのギャップ突き抜け分を『実測平均』でなく『トレード個別の実測値』で計上するか、保守的な固定値にするかを結果を見る前に決める",
+        "修正はコストモデルのみ。検出層・エントリー層・出口設計・検定方式は一切変更しない"
+      ]
+    },
+    {
+      "rank": 2,
+      "id": "C4",
+      "action": "同一通貨・直前決済からの経過時間による再エントリーフィルターを事前登録して検証する",
+      "rationale": "K1m/K2m/K5m/permutation を3期間一貫で大幅改善し、特にperm_pが3期間すべて<0.05になる唯一の施策",
+      "preregistration": [
+        "閾値はTrainのみで導出し(スイープはTrain限定)、Validationには盲検適用する",
+        "K4mはValidationで改善しないことを『予測』として先に明記する(事後の言い訳にしない)",
+        "min_n_trades_effective の閾値を、勝率依存の対応表(min_n_trades_power_analysis.json)に基づき再定義するか、300のまま未達を受け入れるかを、結果を見る前に決める",
+        "『2時間未満の再エントリー』の構造的解釈(同一ブレイクイベント内の2本目以降のエントリー)をentry_seq で確認し、時間閾値ではなくイベント内順序で定義できないか先に検討する"
+      ]
+    },
+    {
+      "rank": 3,
+      "id": "C3",
+      "action": "K4mの測定定義(ドル建て複利加重 vs R建て等加重)と閾値1.5の妥当性を、A設計チームで確定させる",
+      "rationale": "コストゼロでも届かない以上、K4mは本戦略設計に対する構造的な不適合か、閾値・測定定義の問題のいずれか",
+      "preregistration": [
+        "これはKPI定義の変更であり、結果を見た後の閾値緩和(HARKing)になりうる。他戦略(SYS-FX007〜010)にも同じ定義を遡及適用することを条件にすべき"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "id": "C1",
+      "reason": "トレール決済のスリッページを下げる根拠が実データにない。むしろ22%が寄り付きで既にトリガーを突破しており、現行1.0pipは不足側"
+    },
+    {
+      "id": "C5-AUD",
+      "reason": "最も割高な通貨(AUD/JPY)の除外はValidationを崩壊させる"
+    },
+    {
+      "id": "C5-narrow",
+      "reason": "コスト効率の悪い狭ストップ取引の除外はK5mを改善するがK4mを悪化させる(効果が逆)"
+    }
+  ],
+  "conclusion": "コスト課題は『コストモデルの見直し』では解消しない。(a)現行コストモデルは総体として概ね正しく(過大計上と過小計上がほぼ相殺)、(b)コストを完全にゼロにしてもK4m(1.5)にはTrain/Validationで届かない。コスト削減の余地として実質的な効果があるのは高速再エントリーの除外だが、これはコスト効率の改善ではなくエッジのない取引の除去であり、K4m以外のゲートを大幅に改善する一方でK4mはValidationで改善せず、実効nを半減させる。K4m未達は本戦略設計(ATRトレール専業・保有中央値45分)の構造的な特性であり、コストの問題ではない可能性が高い。"
+}
