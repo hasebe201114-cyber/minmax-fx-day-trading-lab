@@ -9,6 +9,14 @@ https://support.coin.z.com/hc/ja/articles/17884183390105 、
 2026-08-21 WebSearchで確認)に基づく強制決済が、個々のポジションの
 ストップロス(SL)到達より先に発動する経路が評価されていなかった。
 
+## 再実施(2026-08-21、重複トレード生成バグ修正後)
+
+初回実施時、本スクリプトの結果(最大同時保有ポジション数13件、1通貨1ポジション
+制約下では本来最大4件のはず)が、`find_trades_for_period()`の重複トレード生成
+バグ(同一方向の連続H1ブレイクバーが独立した追跡チェーンを開始し、同一トレード
+が複数回生成される)を発見する直接の端緒となった。バグ修正
+(`select_non_overlapping_breakout_events()`新設)後のデータで再実施する。
+
 ## 制約と近似(結果を見る前に方法論を固定)
 
 継続時間軸(M5/H1バーごと)の含み損益を全ポジション分マーク・トゥ・マーケット
@@ -57,7 +65,7 @@ LOSSCUT_THRESHOLD_PCT = 100.0
 def main() -> int:
     print("=== EXP-FX000005 T-12: 証拠金維持率ベースのロスカット判定(ストレステスト近似) ===\n")
 
-    with (ROOT / "research" / "method-notes" / "vol_breakout_dow_theory_4pairs_v7_t06fix_1000usd_backtest.json").open(
+    with (ROOT / "research" / "method-notes" / "vol_breakout_dow_theory_4pairs_v7_dedupfix_1000usd_backtest.json").open(
         encoding="utf-8"
     ) as f:
         backtest = json.load(f)

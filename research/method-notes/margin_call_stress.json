@@ -1,32 +1,32 @@
 {
-  "generated_at": "2026-08-21T11:03:36.391524",
+  "generated_at": "2026-08-21T11:26:43.659313",
   "periods": {
     "train": {
-      "n_trades": 619,
-      "max_concurrent_positions": 5,
-      "max_required_margin_pct_of_balance": 374.18,
-      "worst_case_maintenance_ratio_min_pct": 25.6,
-      "worst_case_maintenance_ratio_min_time": "2024-04-27 05:05:00+09:00",
-      "n_alert_threshold_breaches_125pct": 237,
-      "n_losscut_threshold_breaches_100pct": 174
+      "n_trades": 540,
+      "max_concurrent_positions": 4,
+      "max_required_margin_pct_of_balance": 316.46,
+      "worst_case_maintenance_ratio_min_pct": 30.4,
+      "worst_case_maintenance_ratio_min_time": "2024-03-20 00:10:00+09:00",
+      "n_alert_threshold_breaches_125pct": 188,
+      "n_losscut_threshold_breaches_100pct": 134
     },
     "validation": {
-      "n_trades": 143,
-      "max_concurrent_positions": 5,
-      "max_required_margin_pct_of_balance": 130.96,
-      "worst_case_maintenance_ratio_min_pct": 74.8,
-      "worst_case_maintenance_ratio_min_time": "2025-10-11 05:45:00+09:00",
-      "n_alert_threshold_breaches_125pct": 12,
-      "n_losscut_threshold_breaches_100pct": 3
+      "n_trades": 138,
+      "max_concurrent_positions": 4,
+      "max_required_margin_pct_of_balance": 113.96,
+      "worst_case_maintenance_ratio_min_pct": 86.0,
+      "worst_case_maintenance_ratio_min_time": "2025-07-04 01:20:00+09:00",
+      "n_alert_threshold_breaches_125pct": 11,
+      "n_losscut_threshold_breaches_100pct": 2
     },
     "test": {
-      "n_trades": 204,
-      "max_concurrent_positions": 13,
+      "n_trades": 173,
+      "max_concurrent_positions": 4,
       "max_required_margin_pct_of_balance": 277.32,
       "worst_case_maintenance_ratio_min_pct": 35.0,
       "worst_case_maintenance_ratio_min_time": "2026-02-26 06:30:00+09:00",
-      "n_alert_threshold_breaches_125pct": 80,
-      "n_losscut_threshold_breaches_100pct": 62
+      "n_alert_threshold_breaches_125pct": 61,
+      "n_losscut_threshold_breaches_100pct": 46
     }
   }
 }
