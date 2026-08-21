@@ -44,6 +44,16 @@ ENTRY/EXIT時点でのみ残高を更新する設計)を大幅に拡張する必
 しうるか」の上限を示すものであり、実際にこの水準に達したことを意味しない
 (保守的すぎる可能性がある)点に注意。
 
+## 再々実施(2026-08-21、T-16再査読の指摘によりtrailonly版データへ差し替え)
+
+上記「再実施」時点ではdedupfix版(T-13適用前、Train540/Validation138/Test173件)を
+参照していたが、T-13(出口設計のトレール専業化)適用後の最終候補(trailonly版、
+Train524/Validation133/Test170件)では一度も再実行されていなかった。独立C査読が
+この不整合を指摘したため、参照データをtrailonly版に差し替えて再実行する。
+最大同時保有ポジション数(=1通貨1ポジション制約の理論上限4)は変わらないと
+推定されるが、ロスカット相当水準の発生割合(約25〜35%)自体は未検証だった
+数値であり、確定させる。
+
 出力: research/method-notes/margin_call_stress.json
 """
 
@@ -65,7 +75,7 @@ LOSSCUT_THRESHOLD_PCT = 100.0
 def main() -> int:
     print("=== EXP-FX000005 T-12: 証拠金維持率ベースのロスカット判定(ストレステスト近似) ===\n")
 
-    with (ROOT / "research" / "method-notes" / "vol_breakout_dow_theory_4pairs_v7_dedupfix_1000usd_backtest.json").open(
+    with (ROOT / "research" / "method-notes" / "vol_breakout_dow_theory_4pairs_v7_trailonly_1000usd_backtest.json").open(
         encoding="utf-8"
     ) as f:
         backtest = json.load(f)

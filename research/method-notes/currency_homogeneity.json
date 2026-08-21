@@ -1,180 +1,180 @@
 {
-  "generated_at": "2026-08-21T10:58:07.443980",
+  "generated_at": "2026-08-21T12:11:16.897610",
   "periods": {
     "train": {
       "per_pair": {
         "USD_JPY": {
-          "n": 251,
-          "win_rate": 0.5936,
-          "mean_r_net": 0.1742,
-          "sum_r_net": 43.72
+          "n": 194,
+          "win_rate": 0.5722,
+          "mean_r_net": 0.2702,
+          "sum_r_net": 52.42
         },
         "EUR_JPY": {
-          "n": 140,
-          "win_rate": 0.7071,
-          "mean_r_net": 0.3335,
-          "sum_r_net": 46.69
+          "n": 118,
+          "win_rate": 0.6695,
+          "mean_r_net": 0.5058,
+          "sum_r_net": 59.68
         },
         "GBP_JPY": {
-          "n": 134,
-          "win_rate": 0.6791,
-          "mean_r_net": 0.2864,
-          "sum_r_net": 38.38
+          "n": 124,
+          "win_rate": 0.621,
+          "mean_r_net": 0.4365,
+          "sum_r_net": 54.12
         },
         "AUD_JPY": {
-          "n": 94,
-          "win_rate": 0.6383,
-          "mean_r_net": 0.0744,
-          "sum_r_net": 6.99
+          "n": 88,
+          "win_rate": 0.5568,
+          "mean_r_net": 0.068,
+          "sum_r_net": 5.98
         }
       },
       "all": {
-        "n": 619,
-        "mean_r_net": 0.2194,
-        "sum_r_net": 135.78
+        "n": 524,
+        "mean_r_net": 0.3286,
+        "sum_r_net": 172.2
       },
       "leave_one_pair_out": {
         "USD_JPY": {
-          "n": 368,
-          "mean_r_net": 0.2502,
-          "sum_r_net": 92.06,
-          "sum_r_net_pct_of_all": 67.8
+          "n": 330,
+          "mean_r_net": 0.363,
+          "sum_r_net": 119.79,
+          "sum_r_net_pct_of_all": 69.6
         },
         "EUR_JPY": {
-          "n": 479,
-          "mean_r_net": 0.186,
-          "sum_r_net": 89.09,
-          "sum_r_net_pct_of_all": 65.6
+          "n": 406,
+          "mean_r_net": 0.2772,
+          "sum_r_net": 112.52,
+          "sum_r_net_pct_of_all": 65.3
         },
         "GBP_JPY": {
-          "n": 485,
-          "mean_r_net": 0.2008,
-          "sum_r_net": 97.41,
-          "sum_r_net_pct_of_all": 71.7
+          "n": 400,
+          "mean_r_net": 0.2952,
+          "sum_r_net": 118.08,
+          "sum_r_net_pct_of_all": 68.6
         },
         "AUD_JPY": {
-          "n": 525,
-          "mean_r_net": 0.2453,
-          "sum_r_net": 128.79,
-          "sum_r_net_pct_of_all": 94.9
+          "n": 436,
+          "mean_r_net": 0.3812,
+          "sum_r_net": 166.22,
+          "sum_r_net_pct_of_all": 96.5
         }
       }
     },
     "validation": {
       "per_pair": {
         "USD_JPY": {
-          "n": 56,
-          "win_rate": 0.6786,
-          "mean_r_net": 0.2623,
-          "sum_r_net": 14.69
+          "n": 55,
+          "win_rate": 0.6545,
+          "mean_r_net": 0.2578,
+          "sum_r_net": 14.18
         },
         "EUR_JPY": {
           "n": 6,
           "win_rate": 1.0,
-          "mean_r_net": 0.7135,
-          "sum_r_net": 4.28
+          "mean_r_net": 0.6067,
+          "sum_r_net": 3.64
         },
         "GBP_JPY": {
           "n": 23,
           "win_rate": 0.5652,
-          "mean_r_net": 0.0344,
-          "sum_r_net": 0.79
+          "mean_r_net": -0.0607,
+          "sum_r_net": -1.4
         },
         "AUD_JPY": {
-          "n": 58,
-          "win_rate": 0.7069,
-          "mean_r_net": 0.3418,
-          "sum_r_net": 19.83
+          "n": 49,
+          "win_rate": 0.5918,
+          "mean_r_net": 0.8067,
+          "sum_r_net": 39.53
         }
       },
       "all": {
-        "n": 143,
-        "mean_r_net": 0.2768,
-        "sum_r_net": 39.59
+        "n": 133,
+        "mean_r_net": 0.4207,
+        "sum_r_net": 55.95
       },
       "leave_one_pair_out": {
         "USD_JPY": {
-          "n": 87,
-          "mean_r_net": 0.2862,
-          "sum_r_net": 24.9,
-          "sum_r_net_pct_of_all": 62.9
+          "n": 78,
+          "mean_r_net": 0.5356,
+          "sum_r_net": 41.77,
+          "sum_r_net_pct_of_all": 74.7
         },
         "EUR_JPY": {
-          "n": 137,
-          "mean_r_net": 0.2577,
-          "sum_r_net": 35.31,
-          "sum_r_net_pct_of_all": 89.2
+          "n": 127,
+          "mean_r_net": 0.4119,
+          "sum_r_net": 52.31,
+          "sum_r_net_pct_of_all": 93.5
         },
         "GBP_JPY": {
-          "n": 120,
-          "mean_r_net": 0.3233,
-          "sum_r_net": 38.8,
-          "sum_r_net_pct_of_all": 98.0
+          "n": 110,
+          "mean_r_net": 0.5214,
+          "sum_r_net": 57.35,
+          "sum_r_net_pct_of_all": 102.5
         },
         "AUD_JPY": {
-          "n": 85,
-          "mean_r_net": 0.2325,
-          "sum_r_net": 19.76,
-          "sum_r_net_pct_of_all": 49.9
+          "n": 84,
+          "mean_r_net": 0.1955,
+          "sum_r_net": 16.42,
+          "sum_r_net_pct_of_all": 29.4
         }
       }
     },
     "test": {
       "per_pair": {
         "USD_JPY": {
-          "n": 81,
-          "win_rate": 0.6914,
-          "mean_r_net": 0.2631,
-          "sum_r_net": 21.31
+          "n": 66,
+          "win_rate": 0.6212,
+          "mean_r_net": 0.583,
+          "sum_r_net": 38.48
         },
         "EUR_JPY": {
-          "n": 30,
-          "win_rate": 0.5667,
-          "mean_r_net": 0.0083,
-          "sum_r_net": 0.25
+          "n": 23,
+          "win_rate": 0.5217,
+          "mean_r_net": -0.1811,
+          "sum_r_net": -4.17
         },
         "GBP_JPY": {
-          "n": 45,
-          "win_rate": 0.6667,
-          "mean_r_net": 0.1199,
-          "sum_r_net": 5.39
+          "n": 35,
+          "win_rate": 0.6,
+          "mean_r_net": 0.3107,
+          "sum_r_net": 10.88
         },
         "AUD_JPY": {
-          "n": 48,
-          "win_rate": 0.6875,
-          "mean_r_net": 0.1509,
-          "sum_r_net": 7.24
+          "n": 46,
+          "win_rate": 0.587,
+          "mean_r_net": 0.1835,
+          "sum_r_net": 8.44
         }
       },
       "all": {
-        "n": 204,
-        "mean_r_net": 0.1676,
-        "sum_r_net": 34.2
+        "n": 170,
+        "mean_r_net": 0.3155,
+        "sum_r_net": 53.63
       },
       "leave_one_pair_out": {
         "USD_JPY": {
-          "n": 123,
-          "mean_r_net": 0.1048,
-          "sum_r_net": 12.88,
-          "sum_r_net_pct_of_all": 37.7
+          "n": 104,
+          "mean_r_net": 0.1457,
+          "sum_r_net": 15.15,
+          "sum_r_net_pct_of_all": 28.3
         },
         "EUR_JPY": {
-          "n": 174,
-          "mean_r_net": 0.1951,
-          "sum_r_net": 33.95,
-          "sum_r_net_pct_of_all": 99.3
+          "n": 147,
+          "mean_r_net": 0.3932,
+          "sum_r_net": 57.8,
+          "sum_r_net_pct_of_all": 107.8
         },
         "GBP_JPY": {
-          "n": 159,
-          "mean_r_net": 0.1812,
-          "sum_r_net": 28.8,
-          "sum_r_net_pct_of_all": 84.2
+          "n": 135,
+          "mean_r_net": 0.3167,
+          "sum_r_net": 42.76,
+          "sum_r_net_pct_of_all": 79.7
         },
         "AUD_JPY": {
-          "n": 156,
-          "mean_r_net": 0.1728,
-          "sum_r_net": 26.96,
-          "sum_r_net_pct_of_all": 78.8
+          "n": 124,
+          "mean_r_net": 0.3644,
+          "sum_r_net": 45.19,
+          "sum_r_net_pct_of_all": 84.3
         }
       }
     }

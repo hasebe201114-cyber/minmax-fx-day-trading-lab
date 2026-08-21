@@ -6,7 +6,8 @@ Validation期間でEUR/JPYはn=6件しかなく勝率100%・mean_r=0.748と際�
 期間でn=23件・勝率56.5%・mean_r=0.0625とほぼ横ばい。4通貨に一様なエッジが
 あるという前提に疑義がある、という指摘への対応。
 
-方法: 現行最良候補(T-01〜T-03+T-09+T-06/T-07)の$1,000バックテスト結果を対象に、
+方法: 現行最良候補(T-01〜T-09+重複トレード生成バグ修正+T-13、trailonly版)の
+$1,000バックテスト結果を対象に、
 (1) 通貨別の内訳(n・勝率・mean_r_net・sum_r_net)を期間ごとに再集計し、
 (2) leave-one-pair-out分析(各通貨を1つずつ除外して残り3通貨でプールした場合の
     mean_r_net・sum_r_netがどう変化するか)で、特定通貨への依存度を定量化する。
@@ -15,6 +16,13 @@ Validation期間でEUR/JPYはn=6件しかなく勝率100%・mean_r=0.748と際�
 除いた状態で戦略(価格反応型ショック抑制フィルター等)を再実行したものではない
 (フィルターの同時ブレイク判定は対象通貨集合に依存するため、真の意味での
 「3通貨構成での再バックテスト」とは異なる近似値である点に留意)。
+
+2026-08-21改訂(T-16再査読の指摘): 初回実行時はT-09+T-06/T-07時点(重複バグ修正前・
+T-13前、Train619/Validation143/Test204件)のデータを参照しており、重複バグ修正と
+T-13適用後の最終候補データで一度も再実行されていなかった。独立C査読者が最終
+データで自ら再集計したところ、報告値より深刻な集中依存と符号反転(GBP/JPYの
+Validation・EUR/JPYのTestがともに正→負)が判明したため、参照データをtrailonly版
+に差し替えて再実行する。
 
 出力: research/method-notes/currency_homogeneity.json
 """
@@ -34,7 +42,7 @@ PAIRS = ["USD_JPY", "EUR_JPY", "GBP_JPY", "AUD_JPY"]
 def main() -> int:
     print("=== EXP-FX000005 通貨別均質性の検証(C査読差し戻し対応) ===\n")
 
-    with (ROOT / "research" / "method-notes" / "vol_breakout_dow_theory_4pairs_v7_t06fix_1000usd_backtest.json").open(
+    with (ROOT / "research" / "method-notes" / "vol_breakout_dow_theory_4pairs_v7_trailonly_1000usd_backtest.json").open(
         encoding="utf-8"
     ) as f:
         backtest = json.load(f)

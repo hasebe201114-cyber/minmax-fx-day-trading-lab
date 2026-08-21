@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-08-21T11:26:43.659313",
+  "generated_at": "2026-08-21T12:11:21.614528",
   "periods": {
     "train": {
-      "n_trades": 540,
+      "n_trades": 524,
       "max_concurrent_positions": 4,
-      "max_required_margin_pct_of_balance": 316.46,
-      "worst_case_maintenance_ratio_min_pct": 30.4,
+      "max_required_margin_pct_of_balance": 315.12,
+      "worst_case_maintenance_ratio_min_pct": 30.5,
       "worst_case_maintenance_ratio_min_time": "2024-03-20 00:10:00+09:00",
-      "n_alert_threshold_breaches_125pct": 188,
-      "n_losscut_threshold_breaches_100pct": 134
+      "n_alert_threshold_breaches_125pct": 178,
+      "n_losscut_threshold_breaches_100pct": 127
     },
     "validation": {
-      "n_trades": 138,
+      "n_trades": 133,
       "max_concurrent_positions": 4,
       "max_required_margin_pct_of_balance": 113.96,
       "worst_case_maintenance_ratio_min_pct": 86.0,
@@ -20,13 +20,13 @@
       "n_losscut_threshold_breaches_100pct": 2
     },
     "test": {
-      "n_trades": 173,
+      "n_trades": 170,
       "max_concurrent_positions": 4,
       "max_required_margin_pct_of_balance": 277.32,
       "worst_case_maintenance_ratio_min_pct": 35.0,
       "worst_case_maintenance_ratio_min_time": "2026-02-26 06:30:00+09:00",
-      "n_alert_threshold_breaches_125pct": 61,
-      "n_losscut_threshold_breaches_100pct": 46
+      "n_alert_threshold_breaches_125pct": 62,
+      "n_losscut_threshold_breaches_100pct": 47
     }
   }
 }
