@@ -281,7 +281,8 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                                tp_levels: list[tuple[float, float]] | None = None,
                                skip_first_entry: bool = False,
                                atr_trail_series: pd.Series | None = None,
-                               m5_exit: bool = False) -> list[dict]:
+                               m5_exit: bool = False,
+                               cost_ratio_check=None) -> list[dict]:
     """1トレンドイベントをM5ダウ理論で追跡し、1通貨1ポジション制約下で連続的に
     押し目買い/戻り売りをシミュレートする。M5で型崩れしてもH1が型崩れ前の高値
     (UP)/安値(DOWN)を更新したら追跡を再開する。
@@ -306,7 +307,16 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
 
     zigzag_threshold_atr_m5: 省略時はモジュール定数ZIGZAG_THRESHOLD_ATR_M5(=1.0、
     事前登録の暫定値)を使用。エントリー機会の感度分析(改善ループ第4試行)用に
-    呼び出し側から上書きできるよう追加(2026-08-20)。"""
+    呼び出し側から上書きできるよう追加(2026-08-20)。
+
+    cost_ratio_check: Optional[Callable[[float, float], bool]]。引数は
+    (entry_price, initial_risk)。Trueを返す場合そのエントリーを見送る
+    (ポジションは開かない、entry_seqも増やさない、構造追跡自体は継続)。
+    候補③(Donchian+CALM_RATIO)のValidationでDDが悪化した原因分析(2026-08-22)で、
+    ATR(M5)が極端に小さい閑散局面ほどSL幅(=initial_risk)も比例して縮み、
+    固定額のスプレッド・スリッページコストがR単位に対して1R近くまで肥大化する
+    ケースが集中して発生していたと判明したことを受け追加(改善ループ第5試行、
+    上限5回のうち最後の1回)。"""
     zz_thresh = zigzag_threshold_atr_m5 if zigzag_threshold_atr_m5 is not None else ZIGZAG_THRESHOLD_ATR_M5
     break_bar = h1.iloc[break_idx]
     break_time = h1.index[break_idx]
@@ -400,7 +410,8 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                             entry_price = c_i
                             initial_risk = abs(entry_price - stop0)
                             entry_h1_idx = int(h1.index.searchsorted(ts, side="right") - 1)
-                            if initial_risk > 0 and 0 <= entry_h1_idx < len(h1):
+                            if (initial_risk > 0 and 0 <= entry_h1_idx < len(h1)
+                                    and not (cost_ratio_check and cost_ratio_check(entry_price, initial_risk))):
                                 entry_seq += 1
                                 if not (skip_first_entry and entry_seq == 1):
                                     entry = dict(direction=direction, entry_idx=entry_h1_idx, entry_m5_idx=i, entry_price=entry_price,
@@ -445,7 +456,8 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                             entry_price = c_i
                             initial_risk = abs(entry_price - stop0)
                             entry_h1_idx = int(h1.index.searchsorted(ts, side="right") - 1)
-                            if initial_risk > 0 and 0 <= entry_h1_idx < len(h1):
+                            if (initial_risk > 0 and 0 <= entry_h1_idx < len(h1)
+                                    and not (cost_ratio_check and cost_ratio_check(entry_price, initial_risk))):
                                 entry_seq += 1
                                 if not (skip_first_entry and entry_seq == 1):
                                     entry = dict(direction=direction, entry_idx=entry_h1_idx, entry_m5_idx=i, entry_price=entry_price,

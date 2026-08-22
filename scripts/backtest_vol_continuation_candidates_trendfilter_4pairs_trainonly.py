@@ -96,7 +96,14 @@ CANDIDATES = {
 }
 
 
-def find_trades_trendfiltered(pair: str, m5: pd.DataFrame, shock_check, detect_fn) -> tuple[list[dict], int, int, int]:
+def find_trades_trendfiltered(pair: str, m5: pd.DataFrame, shock_check, detect_fn,
+                               cost_ratio_max: float | None = None) -> tuple[list[dict], int, int, int]:
+    """cost_ratio_max: 改善ループ第5試行(2026-08-22)で追加。Noneなら既存挙動と完全に
+    同一(後方互換)。数値を指定すると、エントリー時点で見積もった往復コスト
+    (spread+slippage+commission、ストップ決済想定)がinitial_risk(1R)に対して
+    この比率を超えるエントリーを見送る(候補③のValidation DD悪化の原因分析で
+    判明した「閑散相場でSL幅が極端に狭くなりコスト比率が肥大化する」ケースへの
+    対策、詳細はresearch/EXP-FX000006/00-spec.md参照)。"""
     h1 = to_h1(m5)
     atr_h1 = atr_ind(h1["high"], h1["low"], h1["close"], length=14)
     atr_m5 = atr_ind(m5["high"], m5["low"], m5["close"], length=14)
@@ -114,6 +121,23 @@ def find_trades_trendfiltered(pair: str, m5: pd.DataFrame, shock_check, detect_f
     dedup_positions = select_non_overlapping_breakout_events(h1.index, positions, directions)
     dedup_directions = {pos: d for pos, d in zip(positions, directions)}
 
+    cost_ratio_check = None
+    if cost_ratio_max is not None:
+        spread = SPREAD_PIPS.get(pair, 0.5)
+        pip = pip_size(pair)
+
+        def cost_ratio_check(entry_price: float, initial_risk: float) -> bool:
+            # ストップ決済(SL_INITIAL_NO_TP)を想定した保守的な見積もり。
+            # TP_LEVELS_TRAILONLY=[]のため実際の往復コストもこの計算式と一致する
+            # (n_levels_hit常に0、fraction_via_tp常に0)。
+            entry_pips_est = spread + SLIPPAGE_PIPS_MARKET_LEG
+            exit_pips_est = spread + SLIPPAGE_PIPS_STOP_TRIGGERED
+            cost_price_est = (entry_pips_est + exit_pips_est) * pip
+            cost_r_est = cost_price_est / initial_risk
+            leverage_ratio_est = entry_price / initial_risk
+            commission_r_est = COMMISSION_RATE_ROUND_TRIP * leverage_ratio_est
+            return (cost_r_est + commission_r_est) > cost_ratio_max
+
     n_events_dedup = len(dedup_positions)
     n_events_trendfiltered = 0
     trades = []
@@ -126,11 +150,13 @@ def find_trades_trendfiltered(pair: str, m5: pd.DataFrame, shock_check, detect_f
         trades.extend(simulate_dow_theory_trend(
             m5, atr_m5, h1, atr_h1, pos, direction, STOP_BUFFER_ATR_M5, ATR_TRAIL_MULTIPLIER_M5,
             blackout_check=shock_check, tp_levels=TP_LEVELS_TRAILONLY, skip_first_entry=False,
-            atr_trail_series=atr_m5, m5_exit=True, breakeven_trigger_r=BREAKEVEN_TRIGGER_R))
+            atr_trail_series=atr_m5, m5_exit=True, breakeven_trigger_r=BREAKEVEN_TRIGGER_R,
+            cost_ratio_check=cost_ratio_check))
     return trades, len(positions), n_events_dedup, n_events_trendfiltered
 
 
-def run_period(candidate_name: str, detect_fn, start: str, end: str) -> dict:
+def run_period(candidate_name: str, detect_fn, start: str, end: str,
+                cost_ratio_max: float | None = None) -> dict:
     print(f"\n--- {candidate_name} (判定不能除外) ---")
     m5_by_pair, h1_by_pair, atr_h1_by_pair = {}, {}, {}
     for pair in SELECTED_PAIRS:
@@ -146,7 +172,8 @@ def run_period(candidate_name: str, detect_fn, start: str, end: str) -> dict:
     all_trades: list[dict] = []
     n_raw_total = n_dedup_total = n_trendfiltered_total = 0
     for pair, m5 in m5_by_pair.items():
-        trades, n_raw, n_dedup, n_trendfiltered = find_trades_trendfiltered(pair, m5, shock_check, detect_fn)
+        trades, n_raw, n_dedup, n_trendfiltered = find_trades_trendfiltered(
+            pair, m5, shock_check, detect_fn, cost_ratio_max=cost_ratio_max)
         n_raw_total += n_raw
         n_dedup_total += n_dedup
         n_trendfiltered_total += n_trendfiltered
