@@ -1,0 +1,112 @@
+{
+  "generated_at": "2026-08-22T05:24:13.752623",
+  "purpose": "N_BREAKOUTエントリーをH1ダウ理論トレンド方向との順行/逆行で分類し、件数・勝率を比較",
+  "method": {
+    "h1_trend_definition": "zigzag_pivots_typed(H1, threshold_atr=2.0)の直近2 HIGH・2 LOWピボットでHH+HL→UP、LH+LL→DOWN、それ以外は判定不能。ブレイク確定バーまでのデータのみ使用(先読みなし)",
+    "zigzag_threshold_atr_h1": 2.0,
+    "threshold_source": "SYS-FX009 H1版(derive_double_pattern_params_h1.py)の既存確立値をそのまま流用"
+  },
+  "caveat": "正式プロトコル外の探索的診断。00-spec.md等は変更しない。r_gross(コスト控除前)ベース",
+  "per_pair": {
+    "USD_JPY": {
+      "aligned(順行)": {
+        "n": 92,
+        "win_rate": 0.6196,
+        "mean_r_gross": 0.6034,
+        "profit_factor": 2.716
+      },
+      "counter(逆行)": {
+        "n": 21,
+        "win_rate": 0.5714,
+        "mean_r_gross": 0.4606,
+        "profit_factor": 2.16
+      },
+      "undetermined(判定不能)": {
+        "n": 81,
+        "win_rate": 0.5556,
+        "mean_r_gross": 0.3311,
+        "profit_factor": 1.789
+      }
+    },
+    "EUR_JPY": {
+      "aligned(順行)": {
+        "n": 43,
+        "win_rate": 0.7209,
+        "mean_r_gross": 0.7948,
+        "profit_factor": 3.848
+      },
+      "counter(逆行)": {
+        "n": 10,
+        "win_rate": 0.7,
+        "mean_r_gross": 0.474,
+        "profit_factor": 2.916
+      },
+      "undetermined(判定不能)": {
+        "n": 65,
+        "win_rate": 0.6615,
+        "mean_r_gross": 0.798,
+        "profit_factor": 3.714
+      }
+    },
+    "GBP_JPY": {
+      "aligned(順行)": {
+        "n": 51,
+        "win_rate": 0.6863,
+        "mean_r_gross": 0.7216,
+        "profit_factor": 3.453
+      },
+      "counter(逆行)": {
+        "n": 16,
+        "win_rate": 0.625,
+        "mean_r_gross": 0.8037,
+        "profit_factor": 3.572
+      },
+      "undetermined(判定不能)": {
+        "n": 57,
+        "win_rate": 0.6316,
+        "mean_r_gross": 0.6203,
+        "profit_factor": 2.768
+      }
+    },
+    "AUD_JPY": {
+      "aligned(順行)": {
+        "n": 48,
+        "win_rate": 0.6875,
+        "mean_r_gross": 0.5216,
+        "profit_factor": 2.926
+      },
+      "counter(逆行)": {
+        "n": 19,
+        "win_rate": 0.6842,
+        "mean_r_gross": 0.3939,
+        "profit_factor": 2.247
+      },
+      "undetermined(判定不能)": {
+        "n": 21,
+        "win_rate": 0.5714,
+        "mean_r_gross": 0.3224,
+        "profit_factor": 1.79
+      }
+    }
+  },
+  "pooled": {
+    "aligned(順行)": {
+      "n": 234,
+      "win_rate": 0.6667,
+      "mean_r_gross": 0.6476,
+      "profit_factor": 3.094
+    },
+    "counter(逆行)": {
+      "n": 66,
+      "win_rate": 0.6364,
+      "mean_r_gross": 0.5266,
+      "profit_factor": 2.594
+    },
+    "undetermined(判定不能)": {
+      "n": 224,
+      "win_rate": 0.6071,
+      "mean_r_gross": 0.5394,
+      "profit_factor": 2.479
+    }
+  }
+}
