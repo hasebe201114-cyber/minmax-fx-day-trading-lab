@@ -1,0 +1,122 @@
+{
+  "generated_at": "2026-08-22T05:28:45.124103",
+  "purpose": "Donchian継続+CALM_RATIOで拾った、N_BREAKOUTに含まれない新規追加分のエントリーをH1ダウ理論トレンド方向との順行/逆行で分類し、N_BREAKOUT側の分析と比較する",
+  "method": {
+    "detection": "Donchian(20)継続 AND range/ATR>=CALM_RATIO(2.0) AND NOT(range/ATR>=N_BREAKOUT(3.5))",
+    "h1_trend_definition": "analyze_n_breakout_h1_dow_trend_alignment.pyと完全に同一"
+  },
+  "caveat": "正式プロトコル外の探索的診断。00-spec.md等は変更しない。r_gross(コスト控除前)ベース",
+  "n_events_raw": 643,
+  "n_events_dedup": 383,
+  "per_pair": {
+    "USD_JPY": {
+      "n_events_raw": 177,
+      "n_events_dedup": 102,
+      "aligned(順行)": {
+        "n": 307,
+        "win_rate": 0.5668,
+        "mean_r_gross": 0.3999,
+        "profit_factor": 2.032
+      },
+      "counter(逆行)": {
+        "n": 35,
+        "win_rate": 0.6286,
+        "mean_r_gross": 0.6624,
+        "profit_factor": 2.932
+      },
+      "undetermined(判定不能)": {
+        "n": 190,
+        "win_rate": 0.5789,
+        "mean_r_gross": 0.5185,
+        "profit_factor": 2.33
+      }
+    },
+    "EUR_JPY": {
+      "n_events_raw": 170,
+      "n_events_dedup": 98,
+      "aligned(順行)": {
+        "n": 294,
+        "win_rate": 0.6122,
+        "mean_r_gross": 0.4714,
+        "profit_factor": 2.352
+      },
+      "counter(逆行)": {
+        "n": 40,
+        "win_rate": 0.65,
+        "mean_r_gross": 0.684,
+        "profit_factor": 3.105
+      },
+      "undetermined(判定不能)": {
+        "n": 172,
+        "win_rate": 0.6221,
+        "mean_r_gross": 0.517,
+        "profit_factor": 2.488
+      }
+    },
+    "GBP_JPY": {
+      "n_events_raw": 161,
+      "n_events_dedup": 93,
+      "aligned(順行)": {
+        "n": 306,
+        "win_rate": 0.6209,
+        "mean_r_gross": 0.5001,
+        "profit_factor": 2.447
+      },
+      "counter(逆行)": {
+        "n": 41,
+        "win_rate": 0.6341,
+        "mean_r_gross": 0.7249,
+        "profit_factor": 3.275
+      },
+      "undetermined(判定不能)": {
+        "n": 134,
+        "win_rate": 0.6194,
+        "mean_r_gross": 0.4226,
+        "profit_factor": 2.191
+      }
+    },
+    "AUD_JPY": {
+      "n_events_raw": 135,
+      "n_events_dedup": 90,
+      "aligned(順行)": {
+        "n": 283,
+        "win_rate": 0.6502,
+        "mean_r_gross": 0.4516,
+        "profit_factor": 2.345
+      },
+      "counter(逆行)": {
+        "n": 19,
+        "win_rate": 0.4737,
+        "mean_r_gross": 0.0754,
+        "profit_factor": 1.143
+      },
+      "undetermined(判定不能)": {
+        "n": 169,
+        "win_rate": 0.5503,
+        "mean_r_gross": 0.3347,
+        "profit_factor": 1.803
+      }
+    }
+  },
+  "pooled": {
+    "aligned(順行)": {
+      "n": 1190,
+      "win_rate": 0.6118,
+      "mean_r_gross": 0.4556,
+      "profit_factor": 2.284
+    },
+    "counter(逆行)": {
+      "n": 135,
+      "win_rate": 0.6148,
+      "mean_r_gross": 0.6052,
+      "profit_factor": 2.7
+    },
+    "undetermined(判定不能)": {
+      "n": 665,
+      "win_rate": 0.591,
+      "mean_r_gross": 0.4521,
+      "profit_factor": 2.194
+    }
+  },
+  "comparison_source": "research/method-notes/n_breakout_h1_dow_trend_alignment.json"
+}
