@@ -1,0 +1,68 @@
+{
+  "generated_at": "2026-08-22T04:04:44.993902",
+  "selected_pairs": [
+    "USD_JPY",
+    "EUR_JPY",
+    "GBP_JPY",
+    "AUD_JPY"
+  ],
+  "design": {
+    "detection_layer": "N_BREAKOUT(3.5) OR (Donchian(20) continuation AND range/ATR>=CALM_RATIO(2.0))",
+    "note": "検出層のみSYS-FX011から変更。M5エントリー/出口/コスト/重複除去/ショック抑制は完全に同一"
+  },
+  "kpi_thresholds": {
+    "monthly_sharpe": 0.4,
+    "profit_factor": 1.2,
+    "monthly_expectancy_positive": true,
+    "max_dd_monthly_pct": 10.0,
+    "max_dd_yearly_pct": 20.0,
+    "max_consecutive_losses": 5,
+    "payoff_ratio": 1.5,
+    "spread_cost_multiplier": 3.0,
+    "min_n_trades_effective": 300,
+    "permutation_p_value": 0.05
+  },
+  "train": {
+    "period": "train",
+    "monthly_sharpe": 4.507,
+    "max_dd_pct": 23.01,
+    "max_dd_monthly_pct": 23.01,
+    "max_dd_pct_of_initial_capital_reference": 479.34,
+    "max_dd_monthly_pct_of_initial_capital_reference": 0.0,
+    "profit_factor": 1.358,
+    "payoff_ratio": 1.005,
+    "max_consecutive_losses": 8,
+    "k3m_scale_invariant": {
+      "n_trades": 2159,
+      "win_rate": 0.5748,
+      "observed_max_consecutive_losses": 8,
+      "iid_null_mean": 8.5,
+      "iid_null_median": 8,
+      "observed_percentile_in_null": 0.2647,
+      "alpha": 0.05,
+      "pass_": true
+    },
+    "monthly_expectancy_positive": true,
+    "spread_cost_multiplier": 1.72,
+    "n_trades_effective": 2159.0,
+    "permutation_p_clustered": 0.015,
+    "kpi_pass": {
+      "monthly_sharpe": true,
+      "profit_factor": true,
+      "monthly_expectancy_positive": true,
+      "max_dd_monthly_pct": false,
+      "max_dd_yearly_pct": false,
+      "max_consecutive_losses": true,
+      "payoff_ratio": false,
+      "spread_cost_multiplier": false,
+      "min_n_trades_effective": true,
+      "permutation_p_value": true
+    },
+    "kpi_pass_count": "6/10",
+    "kpi_required_pass_count": "5/9",
+    "kpi_required_all_pass": false,
+    "kpi_reference_pass_count": "1/1"
+  },
+  "baseline_comparison_source": "vol_breakout_dow_theory_4pairs_v7_trailonly_t08fix_kpi_evaluation.json",
+  "_note": "00-spec.mdの検証プロトコルに従いTrain単独のみの正式判定。Validation/Testは未実施"
+}
