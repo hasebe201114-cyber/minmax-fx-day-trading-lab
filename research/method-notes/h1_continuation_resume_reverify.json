@@ -1,0 +1,181 @@
+{
+  "generated_at": "2026-08-22T00:00:05.480495",
+  "purpose": "T-15検討の前提確認: 2026-08-20時点entry_exit_diagnostics.json(改善ループ第3試行データ、resumed SL率36.1% n=371 vs not_resumed 42.6% n=319)が、現行best-candidate(dedup+T-01〜T-03+T-13 trailonly)データでも成立するかを再検証。あわせて『resumedの優位性はentry_seq(初回か否か)の言い換えに過ぎないか』を、entry_seq>=2に限定した比較で切り分ける",
+  "caveat": "正式プロトコル外の探索的診断。00-spec.md等は変更しない。r_gross(コスト控除前)ベース、決済判定はM5・出口はトレール専業(T-13)のため、exit_reasonラベルでのSL判別は不能(n_levels_hit常に0)。代わりにr_gross<=-0.05を『真の初期SL相当』の代理指標として使用",
+  "old_reference_2026_08_20": {
+    "resumed": {
+      "n": 371,
+      "sl_rate": 0.3612
+    },
+    "not_resumed": {
+      "n": 319,
+      "sl_rate": 0.4263
+    },
+    "source": "research/method-notes/entry_exit_diagnostics.json"
+  },
+  "per_period": {
+    "train": {
+      "n_total": 524,
+      "resumed": {
+        "n": 377,
+        "sl_rate": 0.3395,
+        "mean_r_gross": 0.6588,
+        "win_rate": 0.6366,
+        "profit_factor": 2.989,
+        "payoff_ratio": 1.594
+      },
+      "not_resumed": {
+        "n": 147,
+        "sl_rate": 0.3469,
+        "mean_r_gross": 0.3996,
+        "win_rate": 0.6395,
+        "profit_factor": 2.152,
+        "payoff_ratio": 1.167
+      },
+      "entry_seq1_only": {
+        "n": 116,
+        "sl_rate": 0.319,
+        "mean_r_gross": 0.7954,
+        "win_rate": 0.6724,
+        "profit_factor": 3.607,
+        "payoff_ratio": 1.711
+      },
+      "entry_seq2plus_resumed": {
+        "n": 310,
+        "sl_rate": 0.3452,
+        "mean_r_gross": 0.5917,
+        "win_rate": 0.6258,
+        "profit_factor": 2.739,
+        "payoff_ratio": 1.511
+      },
+      "entry_seq2plus_not_resumed": {
+        "n": 98,
+        "sl_rate": 0.3571,
+        "mean_r_gross": 0.3206,
+        "win_rate": 0.6327,
+        "profit_factor": 1.898,
+        "payoff_ratio": 1.071
+      }
+    },
+    "validation": {
+      "n_total": 133,
+      "resumed": {
+        "n": 82,
+        "sl_rate": 0.2439,
+        "mean_r_gross": 0.9065,
+        "win_rate": 0.7439,
+        "profit_factor": 4.785,
+        "payoff_ratio": 1.569
+      },
+      "not_resumed": {
+        "n": 51,
+        "sl_rate": 0.451,
+        "mean_r_gross": 0.1569,
+        "win_rate": 0.5294,
+        "profit_factor": 1.348,
+        "payoff_ratio": 1.148
+      },
+      "entry_seq1_only": {
+        "n": 33,
+        "sl_rate": 0.4242,
+        "mean_r_gross": 0.1031,
+        "win_rate": 0.5758,
+        "profit_factor": 1.249,
+        "payoff_ratio": 0.921
+      },
+      "entry_seq2plus_resumed": {
+        "n": 69,
+        "sl_rate": 0.2319,
+        "mean_r_gross": 1.0076,
+        "win_rate": 0.7536,
+        "profit_factor": 5.345,
+        "payoff_ratio": 1.645
+      },
+      "entry_seq2plus_not_resumed": {
+        "n": 31,
+        "sl_rate": 0.4194,
+        "mean_r_gross": 0.3034,
+        "win_rate": 0.5484,
+        "profit_factor": 1.724,
+        "payoff_ratio": 1.318
+      }
+    },
+    "test": {
+      "n_total": 170,
+      "resumed": {
+        "n": 112,
+        "sl_rate": 0.2857,
+        "mean_r_gross": 0.6021,
+        "win_rate": 0.7054,
+        "profit_factor": 3.14,
+        "payoff_ratio": 1.272
+      },
+      "not_resumed": {
+        "n": 58,
+        "sl_rate": 0.4138,
+        "mean_r_gross": 0.737,
+        "win_rate": 0.5517,
+        "profit_factor": 2.821,
+        "payoff_ratio": 2.116
+      },
+      "entry_seq1_only": {
+        "n": 49,
+        "sl_rate": 0.2653,
+        "mean_r_gross": 1.0696,
+        "win_rate": 0.6939,
+        "profit_factor": 5.308,
+        "payoff_ratio": 2.029
+      },
+      "entry_seq2plus_resumed": {
+        "n": 85,
+        "sl_rate": 0.3176,
+        "mean_r_gross": 0.5726,
+        "win_rate": 0.6824,
+        "profit_factor": 2.803,
+        "payoff_ratio": 1.305
+      },
+      "entry_seq2plus_not_resumed": {
+        "n": 36,
+        "sl_rate": 0.4444,
+        "mean_r_gross": 0.2528,
+        "win_rate": 0.5278,
+        "profit_factor": 1.575,
+        "payoff_ratio": 1.327
+      }
+    }
+  },
+  "pooled": {
+    "resumed": {
+      "n": 571,
+      "sl_rate": 0.3152,
+      "mean_r_gross": 0.6832,
+      "win_rate": 0.6655,
+      "profit_factor": 3.217,
+      "payoff_ratio": 1.524
+    },
+    "not_resumed": {
+      "n": 256,
+      "sl_rate": 0.3828,
+      "mean_r_gross": 0.4277,
+      "win_rate": 0.5977,
+      "profit_factor": 2.123,
+      "payoff_ratio": 1.36
+    },
+    "entry_seq2plus_resumed": {
+      "n": 464,
+      "sl_rate": 0.3233,
+      "mean_r_gross": 0.65,
+      "win_rate": 0.6552,
+      "profit_factor": 3.032,
+      "payoff_ratio": 1.496
+    },
+    "entry_seq2plus_not_resumed": {
+      "n": 165,
+      "sl_rate": 0.3879,
+      "mean_r_gross": 0.3026,
+      "win_rate": 0.5939,
+      "profit_factor": 1.782,
+      "payoff_ratio": 1.164
+    }
+  }
+}
