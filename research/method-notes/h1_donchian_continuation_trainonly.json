@@ -1,0 +1,27 @@
+{
+  "generated_at": "2026-08-22T00:29:07.773015",
+  "purpose": "T-15当たりづけ: 検出層をH1ボラブレイクからH1トレンド継続(Donchian20ブレイク)に置き換えた場合のTrain単独でのトレード数・質の変化を見る簡易シミュレーション",
+  "caveat": "正式プロトコル外の探索的診断(HARKing防止プロトコルの対象外だが同じ規律で実施)。Train単独のみ、donchian_length=20はindicators.pyの既定値をそのまま採用し調整していない。00-spec.md等は変更しない。r_gross(コスト控除前)ベース",
+  "detection_layer_current_best_candidate": {
+    "method": "H1レンジ/ATR比>=N_BREAKOUT(3.5)",
+    "n": 524,
+    "sl_rate": 0.3416,
+    "mean_r_gross": 0.5861,
+    "win_rate": 0.6374,
+    "profit_factor": 2.746,
+    "payoff_ratio": 1.472,
+    "n_events_raw": 181,
+    "n_events_dedup": 159
+  },
+  "detection_layer_donchian_continuation": {
+    "method": "H1終値が直近20本の高値/安値を更新",
+    "n": 4206,
+    "sl_rate": 0.3699,
+    "mean_r_gross": 0.4166,
+    "win_rate": 0.6003,
+    "profit_factor": 2.136,
+    "payoff_ratio": 1.317,
+    "n_events_raw": 4092,
+    "n_events_dedup": 792
+  }
+}
