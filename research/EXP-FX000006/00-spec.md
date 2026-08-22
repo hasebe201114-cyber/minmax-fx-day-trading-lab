@@ -144,7 +144,35 @@ DOWN条件 = (range_atr_ratio[i] >= N_BREAKOUT かつ close[i] < open[i])
 
 詳細: `research/method-notes/vol_continuation_ordonchian_nocalm_4pairs_trainonly_kpi_evaluation.json`、`research/method-notes/vol_continuation_candidates_trendfilter_4pairs_trainonly_backtest.json`
 
+## Validation確認（最良候補1件のみ、2026-08-22実施）
+
+検証プロトコル（本specの「Validationは、Trainで一定の見込みが立った場合にのみ参照する」節）に従い、Trainで最良だった1候補（N_BREAKOUT単独+H1トレンド判定不能除外フィルター）のみを、Trainパラメータのまま再学習せずValidationへ1回適用した。他5パターンはValidationでは評価しない。
+
+| 指標 | Train（判定不能除外後） | Validation（判定不能除外後） |
+|---|---|---|
+| 実効n | 300 | **85** |
+| 月次シャープ | 2.397 | 1.704 |
+| PF | 1.759 | 2.279 |
+| ペイオフレシオ | 1.078 | **1.376** |
+| 最大DD | 8.69% | 7.28% |
+| スプレッドコスト倍率 | 2.35 | 3.54 |
+| permutation p値 | 0.031 | 0.0999 |
+| **必須KPI達成数** | **7/9** | **6/9** |
+
+**Train+Validation合計: 必須ゲート13/18。**
+
+### 解釈（正直な記録）
+
+**質を示す指標はValidationでむしろTrainより改善している**（PF・ペイオフレシオ・最大DDすべて改善）。ペイオフレシオ1.376は、本PJでSYS-FX011/012を通じてValidationで記録した中で最も1.5（K4m閾値）に近い値であり、**過学習の兆候は見られない**。
+
+一方で**実効n=85と大幅に減少し、min_n_trades（≥300）を大きく未達**（元のSYS-FX011ベースラインのValidation実効n=133からも更に減少）。permutation p値も0.031→0.0999となり有意水準をわずかに超えた。未達3項目はペイオフレシオ・実効n・permutation有意性で、いずれも「サンプル数不足」に起因する項目である。
+
+**皮肉な帰結**: 判定不能除外フィルターは質を大きく改善する一方、サンプル数を大きく削る。当初SYS-FX011が抱えていた「実効n不足」という構造的課題に、質の改善と引き換えに構造的に回帰した形になった。「n増加⇔質低下」だけでなく「質改善⇔n減少」という、同じトレードオフの裏返しが本EXPを通じて一貫して観測されている。
+
+詳細: `research/method-notes/vol_breakout_trendfilter_candidate1_validation_backtest.json`
+
 ## 変更履歴
 - 2026-08-22: 初版作成。検出層をN_BREAKOUT単独からOR合成（N_BREAKOUT既存条件 OR Donchian(20)継続+CALM_RATIO質フィルター）に変更する設計を事前登録。新規自由パラメータは導入しない
 - 2026-08-22: Trainベースライン評価（改善ループ第1試行）を実施。必須KPI達成数が6/9→5/9へ悪化という負の結果。司令塔判断待ち
 - 2026-08-22: 改善ループ第2試行として、検出候補①②③×H1トレンド判定不能除外フィルターの6パターンを比較。**「①(N_BREAKOUT単独)+判定不能除外フィルター」が必須KPI7/9で最良**（元のベースラインを上回る）。当初の「n増加でnr不足を解消する」という仮説とは逆に、既存母集団の絞り込みが有効という結果。実効n=300はmin_n_trades閾値の境界で脆弱、Validation未確認。司令塔判断待ち
+- 2026-08-22: 最良候補をValidationで1回確認。必須KPI7/9→6/9。質はむしろ改善（ペイオフ1.078→1.376）したが実効n=300→85と激減しmin_n_trades未達、permutation有意性も喪失。Train+Validation合計13/18。司令塔判断待ち
