@@ -71,8 +71,11 @@ def summarize(trades: list[dict]) -> dict:
         return {"n": 0}
     # T-13でtp_levels=[]となったため、n_levels_hitは常に0でexit_reasonは
     # ほぼ全件"SL_INITIAL_NO_TP"になり、ラベルではSL到達を判別できない
-    # (C1所見と同じ問題)。r_gross<=-0.05(実質的にほぼ初期ストップ幅そのもの)を
-    # 「真の初期SL相当」の代理指標として使う。
+    # (C1所見と同じ問題)。実データのrはr≈-1.0付近(真の初期SL)と
+    # r>=-0.05付近(それ以外、大半が利益側)に二峰化しており-0.05〜0の
+    # 区間は空(独立レビュー2026-08-22で確認)なので、r_gross<=-0.05を
+    # 「真の初期SL相当」の代理指標として使う(閾値の絶対値自体に意味は
+    # ない、二峰分布の谷間に置いているだけ)。
     sl_n = sum(1 for t in trades if t["r"] <= -0.05)
     r = np.array([t["r"] for t in trades])
     wins = r[r > 0]
@@ -113,29 +116,48 @@ def main() -> int:
         pooled_resumed.extend(resumed)
         pooled_not_resumed.extend(not_resumed)
 
-        # entry_seq=1(トレンドイベント内の初回エントリー)は定義上resumed=Falseにしか
-        # なりえない。「resumedの優位性」がentry_seq効果の言い換えに過ぎないかを見るため、
-        # entry_seq>=2に限定した上でresumed/not_resumedを再比較する。
+        # 訂正(独立レビュー2026-08-22で指摘): 当初「entry_seq=1は定義上
+        # resumed=Falseにしかなりえない」としていたが誤り。型崩れ→H1継続
+        # 確認による再開が、そのトレンドイベントの最初の実エントリー
+        # (entry_seq=1)が成立する前に起きるケースがあり、この場合
+        # entry_seq=1でもresumed=Trueになりうる(Trainで116件中67件、
+        # 全524件中12.8%が該当)。entry_seq>=2限定比較の「entry_seq効果と
+        # 独立」という主張はこの前提の上に立っており修正が必要。
+        # より直接的な統制として、entry_seq=1に限定した上でresumed/
+        # not_resumedを比較する(エントリー順序を文字通り1で固定できる)。
         seq2plus = [t for t in all_trades if t["entry_seq"] >= 2]
         resumed_seq2plus = [t for t in seq2plus if t["resumed_since_last_entry"]]
         not_resumed_seq2plus = [t for t in seq2plus if not t["resumed_since_last_entry"]]
+
+        seq1 = [t for t in all_trades if t["entry_seq"] == 1]
+        resumed_seq1 = [t for t in seq1 if t["resumed_since_last_entry"]]
+        not_resumed_seq1 = [t for t in seq1 if not t["resumed_since_last_entry"]]
 
         per_period[period_name] = {
             "n_total": len(all_trades),
             "resumed": summarize(resumed),
             "not_resumed": summarize(not_resumed),
-            "entry_seq1_only": summarize([t for t in all_trades if t["entry_seq"] == 1]),
+            "entry_seq1_only": summarize(seq1),
+            "entry_seq1_resumed": summarize(resumed_seq1),
+            "entry_seq1_not_resumed": summarize(not_resumed_seq1),
             "entry_seq2plus_resumed": summarize(resumed_seq2plus),
             "entry_seq2plus_not_resumed": summarize(not_resumed_seq2plus),
         }
         print(f"{period_name}: n_total={len(all_trades)}  resumed(n={len(resumed)})={summarize(resumed)}  "
               f"not_resumed(n={len(not_resumed)})={summarize(not_resumed)}")
+        print(f"  [entry_seq==1限定] resumed(n={len(resumed_seq1)})={summarize(resumed_seq1)}  "
+              f"not_resumed(n={len(not_resumed_seq1)})={summarize(not_resumed_seq1)}")
         print(f"  [entry_seq>=2限定] resumed(n={len(resumed_seq2plus)})={summarize(resumed_seq2plus)}  "
               f"not_resumed(n={len(not_resumed_seq2plus)})={summarize(not_resumed_seq2plus)}")
 
-    pooled_seq2plus = [t for t in (pooled_resumed + pooled_not_resumed) if t["entry_seq"] >= 2]
+    pooled_all = pooled_resumed + pooled_not_resumed
+    pooled_seq2plus = [t for t in pooled_all if t["entry_seq"] >= 2]
     pooled_resumed_seq2plus = [t for t in pooled_seq2plus if t["resumed_since_last_entry"]]
     pooled_not_resumed_seq2plus = [t for t in pooled_seq2plus if not t["resumed_since_last_entry"]]
+
+    pooled_seq1 = [t for t in pooled_all if t["entry_seq"] == 1]
+    pooled_resumed_seq1 = [t for t in pooled_seq1 if t["resumed_since_last_entry"]]
+    pooled_not_resumed_seq1 = [t for t in pooled_seq1 if not t["resumed_since_last_entry"]]
 
     result = {
         "generated_at": pd.Timestamp.now().isoformat(),
@@ -143,10 +165,16 @@ def main() -> int:
                     "データ、resumed SL率36.1% n=371 vs not_resumed 42.6% n=319)が、"
                     "現行best-candidate(dedup+T-01〜T-03+T-13 trailonly)データでも成立するかを再検証。"
                     "あわせて『resumedの優位性はentry_seq(初回か否か)の言い換えに過ぎないか』を、"
-                    "entry_seq>=2に限定した比較で切り分ける"),
+                    "entry_seq=1限定・entry_seq>=2限定の両方の比較で切り分ける"),
         "caveat": ("正式プロトコル外の探索的診断。00-spec.md等は変更しない。r_gross(コスト控除前)ベース、"
                    "決済判定はM5・出口はトレール専業(T-13)のため、exit_reasonラベルでのSL判別は不能"
                    "(n_levels_hit常に0)。代わりにr_gross<=-0.05を『真の初期SL相当』の代理指標として使用"),
+        "correction_2026_08_22": ("独立レビューエージェントの指摘を受け訂正: 当初『entry_seq=1は定義上"
+                                   "resumed=Falseにしかなりえない』としていたが誤り。Trainでentry_seq=1の"
+                                   "116件中67件(全524件中12.8%)がresumed=Trueだった(型崩れ→H1継続確認による"
+                                   "再開が最初の実エントリー成立前に起きたケース)。entry_seq>=2限定比較の"
+                                   "結果自体は無効ではないが、より直接的な統制としてentry_seq=1限定の比較を"
+                                   "追加した(エントリー順序を文字通り1に固定できる)"),
         "old_reference_2026_08_20": {
             "resumed": {"n": 371, "sl_rate": 0.3612},
             "not_resumed": {"n": 319, "sl_rate": 0.4263},
@@ -156,6 +184,8 @@ def main() -> int:
         "pooled": {
             "resumed": summarize(pooled_resumed),
             "not_resumed": summarize(pooled_not_resumed),
+            "entry_seq1_resumed": summarize(pooled_resumed_seq1),
+            "entry_seq1_not_resumed": summarize(pooled_not_resumed_seq1),
             "entry_seq2plus_resumed": summarize(pooled_resumed_seq2plus),
             "entry_seq2plus_not_resumed": summarize(pooled_not_resumed_seq2plus),
         },
@@ -167,6 +197,8 @@ def main() -> int:
     print(f"\n書き出し: {out_path}")
     print(f"\nプール全体: resumed={summarize(pooled_resumed)}")
     print(f"プール全体: not_resumed={summarize(pooled_not_resumed)}")
+    print(f"\n[entry_seq==1限定・プール] resumed={summarize(pooled_resumed_seq1)}")
+    print(f"[entry_seq==1限定・プール] not_resumed={summarize(pooled_not_resumed_seq1)}")
     print(f"\n[entry_seq>=2限定・プール] resumed={summarize(pooled_resumed_seq2plus)}")
     print(f"[entry_seq>=2限定・プール] not_resumed={summarize(pooled_not_resumed_seq2plus)}")
     return 0

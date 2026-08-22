@@ -1,7 +1,8 @@
 {
-  "generated_at": "2026-08-22T00:00:05.480495",
-  "purpose": "T-15検討の前提確認: 2026-08-20時点entry_exit_diagnostics.json(改善ループ第3試行データ、resumed SL率36.1% n=371 vs not_resumed 42.6% n=319)が、現行best-candidate(dedup+T-01〜T-03+T-13 trailonly)データでも成立するかを再検証。あわせて『resumedの優位性はentry_seq(初回か否か)の言い換えに過ぎないか』を、entry_seq>=2に限定した比較で切り分ける",
+  "generated_at": "2026-08-22T00:46:20.847469",
+  "purpose": "T-15検討の前提確認: 2026-08-20時点entry_exit_diagnostics.json(改善ループ第3試行データ、resumed SL率36.1% n=371 vs not_resumed 42.6% n=319)が、現行best-candidate(dedup+T-01〜T-03+T-13 trailonly)データでも成立するかを再検証。あわせて『resumedの優位性はentry_seq(初回か否か)の言い換えに過ぎないか』を、entry_seq=1限定・entry_seq>=2限定の両方の比較で切り分ける",
   "caveat": "正式プロトコル外の探索的診断。00-spec.md等は変更しない。r_gross(コスト控除前)ベース、決済判定はM5・出口はトレール専業(T-13)のため、exit_reasonラベルでのSL判別は不能(n_levels_hit常に0)。代わりにr_gross<=-0.05を『真の初期SL相当』の代理指標として使用",
+  "correction_2026_08_22": "独立レビューエージェントの指摘を受け訂正: 当初『entry_seq=1は定義上resumed=Falseにしかなりえない』としていたが誤り。Trainでentry_seq=1の116件中67件(全524件中12.8%)がresumed=Trueだった(型崩れ→H1継続確認による再開が最初の実エントリー成立前に起きたケース)。entry_seq>=2限定比較の結果自体は無効ではないが、より直接的な統制としてentry_seq=1限定の比較を追加した(エントリー順序を文字通り1に固定できる)",
   "old_reference_2026_08_20": {
     "resumed": {
       "n": 371,
@@ -39,6 +40,22 @@
         "win_rate": 0.6724,
         "profit_factor": 3.607,
         "payoff_ratio": 1.711
+      },
+      "entry_seq1_resumed": {
+        "n": 67,
+        "sl_rate": 0.3134,
+        "mean_r_gross": 0.9694,
+        "win_rate": 0.6866,
+        "profit_factor": 4.349,
+        "payoff_ratio": 1.985
+      },
+      "entry_seq1_not_resumed": {
+        "n": 49,
+        "sl_rate": 0.3265,
+        "mean_r_gross": 0.5576,
+        "win_rate": 0.6531,
+        "profit_factor": 2.708,
+        "payoff_ratio": 1.354
       },
       "entry_seq2plus_resumed": {
         "n": 310,
@@ -83,6 +100,22 @@
         "profit_factor": 1.249,
         "payoff_ratio": 0.921
       },
+      "entry_seq1_resumed": {
+        "n": 13,
+        "sl_rate": 0.3077,
+        "mean_r_gross": 0.3699,
+        "win_rate": 0.6923,
+        "profit_factor": 2.322,
+        "payoff_ratio": 1.032
+      },
+      "entry_seq1_not_resumed": {
+        "n": 20,
+        "sl_rate": 0.5,
+        "mean_r_gross": -0.0703,
+        "win_rate": 0.5,
+        "profit_factor": 0.859,
+        "payoff_ratio": 0.859
+      },
       "entry_seq2plus_resumed": {
         "n": 69,
         "sl_rate": 0.2319,
@@ -126,6 +159,22 @@
         "profit_factor": 5.308,
         "payoff_ratio": 2.029
       },
+      "entry_seq1_resumed": {
+        "n": 27,
+        "sl_rate": 0.1852,
+        "mean_r_gross": 0.6949,
+        "win_rate": 0.7778,
+        "profit_factor": 5.16,
+        "payoff_ratio": 1.229
+      },
+      "entry_seq1_not_resumed": {
+        "n": 22,
+        "sl_rate": 0.3636,
+        "mean_r_gross": 1.5295,
+        "win_rate": 0.5909,
+        "profit_factor": 5.395,
+        "payoff_ratio": 3.32
+      },
       "entry_seq2plus_resumed": {
         "n": 85,
         "sl_rate": 0.3176,
@@ -160,6 +209,22 @@
       "win_rate": 0.5977,
       "profit_factor": 2.123,
       "payoff_ratio": 1.36
+    },
+    "entry_seq1_resumed": {
+      "n": 107,
+      "sl_rate": 0.2804,
+      "mean_r_gross": 0.8273,
+      "win_rate": 0.7103,
+      "profit_factor": 4.214,
+      "payoff_ratio": 1.663
+    },
+    "entry_seq1_not_resumed": {
+      "n": 91,
+      "sl_rate": 0.3736,
+      "mean_r_gross": 0.6545,
+      "win_rate": 0.6044,
+      "profit_factor": 2.77,
+      "payoff_ratio": 1.712
     },
     "entry_seq2plus_resumed": {
       "n": 464,
