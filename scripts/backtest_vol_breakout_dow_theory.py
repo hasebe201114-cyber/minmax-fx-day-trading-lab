@@ -210,8 +210,16 @@ def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, tra
         # 決済判定に使うバーのデータが尽きている(エントリーが利用可能な最終バー
         # 付近で発生)。追加の値動きを観測できないため、エントリー時刻でフラット
         # (r=0)決済とする。
+        # data_exhausted: 追加フィールド(2026-08-22、フォワードテストのC品質
+        # チームレビューで発覚した問題への対応)。既存の数値結果(r/exit_reason/
+        # exit_time/n_levels_hit)には一切影響しない加算のみ。Train/Validation/
+        # Testのような固定済み過去データではほぼ発生しない稀なケースだが、
+        # フォワードテスト(データの先端=常に「現在」)では通常のバー数不足による
+        # 未決着ポジションが毎回この分岐に該当しうる。呼び出し側がこのフラグを
+        # 見て「まだ結果が確定していないポジション」として除外できるようにする。
         ts_last = entry_ts if entry_ts is not None else bars.index[min(max(end - 1, 0), n - 1)]
-        return {"r": 0.0, "exit_reason": exit_data_missing_reason, "n_levels_hit": 0, "exit_time": ts_last}
+        return {"r": 0.0, "exit_reason": exit_data_missing_reason, "n_levels_hit": 0, "exit_time": ts_last,
+                "data_exhausted": True}
     for i in range(start, end):
         ts = bars.index[i]
         o, h, low, c = float(bars["open"].iloc[i]), float(bars["high"].iloc[i]), float(bars["low"].iloc[i]), float(bars["close"].iloc[i])
@@ -220,13 +228,13 @@ def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, tra
             exit_r = (c - entry_price) / risk if direction == "UP" else (entry_price - c) / risk
             reason = "WEEKEND_NO_TP" if n_levels_hit == 0 else "TP_THEN_WEEKEND"
             return {"r": realized_r + remaining_fraction * exit_r, "exit_reason": reason,
-                    "n_levels_hit": n_levels_hit, "exit_time": ts}
+                    "n_levels_hit": n_levels_hit, "exit_time": ts, "data_exhausted": False}
         stop_hit = (low <= stop) if direction == "UP" else (h >= stop)
         if stop_hit:
             exit_r = (stop - entry_price) / risk if direction == "UP" else (entry_price - stop) / risk
             reason = "SL_INITIAL_NO_TP" if n_levels_hit == 0 else "TP_THEN_SL_TRAIL"
             return {"r": realized_r + remaining_fraction * exit_r, "exit_reason": reason,
-                    "n_levels_hit": n_levels_hit, "exit_time": ts}
+                    "n_levels_hit": n_levels_hit, "exit_time": ts, "data_exhausted": False}
         if breakeven_trigger_r is not None and not be_moved:
             favorable_r = (h - entry_price) / risk if direction == "UP" else (entry_price - low) / risk
             if favorable_r >= breakeven_trigger_r:
@@ -251,13 +259,18 @@ def simulate_scaled_scheme(h1: pd.DataFrame, atr_h1: pd.Series, entry: dict, tra
                 else:
                     stop = min(stop, o + trail_mult * float(atr_i))
         if remaining_fraction <= 1e-9:
-            return {"r": realized_r, "exit_reason": "TP_FULL", "n_levels_hit": len(levels), "exit_time": ts}
+            return {"r": realized_r, "exit_reason": "TP_FULL", "n_levels_hit": len(levels), "exit_time": ts,
+                    "data_exhausted": False}
     ts_last = bars.index[end - 1]
     c = float(bars["close"].iloc[end - 1])
     exit_r = (c - entry_price) / risk if direction == "UP" else (entry_price - c) / risk
     n_levels_hit = sum(1 for lv in levels if lv[3])
+    # data_exhausted: ループが`max_hold_bars`の上限に達したのではなく、利用可能な
+    # データ(`n`)が尽きたために強制決済された場合はTrue(上のstart>=endケースと
+    # 同じ理由、コメント参照)。Train/Validation/Testでは`n`が十分大きいため通常False。
     return {"r": realized_r + remaining_fraction * exit_r, "exit_reason": "MAX_HOLD",
-            "n_levels_hit": n_levels_hit, "exit_time": ts_last}
+            "n_levels_hit": n_levels_hit, "exit_time": ts_last,
+            "data_exhausted": bool(end < start + max_hold_bars)}
 
 
 def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFrame, atr_h1: pd.Series,

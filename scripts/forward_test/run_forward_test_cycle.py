@@ -148,6 +148,7 @@ def run_forward_cycle() -> dict:
     shock_check = make_price_shock_check(h1_by_pair, atr_h1_by_pair)
 
     all_trades: list[dict] = []
+    still_open_trades: list[dict] = []
     n_raw_total = n_dedup_total = n_trendfiltered_total = 0
     for pair, m5 in m5_by_pair.items():
         trades, n_raw, n_dedup, n_trendfiltered = find_forward_trades(pair, m5, shock_check, CUTOFF)
@@ -157,6 +158,22 @@ def run_forward_cycle() -> dict:
         spread = SPREAD_PIPS.get(pair, 0.5)
         pip = pip_size(pair)
         for sim in trades:
+            # data_exhausted=True: 決済判定用の未来バーが単に足りないために
+            # simulate_scaled_scheme()が強制決済(NO_M5_DATA_AFTER_ENTRY/MAX_HOLD)
+            # を返したケース。Train/Validation/Testでは稀だが、フォワードテストは
+            # データの先端=常に「現在」のため、直近72時間以内のエントリーは
+            # 毎回これに該当しうる(2026-08-22、C品質チームレビューで発覚)。
+            # まだ結果が確定していないポジションなので、r_net・コストモデル計算を
+            # 行わず、複利計算・KPIから除外して「保有中」として別扱いする。
+            # 十分な実データが蓄積されれば、翌週以降の全期間再計算で自然に
+            # 決着済みトレードとして再評価される。
+            if sim.get("data_exhausted"):
+                still_open_trades.append({
+                    "pair": pair, "direction": sim["direction"],
+                    "entry_time": pd.Timestamp(sim["entry_time"]),
+                    "entry_price": sim["entry_price"], "initial_risk": sim["initial_risk"],
+                })
+                continue
             fraction_via_tp = TP_CUM_FRACTION[sim["n_levels_hit"]]
             fraction_remaining = 1.0 - fraction_via_tp
             remaining_is_market = sim["exit_reason"] in ("WEEKEND_NO_TP", "TP_THEN_WEEKEND", "MAX_HOLD")
@@ -194,7 +211,6 @@ def run_forward_cycle() -> dict:
     balance = INITIAL_CAPITAL_USD
     ruined = False
     equity_curve = [{"time": str(CUTOFF), "balance": balance}]
-    open_positions = []
     for time_, _order, idx, kind in events:
         t = all_trades[idx]
         if kind == "ENTRY":
@@ -207,10 +223,7 @@ def run_forward_cycle() -> dict:
                 t["risk_dollars"] = balance * effective_risk_pct
                 t["effective_risk_pct"] = effective_risk_pct
                 t["skipped_ruin"] = False
-            open_positions.append(idx)
         else:
-            if idx in open_positions:
-                open_positions.remove(idx)
             if t.get("skipped_ruin"):
                 t["dollar_pnl"] = 0.0
             else:
@@ -222,13 +235,12 @@ def run_forward_cycle() -> dict:
             t["balance_after"] = balance
             equity_curve.append({"time": str(time_), "balance": balance})
 
-    n = len(all_trades)
-    n_closed = sum(1 for t in all_trades if "dollar_pnl" in t)
-    n_open = n - n_closed
-    r_values = [t["r_net"] for t in all_trades if not t.get("skipped_ruin") and "dollar_pnl" in t]
-    pairs_for_perm = [t["pair"] for t in all_trades if not t.get("skipped_ruin") and "dollar_pnl" in t]
-    day_clusters_for_perm = [t["entry_time"].strftime("%Y-%m-%d") for t in all_trades
-                              if not t.get("skipped_ruin") and "dollar_pnl" in t]
+    n_closed = len(all_trades)  # data_exhaustedはstill_open_tradesへ既に分離済みなので、残りは全て決着済み
+    n_open = len(still_open_trades)
+    n = n_closed + n_open
+    r_values = [t["r_net"] for t in all_trades if not t.get("skipped_ruin")]
+    pairs_for_perm = [t["pair"] for t in all_trades if not t.get("skipped_ruin")]
+    day_clusters_for_perm = [t["entry_time"].strftime("%Y-%m-%d") for t in all_trades if not t.get("skipped_ruin")]
     perm_result = permutation_test_clustered(r_values, pairs_for_perm, seed=42) if len(r_values) >= 4 else None
     perm_result_block = permutation_test_block(r_values, day_clusters_for_perm, seed=42) if len(r_values) >= 4 else None
     wins = [r for r in r_values if r > 0]
@@ -238,6 +250,7 @@ def run_forward_cycle() -> dict:
     win_rate = (len(wins) / len(r_values)) if r_values else None
     mean_r_net = float(np.mean(r_values)) if r_values else None
 
+    all_output_trades = sorted(all_trades + still_open_trades, key=lambda t: t["entry_time"])
     period_result = {
         "period": "forward_test", "cutoff": str(CUTOFF),
         "n_events_raw": n_raw_total, "n_events_dedup": n_dedup_total,
@@ -253,7 +266,7 @@ def run_forward_cycle() -> dict:
         "trades": [
             {k: (str(v) if isinstance(v, pd.Timestamp) else (round(v, 6) if isinstance(v, float) else v))
              for k, v in t.items()}
-            for t in all_trades
+            for t in all_output_trades
         ],
         "equity_curve": equity_curve,
     }
