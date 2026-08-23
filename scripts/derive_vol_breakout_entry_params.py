@@ -74,6 +74,11 @@ def to_m15(m5: pd.DataFrame) -> pd.DataFrame:
                           [("open", "first"), ("high", "max"), ("low", "min"), ("close", "last")]}).dropna()
 
 
+def to_m30(m5: pd.DataFrame) -> pd.DataFrame:
+    return pd.DataFrame({c: m5[c].resample("30min").agg(a) for c, a in
+                          [("open", "first"), ("high", "max"), ("low", "min"), ("close", "last")]}).dropna()
+
+
 def find_entry(h1: pd.DataFrame, m15: pd.DataFrame, break_idx: int, direction: str,
                retrace_ratio: float) -> dict | None:
     """探索窓内で閾値到達→反転確認→エントリー確定 or 無効化/タイムアウトを判定する."""
