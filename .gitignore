@@ -59,3 +59,8 @@ data/curated/ds-1.json
 # MTF プリコンピュートキャッシュ: pickle (バイナリ・Python バージョン依存) のため
 # 追跡対象外。`python scripts/precompute_mtf.py` で ds-1.json から数秒で再生成可能。
 data/curated/mtf_cache/
+
+# M3エントリー診断用データ (2026-08-23〜): 124MB超でGitHub 100MB上限を超過するため
+# 追跡対象外。正式なDS登録もしていない単発の探索的診断用データ。
+# `python scripts/data/fetch_m1_resample_m3_train_4pairs.py` で再生成可能。
+data/curated/ds-1-m3-train-4pairs.json
