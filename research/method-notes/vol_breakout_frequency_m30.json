@@ -1,0 +1,82 @@
+{
+  "generated_at": "2026-08-23T02:02:24.525989",
+  "purpose": "EXP-FX000008: M30向けN_BREAKOUT再導出(頻度ベース、週1回程度を目安に選定)",
+  "pairs": [
+    "USD_JPY",
+    "EUR_JPY",
+    "GBP_JPY",
+    "AUD_JPY"
+  ],
+  "train_period": [
+    "2023-11-01",
+    "2025-03-31"
+  ],
+  "n_weeks_total_pooled": 206.2,
+  "range_atr_ratio_percentiles": {
+    "p90": 1.652,
+    "p95": 1.995,
+    "p97": 2.27,
+    "p99": 2.963
+  },
+  "n_candidates": {
+    "2.0": {
+      "n_events": 3432,
+      "events_per_week": 16.643,
+      "retrace_frac_median": 1.724,
+      "retrace_frac_p25": 1.0,
+      "retrace_frac_p75": 3.263,
+      "n_retrace_samples": 3432
+    },
+    "2.5": {
+      "n_events": 1403,
+      "events_per_week": 6.804,
+      "retrace_frac_median": 1.455,
+      "retrace_frac_p25": 0.971,
+      "retrace_frac_p75": 2.696,
+      "n_retrace_samples": 1403
+    },
+    "3.0": {
+      "n_events": 654,
+      "events_per_week": 3.171,
+      "retrace_frac_median": 1.32,
+      "retrace_frac_p25": 0.94,
+      "retrace_frac_p75": 2.241,
+      "n_retrace_samples": 654
+    },
+    "3.5": {
+      "n_events": 342,
+      "events_per_week": 1.658,
+      "retrace_frac_median": 1.205,
+      "retrace_frac_p25": 0.899,
+      "retrace_frac_p75": 1.989,
+      "n_retrace_samples": 342
+    },
+    "4.0": {
+      "n_events": 197,
+      "events_per_week": 0.955,
+      "retrace_frac_median": 1.0,
+      "retrace_frac_p25": 0.866,
+      "retrace_frac_p75": 1.704,
+      "n_retrace_samples": 197
+    },
+    "4.5": {
+      "n_events": 124,
+      "events_per_week": 0.601,
+      "retrace_frac_median": 1.0,
+      "retrace_frac_p25": 0.822,
+      "retrace_frac_p75": 1.472,
+      "n_retrace_samples": 124
+    },
+    "5.0": {
+      "n_events": 77,
+      "events_per_week": 0.373,
+      "retrace_frac_median": 1.0,
+      "retrace_frac_p25": 0.79,
+      "retrace_frac_p75": 1.196,
+      "n_retrace_samples": 77
+    }
+  },
+  "selected_n_breakout": 4.0,
+  "selection_rule": "プール発生頻度(events/week)が1.0に最も近い候補を選定(spec事前登録)",
+  "_note": "H1版(vol_breakout_frequency.json)と同一方法論をM30リサンプルバーに適用した頻度実測。対象は4通貨(JPYクロス、SYS-FX012凍結設計と同一)。"
+}
