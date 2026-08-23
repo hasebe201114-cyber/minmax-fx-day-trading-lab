@@ -284,7 +284,8 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                                m5_exit: bool = False,
                                cost_ratio_check=None,
                                max_entry_seq: int | None = None,
-                               confirm_bars: pd.DataFrame | None = None) -> list[dict]:
+                               confirm_bars: pd.DataFrame | None = None,
+                               confirm_mode: str = "new_extreme") -> list[dict]:
     """1トレンドイベントをM5ダウ理論で追跡し、1通貨1ポジション制約下で連続的に
     押し目買い/戻り売りをシミュレートする。M5で型崩れしてもH1が型崩れ前の高値
     (UP)/安値(DOWN)を更新したら追跡を再開する。
@@ -330,7 +331,14 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
     h1から差し替える(省略時はhをそのまま使う、既存挙動と完全に同一)。診断で
     現行Train300トレード中213件(71%)がこの継続確認による再開に由来すると
     判明したことを受け、EXP-FX000014(SYS-FX020)でH4版継続確認を検証するために
-    追加(2026-08-23)。"""
+    追加(2026-08-23)。
+
+    confirm_mode: "new_extreme"(既定、既存挙動)は型崩れ後、confirmバーが
+    トレンド開始以来の高値(UP)/安値(DOWN)をさらに更新したら再開する厳しい条件。
+    "no_reversal"は司令塔提案(2026-08-23、EXP-FX000015/SYS-FX021)による緩和版で、
+    型崩れを引き起こしたM5安値(UP)/高値(DOWN)をconfirmバーがさらに更新(悪化)
+    しなければ再開する、より緩い条件(新高値/新安値を積極的に作る必要はなく、
+    「confirmバーの目線で見てまだ崩れていない」ことだけを要求する)。"""
     zz_thresh = zigzag_threshold_atr_m5 if zigzag_threshold_atr_m5 is not None else ZIGZAG_THRESHOLD_ATR_M5
     confirm = confirm_bars if confirm_bars is not None else h1
     break_bar = h1.iloc[break_idx]
@@ -378,7 +386,11 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                 h1_high_hp = float(confirm["high"].iloc[hp])
                 h1_low_hp = float(confirm["low"].iloc[hp])
                 if direction == "UP":
-                    if awaiting_h1_confirm and h1_high_hp > h1_confirm_threshold:
+                    if confirm_mode == "no_reversal":
+                        confirmed = awaiting_h1_confirm and h1_low_hp >= h1_confirm_threshold
+                    else:
+                        confirmed = awaiting_h1_confirm and h1_high_hp > h1_confirm_threshold
+                    if confirmed:
                         awaiting_h1_confirm = False
                         state = "SEARCHING_HIGH"
                         last_confirmed_extreme = pause_extreme if pause_extreme is not None else last_confirmed_extreme
@@ -386,7 +398,11 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                         resumed_since_last_entry = True
                     h1_extreme_since_break = max(h1_extreme_since_break, h1_high_hp)
                 else:
-                    if awaiting_h1_confirm and h1_low_hp < h1_confirm_threshold:
+                    if confirm_mode == "no_reversal":
+                        confirmed = awaiting_h1_confirm and h1_high_hp <= h1_confirm_threshold
+                    else:
+                        confirmed = awaiting_h1_confirm and h1_low_hp < h1_confirm_threshold
+                    if confirmed:
                         awaiting_h1_confirm = False
                         state = "SEARCHING_LOW"
                         last_confirmed_extreme = pause_extreme if pause_extreme is not None else last_confirmed_extreme
@@ -451,8 +467,8 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                         running_extreme, running_extreme_idx = h_i, i
                     else:
                         awaiting_h1_confirm = True
-                        h1_confirm_threshold = h1_extreme_since_break
                         pause_extreme = min(pivot_low, l_i)
+                        h1_confirm_threshold = pause_extreme if confirm_mode == "no_reversal" else h1_extreme_since_break
         else:  # DOWN
             if state == "SEARCHING_LOW":
                 if l_i < running_extreme:
@@ -497,8 +513,8 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                         running_extreme, running_extreme_idx = l_i, i
                     else:
                         awaiting_h1_confirm = True
-                        h1_confirm_threshold = h1_extreme_since_break
                         pause_extreme = max(pivot_high, h_i)
+                        h1_confirm_threshold = pause_extreme if confirm_mode == "no_reversal" else h1_extreme_since_break
 
     return trades
 
