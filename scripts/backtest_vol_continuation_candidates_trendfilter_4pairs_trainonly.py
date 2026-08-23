@@ -97,13 +97,17 @@ CANDIDATES = {
 
 
 def find_trades_trendfiltered(pair: str, m5: pd.DataFrame, shock_check, detect_fn,
-                               cost_ratio_max: float | None = None) -> tuple[list[dict], int, int, int]:
+                               cost_ratio_max: float | None = None,
+                               max_entry_seq: int | None = None) -> tuple[list[dict], int, int, int]:
     """cost_ratio_max: 改善ループ第5試行(2026-08-22)で追加。Noneなら既存挙動と完全に
     同一(後方互換)。数値を指定すると、エントリー時点で見積もった往復コスト
     (spread+slippage+commission、ストップ決済想定)がinitial_risk(1R)に対して
     この比率を超えるエントリーを見送る(候補③のValidation DD悪化の原因分析で
     判明した「閑散相場でSL幅が極端に狭くなりコスト比率が肥大化する」ケースへの
-    対策、詳細はresearch/EXP-FX000006/00-spec.md参照)。"""
+    対策、詳細はresearch/EXP-FX000006/00-spec.md参照)。
+
+    max_entry_seq: EXP-FX000011(SYS-FX017)で追加(2026-08-23)。Noneなら既存挙動と
+    完全に同一(後方互換)。指定時はsimulate_dow_theory_trend()へそのまま渡す。"""
     h1 = to_h1(m5)
     atr_h1 = atr_ind(h1["high"], h1["low"], h1["close"], length=14)
     atr_m5 = atr_ind(m5["high"], m5["low"], m5["close"], length=14)
@@ -151,12 +155,13 @@ def find_trades_trendfiltered(pair: str, m5: pd.DataFrame, shock_check, detect_f
             m5, atr_m5, h1, atr_h1, pos, direction, STOP_BUFFER_ATR_M5, ATR_TRAIL_MULTIPLIER_M5,
             blackout_check=shock_check, tp_levels=TP_LEVELS_TRAILONLY, skip_first_entry=False,
             atr_trail_series=atr_m5, m5_exit=True, breakeven_trigger_r=BREAKEVEN_TRIGGER_R,
-            cost_ratio_check=cost_ratio_check))
+            cost_ratio_check=cost_ratio_check, max_entry_seq=max_entry_seq))
     return trades, len(positions), n_events_dedup, n_events_trendfiltered
 
 
 def run_period(candidate_name: str, detect_fn, start: str, end: str,
-                cost_ratio_max: float | None = None) -> dict:
+                cost_ratio_max: float | None = None,
+                max_entry_seq: int | None = None) -> dict:
     print(f"\n--- {candidate_name} (判定不能除外) ---")
     m5_by_pair, h1_by_pair, atr_h1_by_pair = {}, {}, {}
     for pair in SELECTED_PAIRS:
@@ -173,7 +178,7 @@ def run_period(candidate_name: str, detect_fn, start: str, end: str,
     n_raw_total = n_dedup_total = n_trendfiltered_total = 0
     for pair, m5 in m5_by_pair.items():
         trades, n_raw, n_dedup, n_trendfiltered = find_trades_trendfiltered(
-            pair, m5, shock_check, detect_fn, cost_ratio_max=cost_ratio_max)
+            pair, m5, shock_check, detect_fn, cost_ratio_max=cost_ratio_max, max_entry_seq=max_entry_seq)
         n_raw_total += n_raw
         n_dedup_total += n_dedup
         n_trendfiltered_total += n_trendfiltered

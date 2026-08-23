@@ -282,7 +282,8 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                                skip_first_entry: bool = False,
                                atr_trail_series: pd.Series | None = None,
                                m5_exit: bool = False,
-                               cost_ratio_check=None) -> list[dict]:
+                               cost_ratio_check=None,
+                               max_entry_seq: int | None = None) -> list[dict]:
     """1トレンドイベントをM5ダウ理論で追跡し、1通貨1ポジション制約下で連続的に
     押し目買い/戻り売りをシミュレートする。M5で型崩れしてもH1が型崩れ前の高値
     (UP)/安値(DOWN)を更新したら追跡を再開する。
@@ -316,7 +317,13 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
     ATR(M5)が極端に小さい閑散局面ほどSL幅(=initial_risk)も比例して縮み、
     固定額のスプレッド・スリッページコストがR単位に対して1R近くまで肥大化する
     ケースが集中して発生していたと判明したことを受け追加(改善ループ第5試行、
-    上限5回のうち最後の1回)。"""
+    上限5回のうち最後の1回)。
+
+    max_entry_seq: Optional[int]。指定時、entry_seqがこの値を超えるエントリーは
+    見送る(ポジションは開かない、構造追跡自体は継続、skip_first_entryと同じ
+    実装パターン)。EXP-FX000009の追加分析で「同一イベント内の再エントリーが
+    多いほど平均r_netが低下する」と判明したことを受け、EXP-FX000011(SYS-FX017)
+    でピラミッディング制限の効果を検証するために追加(2026-08-23)。"""
     zz_thresh = zigzag_threshold_atr_m5 if zigzag_threshold_atr_m5 is not None else ZIGZAG_THRESHOLD_ATR_M5
     break_bar = h1.iloc[break_idx]
     break_time = h1.index[break_idx]
@@ -413,7 +420,7 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                             if (initial_risk > 0 and 0 <= entry_h1_idx < len(h1)
                                     and not (cost_ratio_check and cost_ratio_check(entry_price, initial_risk))):
                                 entry_seq += 1
-                                if not (skip_first_entry and entry_seq == 1):
+                                if not (skip_first_entry and entry_seq == 1) and not (max_entry_seq is not None and entry_seq > max_entry_seq):
                                     entry = dict(direction=direction, entry_idx=entry_h1_idx, entry_m5_idx=i, entry_price=entry_price,
                                                  stop0=stop0, initial_risk=initial_risk, entry_ts=ts)
                                     res = simulate_scaled_scheme(h1, atr_h1, entry, trail_mult, breakeven_trigger_r=breakeven_trigger_r, tp_levels=tp_levels, atr_trail_series=atr_trail_series, m5_exit=(m5 if m5_exit else None))
@@ -459,7 +466,7 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                             if (initial_risk > 0 and 0 <= entry_h1_idx < len(h1)
                                     and not (cost_ratio_check and cost_ratio_check(entry_price, initial_risk))):
                                 entry_seq += 1
-                                if not (skip_first_entry and entry_seq == 1):
+                                if not (skip_first_entry and entry_seq == 1) and not (max_entry_seq is not None and entry_seq > max_entry_seq):
                                     entry = dict(direction=direction, entry_idx=entry_h1_idx, entry_m5_idx=i, entry_price=entry_price,
                                                  stop0=stop0, initial_risk=initial_risk, entry_ts=ts)
                                     res = simulate_scaled_scheme(h1, atr_h1, entry, trail_mult, breakeven_trigger_r=breakeven_trigger_r, tp_levels=tp_levels, atr_trail_series=atr_trail_series, m5_exit=(m5 if m5_exit else None))
