@@ -283,7 +283,8 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                                atr_trail_series: pd.Series | None = None,
                                m5_exit: bool = False,
                                cost_ratio_check=None,
-                               max_entry_seq: int | None = None) -> list[dict]:
+                               max_entry_seq: int | None = None,
+                               confirm_bars: pd.DataFrame | None = None) -> list[dict]:
     """1トレンドイベントをM5ダウ理論で追跡し、1通貨1ポジション制約下で連続的に
     押し目買い/戻り売りをシミュレートする。M5で型崩れしてもH1が型崩れ前の高値
     (UP)/安値(DOWN)を更新したら追跡を再開する。
@@ -323,8 +324,15 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
     見送る(ポジションは開かない、構造追跡自体は継続、skip_first_entryと同じ
     実装パターン)。EXP-FX000009の追加分析で「同一イベント内の再エントリーが
     多いほど平均r_netが低下する」と判明したことを受け、EXP-FX000011(SYS-FX017)
-    でピラミッディング制限の効果を検証するために追加(2026-08-23)。"""
+    でピラミッディング制限の効果を検証するために追加(2026-08-23)。
+
+    confirm_bars: Optional[pd.DataFrame]。型崩れ後の「継続確認」に使うバーを
+    h1から差し替える(省略時はhをそのまま使う、既存挙動と完全に同一)。診断で
+    現行Train300トレード中213件(71%)がこの継続確認による再開に由来すると
+    判明したことを受け、EXP-FX000014(SYS-FX020)でH4版継続確認を検証するために
+    追加(2026-08-23)。"""
     zz_thresh = zigzag_threshold_atr_m5 if zigzag_threshold_atr_m5 is not None else ZIGZAG_THRESHOLD_ATR_M5
+    confirm = confirm_bars if confirm_bars is not None else h1
     break_bar = h1.iloc[break_idx]
     break_time = h1.index[break_idx]
     start_time = break_time + pd.Timedelta(minutes=WINDOW_START_MIN)
@@ -342,9 +350,9 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
     running_extreme_idx = start_pos
     position_open_until: pd.Timestamp | None = None
 
-    # H1継続確認まわりの状態
+    # H1(またはconfirm_bars指定時はそのバー)継続確認まわりの状態
     h1_extreme_since_break = float(break_bar["high"]) if direction == "UP" else float(break_bar["low"])
-    last_h1_pos_checked = break_idx
+    last_h1_pos_checked = int(confirm.index.searchsorted(break_time, side="right") - 1)
     awaiting_h1_confirm = False
     h1_confirm_threshold: float | None = None
     pause_extreme: float | None = None  # 一時停止中に記録したM5最安値(UP)/最高値(DOWN)
@@ -362,12 +370,13 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
             break
         h_i, l_i, c_i = float(m5["high"].iloc[i]), float(m5["low"].iloc[i]), float(m5["close"].iloc[i])
 
-        # H1バーの確定を検知し、継続確認 & h1_extreme_since_breakを更新
-        cur_h1_pos = int(h1.index.searchsorted(ts, side="right") - 1)
+        # confirmバー(既定h1、confirm_bars指定時は差し替え)の確定を検知し、
+        # 継続確認 & h1_extreme_since_breakを更新
+        cur_h1_pos = int(confirm.index.searchsorted(ts, side="right") - 1)
         if cur_h1_pos > last_h1_pos_checked:
             for hp in range(last_h1_pos_checked + 1, cur_h1_pos + 1):
-                h1_high_hp = float(h1["high"].iloc[hp])
-                h1_low_hp = float(h1["low"].iloc[hp])
+                h1_high_hp = float(confirm["high"].iloc[hp])
+                h1_low_hp = float(confirm["low"].iloc[hp])
                 if direction == "UP":
                     if awaiting_h1_confirm and h1_high_hp > h1_confirm_threshold:
                         awaiting_h1_confirm = False
