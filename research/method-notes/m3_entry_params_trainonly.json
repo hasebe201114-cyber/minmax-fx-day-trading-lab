@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-08-23T03:42:02.238396",
+  "purpose": "EXP-FX000009: M3エントリー層向けstop_buffer_atr_m3・atr_trail_multiplier_m3の再導出",
+  "pairs": [
+    "USD_JPY",
+    "EUR_JPY",
+    "GBP_JPY",
+    "AUD_JPY"
+  ],
+  "train_period": [
+    "2023-11-01",
+    "2025-03-31"
+  ],
+  "pooled_n_bars_for_buffer": 692828,
+  "stop_buffer_atr_m3": 0.7,
+  "stop_buffer_atr_m3_percentile": 25,
+  "atr_trail_multiplier_m3": 0.7,
+  "stop_buffer_atr_m5_reference": 0.703,
+  "_note": "M5版(backtest_vol_breakout_dow_theory.pyのstop_buffer_atr_m5導出)と同一方法論(pooled 4通貨バーレンジ/ATR比のp25)をM3リサンプルバーに適用。atr_trail_multiplier_m3はT-02で確立済みの公式(stop_buffer_atr×1.0)をそのまま適用。zigzag_threshold_atr_m3は再導出せず1.0のまま据え置く(M5版も暫定固定値のため再導出の方法論が存在しない、EXP-FX000009 00-prescreen.md参照)。"
+}
