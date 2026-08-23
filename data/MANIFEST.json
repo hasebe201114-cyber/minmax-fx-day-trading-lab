@@ -1,18 +1,18 @@
 {
   "schema_version": "1.0",
   "project": "minmax-fx-day-trading-lab",
-  "generated_at": "2026-08-22T07:54:35.015371",
+  "generated_at": "2026-08-23T08:24:21.153835",
   "datasets": [
     {
       "id": "DS-1",
       "name": "OHLCV",
       "source": "GMO Coin 外国為替FX Public API (/v1/klines)",
-      "fetched_at": "2026-08-22T07:54:35.015349",
+      "fetched_at": "2026-08-23T08:24:21.153811",
       "interval": "5min",
       "n_pairs": 1,
-      "total_bars": 153897,
+      "total_bars": 104208,
       "files": [
-        "data/raw/ds-1/ohlcv_NZD_USD_5min_20231101_20251130.csv"
+        "data/raw/ds-1/ohlcv_CHF_JPY_5min_20231101_20250331.csv"
       ]
     }
   ]
