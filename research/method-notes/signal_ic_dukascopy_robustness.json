@@ -1,0 +1,2087 @@
+{
+  "generated_at": "2026-08-23T12:25:33.907803",
+  "purpose": "頑健性チェック専用(KPI評価ではない)。GMO壁より前の期間・別データソースでのIC再現性確認",
+  "data_source": "Dukascopy公開ヒストリカルフィード(認証不要、BID H1候補足)",
+  "period": [
+    "2018-11-01",
+    "2023-10-26"
+  ],
+  "timeframe": "H4 (H1から集約)",
+  "horizons_h4_bars": {
+    "4h": 1,
+    "1d": 6,
+    "3d": 18,
+    "1w": 42
+  },
+  "random_seed": 42,
+  "effective_pair_count": 1.863,
+  "mean_offdiag_corr_d1": 0.421,
+  "n_tests": 44,
+  "bonferroni_alpha": 0.001136,
+  "comparison_gmo_baseline": {
+    "gmo_period": [
+      "2023-11-01",
+      "2025-03-31"
+    ],
+    "gmo_survivors_count": 0,
+    "dukascopy_survivors_count": 0,
+    "same_conclusion": true
+  },
+  "pooled": {
+    "4h": {
+      "mom_1d": {
+        "ic": -0.003,
+        "n_overlapping": 39925,
+        "n_independent": 39925,
+        "ic_independent": -0.003,
+        "p_value": 0.5439,
+        "n_effective": 14875,
+        "p_value_corr_adjusted": 0.7145,
+        "survives_bonferroni": false
+      },
+      "mom_3d": {
+        "ic": -0.0068,
+        "n_overlapping": 39925,
+        "n_independent": 39925,
+        "ic_independent": -0.0068,
+        "p_value": 0.1761,
+        "n_effective": 14875,
+        "p_value_corr_adjusted": 0.4069,
+        "survives_bonferroni": false
+      },
+      "mom_1w": {
+        "ic": -0.0088,
+        "n_overlapping": 39925,
+        "n_independent": 39925,
+        "ic_independent": -0.0088,
+        "p_value": 0.0781,
+        "n_effective": 14875,
+        "p_value_corr_adjusted": 0.2832,
+        "survives_bonferroni": false
+      },
+      "sma_cross_10_20_atr": {
+        "ic": 0.0009,
+        "n_overlapping": 39925,
+        "n_independent": 39925,
+        "ic_independent": 0.0009,
+        "p_value": 0.863,
+        "n_effective": 14875,
+        "p_value_corr_adjusted": 0.9126,
+        "survives_bonferroni": false
+      },
+      "px_vs_sma20_atr": {
+        "ic": -0.0054,
+        "n_overlapping": 39925,
+        "n_independent": 39925,
+        "ic_independent": -0.0054,
+        "p_value": 0.2782,
+        "n_effective": 14875,
+        "p_value_corr_adjusted": 0.5102,
+        "survives_bonferroni": false
+      },
+      "px_vs_sma50_atr": {
+        "ic": -0.009,
+        "n_overlapping": 39925,
+        "n_independent": 39925,
+        "ic_independent": -0.009,
+        "p_value": 0.0729,
+        "n_effective": 14875,
+        "p_value_corr_adjusted": 0.2724,
+        "survives_bonferroni": false
+      },
+      "rsi14_centered": {
+        "ic": -0.0084,
+        "n_overlapping": 39925,
+        "n_independent": 39925,
+        "ic_independent": -0.0084,
+        "p_value": 0.0924,
+        "n_effective": 14875,
+        "p_value_corr_adjusted": 0.3056,
+        "survives_bonferroni": false
+      },
+      "bb_pctb_centered": {
+        "ic": -0.0045,
+        "n_overlapping": 39925,
+        "n_independent": 39925,
+        "ic_independent": -0.0045,
+        "p_value": 0.3705,
+        "n_effective": 14875,
+        "p_value_corr_adjusted": 0.5832,
+        "survives_bonferroni": false
+      },
+      "zscore_20": {
+        "ic": -0.0045,
+        "n_overlapping": 39925,
+        "n_independent": 39925,
+        "ic_independent": -0.0045,
+        "p_value": 0.3705,
+        "n_effective": 14875,
+        "p_value_corr_adjusted": 0.5832,
+        "survives_bonferroni": false
+      },
+      "donchian_pos_centered": {
+        "ic": -0.0049,
+        "n_overlapping": 39925,
+        "n_independent": 39925,
+        "ic_independent": -0.0049,
+        "p_value": 0.326,
+        "n_effective": 14875,
+        "p_value_corr_adjusted": 0.5501,
+        "survives_bonferroni": false
+      },
+      "_random_control": {
+        "ic": 0.0047,
+        "n_overlapping": 39925,
+        "n_independent": 39925,
+        "ic_independent": 0.0047,
+        "p_value": 0.3438,
+        "n_effective": 14875,
+        "p_value_corr_adjusted": 0.5665,
+        "survives_bonferroni": false
+      }
+    },
+    "1d": {
+      "mom_1d": {
+        "ic": 0.0123,
+        "n_overlapping": 39900,
+        "n_independent": 6650,
+        "ic_independent": 0.009,
+        "p_value": 0.4608,
+        "n_effective": 2478,
+        "p_value_corr_adjusted": 0.6543,
+        "survives_bonferroni": false
+      },
+      "mom_3d": {
+        "ic": -0.0112,
+        "n_overlapping": 39900,
+        "n_independent": 6650,
+        "ic_independent": -0.0141,
+        "p_value": 0.2496,
+        "n_effective": 2478,
+        "p_value_corr_adjusted": 0.483,
+        "survives_bonferroni": false
+      },
+      "mom_1w": {
+        "ic": -0.0301,
+        "n_overlapping": 39900,
+        "n_independent": 6650,
+        "ic_independent": -0.039,
+        "p_value": 0.0015,
+        "n_effective": 2478,
+        "p_value_corr_adjusted": 0.0522,
+        "survives_bonferroni": false
+      },
+      "sma_cross_10_20_atr": {
+        "ic": -0.0031,
+        "n_overlapping": 39900,
+        "n_independent": 6650,
+        "ic_independent": -0.0074,
+        "p_value": 0.5441,
+        "n_effective": 2478,
+        "p_value_corr_adjusted": 0.7128,
+        "survives_bonferroni": false
+      },
+      "px_vs_sma20_atr": {
+        "ic": 0.0057,
+        "n_overlapping": 39900,
+        "n_independent": 6650,
+        "ic_independent": 0.0012,
+        "p_value": 0.9197,
+        "n_effective": 2478,
+        "p_value_corr_adjusted": 0.9524,
+        "survives_bonferroni": false
+      },
+      "px_vs_sma50_atr": {
+        "ic": -0.0183,
+        "n_overlapping": 39900,
+        "n_independent": 6650,
+        "ic_independent": -0.0267,
+        "p_value": 0.0292,
+        "n_effective": 2478,
+        "p_value_corr_adjusted": 0.184,
+        "survives_bonferroni": false
+      },
+      "rsi14_centered": {
+        "ic": -0.0049,
+        "n_overlapping": 39900,
+        "n_independent": 6650,
+        "ic_independent": -0.0098,
+        "p_value": 0.4261,
+        "n_effective": 2478,
+        "p_value_corr_adjusted": 0.6259,
+        "survives_bonferroni": false
+      },
+      "bb_pctb_centered": {
+        "ic": 0.0081,
+        "n_overlapping": 39900,
+        "n_independent": 6650,
+        "ic_independent": 0.0043,
+        "p_value": 0.727,
+        "n_effective": 2478,
+        "p_value_corr_adjusted": 0.8306,
+        "survives_bonferroni": false
+      },
+      "zscore_20": {
+        "ic": 0.0081,
+        "n_overlapping": 39900,
+        "n_independent": 6650,
+        "ic_independent": 0.0043,
+        "p_value": 0.727,
+        "n_effective": 2478,
+        "p_value_corr_adjusted": 0.8306,
+        "survives_bonferroni": false
+      },
+      "donchian_pos_centered": {
+        "ic": 0.0104,
+        "n_overlapping": 39900,
+        "n_independent": 6650,
+        "ic_independent": 0.0058,
+        "p_value": 0.6387,
+        "n_effective": 2478,
+        "p_value_corr_adjusted": 0.7729,
+        "survives_bonferroni": false
+      },
+      "_random_control": {
+        "ic": 0.0067,
+        "n_overlapping": 39900,
+        "n_independent": 6650,
+        "ic_independent": 0.0137,
+        "p_value": 0.2637,
+        "n_effective": 2478,
+        "p_value_corr_adjusted": 0.4955,
+        "survives_bonferroni": false
+      }
+    },
+    "3d": {
+      "mom_1d": {
+        "ic": -0.0005,
+        "n_overlapping": 39840,
+        "n_independent": 2214,
+        "ic_independent": -0.0043,
+        "p_value": 0.8415,
+        "n_effective": 825,
+        "p_value_corr_adjusted": 0.9019,
+        "survives_bonferroni": false
+      },
+      "mom_3d": {
+        "ic": -0.0333,
+        "n_overlapping": 39840,
+        "n_independent": 2214,
+        "ic_independent": -0.045,
+        "p_value": 0.0341,
+        "n_effective": 825,
+        "p_value_corr_adjusted": 0.1967,
+        "survives_bonferroni": false
+      },
+      "mom_1w": {
+        "ic": -0.0516,
+        "n_overlapping": 39840,
+        "n_independent": 2214,
+        "ic_independent": -0.0502,
+        "p_value": 0.0182,
+        "n_effective": 825,
+        "p_value_corr_adjusted": 0.1497,
+        "survives_bonferroni": false
+      },
+      "sma_cross_10_20_atr": {
+        "ic": -0.0294,
+        "n_overlapping": 39840,
+        "n_independent": 2214,
+        "ic_independent": -0.0323,
+        "p_value": 0.1283,
+        "n_effective": 825,
+        "p_value_corr_adjusted": 0.3542,
+        "survives_bonferroni": false
+      },
+      "px_vs_sma20_atr": {
+        "ic": -0.0155,
+        "n_overlapping": 39840,
+        "n_independent": 2214,
+        "ic_independent": -0.03,
+        "p_value": 0.1581,
+        "n_effective": 825,
+        "p_value_corr_adjusted": 0.3896,
+        "survives_bonferroni": false
+      },
+      "px_vs_sma50_atr": {
+        "ic": -0.0433,
+        "n_overlapping": 39840,
+        "n_independent": 2214,
+        "ic_independent": -0.0473,
+        "p_value": 0.0262,
+        "n_effective": 825,
+        "p_value_corr_adjusted": 0.1747,
+        "survives_bonferroni": false
+      },
+      "rsi14_centered": {
+        "ic": -0.0273,
+        "n_overlapping": 39840,
+        "n_independent": 2214,
+        "ic_independent": -0.0349,
+        "p_value": 0.1008,
+        "n_effective": 825,
+        "p_value_corr_adjusted": 0.3168,
+        "survives_bonferroni": false
+      },
+      "bb_pctb_centered": {
+        "ic": -0.0106,
+        "n_overlapping": 39840,
+        "n_independent": 2214,
+        "ic_independent": -0.0258,
+        "p_value": 0.2244,
+        "n_effective": 825,
+        "p_value_corr_adjusted": 0.4594,
+        "survives_bonferroni": false
+      },
+      "zscore_20": {
+        "ic": -0.0106,
+        "n_overlapping": 39840,
+        "n_independent": 2214,
+        "ic_independent": -0.0258,
+        "p_value": 0.2244,
+        "n_effective": 825,
+        "p_value_corr_adjusted": 0.4594,
+        "survives_bonferroni": false
+      },
+      "donchian_pos_centered": {
+        "ic": -0.0141,
+        "n_overlapping": 39840,
+        "n_independent": 2214,
+        "ic_independent": -0.0287,
+        "p_value": 0.1763,
+        "n_effective": 825,
+        "p_value_corr_adjusted": 0.4105,
+        "survives_bonferroni": false
+      },
+      "_random_control": {
+        "ic": 0.0092,
+        "n_overlapping": 39840,
+        "n_independent": 2214,
+        "ic_independent": 0.0341,
+        "p_value": 0.109,
+        "n_effective": 825,
+        "p_value_corr_adjusted": 0.3281,
+        "survives_bonferroni": false
+      }
+    },
+    "1w": {
+      "mom_1d": {
+        "ic": -0.0221,
+        "n_overlapping": 39720,
+        "n_independent": 946,
+        "ic_independent": -0.0495,
+        "p_value": 0.1285,
+        "n_effective": 352,
+        "p_value_corr_adjusted": 0.3547,
+        "survives_bonferroni": false
+      },
+      "mom_3d": {
+        "ic": -0.0504,
+        "n_overlapping": 39720,
+        "n_independent": 946,
+        "ic_independent": -0.0625,
+        "p_value": 0.0547,
+        "n_effective": 352,
+        "p_value_corr_adjusted": 0.2424,
+        "survives_bonferroni": false
+      },
+      "mom_1w": {
+        "ic": -0.0334,
+        "n_overlapping": 39720,
+        "n_independent": 946,
+        "ic_independent": -0.0377,
+        "p_value": 0.2473,
+        "n_effective": 352,
+        "p_value_corr_adjusted": 0.481,
+        "survives_bonferroni": false
+      },
+      "sma_cross_10_20_atr": {
+        "ic": -0.0421,
+        "n_overlapping": 39720,
+        "n_independent": 946,
+        "ic_independent": -0.0445,
+        "p_value": 0.1716,
+        "n_effective": 352,
+        "p_value_corr_adjusted": 0.4055,
+        "survives_bonferroni": false
+      },
+      "px_vs_sma20_atr": {
+        "ic": -0.0357,
+        "n_overlapping": 39720,
+        "n_independent": 946,
+        "ic_independent": -0.0519,
+        "p_value": 0.1104,
+        "n_effective": 352,
+        "p_value_corr_adjusted": 0.3318,
+        "survives_bonferroni": false
+      },
+      "px_vs_sma50_atr": {
+        "ic": -0.0387,
+        "n_overlapping": 39720,
+        "n_independent": 946,
+        "ic_independent": -0.0424,
+        "p_value": 0.1928,
+        "n_effective": 352,
+        "p_value_corr_adjusted": 0.428,
+        "survives_bonferroni": false
+      },
+      "rsi14_centered": {
+        "ic": -0.0391,
+        "n_overlapping": 39720,
+        "n_independent": 946,
+        "ic_independent": -0.0487,
+        "p_value": 0.1348,
+        "n_effective": 352,
+        "p_value_corr_adjusted": 0.3626,
+        "survives_bonferroni": false
+      },
+      "bb_pctb_centered": {
+        "ic": -0.0354,
+        "n_overlapping": 39720,
+        "n_independent": 946,
+        "ic_independent": -0.0447,
+        "p_value": 0.1696,
+        "n_effective": 352,
+        "p_value_corr_adjusted": 0.4034,
+        "survives_bonferroni": false
+      },
+      "zscore_20": {
+        "ic": -0.0354,
+        "n_overlapping": 39720,
+        "n_independent": 946,
+        "ic_independent": -0.0447,
+        "p_value": 0.1696,
+        "n_effective": 352,
+        "p_value_corr_adjusted": 0.4034,
+        "survives_bonferroni": false
+      },
+      "donchian_pos_centered": {
+        "ic": -0.0377,
+        "n_overlapping": 39720,
+        "n_independent": 946,
+        "ic_independent": -0.0443,
+        "p_value": 0.1738,
+        "n_effective": 352,
+        "p_value_corr_adjusted": 0.4076,
+        "survives_bonferroni": false
+      },
+      "_random_control": {
+        "ic": 0.0074,
+        "n_overlapping": 39720,
+        "n_independent": 946,
+        "ic_independent": 0.0427,
+        "p_value": 0.1895,
+        "n_effective": 352,
+        "p_value_corr_adjusted": 0.4248,
+        "survives_bonferroni": false
+      }
+    }
+  },
+  "per_pair": {
+    "USD_JPY": {
+      "n_h4_bars": 8035,
+      "horizons": {
+        "4h": {
+          "mom_1d": {
+            "ic": 0.0028,
+            "n_overlapping": 8028,
+            "n_independent": 8028,
+            "ic_independent": 0.0028,
+            "p_value": 0.8029
+          },
+          "mom_3d": {
+            "ic": 0.0065,
+            "n_overlapping": 8016,
+            "n_independent": 8016,
+            "ic_independent": 0.0065,
+            "p_value": 0.5636
+          },
+          "mom_1w": {
+            "ic": 0.0005,
+            "n_overlapping": 7992,
+            "n_independent": 7992,
+            "ic_independent": 0.0005,
+            "p_value": 0.9669
+          },
+          "sma_cross_10_20_atr": {
+            "ic": 0.0083,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": 0.0083,
+            "p_value": 0.4589
+          },
+          "px_vs_sma20_atr": {
+            "ic": 0.0012,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": 0.0012,
+            "p_value": 0.9152
+          },
+          "px_vs_sma50_atr": {
+            "ic": 0.0004,
+            "n_overlapping": 7985,
+            "n_independent": 7985,
+            "ic_independent": 0.0004,
+            "p_value": 0.9721
+          },
+          "rsi14_centered": {
+            "ic": -0.0003,
+            "n_overlapping": 8020,
+            "n_independent": 8020,
+            "ic_independent": -0.0003,
+            "p_value": 0.982
+          },
+          "bb_pctb_centered": {
+            "ic": 0.0005,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": 0.0005,
+            "p_value": 0.9667
+          },
+          "zscore_20": {
+            "ic": 0.0005,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": 0.0005,
+            "p_value": 0.9667
+          },
+          "donchian_pos_centered": {
+            "ic": 0.0022,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": 0.0022,
+            "p_value": 0.847
+          },
+          "_random_control": {
+            "ic": -0.0066,
+            "n_overlapping": 8034,
+            "n_independent": 8034,
+            "ic_independent": -0.0066,
+            "p_value": 0.5547
+          }
+        },
+        "1d": {
+          "mom_1d": {
+            "ic": 0.0209,
+            "n_overlapping": 8023,
+            "n_independent": 1338,
+            "ic_independent": 0.0304,
+            "p_value": 0.2661
+          },
+          "mom_3d": {
+            "ic": 0.0119,
+            "n_overlapping": 8011,
+            "n_independent": 1336,
+            "ic_independent": 0.0091,
+            "p_value": 0.7392
+          },
+          "mom_1w": {
+            "ic": -0.0244,
+            "n_overlapping": 7987,
+            "n_independent": 1332,
+            "ic_independent": -0.0282,
+            "p_value": 0.3042
+          },
+          "sma_cross_10_20_atr": {
+            "ic": 0.0035,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": -0.0034,
+            "p_value": 0.9022
+          },
+          "px_vs_sma20_atr": {
+            "ic": 0.0195,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": 0.0096,
+            "p_value": 0.7264
+          },
+          "px_vs_sma50_atr": {
+            "ic": -0.0152,
+            "n_overlapping": 7980,
+            "n_independent": 1330,
+            "ic_independent": -0.0253,
+            "p_value": 0.3564
+          },
+          "rsi14_centered": {
+            "ic": 0.0068,
+            "n_overlapping": 8015,
+            "n_independent": 1336,
+            "ic_independent": -0.0005,
+            "p_value": 0.986
+          },
+          "bb_pctb_centered": {
+            "ic": 0.022,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": 0.0139,
+            "p_value": 0.6116
+          },
+          "zscore_20": {
+            "ic": 0.022,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": 0.0139,
+            "p_value": 0.6116
+          },
+          "donchian_pos_centered": {
+            "ic": 0.0311,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": 0.0294,
+            "p_value": 0.2836
+          },
+          "_random_control": {
+            "ic": 0.0019,
+            "n_overlapping": 8029,
+            "n_independent": 1339,
+            "ic_independent": 0.0033,
+            "p_value": 0.903
+          }
+        },
+        "3d": {
+          "mom_1d": {
+            "ic": 0.0043,
+            "n_overlapping": 8011,
+            "n_independent": 446,
+            "ic_independent": -0.0314,
+            "p_value": 0.508
+          },
+          "mom_3d": {
+            "ic": -0.0285,
+            "n_overlapping": 7999,
+            "n_independent": 445,
+            "ic_independent": -0.033,
+            "p_value": 0.4879
+          },
+          "mom_1w": {
+            "ic": -0.0415,
+            "n_overlapping": 7975,
+            "n_independent": 444,
+            "ic_independent": -0.0511,
+            "p_value": 0.2825
+          },
+          "sma_cross_10_20_atr": {
+            "ic": -0.0355,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.0072,
+            "p_value": 0.8803
+          },
+          "px_vs_sma20_atr": {
+            "ic": -0.0175,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.0139,
+            "p_value": 0.7707
+          },
+          "px_vs_sma50_atr": {
+            "ic": -0.0561,
+            "n_overlapping": 7968,
+            "n_independent": 443,
+            "ic_independent": -0.0488,
+            "p_value": 0.3053
+          },
+          "rsi14_centered": {
+            "ic": -0.0309,
+            "n_overlapping": 8003,
+            "n_independent": 445,
+            "ic_independent": -0.004,
+            "p_value": 0.9323
+          },
+          "bb_pctb_centered": {
+            "ic": -0.0081,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.0076,
+            "p_value": 0.8728
+          },
+          "zscore_20": {
+            "ic": -0.0081,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.0076,
+            "p_value": 0.8728
+          },
+          "donchian_pos_centered": {
+            "ic": -0.0153,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": 0.0037,
+            "p_value": 0.9377
+          },
+          "_random_control": {
+            "ic": 0.0068,
+            "n_overlapping": 8017,
+            "n_independent": 446,
+            "ic_independent": 0.102,
+            "p_value": 0.0313
+          }
+        },
+        "1w": {
+          "mom_1d": {
+            "ic": -0.0233,
+            "n_overlapping": 7987,
+            "n_independent": 191,
+            "ic_independent": -0.0702,
+            "p_value": 0.3353
+          },
+          "mom_3d": {
+            "ic": -0.0308,
+            "n_overlapping": 7975,
+            "n_independent": 190,
+            "ic_independent": -0.0034,
+            "p_value": 0.9632
+          },
+          "mom_1w": {
+            "ic": -0.0055,
+            "n_overlapping": 7951,
+            "n_independent": 190,
+            "ic_independent": 0.0259,
+            "p_value": 0.7235
+          },
+          "sma_cross_10_20_atr": {
+            "ic": -0.0397,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": 0.0346,
+            "p_value": 0.6361
+          },
+          "px_vs_sma20_atr": {
+            "ic": -0.0405,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": -0.0145,
+            "p_value": 0.8432
+          },
+          "px_vs_sma50_atr": {
+            "ic": -0.0424,
+            "n_overlapping": 7944,
+            "n_independent": 190,
+            "ic_independent": -0.03,
+            "p_value": 0.6814
+          },
+          "rsi14_centered": {
+            "ic": -0.0426,
+            "n_overlapping": 7979,
+            "n_independent": 190,
+            "ic_independent": 0.0196,
+            "p_value": 0.7887
+          },
+          "bb_pctb_centered": {
+            "ic": -0.0392,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": -0.0122,
+            "p_value": 0.8675
+          },
+          "zscore_20": {
+            "ic": -0.0392,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": -0.0122,
+            "p_value": 0.8675
+          },
+          "donchian_pos_centered": {
+            "ic": -0.0482,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": -0.0346,
+            "p_value": 0.6364
+          },
+          "_random_control": {
+            "ic": 0.0085,
+            "n_overlapping": 7993,
+            "n_independent": 191,
+            "ic_independent": -0.0246,
+            "p_value": 0.736
+          }
+        }
+      }
+    },
+    "EUR_JPY": {
+      "n_h4_bars": 8035,
+      "horizons": {
+        "4h": {
+          "mom_1d": {
+            "ic": -0.0043,
+            "n_overlapping": 8028,
+            "n_independent": 8028,
+            "ic_independent": -0.0043,
+            "p_value": 0.6971
+          },
+          "mom_3d": {
+            "ic": -0.0144,
+            "n_overlapping": 8016,
+            "n_independent": 8016,
+            "ic_independent": -0.0144,
+            "p_value": 0.1977
+          },
+          "mom_1w": {
+            "ic": -0.0216,
+            "n_overlapping": 7992,
+            "n_independent": 7992,
+            "ic_independent": -0.0216,
+            "p_value": 0.0532
+          },
+          "sma_cross_10_20_atr": {
+            "ic": -0.0056,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": -0.0056,
+            "p_value": 0.6179
+          },
+          "px_vs_sma20_atr": {
+            "ic": -0.0136,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": -0.0136,
+            "p_value": 0.2221
+          },
+          "px_vs_sma50_atr": {
+            "ic": -0.0182,
+            "n_overlapping": 7985,
+            "n_independent": 7985,
+            "ic_independent": -0.0182,
+            "p_value": 0.1045
+          },
+          "rsi14_centered": {
+            "ic": -0.0154,
+            "n_overlapping": 8020,
+            "n_independent": 8020,
+            "ic_independent": -0.0154,
+            "p_value": 0.1668
+          },
+          "bb_pctb_centered": {
+            "ic": -0.0089,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": -0.0089,
+            "p_value": 0.426
+          },
+          "zscore_20": {
+            "ic": -0.0089,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": -0.0089,
+            "p_value": 0.426
+          },
+          "donchian_pos_centered": {
+            "ic": -0.0107,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": -0.0107,
+            "p_value": 0.3373
+          },
+          "_random_control": {
+            "ic": 0.011,
+            "n_overlapping": 8034,
+            "n_independent": 8034,
+            "ic_independent": 0.011,
+            "p_value": 0.3228
+          }
+        },
+        "1d": {
+          "mom_1d": {
+            "ic": -0.0005,
+            "n_overlapping": 8023,
+            "n_independent": 1338,
+            "ic_independent": 0.0277,
+            "p_value": 0.311
+          },
+          "mom_3d": {
+            "ic": -0.0206,
+            "n_overlapping": 8011,
+            "n_independent": 1336,
+            "ic_independent": -0.0174,
+            "p_value": 0.5257
+          },
+          "mom_1w": {
+            "ic": -0.0609,
+            "n_overlapping": 7987,
+            "n_independent": 1332,
+            "ic_independent": -0.0574,
+            "p_value": 0.0362
+          },
+          "sma_cross_10_20_atr": {
+            "ic": -0.0076,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": -0.0091,
+            "p_value": 0.7397
+          },
+          "px_vs_sma20_atr": {
+            "ic": -0.0098,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": -0.0159,
+            "p_value": 0.5605
+          },
+          "px_vs_sma50_atr": {
+            "ic": -0.0441,
+            "n_overlapping": 7980,
+            "n_independent": 1330,
+            "ic_independent": -0.0546,
+            "p_value": 0.0465
+          },
+          "rsi14_centered": {
+            "ic": -0.0262,
+            "n_overlapping": 8015,
+            "n_independent": 1336,
+            "ic_independent": -0.0284,
+            "p_value": 0.2999
+          },
+          "bb_pctb_centered": {
+            "ic": -0.0026,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": -0.0083,
+            "p_value": 0.762
+          },
+          "zscore_20": {
+            "ic": -0.0026,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": -0.0083,
+            "p_value": 0.762
+          },
+          "donchian_pos_centered": {
+            "ic": -0.0029,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": -0.0103,
+            "p_value": 0.7064
+          },
+          "_random_control": {
+            "ic": 0.0067,
+            "n_overlapping": 8029,
+            "n_independent": 1339,
+            "ic_independent": 0.0134,
+            "p_value": 0.6247
+          }
+        },
+        "3d": {
+          "mom_1d": {
+            "ic": 0.0018,
+            "n_overlapping": 8011,
+            "n_independent": 446,
+            "ic_independent": 0.0011,
+            "p_value": 0.9823
+          },
+          "mom_3d": {
+            "ic": -0.0545,
+            "n_overlapping": 7999,
+            "n_independent": 445,
+            "ic_independent": -0.0623,
+            "p_value": 0.1899
+          },
+          "mom_1w": {
+            "ic": -0.0966,
+            "n_overlapping": 7975,
+            "n_independent": 444,
+            "ic_independent": -0.0975,
+            "p_value": 0.04
+          },
+          "sma_cross_10_20_atr": {
+            "ic": -0.0447,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.0373,
+            "p_value": 0.4321
+          },
+          "px_vs_sma20_atr": {
+            "ic": -0.0252,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.0482,
+            "p_value": 0.3109
+          },
+          "px_vs_sma50_atr": {
+            "ic": -0.0779,
+            "n_overlapping": 7968,
+            "n_independent": 443,
+            "ic_independent": -0.0759,
+            "p_value": 0.1107
+          },
+          "rsi14_centered": {
+            "ic": -0.0511,
+            "n_overlapping": 8003,
+            "n_independent": 445,
+            "ic_independent": -0.0312,
+            "p_value": 0.5115
+          },
+          "bb_pctb_centered": {
+            "ic": -0.0108,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.0419,
+            "p_value": 0.3787
+          },
+          "zscore_20": {
+            "ic": -0.0108,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.0419,
+            "p_value": 0.3787
+          },
+          "donchian_pos_centered": {
+            "ic": -0.0272,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.0503,
+            "p_value": 0.2895
+          },
+          "_random_control": {
+            "ic": 0.0107,
+            "n_overlapping": 8017,
+            "n_independent": 446,
+            "ic_independent": -0.0036,
+            "p_value": 0.9399
+          }
+        },
+        "1w": {
+          "mom_1d": {
+            "ic": -0.0471,
+            "n_overlapping": 7987,
+            "n_independent": 191,
+            "ic_independent": -0.1018,
+            "p_value": 0.1612
+          },
+          "mom_3d": {
+            "ic": -0.0888,
+            "n_overlapping": 7975,
+            "n_independent": 190,
+            "ic_independent": -0.0515,
+            "p_value": 0.4812
+          },
+          "mom_1w": {
+            "ic": -0.097,
+            "n_overlapping": 7951,
+            "n_independent": 190,
+            "ic_independent": -0.0796,
+            "p_value": 0.2753
+          },
+          "sma_cross_10_20_atr": {
+            "ic": -0.0732,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": -0.0145,
+            "p_value": 0.8431
+          },
+          "px_vs_sma20_atr": {
+            "ic": -0.068,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": 0.0187,
+            "p_value": 0.7979
+          },
+          "px_vs_sma50_atr": {
+            "ic": -0.085,
+            "n_overlapping": 7944,
+            "n_independent": 190,
+            "ic_independent": -0.134,
+            "p_value": 0.0652
+          },
+          "rsi14_centered": {
+            "ic": -0.0823,
+            "n_overlapping": 7979,
+            "n_independent": 190,
+            "ic_independent": -0.0314,
+            "p_value": 0.6676
+          },
+          "bb_pctb_centered": {
+            "ic": -0.0626,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": 0.0088,
+            "p_value": 0.9044
+          },
+          "zscore_20": {
+            "ic": -0.0626,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": 0.0088,
+            "p_value": 0.9044
+          },
+          "donchian_pos_centered": {
+            "ic": -0.0768,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": 0.0021,
+            "p_value": 0.9768
+          },
+          "_random_control": {
+            "ic": 0.0064,
+            "n_overlapping": 7993,
+            "n_independent": 191,
+            "ic_independent": -0.0511,
+            "p_value": 0.4829
+          }
+        }
+      }
+    },
+    "GBP_JPY": {
+      "n_h4_bars": 8035,
+      "horizons": {
+        "4h": {
+          "mom_1d": {
+            "ic": -0.0019,
+            "n_overlapping": 8028,
+            "n_independent": 8028,
+            "ic_independent": -0.0019,
+            "p_value": 0.8619
+          },
+          "mom_3d": {
+            "ic": -0.0087,
+            "n_overlapping": 8016,
+            "n_independent": 8016,
+            "ic_independent": -0.0087,
+            "p_value": 0.4352
+          },
+          "mom_1w": {
+            "ic": -0.0015,
+            "n_overlapping": 7992,
+            "n_independent": 7992,
+            "ic_independent": -0.0015,
+            "p_value": 0.8929
+          },
+          "sma_cross_10_20_atr": {
+            "ic": -0.0043,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": -0.0043,
+            "p_value": 0.7003
+          },
+          "px_vs_sma20_atr": {
+            "ic": -0.0089,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": -0.0089,
+            "p_value": 0.4258
+          },
+          "px_vs_sma50_atr": {
+            "ic": -0.0069,
+            "n_overlapping": 7985,
+            "n_independent": 7985,
+            "ic_independent": -0.0069,
+            "p_value": 0.5386
+          },
+          "rsi14_centered": {
+            "ic": -0.0079,
+            "n_overlapping": 8020,
+            "n_independent": 8020,
+            "ic_independent": -0.0079,
+            "p_value": 0.4774
+          },
+          "bb_pctb_centered": {
+            "ic": -0.0047,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": -0.0047,
+            "p_value": 0.6715
+          },
+          "zscore_20": {
+            "ic": -0.0047,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": -0.0047,
+            "p_value": 0.6715
+          },
+          "donchian_pos_centered": {
+            "ic": -0.0057,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": -0.0057,
+            "p_value": 0.6099
+          },
+          "_random_control": {
+            "ic": 0.0226,
+            "n_overlapping": 8034,
+            "n_independent": 8034,
+            "ic_independent": 0.0226,
+            "p_value": 0.043
+          }
+        },
+        "1d": {
+          "mom_1d": {
+            "ic": 0.0128,
+            "n_overlapping": 8023,
+            "n_independent": 1338,
+            "ic_independent": 0.0167,
+            "p_value": 0.542
+          },
+          "mom_3d": {
+            "ic": -0.0137,
+            "n_overlapping": 8011,
+            "n_independent": 1336,
+            "ic_independent": -0.0132,
+            "p_value": 0.6299
+          },
+          "mom_1w": {
+            "ic": -0.007,
+            "n_overlapping": 7987,
+            "n_independent": 1332,
+            "ic_independent": -0.0129,
+            "p_value": 0.6374
+          },
+          "sma_cross_10_20_atr": {
+            "ic": -0.0161,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": -0.0135,
+            "p_value": 0.6222
+          },
+          "px_vs_sma20_atr": {
+            "ic": -0.0034,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": 0.0016,
+            "p_value": 0.9543
+          },
+          "px_vs_sma50_atr": {
+            "ic": -0.0074,
+            "n_overlapping": 7980,
+            "n_independent": 1330,
+            "ic_independent": -0.0155,
+            "p_value": 0.5731
+          },
+          "rsi14_centered": {
+            "ic": -0.0029,
+            "n_overlapping": 8015,
+            "n_independent": 1336,
+            "ic_independent": 0.0047,
+            "p_value": 0.8633
+          },
+          "bb_pctb_centered": {
+            "ic": 0.0085,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": 0.0097,
+            "p_value": 0.724
+          },
+          "zscore_20": {
+            "ic": 0.0085,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": 0.0097,
+            "p_value": 0.724
+          },
+          "donchian_pos_centered": {
+            "ic": 0.0071,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": 0.0112,
+            "p_value": 0.682
+          },
+          "_random_control": {
+            "ic": 0.0309,
+            "n_overlapping": 8029,
+            "n_independent": 1339,
+            "ic_independent": 0.0308,
+            "p_value": 0.2594
+          }
+        },
+        "3d": {
+          "mom_1d": {
+            "ic": 0.0031,
+            "n_overlapping": 8011,
+            "n_independent": 446,
+            "ic_independent": 0.0067,
+            "p_value": 0.8876
+          },
+          "mom_3d": {
+            "ic": -0.021,
+            "n_overlapping": 7999,
+            "n_independent": 445,
+            "ic_independent": -0.0121,
+            "p_value": 0.7988
+          },
+          "mom_1w": {
+            "ic": -0.0096,
+            "n_overlapping": 7975,
+            "n_independent": 444,
+            "ic_independent": 0.0007,
+            "p_value": 0.9879
+          },
+          "sma_cross_10_20_atr": {
+            "ic": -0.0278,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": 0.0047,
+            "p_value": 0.922
+          },
+          "px_vs_sma20_atr": {
+            "ic": -0.0142,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.0322,
+            "p_value": 0.4984
+          },
+          "px_vs_sma50_atr": {
+            "ic": 0.0021,
+            "n_overlapping": 7968,
+            "n_independent": 443,
+            "ic_independent": -0.0008,
+            "p_value": 0.9861
+          },
+          "rsi14_centered": {
+            "ic": -0.0024,
+            "n_overlapping": 8003,
+            "n_independent": 445,
+            "ic_independent": 0.0313,
+            "p_value": 0.511
+          },
+          "bb_pctb_centered": {
+            "ic": -0.0051,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.0466,
+            "p_value": 0.3273
+          },
+          "zscore_20": {
+            "ic": -0.0051,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.0466,
+            "p_value": 0.3273
+          },
+          "donchian_pos_centered": {
+            "ic": -0.0056,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.0365,
+            "p_value": 0.443
+          },
+          "_random_control": {
+            "ic": 0.0246,
+            "n_overlapping": 8017,
+            "n_independent": 446,
+            "ic_independent": 0.0595,
+            "p_value": 0.2102
+          }
+        },
+        "1w": {
+          "mom_1d": {
+            "ic": 0.0088,
+            "n_overlapping": 7987,
+            "n_independent": 191,
+            "ic_independent": 0.0484,
+            "p_value": 0.5065
+          },
+          "mom_3d": {
+            "ic": -0.0098,
+            "n_overlapping": 7975,
+            "n_independent": 190,
+            "ic_independent": 0.0196,
+            "p_value": 0.7883
+          },
+          "mom_1w": {
+            "ic": 0.0045,
+            "n_overlapping": 7951,
+            "n_independent": 190,
+            "ic_independent": 0.0264,
+            "p_value": 0.7182
+          },
+          "sma_cross_10_20_atr": {
+            "ic": -0.0085,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": -0.016,
+            "p_value": 0.8272
+          },
+          "px_vs_sma20_atr": {
+            "ic": 0.0057,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": 0.047,
+            "p_value": 0.52
+          },
+          "px_vs_sma50_atr": {
+            "ic": 0.0202,
+            "n_overlapping": 7944,
+            "n_independent": 190,
+            "ic_independent": 0.0788,
+            "p_value": 0.2801
+          },
+          "rsi14_centered": {
+            "ic": 0.0104,
+            "n_overlapping": 7979,
+            "n_independent": 190,
+            "ic_independent": 0.0293,
+            "p_value": 0.6888
+          },
+          "bb_pctb_centered": {
+            "ic": 0.0068,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": 0.0607,
+            "p_value": 0.4056
+          },
+          "zscore_20": {
+            "ic": 0.0068,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": 0.0607,
+            "p_value": 0.4056
+          },
+          "donchian_pos_centered": {
+            "ic": 0.0132,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": 0.0753,
+            "p_value": 0.3022
+          },
+          "_random_control": {
+            "ic": 0.0246,
+            "n_overlapping": 7993,
+            "n_independent": 191,
+            "ic_independent": -0.1122,
+            "p_value": 0.1225
+          }
+        }
+      }
+    },
+    "AUD_JPY": {
+      "n_h4_bars": 8035,
+      "horizons": {
+        "4h": {
+          "mom_1d": {
+            "ic": 0.0039,
+            "n_overlapping": 8028,
+            "n_independent": 8028,
+            "ic_independent": 0.0039,
+            "p_value": 0.7248
+          },
+          "mom_3d": {
+            "ic": -0.0067,
+            "n_overlapping": 8016,
+            "n_independent": 8016,
+            "ic_independent": -0.0067,
+            "p_value": 0.5499
+          },
+          "mom_1w": {
+            "ic": -0.0069,
+            "n_overlapping": 7992,
+            "n_independent": 7992,
+            "ic_independent": -0.0069,
+            "p_value": 0.539
+          },
+          "sma_cross_10_20_atr": {
+            "ic": 0.0032,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": 0.0032,
+            "p_value": 0.7743
+          },
+          "px_vs_sma20_atr": {
+            "ic": 0.0053,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": 0.0053,
+            "p_value": 0.6356
+          },
+          "px_vs_sma50_atr": {
+            "ic": -0.0079,
+            "n_overlapping": 7985,
+            "n_independent": 7985,
+            "ic_independent": -0.0079,
+            "p_value": 0.4786
+          },
+          "rsi14_centered": {
+            "ic": -0.0005,
+            "n_overlapping": 8020,
+            "n_independent": 8020,
+            "ic_independent": -0.0005,
+            "p_value": 0.9614
+          },
+          "bb_pctb_centered": {
+            "ic": 0.0035,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": 0.0035,
+            "p_value": 0.7557
+          },
+          "zscore_20": {
+            "ic": 0.0035,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": 0.0035,
+            "p_value": 0.7557
+          },
+          "donchian_pos_centered": {
+            "ic": 0.005,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": 0.005,
+            "p_value": 0.6542
+          },
+          "_random_control": {
+            "ic": -0.0038,
+            "n_overlapping": 8034,
+            "n_independent": 8034,
+            "ic_independent": -0.0038,
+            "p_value": 0.7364
+          }
+        },
+        "1d": {
+          "mom_1d": {
+            "ic": 0.0151,
+            "n_overlapping": 8023,
+            "n_independent": 1338,
+            "ic_independent": 0.0371,
+            "p_value": 0.1751
+          },
+          "mom_3d": {
+            "ic": -0.0202,
+            "n_overlapping": 8011,
+            "n_independent": 1336,
+            "ic_independent": -0.0219,
+            "p_value": 0.4244
+          },
+          "mom_1w": {
+            "ic": -0.0172,
+            "n_overlapping": 7987,
+            "n_independent": 1332,
+            "ic_independent": -0.0216,
+            "p_value": 0.4313
+          },
+          "sma_cross_10_20_atr": {
+            "ic": -0.0009,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": -0.0024,
+            "p_value": 0.9313
+          },
+          "px_vs_sma20_atr": {
+            "ic": 0.0152,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": 0.0197,
+            "p_value": 0.4717
+          },
+          "px_vs_sma50_atr": {
+            "ic": -0.0098,
+            "n_overlapping": 7980,
+            "n_independent": 1330,
+            "ic_independent": -0.0124,
+            "p_value": 0.6512
+          },
+          "rsi14_centered": {
+            "ic": 0.006,
+            "n_overlapping": 8015,
+            "n_independent": 1336,
+            "ic_independent": 0.008,
+            "p_value": 0.7703
+          },
+          "bb_pctb_centered": {
+            "ic": 0.0098,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": 0.0119,
+            "p_value": 0.6627
+          },
+          "zscore_20": {
+            "ic": 0.0098,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": 0.0119,
+            "p_value": 0.6627
+          },
+          "donchian_pos_centered": {
+            "ic": 0.011,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": 0.008,
+            "p_value": 0.7703
+          },
+          "_random_control": {
+            "ic": 0.0014,
+            "n_overlapping": 8029,
+            "n_independent": 1339,
+            "ic_independent": -0.0422,
+            "p_value": 0.1223
+          }
+        },
+        "3d": {
+          "mom_1d": {
+            "ic": -0.0133,
+            "n_overlapping": 8011,
+            "n_independent": 446,
+            "ic_independent": 0.0102,
+            "p_value": 0.8305
+          },
+          "mom_3d": {
+            "ic": -0.0453,
+            "n_overlapping": 7999,
+            "n_independent": 445,
+            "ic_independent": -0.0073,
+            "p_value": 0.8775
+          },
+          "mom_1w": {
+            "ic": -0.0534,
+            "n_overlapping": 7975,
+            "n_independent": 444,
+            "ic_independent": -0.0627,
+            "p_value": 0.1876
+          },
+          "sma_cross_10_20_atr": {
+            "ic": -0.0376,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.0039,
+            "p_value": 0.9353
+          },
+          "px_vs_sma20_atr": {
+            "ic": -0.0274,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.027,
+            "p_value": 0.5703
+          },
+          "px_vs_sma50_atr": {
+            "ic": -0.0437,
+            "n_overlapping": 7968,
+            "n_independent": 443,
+            "ic_independent": -0.0709,
+            "p_value": 0.136
+          },
+          "rsi14_centered": {
+            "ic": -0.0322,
+            "n_overlapping": 8003,
+            "n_independent": 445,
+            "ic_independent": -0.0282,
+            "p_value": 0.5538
+          },
+          "bb_pctb_centered": {
+            "ic": -0.0295,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.0388,
+            "p_value": 0.4144
+          },
+          "zscore_20": {
+            "ic": -0.0295,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.0388,
+            "p_value": 0.4144
+          },
+          "donchian_pos_centered": {
+            "ic": -0.028,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.0345,
+            "p_value": 0.4681
+          },
+          "_random_control": {
+            "ic": 0.0084,
+            "n_overlapping": 8017,
+            "n_independent": 446,
+            "ic_independent": -0.0097,
+            "p_value": 0.8382
+          }
+        },
+        "1w": {
+          "mom_1d": {
+            "ic": -0.0191,
+            "n_overlapping": 7987,
+            "n_independent": 191,
+            "ic_independent": -0.0467,
+            "p_value": 0.5218
+          },
+          "mom_3d": {
+            "ic": -0.0721,
+            "n_overlapping": 7975,
+            "n_independent": 190,
+            "ic_independent": -0.1239,
+            "p_value": 0.0887
+          },
+          "mom_1w": {
+            "ic": -0.0344,
+            "n_overlapping": 7951,
+            "n_independent": 190,
+            "ic_independent": -0.0213,
+            "p_value": 0.7706
+          },
+          "sma_cross_10_20_atr": {
+            "ic": -0.0609,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": -0.082,
+            "p_value": 0.2613
+          },
+          "px_vs_sma20_atr": {
+            "ic": -0.0425,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": -0.0574,
+            "p_value": 0.4317
+          },
+          "px_vs_sma50_atr": {
+            "ic": -0.0476,
+            "n_overlapping": 7944,
+            "n_independent": 190,
+            "ic_independent": -0.0736,
+            "p_value": 0.3132
+          },
+          "rsi14_centered": {
+            "ic": -0.05,
+            "n_overlapping": 7979,
+            "n_independent": 190,
+            "ic_independent": 0.0058,
+            "p_value": 0.9373
+          },
+          "bb_pctb_centered": {
+            "ic": -0.0405,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": -0.0492,
+            "p_value": 0.5006
+          },
+          "zscore_20": {
+            "ic": -0.0405,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": -0.0492,
+            "p_value": 0.5006
+          },
+          "donchian_pos_centered": {
+            "ic": -0.0495,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": -0.0479,
+            "p_value": 0.5121
+          },
+          "_random_control": {
+            "ic": 0.0066,
+            "n_overlapping": 7993,
+            "n_independent": 191,
+            "ic_independent": 0.0182,
+            "p_value": 0.8031
+          }
+        }
+      }
+    },
+    "EUR_USD": {
+      "n_h4_bars": 8035,
+      "horizons": {
+        "4h": {
+          "mom_1d": {
+            "ic": -0.0194,
+            "n_overlapping": 8028,
+            "n_independent": 8028,
+            "ic_independent": -0.0194,
+            "p_value": 0.0826
+          },
+          "mom_3d": {
+            "ic": -0.0085,
+            "n_overlapping": 8016,
+            "n_independent": 8016,
+            "ic_independent": -0.0085,
+            "p_value": 0.4491
+          },
+          "mom_1w": {
+            "ic": -0.0233,
+            "n_overlapping": 7992,
+            "n_independent": 7992,
+            "ic_independent": -0.0233,
+            "p_value": 0.0375
+          },
+          "sma_cross_10_20_atr": {
+            "ic": 0.0027,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": 0.0027,
+            "p_value": 0.8057
+          },
+          "px_vs_sma20_atr": {
+            "ic": -0.0118,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": -0.0118,
+            "p_value": 0.2928
+          },
+          "px_vs_sma50_atr": {
+            "ic": -0.0178,
+            "n_overlapping": 7985,
+            "n_independent": 7985,
+            "ic_independent": -0.0178,
+            "p_value": 0.1119
+          },
+          "rsi14_centered": {
+            "ic": -0.0171,
+            "n_overlapping": 8020,
+            "n_independent": 8020,
+            "ic_independent": -0.0171,
+            "p_value": 0.1259
+          },
+          "bb_pctb_centered": {
+            "ic": -0.0128,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": -0.0128,
+            "p_value": 0.2515
+          },
+          "zscore_20": {
+            "ic": -0.0128,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": -0.0128,
+            "p_value": 0.2515
+          },
+          "donchian_pos_centered": {
+            "ic": -0.0177,
+            "n_overlapping": 8015,
+            "n_independent": 8015,
+            "ic_independent": -0.0177,
+            "p_value": 0.1138
+          },
+          "_random_control": {
+            "ic": -0.0007,
+            "n_overlapping": 8034,
+            "n_independent": 8034,
+            "ic_independent": -0.0007,
+            "p_value": 0.9469
+          }
+        },
+        "1d": {
+          "mom_1d": {
+            "ic": 0.0113,
+            "n_overlapping": 8023,
+            "n_independent": 1338,
+            "ic_independent": 0.0156,
+            "p_value": 0.5685
+          },
+          "mom_3d": {
+            "ic": -0.0127,
+            "n_overlapping": 8011,
+            "n_independent": 1336,
+            "ic_independent": -0.0147,
+            "p_value": 0.5916
+          },
+          "mom_1w": {
+            "ic": -0.0662,
+            "n_overlapping": 7987,
+            "n_independent": 1332,
+            "ic_independent": -0.0722,
+            "p_value": 0.0084
+          },
+          "sma_cross_10_20_atr": {
+            "ic": -0.0032,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": -0.0169,
+            "p_value": 0.5377
+          },
+          "px_vs_sma20_atr": {
+            "ic": 0.002,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": -0.0098,
+            "p_value": 0.7216
+          },
+          "px_vs_sma50_atr": {
+            "ic": -0.0294,
+            "n_overlapping": 7980,
+            "n_independent": 1330,
+            "ic_independent": -0.0406,
+            "p_value": 0.1391
+          },
+          "rsi14_centered": {
+            "ic": -0.0153,
+            "n_overlapping": 8015,
+            "n_independent": 1336,
+            "ic_independent": -0.0189,
+            "p_value": 0.4912
+          },
+          "bb_pctb_centered": {
+            "ic": -0.0001,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": -0.0023,
+            "p_value": 0.9343
+          },
+          "zscore_20": {
+            "ic": -0.0001,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": -0.0023,
+            "p_value": 0.9343
+          },
+          "donchian_pos_centered": {
+            "ic": -0.0016,
+            "n_overlapping": 8010,
+            "n_independent": 1335,
+            "ic_independent": -0.0113,
+            "p_value": 0.6811
+          },
+          "_random_control": {
+            "ic": -0.0116,
+            "n_overlapping": 8029,
+            "n_independent": 1339,
+            "ic_independent": -0.0136,
+            "p_value": 0.6194
+          }
+        },
+        "3d": {
+          "mom_1d": {
+            "ic": -0.0009,
+            "n_overlapping": 8011,
+            "n_independent": 446,
+            "ic_independent": 0.008,
+            "p_value": 0.8669
+          },
+          "mom_3d": {
+            "ic": -0.0316,
+            "n_overlapping": 7999,
+            "n_independent": 445,
+            "ic_independent": -0.0262,
+            "p_value": 0.5817
+          },
+          "mom_1w": {
+            "ic": -0.0906,
+            "n_overlapping": 7975,
+            "n_independent": 444,
+            "ic_independent": -0.1016,
+            "p_value": 0.0323
+          },
+          "sma_cross_10_20_atr": {
+            "ic": -0.0227,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.0311,
+            "p_value": 0.5137
+          },
+          "px_vs_sma20_atr": {
+            "ic": -0.0111,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.0239,
+            "p_value": 0.6156
+          },
+          "px_vs_sma50_atr": {
+            "ic": -0.0672,
+            "n_overlapping": 7968,
+            "n_independent": 443,
+            "ic_independent": -0.0643,
+            "p_value": 0.177
+          },
+          "rsi14_centered": {
+            "ic": -0.0442,
+            "n_overlapping": 8003,
+            "n_independent": 445,
+            "ic_independent": -0.0158,
+            "p_value": 0.7396
+          },
+          "bb_pctb_centered": {
+            "ic": -0.0134,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.0174,
+            "p_value": 0.7141
+          },
+          "zscore_20": {
+            "ic": -0.0134,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.0174,
+            "p_value": 0.7141
+          },
+          "donchian_pos_centered": {
+            "ic": -0.0173,
+            "n_overlapping": 7998,
+            "n_independent": 445,
+            "ic_independent": -0.0219,
+            "p_value": 0.6457
+          },
+          "_random_control": {
+            "ic": -0.0088,
+            "n_overlapping": 8017,
+            "n_independent": 446,
+            "ic_independent": 0.013,
+            "p_value": 0.7837
+          }
+        },
+        "1w": {
+          "mom_1d": {
+            "ic": -0.0537,
+            "n_overlapping": 7987,
+            "n_independent": 191,
+            "ic_independent": -0.0458,
+            "p_value": 0.53
+          },
+          "mom_3d": {
+            "ic": -0.0784,
+            "n_overlapping": 7975,
+            "n_independent": 190,
+            "ic_independent": -0.1354,
+            "p_value": 0.0624
+          },
+          "mom_1w": {
+            "ic": -0.0725,
+            "n_overlapping": 7951,
+            "n_independent": 190,
+            "ic_independent": -0.0922,
+            "p_value": 0.2059
+          },
+          "sma_cross_10_20_atr": {
+            "ic": -0.0622,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": -0.0794,
+            "p_value": 0.2767
+          },
+          "px_vs_sma20_atr": {
+            "ic": -0.0665,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": -0.0665,
+            "p_value": 0.3625
+          },
+          "px_vs_sma50_atr": {
+            "ic": -0.0786,
+            "n_overlapping": 7944,
+            "n_independent": 190,
+            "ic_independent": -0.0546,
+            "p_value": 0.4547
+          },
+          "rsi14_centered": {
+            "ic": -0.0788,
+            "n_overlapping": 7979,
+            "n_independent": 190,
+            "ic_independent": -0.0006,
+            "p_value": 0.9929
+          },
+          "bb_pctb_centered": {
+            "ic": -0.0717,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": -0.0788,
+            "p_value": 0.2801
+          },
+          "zscore_20": {
+            "ic": -0.0717,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": -0.0788,
+            "p_value": 0.2801
+          },
+          "donchian_pos_centered": {
+            "ic": -0.0691,
+            "n_overlapping": 7974,
+            "n_independent": 190,
+            "ic_independent": -0.0882,
+            "p_value": 0.2266
+          },
+          "_random_control": {
+            "ic": -0.0171,
+            "n_overlapping": 7993,
+            "n_independent": 191,
+            "ic_independent": -0.0774,
+            "p_value": 0.2877
+          }
+        }
+      }
+    }
+  }
+}
