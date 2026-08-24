@@ -33,7 +33,7 @@ SYS-FX012の実運用移行に向け、実発注を一切行わずに以下3点�
 - 新規: `scripts/live_monitor/poll_ticker.py`
 - `GMOClient("", "").get_ticker()`（認証不要、公開エンドポイント）を1回呼び出し、対象4通貨(USD/EUR/GBP/AUD_JPY)のbid/ask/timestampを取得
 - 出力: `data/raw/live-ticker/YYYY-MM.csv`（月次ローテーション）に追記。列: `polled_at, pair, bid, ask, spread_pips, api_timestamp, market_status`
-- **実行方式(2026-08-24改訂)**: 当初Claude Code Remoteの使い捨てセッションRoutine(`create_new_session_on_fire`)で毎時実行する設計だったが、実測したところ発火は記録されるがgit pushが完了しないという再現性のある問題が判明した(既存のSYS-FX012週次フォワードテストRoutineでも同様の問題が確認され、単発の不具合ではないと判明)。決定的なスクリプト実行+git commit/pushという作業にLLMエージェントセッションを毎回起動する必要は無いという指摘を受け、**GitHub Actions(`.github/workflows/live-ticker-poll.yml`、毎時cron)へ切り替え**。GitHubの標準`GITHUB_TOKEN`でpushするため、セッション側の認証スコープに依存しない
+- **実行方式(2026-08-24改訂、2度目の変更)**: 当初Claude Code Remoteの使い捨てセッションRoutine(`create_new_session_on_fire`)で毎時実行する設計だったが、実測したところ発火は記録されるがgit pushが完了しないという再現性のある問題が判明した(既存のSYS-FX012週次フォワードテストRoutineでも同様の問題が確認され、単発の不具合ではないと判明。原因未特定のまま)。LLMエージェントセッションを毎回起動する必要は無いという指摘を受け、GitHub Actions(`.github/workflows/live-ticker-poll.yml`、毎時cron)へ切り替えたが、**手動`workflow_dispatch`でテスト実行したところ開始2秒で失敗・ログ取得も404**。司令塔確認により**GitHub Actionsの実行時間上限(無料枠)を超過しており、課金プラン契約が必要**と判明。ワークフローファイル自体は正しく登録されている(将来課金プランへ移行した場合はそのまま使える)ため削除せず残すが、**現時点では自動実行の目処が立っていない**。Stage 1は当面「必要な時に司令塔またはセッションから手動実行」の運用に切り替える(下記「現状の運用」参照)
 
 ### B. バックテストとの乖離レコンサイル（要件2に対応）
 - 新規: `scripts/live_monitor/reconcile_divergence.py`
@@ -50,6 +50,14 @@ SYS-FX012の実運用移行に向け、実発注を一切行わずに以下3点�
 ### D. データ蓄積（要件3に対応）
 - Aの`data/raw/live-ticker/`自体が蓄積データ。Bの集計(時間帯別実測スプレッド分布)を月次でACTIVE.mdに記録する運用とする
 - 将来、十分なサンプルが溜まった時点で、コストモデルの`SPREAD_PIPS`定数を実測ベースの値へ較正し直す判断材料として使う(本EXPでは較正自体は行わない、あくまでデータ収集と乖離の可視化まで)
+
+## 現状の運用（2026-08-24時点）
+
+自動実行の3方式(Claude使い捨てセッションRoutine／GitHub Actions／このセッションからの手動実行)のうち、確実に動作すると確認できているのは**このセッション(または同等の対話セッション)からの直接実行のみ**。したがって当面は以下の運用とする:
+
+- `poll_ticker.py`・`reconcile_divergence.py`は、セッションが起動されたタイミングで手動実行し、変更をコミット・pushする(継続的な毎時記録ではなく、断続的なサンプリングになる)
+- GitHub Actionsワークフロー(`.github/workflows/live-ticker-poll.yml`)は登録済みのまま残す。司令塔がGitHub Actionsの課金プランを契約した場合、`workflow_dispatch`で動作確認の上、これが最も確実な自動化手段になる見込み
+- Claude Routine(使い捨てセッション)方式のgit push不具合は原因未特定のため、今回は採用を見送る。原因が判明すれば再検討の余地あり
 
 ## Stage 1 受け入れ基準（事前登録）
 
