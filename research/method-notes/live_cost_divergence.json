@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-08-24T01:10:24.956874+00:00",
+  "purpose": "EXP-FX000016 Stage 1: バックテストのコストモデル仮定とライブ実測スプレッドの乖離レコンサイル",
+  "match_tolerance_minutes": 90.0,
+  "n_trades_total": 0,
+  "n_reconciled": 0,
+  "n_insufficient_data": 0,
+  "note": "ライブ記録は2026-08-24開始のため、それ以前のトレードは判定不能になるのが正常。記録の蓄積とともにn_reconciledが増えていく想定",
+  "by_pair_summary": {},
+  "market_status_anomalies": [],
+  "reconciled_trades": []
+}
