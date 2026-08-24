@@ -1,0 +1,121 @@
+name: SYS-FX012 Forward Test Cycle (Weekly)
+
+# 00-spec.md §「フォワードテスト仕様」§「監視サイクル」に基づく週次サイクル。
+# cutoff 2026-08-15 06:00 JST 以降のデータを毎サイクルで再取得・再計算し、
+# research/method-notes/sysfx012_forward_test_ledger.json を上書き commit/push する。
+# 30/60/90 日チェックポイント (2026-09-14 / 10-14 / 11-13) の集計材料を更新する役割。
+#
+# 司令塔判断 (2026-08-22) で先行着手: 必須KPI 13/18 未達・C 品質レビュー未実施の
+# まま、ペーパートレード (実発注なし) で開始。採用GOではない。
+#
+# 注: trading-app-v2 側の sysfx012-fx-forward-sync.yml (月曜 12:00 JST) は
+# 本 workflow が commit した ledger を public/data/forward-fx-sysfx012/ へ
+# コピーして公開 Web UI へ反映する役。両者は依存関係にある。
+
+on:
+  schedule:
+    # 月曜 00:00 UTC = 月曜 09:00 JST (spec §「監視サイクル」)
+    - cron: "0 0 * * 1"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "true で ledger のみ更新・commit/push スキップ"
+        required: false
+        default: "false"
+
+permissions:
+  contents: write   # ledger の commit/push に必要
+
+concurrency:
+  group: sysfx012-fx-forward-cycle
+  cancel-in-progress: false
+
+jobs:
+  cycle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout minmax-fx-day-trading-lab (main)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        # 必要最小限: numpy / pandas / scipy のみ
+        # (run_forward_test_cycle.py は indicators.py の手書き実装を使うため
+        #  pandas-ta は不要。GMO API も叩かないので requests は不要)
+        run: |
+          pip install --no-cache-dir "numpy>=1.26" "pandas>=2.1" "scipy>=1.11"
+
+      # ---- ds-1.json の再生成 ----
+      # data/curated/ds-1.json は .gitignore (479MB > GitHub 100MB) されているため
+      # workflow 環境には存在しない。data/raw/ds-1/*.csv (個別 ~10MB 程度、
+      # git 管理中) から aggregate_to_json() で再生成する。
+      # OBS000007 B4 で「過去 ds-1.json を silently 上書き縮小する」バグを
+      # 修正済み (allow_shrink フラグ + 比較処理)。今回は allow_shrink=False で実行。
+      - name: Regenerate ds-1.json from raw CSV (warmup data)
+        run: |
+          PYTHONPATH=src python3 -c "
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, 'scripts')
+          from fetch_ds1_ohlcv import aggregate_to_json
+          result = aggregate_to_json(
+              raw_dir=Path('data/raw/ds-1'),
+              out_json=Path('data/curated/ds-1.json'),
+              allow_shrink=False,
+          )
+          print(f'[OK] ds-1.json regenerated: {result}')
+          "
+
+      # ---- フォワードテスト cycle 実行 ----
+      # load_m5_forward() が ds-1.json (warmup) + ds-1-forward.json (新規) を結合。
+      # cutoff 2026-08-15 06:00 JST 以降の H1 イベントを検出→filter→M5 シミュレーション。
+      # 出力: research/method-notes/sysfx012_forward_test_ledger.json
+      - name: Run SYS-FX012 forward test cycle
+        run: |
+          PYTHONPATH=src python3 scripts/forward_test/run_forward_test_cycle.py
+
+      # ---- commit/push (dry_run でない場合のみ) ----
+      - name: Commit and push ledger
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if git diff --quiet research/method-notes/sysfx012_forward_test_ledger.json; then
+            echo "No change in ledger, skip commit"
+            exit 0
+          fi
+
+          # generated_at を含めてコミットメッセージを生成
+          GEN=$(python3 -c "import json; print(json.load(open('research/method-notes/sysfx012_forward_test_ledger.json'))['generated_at'])")
+          TRADES=$(python3 -c "import json; d=json.load(open('research/method-notes/sysfx012_forward_test_ledger.json')); print(d['backtest']['n_trades_closed'])")
+
+          git add research/method-notes/sysfx012_forward_test_ledger.json
+          git commit -m "chore(sysfx012): FX forward test weekly cycle — closed trades ${TRADES} (generated ${GEN})"
+
+          # rebase して push (他ブランチ/手動 push との競合回避)
+          if ! git pull --rebase origin main; then
+            git rebase --abort || true
+            echo "::warning::git pull --rebase failed (conflict). Aborted. Will retry next scheduled run."
+            exit 1
+          fi
+          git push origin main
+          echo "[OK] committed and pushed SYS-FX012 forward test cycle"
+
+      # 成果物のログ保存 (CI アーティファクト、30日保持)
+      - name: Upload ledger as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sysfx012-fx-forward-cycle-${{ github.run_id }}
+          path: research/method-notes/sysfx012_forward_test_ledger.json
+          retention-days: 30
