@@ -33,7 +33,7 @@ SYS-FX012の実運用移行に向け、実発注を一切行わずに以下3点�
 - 新規: `scripts/live_monitor/poll_ticker.py`
 - `GMOClient("", "").get_ticker()`（認証不要、公開エンドポイント）を1回呼び出し、対象4通貨(USD/EUR/GBP/AUD_JPY)のbid/ask/timestampを取得
 - 出力: `data/raw/live-ticker/YYYY-MM.csv`（月次ローテーション）に追記。列: `polled_at, pair, bid, ask, spread_pips, api_timestamp, market_status`
-- 実行: 新規Routine(毎時)から起動。1回の呼び出しはAPI 1コールのみで軽量、レート制限リスクは無視できる水準
+- **実行方式(2026-08-24改訂)**: 当初Claude Code Remoteの使い捨てセッションRoutine(`create_new_session_on_fire`)で毎時実行する設計だったが、実測したところ発火は記録されるがgit pushが完了しないという再現性のある問題が判明した(既存のSYS-FX012週次フォワードテストRoutineでも同様の問題が確認され、単発の不具合ではないと判明)。決定的なスクリプト実行+git commit/pushという作業にLLMエージェントセッションを毎回起動する必要は無いという指摘を受け、**GitHub Actions(`.github/workflows/live-ticker-poll.yml`、毎時cron)へ切り替え**。GitHubの標準`GITHUB_TOKEN`でpushするため、セッション側の認証スコープに依存しない
 
 ### B. バックテストとの乖離レコンサイル（要件2に対応）
 - 新規: `scripts/live_monitor/reconcile_divergence.py`
