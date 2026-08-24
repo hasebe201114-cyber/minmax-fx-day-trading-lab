@@ -1,0 +1,12 @@
+{
+  "name": "sysfx022-live-ticker-poll",
+  "description": "EXP-FX000016/SYS-FX022 Stage 1: GMO公開Ticker APIを毎時ポーリングし、GitHub Contents APIでdata/raw/live-ticker/へ直接コミットするFirebase Cloud Function",
+  "engines": {
+    "node": "20"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-functions": "^5.0.0"
+  },
+  "private": true
+}

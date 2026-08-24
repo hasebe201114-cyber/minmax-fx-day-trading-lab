@@ -53,11 +53,21 @@ SYS-FX012の実運用移行に向け、実発注を一切行わずに以下3点�
 
 ## 現状の運用（2026-08-24時点）
 
-自動実行の3方式(Claude使い捨てセッションRoutine／GitHub Actions／このセッションからの手動実行)のうち、確実に動作すると確認できているのは**このセッション(または同等の対話セッション)からの直接実行のみ**。したがって当面は以下の運用とする:
+自動実行を4方式試した結果は以下の通り:
 
-- `poll_ticker.py`・`reconcile_divergence.py`は、セッションが起動されたタイミングで手動実行し、変更をコミット・pushする(継続的な毎時記録ではなく、断続的なサンプリングになる)
-- GitHub Actionsワークフロー(`.github/workflows/live-ticker-poll.yml`)は登録済みのまま残す。司令塔がGitHub Actionsの課金プランを契約した場合、`workflow_dispatch`で動作確認の上、これが最も確実な自動化手段になる見込み
-- Claude Routine(使い捨てセッション)方式のgit push不具合は原因未特定のため、今回は採用を見送る。原因が判明すれば再検討の余地あり
+| 方式 | 結果 |
+|---|---|
+| Claude使い捨てセッションRoutine | 発火はするがgit pushが完了しない(既存のSYS-FX012週次Routineも同様の不具合、原因未特定) |
+| GitHub Actions | 無料枠超過で即時失敗(課金契約が必要) |
+| このセッションからの直接実行 | 確実に動作する(コミット`096a21b`等で確認済み) |
+| **Firebase Cloud Functions**(司令塔の提案、既存プロジェクトあり) | **採用**。`functions/`に実装済み、デプロイのみ司令塔側で必要 |
+
+司令塔から「Firebaseでできないか」との提案を受け、既存のFirebase/GCPプロジェクトを活用する方式へ切り替えた。GitHub Actionsのような課金/クォータの壁が無く(Cloud Functions無料枠は月200万回呼び出し、本用途は月720回程度で収まる見込み)、Claude Routineのような原因不明のgit push不具合も、GitHub Contents API経由のHTTPS呼び出しに置き換えることで回避できる設計とした。
+
+- `functions/index.js`: `pollLiveTicker`(2nd gen `onSchedule`、毎時UTC 5分)。GMO公開Ticker APIを呼び出し、GitHub Contents API(Fine-grained PAT、Contents: Read and writeのみ)で`data/raw/live-ticker/YYYY-MM.csv`へ直接追記コミットする。git clone不要のサーバーレス向け設計
+- デプロイ手順は`functions/README.md`に記載。**このセッションにはFirebase/GCPのCLI・認証情報が無いため、デプロイは司令塔側で実施が必要**
+- `reconcile_divergence.py`(コンポーネントB/C)は当面Pythonのまま、セッション起動時の手動実行を継続する(Firebase版への移植は必要性を見てから検討)
+- GitHub Actionsワークフロー(`.github/workflows/live-ticker-poll.yml`)は将来課金プラン契約時のために削除せず残す
 
 ## Stage 1 受け入れ基準（事前登録）
 
