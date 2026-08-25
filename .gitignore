@@ -64,3 +64,9 @@ data/curated/mtf_cache/
 # 追跡対象外。正式なDS登録もしていない単発の探索的診断用データ。
 # `python scripts/data/fetch_m1_resample_m3_train_4pairs.py` で再生成可能。
 data/curated/ds-1-m3-train-4pairs.json
+
+# SYS-FX012 フォワードテスト用 M5 OHLCV (cutoff 2026-08-15 06:00 JST 以降)
+# (2026-08-26 追加): 毎時 workflow (update-ds1-forward.yml) が更新するため
+# 履歴が肥大化する。GitHub Actions runner 上で直接読み書きされる。
+# 初回構築: `python scripts/live_monitor/fetch_m5_ohlcv.py --all-pairs --lookback-days 2`
+data/curated/ds-1-forward.json
