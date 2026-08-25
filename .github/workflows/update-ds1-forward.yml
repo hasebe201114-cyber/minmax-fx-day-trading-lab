@@ -39,7 +39,9 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install --no-cache-dir pandas numpy
+        # GMOClient (src/minmax_fx_dt/data/gmo_fx_client.py) が `import requests` するため
+        # pandas / numpy だけでなく requests も必要。ライブ ticker と同じ依存。
+        run: pip install --no-cache-dir pandas numpy requests
 
       - name: Fetch M5 OHLCV (last 2 days) and merge into ds-1-forward.json
         # 過去 2 日分 (昨日 + 今日、土日も含む) を GMO API から取得。
