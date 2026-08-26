@@ -33,12 +33,21 @@ atrSelected = atrMode == "Project (SMA)" ? atrProject : atrWilder
 barRange = high - low
 ratio    = barRange / atrSelected
 
-// --- 任意の時間軸のチャートからでもH1で判定できるようにrequest.securityで取得 ---
-[ratioHtf, isBreakoutHtf] = request.security(syminfo.tickerid, htf,
-     [ratio, ratio >= threshold], lookahead=barmerge.lookahead_off)
+// --- UP/DOWN判定: プロジェクトのbacktest_vol_breakout_dow_theory.pyと同一の定義
+//   UP条件   = ratio >= threshold かつ close > open
+//   DOWN条件 = ratio >= threshold かつ close < open
+//   （close == open の場合はどちらにも該当しない=判定なし、プロジェクト実装と同じ扱い）
+isUpRaw   = ratio >= threshold and close > open
+isDownRaw = ratio >= threshold and close < open
 
-ratioFinal      = useHtf ? ratioHtf : ratio
-isBreakout      = useHtf ? isBreakoutHtf : (ratio >= threshold)
+// --- 任意の時間軸のチャートからでもH1で判定できるようにrequest.securityで取得 ---
+[ratioHtf, isUpHtf, isDownHtf] = request.security(syminfo.tickerid, htf,
+     [ratio, isUpRaw, isDownRaw], lookahead=barmerge.lookahead_off)
+
+ratioFinal = useHtf ? ratioHtf : ratio
+isUp       = useHtf ? isUpHtf   : isUpRaw
+isDown     = useHtf ? isDownHtf : isDownRaw
+isBreakout = isUp or isDown
 
 // --- 描画 ---
 plot(ratioFinal, title="Range/ATR Ratio", color=color.new(color.blue, 0), linewidth=2)
@@ -47,8 +56,12 @@ hline(threshold, title="N_BREAKOUT Threshold", color=color.red, linestyle=hline.
 bgcolor(isBreakout ? color.new(color.orange, 80) : na, title="N_BREAKOUT background")
 
 // メインチャート側にもマーカーを出したい場合用（overlay版が欲しければ別途複製して overlay=true に変更）
-plotshape(isBreakout, title="N_BREAKOUT", style=shape.triangleup,
-     location=location.bottom, color=color.orange, size=size.tiny)
+plotshape(isUp, title="N_BREAKOUT UP", style=shape.triangleup,
+     location=location.bottom, color=color.new(color.lime, 0), size=size.small)
+plotshape(isDown, title="N_BREAKOUT DOWN", style=shape.triangledown,
+     location=location.top, color=color.new(color.red, 0), size=size.small)
 
-alertcondition(isBreakout, title="N_BREAKOUT Trigger",
-     message="N_BREAKOUT: H1 Range/ATR ratio reached threshold")
+alertcondition(isUp, title="N_BREAKOUT Trigger (UP)",
+     message="N_BREAKOUT UP: H1 Range/ATR ratio reached threshold, close > open")
+alertcondition(isDown, title="N_BREAKOUT Trigger (DOWN)",
+     message="N_BREAKOUT DOWN: H1 Range/ATR ratio reached threshold, close < open")
