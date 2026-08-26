@@ -48,11 +48,11 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        # 必要最小限: numpy / pandas / scipy のみ
+        # 必要最小限: numpy / pandas / scipy
         # (run_forward_test_cycle.py は indicators.py の手書き実装を使うため
-        #  pandas-ta は不要。GMO API も叩かないので requests は不要)
+        #  pandas-ta は不要。GMO API を叩く fetch_m5_ohlcv.py も使うので requests も追加)
         run: |
-          pip install --no-cache-dir "numpy>=1.26" "pandas>=2.1" "scipy>=1.11"
+          pip install --no-cache-dir "numpy>=1.26" "pandas>=2.1" "scipy>=1.11" requests
 
       # ---- ds-1.json の再生成 ----
       # data/curated/ds-1.json は .gitignore (479MB > GitHub 100MB) されているため
@@ -74,6 +74,17 @@ jobs:
           )
           print(f'[OK] ds-1.json regenerated: {result}')
           "
+
+      # ---- ds-1-forward.json のライブ更新 (M5 OHLCV) ----
+      # (2026-08-26 追加): update-ds1-forward.yml の処理と同等。
+      # 別 workflow だと Actions runner 間で working tree が共有されないため、
+      # cycle 内で同じ処理を実行して最新 M5 データを取り込む。
+      - name: Fetch live M5 OHLCV and merge into ds-1-forward.json
+        # 過去 2 日分 (昨日 + 今日) を GMO API から取得。
+        # 既存 ds-1-forward.json の最新バー timestamp 以降のみ追記 (重複防止)。
+        # 公開エンドポイントのみ、API キー不要。
+        run: |
+          PYTHONPATH=src python3 scripts/live_monitor/fetch_m5_ohlcv.py --all-pairs --lookback-days 2
 
       # ---- フォワードテスト cycle 実行 ----
       # load_m5_forward() が ds-1.json (warmup) + ds-1-forward.json (新規) を結合。
