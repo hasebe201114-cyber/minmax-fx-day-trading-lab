@@ -51,23 +51,26 @@ SYS-FX012の実運用移行に向け、実発注を一切行わずに以下3点�
 - Aの`data/raw/live-ticker/`自体が蓄積データ。Bの集計(時間帯別実測スプレッド分布)を月次でACTIVE.mdに記録する運用とする
 - 将来、十分なサンプルが溜まった時点で、コストモデルの`SPREAD_PIPS`定数を実測ベースの値へ較正し直す判断材料として使う(本EXPでは較正自体は行わない、あくまでデータ収集と乖離の可視化まで)
 
-## 現状の運用（2026-08-24時点）
+## 現状の運用（2026-08-26時点、司令塔側の対応により解決）
 
-自動実行を4方式試した結果は以下の通り:
+自動実行を試した経緯:
 
 | 方式 | 結果 |
 |---|---|
-| Claude使い捨てセッションRoutine | 発火はするがgit pushが完了しない(既存のSYS-FX012週次Routineも同様の不具合、原因未特定) |
-| GitHub Actions | 無料枠超過で即時失敗(課金契約が必要) |
-| このセッションからの直接実行 | 確実に動作する(コミット`096a21b`等で確認済み) |
-| **Firebase Cloud Functions**(司令塔の提案、既存プロジェクトあり) | **採用**。`functions/`に実装済み、デプロイのみ司令塔側で必要 |
+| Claude使い捨てセッションRoutine | 発火はするがgit pushが完了しない(原因未特定のまま棚上げ) |
+| GitHub Actions(2026-08-24時点) | 無料枠超過で即時失敗 |
+| Firebase Cloud Functions(2026-08-24、司令塔提案で着手) | コード実装のみでデプロイ未実施のまま、下記の解決で不要になった |
+| **GitHub Actions(2026-08-26、司令塔が課金/設定を解決)** | **稼働中**。`.github/workflows/live-ticker-poll.yml`が実際に`github-actions[bot]`名義で毎時コミットを生成していることを確認済み(例: コミット`9bc9616`) |
 
-司令塔から「Firebaseでできないか」との提案を受け、既存のFirebase/GCPプロジェクトを活用する方式へ切り替えた。GitHub Actionsのような課金/クォータの壁が無く(Cloud Functions無料枠は月200万回呼び出し、本用途は月720回程度で収まる見込み)、Claude Routineのような原因不明のgit push不具合も、GitHub Contents API経由のHTTPS呼び出しに置き換えることで回避できる設計とした。
+司令塔がGitHub Actions側の制約(無料枠超過)を解消し、当初設計した`live-ticker-poll.yml`がそのまま稼働を始めた。**Firebase Cloud Functions版(`functions/`)はこの時点で不要と判明したため削除した**(2026-08-26)。GitHub ActionsとFirebaseを二重に運用する理由が無く、放置すると「どちらが実際に動いているか」で将来混乱するため。
 
-- `functions/index.js`: `pollLiveTicker`(2nd gen `onSchedule`、毎時UTC 5分)。GMO公開Ticker APIを呼び出し、GitHub Contents API(Fine-grained PAT、Contents: Read and writeのみ)で`data/raw/live-ticker/YYYY-MM.csv`へ直接追記コミットする。git clone不要のサーバーレス向け設計
-- デプロイ手順は`functions/README.md`に記載。**このセッションにはFirebase/GCPのCLI・認証情報が無いため、デプロイは司令塔側で実施が必要**
-- `reconcile_divergence.py`(コンポーネントB/C)は当面Pythonのまま、セッション起動時の手動実行を継続する(Firebase版への移植は必要性を見てから検討)
-- GitHub Actionsワークフロー(`.github/workflows/live-ticker-poll.yml`)は将来課金プラン契約時のために削除せず残す
+さらに司令塔が以下を追加で構築(このセッションの外で実施、2026-08-26):
+
+- `.github/workflows/update-ds1-forward.yml`(毎時5分): `scripts/live_monitor/fetch_m5_ohlcv.py`(新設)でM5 OHLCVを取得し`data/curated/ds-1-forward.json`を更新。`live-ticker-poll.yml`はbid/ask気配値のみでM5足を更新しないため、`sysfx012_forward_test_ledger.json`の`latest_bar_by_pair`が2026-08-24 16:25 JSTで止まっていた問題への対応。`ds-1-forward.json`は.gitignore対象化(毎時1.4MB+の更新でコミット履歴が膨らむのを回避、Actions runner上で直接読み書き)
+- `.github/workflows/sysfx012-fx-forward-cycle.yml`(週次月曜00:00 UTC): Claude使い捨てセッションRoutineの不具合を受け、SYS-FX012週次フォワードテストサイクル自体もGitHub Actionsへ移管。`data/curated/ds-1.json`(479MB、.gitignore対象)を`data/raw/ds-1/*.csv`から都度再生成してから`run_forward_test_cycle.py`を実行し、ledgerをcommit/push
+- `trading-app-v2`側に`sysfx012-fx-forward-sync.yml`(月曜12:00 JST)があり、本リポジトリがcommitしたledgerを公開Web UIへ同期する(クロスリポジトリ連携)
+
+つまり、EXP-FX000016 Stage 1で目指していた「決定的な作業にLLMエージェントセッションを使わない」自動化は、最終的に**GitHub Actions 3ワークフローの組み合わせ**で実現された。`reconcile_divergence.py`(コンポーネントB/C)は未統合のまま、セッション起動時の手動実行を継続する(Firebase版への移植構想も含めて不要になったため、Python版のまま`update-ds1-forward.yml`等への統合を今後検討)。
 
 ## Stage 1 受け入れ基準（事前登録）
 
