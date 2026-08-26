@@ -1,0 +1,54 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0
+//@version=5
+indicator("N_BREAKOUT Detector (H1 Range/ATR)", overlay=false)
+
+// ============================================================================
+// SYS-FX011/SYS-FX012 (minmax-fx-day-trading-lab) の N_BREAKOUT 検出条件:
+//   H1バーのレンジ(高値-安値) / ATR(14) >= N_BREAKOUT_THRESHOLD (既定3.5)
+//
+// 注意（重要）: 本プロジェクトのPython実装(src/minmax_fx_dt/strategy/indicators.py
+// の atr() 関数)は、ドキュメント上「ATR(14,Wilder)」と表記されているが、実装は
+// True RangeのSMA（単純移動平均）であり、TradingView標準の ta.atr()（Wilderの
+// RMA平滑、alpha=1/length）とは異なる。この乖離は本セッションで新たに確認した。
+// バックテスト・フォワードテストの結果と厳密に一致させたい場合は
+// atrMode = "Project (SMA)" を使うこと。教科書的な正しいWilder ATRで見たい場合は
+// "TradingView Standard (RMA/Wilder)" を選択する。
+// ============================================================================
+
+length    = input.int(14, title="ATR Length", minval=1)
+threshold = input.float(3.5, title="N_BREAKOUT Threshold", minval=0.1, step=0.1)
+atrMode   = input.string("Project (SMA)", title="ATR calculation mode",
+             options=["Project (SMA)", "TradingView Standard (RMA/Wilder)"])
+useHtf    = input.bool(true, title="Force H1 timeframe (recommended)")
+htf       = input.timeframe("60", title="Timeframe used for detection")
+
+// --- True Range ---
+tr = ta.tr(true)
+
+// --- ATR: プロジェクト互換(SMA) と 標準Wilder(RMA) の両方を用意 ---
+atrProject  = ta.sma(tr, length)          // このプロジェクトの atr() と同一の定義
+atrWilder   = ta.rma(tr, length)          // TradingView標準 ta.atr() と同一（真のWilder平滑）
+atrSelected = atrMode == "Project (SMA)" ? atrProject : atrWilder
+
+barRange = high - low
+ratio    = barRange / atrSelected
+
+// --- 任意の時間軸のチャートからでもH1で判定できるようにrequest.securityで取得 ---
+[ratioHtf, isBreakoutHtf] = request.security(syminfo.tickerid, htf,
+     [ratio, ratio >= threshold], lookahead=barmerge.lookahead_off)
+
+ratioFinal      = useHtf ? ratioHtf : ratio
+isBreakout      = useHtf ? isBreakoutHtf : (ratio >= threshold)
+
+// --- 描画 ---
+plot(ratioFinal, title="Range/ATR Ratio", color=color.new(color.blue, 0), linewidth=2)
+hline(threshold, title="N_BREAKOUT Threshold", color=color.red, linestyle=hline.style_dashed)
+
+bgcolor(isBreakout ? color.new(color.orange, 80) : na, title="N_BREAKOUT background")
+
+// メインチャート側にもマーカーを出したい場合用（overlay版が欲しければ別途複製して overlay=true に変更）
+plotshape(isBreakout, title="N_BREAKOUT", style=shape.triangleup,
+     location=location.bottom, color=color.orange, size=size.tiny)
+
+alertcondition(isBreakout, title="N_BREAKOUT Trigger",
+     message="N_BREAKOUT: H1 Range/ATR ratio reached threshold")
