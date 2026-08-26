@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-26T01:54:17.103285+00:00",
+  "generated_at": "2026-08-26T03:15:21.482792+00:00",
   "purpose": "EXP-FX000016 Stage 1: バックテストのコストモデル仮定とライブ実測スプレッドの乖離レコンサイル",
   "match_tolerance_minutes": 90.0,
   "n_trades_total": 0,
