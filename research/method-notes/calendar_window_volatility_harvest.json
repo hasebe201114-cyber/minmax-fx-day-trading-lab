@@ -1,0 +1,177 @@
+{
+  "generated_at": "2026-08-27T14:40:37.549182",
+  "status": "探索的診断(正式プロトコル外・spec編集なし)",
+  "question": "SYS-FX011凍結ロジックをBOJ/FOMC窓の内側に適用すると、窓外と比べて成績はどう違うか(避ける対象から刈る対象への転換は有望か)",
+  "period": {
+    "train_start": "2023-11-01",
+    "train_end": "2025-03-31"
+  },
+  "pairs": [
+    "USD_JPY",
+    "EUR_JPY",
+    "GBP_JPY",
+    "AUD_JPY"
+  ],
+  "n_events_by_group": {
+    "inside_window": 44,
+    "outside_window": 115
+  },
+  "definitions": {
+    "windows": "既存economic_calendar.build_blackout_windows()と同一定義(BOJ 22回+FOMC 22回、各[開催初日-24h, 開催最終日+24h+24h])",
+    "entry_exit_logic": "SYS-FX011凍結最良候補(T-13トレール専業版)と完全同一。STOP_BUFFER_ATR_M5/ATR_TRAIL_MULTIPLIER_M5/breakeven_trigger_r=1.0/tp_levels=[]/m5_exit=Trueをそのままimport、新規パラメータなし",
+    "cost_model": "T-09確定版と完全同一(往復スプレッド+SL/トレールスリッページ1.0pip+手数料)",
+    "difference_from_production": "blackout_check=Noneとし、窓内イベントもエントリー対象に含めた上で、事後的に窓内/窓外で層別しただけ(フィルターとしては機能させていない)"
+  },
+  "results": {
+    "inside_window": {
+      "n": 193,
+      "win_rate": 0.6114,
+      "mean_r_gross": 0.7073,
+      "mean_r_net": 0.4699,
+      "median_r_net": 0.5075,
+      "profit_factor": 2.101,
+      "payoff_ratio": 1.335,
+      "perm_p_clustered": 0.3966
+    },
+    "outside_window": {
+      "n": 461,
+      "win_rate": 0.5857,
+      "mean_r_gross": 0.4514,
+      "mean_r_net": 0.2178,
+      "median_r_net": 0.3568,
+      "profit_factor": 1.478,
+      "payoff_ratio": 1.045,
+      "perm_p_clustered": 0.4605
+    }
+  },
+  "results_by_source": {
+    "boj_only": {
+      "n": 71,
+      "win_rate": 0.6479,
+      "mean_r_gross": 1.0274,
+      "mean_r_net": 0.798,
+      "median_r_net": 0.6703,
+      "profit_factor": 2.913,
+      "payoff_ratio": 1.583,
+      "perm_p_clustered": 0.3586
+    },
+    "fomc_only": {
+      "n": 35,
+      "win_rate": 0.6,
+      "mean_r_gross": 0.4694,
+      "mean_r_net": 0.3441,
+      "median_r_net": 0.5572,
+      "profit_factor": 1.82,
+      "payoff_ratio": 1.213,
+      "perm_p_clustered": 0.4955
+    },
+    "both": {
+      "n": 87,
+      "win_rate": 0.5862,
+      "mean_r_gross": 0.5418,
+      "mean_r_net": 0.2528,
+      "median_r_net": 0.3418,
+      "profit_factor": 1.577,
+      "payoff_ratio": 1.113,
+      "perm_p_clustered": 0.4525
+    },
+    "outside_window": {
+      "n": 461,
+      "win_rate": 0.5857,
+      "mean_r_gross": 0.4514,
+      "mean_r_net": 0.2178,
+      "median_r_net": 0.3568,
+      "profit_factor": 1.478,
+      "payoff_ratio": 1.045,
+      "perm_p_clustered": 0.4605
+    }
+  },
+  "results_by_pair": {
+    "USD_JPY_inside": {
+      "n": 80,
+      "win_rate": 0.5625,
+      "mean_r_gross": 0.5179,
+      "mean_r_net": 0.3219,
+      "median_r_net": 0.4139,
+      "profit_factor": 1.653,
+      "payoff_ratio": 1.285,
+      "perm_p_clustered": 0.042
+    },
+    "USD_JPY_outside": {
+      "n": 148,
+      "win_rate": 0.5608,
+      "mean_r_gross": 0.4079,
+      "mean_r_net": 0.2161,
+      "median_r_net": 0.4039,
+      "profit_factor": 1.459,
+      "payoff_ratio": 1.142,
+      "perm_p_clustered": 0.037
+    },
+    "EUR_JPY_inside": {
+      "n": 49,
+      "win_rate": 0.6939,
+      "mean_r_gross": 0.9514,
+      "mean_r_net": 0.7318,
+      "median_r_net": 0.6026,
+      "profit_factor": 3.106,
+      "payoff_ratio": 1.37,
+      "perm_p_clustered": 0.006
+    },
+    "EUR_JPY_outside": {
+      "n": 107,
+      "win_rate": 0.6262,
+      "mean_r_gross": 0.5329,
+      "mean_r_net": 0.2942,
+      "median_r_net": 0.351,
+      "profit_factor": 1.717,
+      "payoff_ratio": 1.025,
+      "perm_p_clustered": 0.016
+    },
+    "GBP_JPY_inside": {
+      "n": 37,
+      "win_rate": 0.6757,
+      "mean_r_gross": 0.9107,
+      "mean_r_net": 0.7035,
+      "median_r_net": 0.7727,
+      "profit_factor": 2.85,
+      "payoff_ratio": 1.368,
+      "perm_p_clustered": 0.011
+    },
+    "GBP_JPY_outside": {
+      "n": 123,
+      "win_rate": 0.6098,
+      "mean_r_gross": 0.5019,
+      "mean_r_net": 0.278,
+      "median_r_net": 0.3742,
+      "profit_factor": 1.631,
+      "payoff_ratio": 1.044,
+      "perm_p_clustered": 0.021
+    },
+    "AUD_JPY_inside": {
+      "n": 27,
+      "win_rate": 0.5185,
+      "mean_r_gross": 0.5466,
+      "mean_r_net": 0.1127,
+      "median_r_net": 0.2724,
+      "profit_factor": 1.257,
+      "payoff_ratio": 1.167,
+      "perm_p_clustered": 0.3087
+    },
+    "AUD_JPY_outside": {
+      "n": 83,
+      "win_rate": 0.5422,
+      "mean_r_gross": 0.3489,
+      "mean_r_net": 0.033,
+      "median_r_net": 0.1628,
+      "profit_factor": 1.065,
+      "payoff_ratio": 0.899,
+      "perm_p_clustered": 0.4116
+    }
+  },
+  "caveats": [
+    "1通貨1ポジション制約・重複排除は既存ロジックのまま(SYS-FX011全体と同一)。",
+    "窓の定義(前後24hバッファ)はブラックアウト用に設計されたもので、ニュース窓戦略専用に最適化されたものではない(既存資産の転用)。",
+    "Train期間のみ。Validation/Testは正式検証のために温存している。",
+    "perm_p_clusteredは通貨クラスタでのpermutation testだが、窓内サンプル数が少ない場合は検出力が低い点に留意。"
+  ]
+}
