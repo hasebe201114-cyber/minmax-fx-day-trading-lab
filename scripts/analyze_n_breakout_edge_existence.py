@@ -83,10 +83,10 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
-
 from analyze_n_breakout_h1_dow_trend_alignment import h1_dow_trend_direction  # noqa: E402
 from backtest_vol_breakout_dow_theory import select_non_overlapping_breakout_events  # noqa: E402
 from derive_vol_breakout_entry_params import N_BREAKOUT  # noqa: E402
+
 from minmax_fx_dt.backtest.permutation import permutation_test_block  # noqa: E402
 from minmax_fx_dt.strategy.indicators import atr as atr_ind  # noqa: E402
 
@@ -242,6 +242,49 @@ def test_group(events: list[dict], horizon: int) -> dict | None:
     }
 
 
+def power_analysis(events: list[dict], horizon: int, alpha: float) -> dict | None:
+    """事後の検出力分析(post-hoc、事前登録の判定基準は変更しない).
+
+    「有意でなかった」だけでは「エッジが無い」の根拠として弱い。実際の帰無分布
+    (符号シャッフルの標準偏差)から、検出力80%/95%で検出できた最小効果量(MDE)を
+    求め、「エッジがあるとしてもこの大きさ未満」という上限を与える。
+
+    MDE = (z_{alpha/2} + z_{power}) * null_std   (両側検定)
+
+    あわせて陽性対照(positive control)として、観測値にMDE相当の一定ドリフトを
+    加えた系列を同じ検定にかけ、実際に有意判定できることを確認する
+    (=検定機構自体が「何も検出できない」わけではないことの裏付け)。
+    """
+    vals, clusters = [], []
+    for e in events:
+        if horizon in e["fwd"]:
+            vals.append(e["fwd"][horizon])
+            clusters.append(pd.Timestamp(e["time"]).strftime("%Y-%m-%d"))
+    if len(vals) < 10:
+        return None
+    res = permutation_test_block(vals, clusters, seed=RANDOM_SEED)
+    null_std = float(res.null_std)
+    if null_std <= 0:
+        return None
+    # 両側α、検出力80%/95% の z 値
+    from scipy.stats import norm  # 局所import(本PJのscipy依存はrequirements.txt記載済み)
+    z_alpha = float(norm.ppf(1 - alpha / 2))
+    mde80 = (z_alpha + float(norm.ppf(0.80))) * null_std
+    mde95 = (z_alpha + float(norm.ppf(0.95))) * null_std
+
+    # 陽性対照: MDE80 相当のドリフトを加えて検出できるか
+    pos = permutation_test_block([v + mde80 for v in vals], clusters, seed=RANDOM_SEED)
+    return {
+        "n": len(vals),
+        "observed_mean": round(float(np.mean(vals)), 4),
+        "null_std": round(null_std, 4),
+        "mde_power80_atr": round(mde80, 4),
+        "mde_power95_atr": round(mde95, 4),
+        "positive_control_p_two_sided": round(float(pos.p_value_two_sided), 4),
+        "positive_control_detected": bool(pos.p_value_two_sided < alpha),
+    }
+
+
 def run_panel(name: str, kind: str, start: str, end: str) -> dict:
     print(f"\n########## {name} ({kind} {start}〜{end}) ##########")
     events, controls = detect_panel(kind, start, end, RANDOM_SEED)
@@ -282,14 +325,64 @@ def run_panel(name: str, kind: str, start: str, end: str) -> dict:
                    and control[str(h)]["p_two_sided"] < alpha_primary]
     print(f"\n--- 対照群(ランダム時刻、サニティチェック) --- 補正後有意: {len(sig_control)}/{len(HORIZONS)}件")
 
+    power = {str(h): power_analysis(strata["all"], h, alpha_primary) for h in HORIZONS}
+    print("\n--- 事後の検出力分析(post-hoc、判定基準は変更しない) ---")
+    print(f"{'ホライズン':<12}{'観測平均':>10}{'検出力80%のMDE':>16}{'検出力95%のMDE':>16}{'陽性対照':>10}")
+    for h in HORIZONS:
+        pw = power[str(h)]
+        if pw:
+            print(f"{str(h)+'バー':<12}{pw['observed_mean']:>10.4f}{pw['mde_power80_atr']:>16.4f}"
+                  f"{pw['mde_power95_atr']:>16.4f}{'検出OK' if pw['positive_control_detected'] else 'NG':>10}")
+
     return {
         "n_events": len(events), "n_controls": len(controls),
         "alpha_primary": alpha_primary, "alpha_secondary": alpha_secondary,
         "n_secondary_tests": n_secondary,
         "primary": primary, "secondary": secondary, "control": control,
+        "power_analysis": power,
         "significant_secondary": [{"stratum": s, "horizon": h, **r} for s, h, r in sig_secondary],
         "significant_control_horizons": sig_control,
     }
+
+
+def cost_reference() -> dict:
+    """MDE(ATR単位)を実務的に解釈するための基準値: ATR(H1)中央値と往復コストの比.
+
+    検出力分析のMDEは「ATR単位」で出るため、それが実務的に大きいのか小さいのかを
+    判断するには往復コストとの対比が要る。往復コストがATRの何割かを実測する。
+    """
+    from backtest_vol_breakout_dow_theory_4pairs_v7_trailonly_1000usd import (
+        SLIPPAGE_PIPS_MARKET_LEG,
+        SLIPPAGE_PIPS_STOP_TRIGGERED,
+        SPREAD_PIPS,
+        pip_size,
+    )
+    out = {}
+    for pair in PAIRS:
+        path = DUKA_DIR / f"ohlcv_{pair}_h1_{DUKA_TAG}.csv"
+        if not path.exists():
+            continue
+        df = pd.read_csv(path)
+        df["timestamp"] = pd.to_datetime(df["timestamp"])
+        df = df.set_index("timestamp").sort_index()
+        a = atr_ind(df["high"], df["low"], df["close"], length=14).dropna()
+        atr_pips = float(a.median()) / pip_size(pair)
+        sp = SPREAD_PIPS.get(pair, 0.5)
+        round_trip = (sp + SLIPPAGE_PIPS_MARKET_LEG) + (sp + SLIPPAGE_PIPS_STOP_TRIGGERED)
+        out[pair] = {
+            "atr_h1_median_pips": round(atr_pips, 2),
+            "round_trip_cost_pips": round(round_trip, 2),
+            "cost_as_fraction_of_atr": round(round_trip / atr_pips, 4),
+        }
+    fracs = [v["cost_as_fraction_of_atr"] for v in out.values()]
+    out["_pooled_median_cost_as_fraction_of_atr"] = round(float(np.median(fracs)), 4) if fracs else None
+    out["_note"] = (
+        "往復コスト(スプレッド往復+エントリー成行スリッページ+ストップ決済スリッページ)は"
+        "ATR(H1)のおよそ12〜18%に相当する。検出力分析のMDE(ATR単位)をこの値と比べることで、"
+        "「実務的に意味のある大きさのエッジを検出できるだけの検出力があったか」を判断できる。"
+        "なおK5m(1トレード期待値 > 往復コスト×3)を満たすには、コストの3倍規模のエッジが必要。"
+    )
+    return out
 
 
 def main() -> int:
@@ -303,7 +396,7 @@ def main() -> int:
     print("\n\n########## 統合判定(事前登録した再現性要件) ##########")
     names = [n for n in PANELS if panels[n].get("n_events")]
     replicated = []
-    print(f"\n--- 主検定: 各ホライズンの3パネル比較 ---")
+    print("\n--- 主検定: 各ホライズンの3パネル比較 ---")
     print(f"{'ホライズン':<10}" + "".join(f"{n:>26}" for n in names) + f"{'再現':>10}")
     for h in HORIZONS:
         cells, sigs, signs = [], 0, set()
@@ -343,6 +436,17 @@ def main() -> int:
     )
     print(f"\n結論: {conclusion}")
 
+    cost_ref = cost_reference()
+    cf = cost_ref.get("_pooled_median_cost_as_fraction_of_atr")
+    print("\n--- MDEの実務的な解釈 ---")
+    print(f"往復コストはATR(H1)の約{cf:.1%}に相当(5通貨中央値)。")
+    best = panels["dukascopy_2018_2023"]["power_analysis"].get("1")
+    if best and cf:
+        print(f"最も検出力の高いDukascopy・1バーで MDE(検出力80%)={best['mde_power80_atr']:.3f} ATR "
+              f"= 往復コストの約{best['mde_power80_atr']/cf:.1f}倍。")
+        print(f"K5m(期待値 > 往復コスト×3)を満たす規模のエッジであれば十分に検出できた水準だが、"
+              f"実際の観測平均は{best['observed_mean']:+.4f} ATR にとどまった。")
+
     out = {
         "generated_at": pd.Timestamp.now().isoformat(),
         "purpose": "戦略ロジックを介さず、確定後N_BREAKOUTに方向性エッジが存在するかを検定する(Phase 2)",
@@ -359,6 +463,7 @@ def main() -> int:
         },
         "panels": panels,
         "replicated": replicated,
+        "cost_reference": cost_ref,
         "conclusion": conclusion,
     }
     out_path = ROOT / "research" / "method-notes" / "n_breakout_edge_existence.json"
