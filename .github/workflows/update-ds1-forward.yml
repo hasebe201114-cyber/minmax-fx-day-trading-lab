@@ -1,16 +1,18 @@
 name: SYS-FX012 Forward M5 OHLCV Live Update (Hourly)
 
 # FX012 フォワードテスト用 M5 OHLCV を毎時 GMO API から取得し、
-# data/curated/ds-1-forward.json を追記マージする。
-#
-# .gitignore で ds-1-forward.json は除外されているため commit しない
-# (毎回 1.4MB+ の更新で履歴が膨らむのを回避)。
-#
-# フォワードテスト本体 (sysfx012-fx-forward-cycle.yml) は別途 weekly 実行で
-# このファイルを読み込み、ledger の latest_bar_by_pair を最新化する。
+# data/raw/ds-1-forward/*.csv (git 管理・永続) に追記マージして commit する。
 #
 # 2026-08-26 追加: latest_bar_by_pair が 08-24 16:25 JST で止まる問題の修正
 # (live-ticker-poll.yml は bid/ask 気配値のみ取得で M5 OHLCV は更新していなかった)
+#
+# 2026-08-27 修正 (OBS000009 不具合2): 従来は data/curated/ds-1-forward.json
+# (.gitignore 対象) に「追記マージ」する設計だったが、GitHub Actions のランナーは
+# 実行ごとにまっさらな環境のため、実行間で一切永続していなかった(cutoff以降の
+# データが実質「直近2日分のローリング窓」でしか蓄積されず、2026-08-19の
+# N_BREAKOUTイベント3件を取りこぼしていたことが判明)。
+# 永続先を data/raw/ds-1-forward/*.csv (git管理、ds-1と同じCSVスキーマ) に変更し、
+# 本 workflow で commit/push するよう修正。
 
 on:
   schedule:
@@ -19,7 +21,11 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: read   # 読み取りのみ (ds-1-forward.json は .gitignore で除外)
+  contents: write   # data/raw/ds-1-forward/*.csv の commit/push に必要
+
+concurrency:
+  group: update-ds1-forward
+  cancel-in-progress: false
 
 jobs:
   update:
@@ -43,21 +49,36 @@ jobs:
         # pandas / numpy だけでなく requests も必要。ライブ ticker と同じ依存。
         run: pip install --no-cache-dir pandas numpy requests
 
-      - name: Fetch M5 OHLCV (last 2 days) and merge into ds-1-forward.json
+      - name: Fetch M5 OHLCV (last 2 days) and merge into data/raw/ds-1-forward/*.csv
         # 過去 2 日分 (昨日 + 今日、土日も含む) を GMO API から取得。
-        # 既存 ds-1-forward.json の最新バー timestamp 以降のみ追記 (重複防止)。
+        # 既存 raw CSV の最新バー timestamp 以降のみ追記 (重複排除込み)。
         run: |
           PYTHONPATH=src python3 scripts/live_monitor/fetch_m5_ohlcv.py --all-pairs --lookback-days 2
 
-      - name: Print summary (no commit; ds-1-forward.json is .gitignore'd)
-        # 1.4MB+ の更新が毎回 commit されると履歴が膨らむため commit は行わない。
-        # フォワードテスト本体 (cycle.yml) は最新ファイルを Actions runner 上で直接読む。
+      - name: Print summary
         run: |
           python3 -c "
           import json
           with open('data/curated/ds-1-forward.json') as f:
               d = json.load(f)
-          print('=== ds-1-forward.json summary ===')
+          print('=== ds-1-forward.json summary (raw CSV から再構築、参考用) ===')
           print(f'generated_at: {d[\"generated_at\"]}')
           for pair, p in d.get('pairs', {}).items():
               print(f'  {pair:<8} n_bars={p[\"n_bars\"]:>5} end={p[\"end\"]}')"
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/raw/ds-1-forward/
+          if git diff --cached --quiet; then
+            echo "変更なし、コミットをスキップ"
+            exit 0
+          fi
+          git commit -m "SYS-FX012 forward M5 OHLCV: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          if ! git pull --rebase origin main; then
+            git rebase --abort || true
+            echo "::warning::git pull --rebase failed (conflict). Aborted. Will retry next scheduled run."
+            exit 1
+          fi
+          git push origin main

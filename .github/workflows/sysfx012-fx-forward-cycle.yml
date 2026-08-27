@@ -11,6 +11,12 @@ name: SYS-FX012 Forward Test Cycle (Weekly)
 # 注: trading-app-v2 側の sysfx012-fx-forward-sync.yml (月曜 12:00 JST) は
 # 本 workflow が commit した ledger を public/data/forward-fx-sysfx012/ へ
 # コピーして公開 Web UI へ反映する役。両者は依存関係にある。
+#
+# 2026-08-27 修正 (OBS000009 不具合2): M5データの永続先を data/curated/
+# ds-1-forward.json (.gitignore対象、ランナー間で永続しない) から
+# data/raw/ds-1-forward/*.csv (git管理) に変更。従来は cutoff 以降のデータが
+# 実質「直近2日分のローリング窓」でしか蓄積されておらず、2026-08-19の
+# N_BREAKOUTイベント3件を取りこぼしていた(詳細: OBS000009)。
 
 on:
   schedule:
@@ -75,21 +81,44 @@ jobs:
           print(f'[OK] ds-1.json regenerated: {result}')
           "
 
-      # ---- ds-1-forward.json のライブ更新 (M5 OHLCV) ----
+      # ---- data/raw/ds-1-forward/*.csv のライブ更新 (M5 OHLCV) ----
       # (2026-08-26 追加): update-ds1-forward.yml の処理と同等。
       # 別 workflow だと Actions runner 間で working tree が共有されないため、
-      # cycle 内で同じ処理を実行して最新 M5 データを取り込む。
-      - name: Fetch live M5 OHLCV and merge into ds-1-forward.json
+      # cycle 内でも同じ処理を実行して最新 M5 データを取り込む(hourly job が
+      # 何らかの理由で失敗していた場合の冗長経路にもなる)。
+      #
+      # 2026-08-27 修正 (OBS000009 不具合2): 永続先を data/curated/ds-1-forward.json
+      # (.gitignore対象、ランナー間で永続しない) から data/raw/ds-1-forward/*.csv
+      # (git管理) に変更。ここで取得した分も明示的に commit/push する。
+      - name: Fetch live M5 OHLCV and merge into data/raw/ds-1-forward/*.csv
         # 過去 2 日分 (昨日 + 今日) を GMO API から取得。
-        # 既存 ds-1-forward.json の最新バー timestamp 以降のみ追記 (重複防止)。
+        # 既存 raw CSV の最新バー timestamp 以降のみ追記 (重複排除込み)。
         # 公開エンドポイントのみ、API キー不要。
         run: |
           PYTHONPATH=src python3 scripts/live_monitor/fetch_m5_ohlcv.py --all-pairs --lookback-days 2
 
+      - name: Commit and push raw M5 CSV if changed
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/raw/ds-1-forward/
+          if git diff --cached --quiet; then
+            echo "raw CSV に変更なし、コミットをスキップ"
+          else
+            git commit -m "SYS-FX012 forward M5 OHLCV (weekly cycle fetch): $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            if ! git pull --rebase origin main; then
+              git rebase --abort || true
+              echo "::warning::git pull --rebase failed (conflict). Aborted raw CSV commit, continuing cycle."
+            else
+              git push origin main
+            fi
+          fi
+
       # ---- フォワードテスト cycle 実行 ----
-      # load_m5_forward() が ds-1.json (warmup) + ds-1-forward.json (新規) を結合。
-      # cutoff 2026-08-15 06:00 JST 以降の H1 イベントを検出→filter→M5 シミュレーション。
-      # 出力: research/method-notes/sysfx012_forward_test_ledger.json
+      # load_m5_forward() が ds-1.json (warmup) + data/raw/ds-1-forward/*.csv (新規、
+      # git管理・永続) を結合。cutoff 2026-08-15 06:00 JST 以降の H1 イベントを
+      # 検出→filter→M5 シミュレーション。出力: research/method-notes/sysfx012_forward_test_ledger.json
       - name: Run SYS-FX012 forward test cycle
         run: |
           PYTHONPATH=src python3 scripts/forward_test/run_forward_test_cycle.py

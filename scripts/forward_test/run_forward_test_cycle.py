@@ -15,10 +15,19 @@ cutoff = 2026-08-15 06:00 JST (既存data/curated/ds-1.jsonの4通貨全ての�
 バーの直後)。cutoff以前のH1バーはATR/zigzagの文脈計算にのみ使い、新規
 トレンドイベントの検出には使わない(Train/Validation/Testいずれとも非重複)。
 
-データは`data/curated/ds-1-forward.json`(既存ds-1.jsonとは別ファイル、
-`scripts/data/fetch_ds1_ohlcv.py`で取得)を使う。本スクリプトは毎回、
+データは`data/raw/ds-1-forward/*.csv`(git管理・永続、`scripts/data/fetch_ds1_ohlcv.py`の
+`fetch_pair()`が書き出す)を正の情報源として使う。本スクリプトは毎回、
 cutoff〜最新取得バーまでの全期間を再計算する(差分ではなく全期間再計算、
 状態管理を単純化するため)。
+
+**2026-08-27修正(OBS000009 不具合2)**: 従来は`data/curated/ds-1-forward.json`
+(.gitignore対象)のみに依存していたが、GitHub Actionsのランナーは実行ごとに
+まっさらな環境のため「既存ファイルへの追記マージ」が実行間で永続せず、
+2026-08-15のフォワードテスト開始以降、cutoff以降のデータが実質「直近2日分の
+ローリング窓」でしか見えていなかった(2026-08-19 21:00 JSTの3件のN_BREAKOUT
+イベントを取りこぼし)。`load_m5_forward()`を`data/raw/ds-1-forward/*.csv`
+(git管理下、ワークフロー実行をまたいで永続)を読むよう修正し、
+`data_coverage`診断(cutoff以降のバー数・最大ギャップ)をledger出力に追加した。
 
 出力:
   research/method-notes/sysfx012_forward_test_ledger.json
@@ -64,13 +73,23 @@ from minmax_fx_dt.strategy.indicators import atr as atr_ind  # noqa: E402
 CUTOFF = pd.Timestamp("2026-08-15 06:00:00")  # JST、ds-1.jsonの4通貨最終バー(05:55)の直後
 DS1_JSON = ROOT / "data" / "curated" / "ds-1.json"
 DS1_FORWARD_JSON = ROOT / "data" / "curated" / "ds-1-forward.json"
+RAW_FORWARD_DIR = ROOT / "data" / "raw" / "ds-1-forward"
 OUT_PATH = ROOT / "research" / "method-notes" / "sysfx012_forward_test_ledger.json"
 
 
 def load_m5_forward(pair: str) -> pd.DataFrame:
-    """既存ds-1.json(凍結、warmup文脈用)+ds-1-forward.json(新規)を結合。
+    """既存ds-1.json(凍結、warmup文脈用) + data/raw/ds-1-forward/*.csv(git管理・永続)
+    + data/curated/ds-1-forward.json(同一実行内のみの一時ファイル、あれば追加で重ねる)を結合。
 
-    どちらのファイルにも触れず(書き込みしない)、in-memoryで結合するのみ。
+    2026-08-27修正(OBS000009 不具合2): 従来はds-1-forward.json(.gitignore対象)のみに
+    依存していたが、GitHub Actionsのランナーは毎回まっさらな環境のため、そのファイルへの
+    「既存に追記マージ」が実行間で全く永続せず、cutoff以降のデータが実質「直近2日分の
+    ローリング窓」でしか見えていなかった(2026-08-19 21:00 JSTの3件のN_BREAKOUTイベントを
+    取りこぼしていたことを`scripts/analyze_post_breakout_trend_visual_check.py`の副産物で
+    発見)。`data/raw/ds-1-forward/*.csv`(`fetch_ds1_ohlcv.fetch_pair()`が書き出す、ds-1と
+    同じ命名規則のCSV)はgit管理下にありワークフロー実行をまたいで永続するため、これを
+    正の情報源とする。ds-1-forward.jsonは同一実行内で直前にfetchした最新データを追加で
+    重ねるためだけに残す(なくても動く)。
     """
     frames = []
     with DS1_JSON.open(encoding="utf-8") as f:
@@ -78,6 +97,11 @@ def load_m5_forward(pair: str) -> pd.DataFrame:
     if pair in ds1["pairs"]:
         df = pd.DataFrame(ds1["pairs"][pair]["data"])
         df["timestamp"] = pd.to_datetime(df["timestamp"]).dt.tz_localize(None)
+        frames.append(df.set_index("timestamp"))
+
+    for f in sorted(RAW_FORWARD_DIR.glob(f"ohlcv_{pair}_5min_*.csv")):
+        df = pd.read_csv(f, parse_dates=["timestamp"])
+        df["timestamp"] = df["timestamp"].dt.tz_localize(None)
         frames.append(df.set_index("timestamp"))
 
     if DS1_FORWARD_JSON.exists():
@@ -88,9 +112,46 @@ def load_m5_forward(pair: str) -> pd.DataFrame:
             df["timestamp"] = pd.to_datetime(df["timestamp"]).dt.tz_localize(None)
             frames.append(df.set_index("timestamp"))
 
+    if not frames:
+        raise FileNotFoundError(f"{pair}: ds-1.json・data/raw/ds-1-forward・ds-1-forward.json のいずれにもデータが無い")
     combined = pd.concat(frames).sort_index()
     combined = combined[~combined.index.duplicated(keep="last")]
     return combined
+
+
+MAX_NORMAL_GAP_HOURS = 60  # 週末クローズ(土06:00〜月07:00 JST、祝日で若干伸びる場合あり)を許容する上限
+
+
+def compute_data_coverage(m5_by_pair: dict[str, pd.DataFrame], cutoff: pd.Timestamp) -> dict:
+    """cutoff以降のM5データに、想定より大きい欠落(ギャップ)がないかを診断する.
+
+    2026-08-27追加(OBS000009 不具合2の再発防止)。`n_events_raw: 0`が「相場が静かだった」
+    のか「データに穴が開いている」のかを区別できなかったことが今回の発見を遅らせた。
+    cutoff自体も仮想の先頭バーとしてギャップ計算に含める(cutoff直後にデータが
+    存在しない「立ち上がりの穴」も検出対象にするため)。土日のFX市場クローズ
+    (最大`MAX_NORMAL_GAP_HOURS`時間、祝日で若干伸びる場合を許容)を超えるギャップが
+    あれば`has_gap: true`とし、その区間を明示する。
+    """
+    coverage = {}
+    for pair, m5 in m5_by_pair.items():
+        fwd = m5[m5.index >= cutoff]
+        if len(fwd) == 0:
+            coverage[pair] = {"n_bars": 0, "max_gap_minutes": None, "has_gap": True,
+                               "note": "cutoff以降のデータが1本も無い"}
+            continue
+        idx_with_cutoff = pd.DatetimeIndex([cutoff]).append(fwd.index)
+        gaps = idx_with_cutoff.to_series().diff().dropna()
+        max_gap = gaps.max()
+        max_gap_at = gaps.idxmax()
+        coverage[pair] = {
+            "n_bars": len(fwd),
+            "first_bar": str(fwd.index.min()),
+            "last_bar": str(fwd.index.max()),
+            "max_gap_minutes": round(max_gap.total_seconds() / 60, 1),
+            "max_gap_before": str(max_gap_at),
+            "has_gap": bool(max_gap > pd.Timedelta(hours=MAX_NORMAL_GAP_HOURS)),
+        }
+    return coverage
 
 
 def find_forward_trades(pair: str, m5: pd.DataFrame, shock_check, cutoff: pd.Timestamp):
@@ -145,6 +206,7 @@ def run_forward_cycle() -> dict:
         atr_h1_by_pair[pair] = atr_ind(h1_by_pair[pair]["high"], h1_by_pair[pair]["low"],
                                         h1_by_pair[pair]["close"], length=14)
         latest_bar_by_pair[pair] = str(m5.index.max())
+    data_coverage = compute_data_coverage(m5_by_pair, CUTOFF)
     shock_check = make_price_shock_check(h1_by_pair, atr_h1_by_pair)
 
     all_trades: list[dict] = []
@@ -287,6 +349,7 @@ def run_forward_cycle() -> dict:
                 "フォワードテスト(ペーパートレード、実発注なし)を実施中。cutoff以降の全期間を毎回再計算する",
         "cutoff": str(CUTOFF),
         "latest_bar_by_pair": latest_bar_by_pair,
+        "data_coverage": data_coverage,
         "backtest": period_result,
         "kpi": kpi,
     }
@@ -300,6 +363,10 @@ def main() -> int:
     out = run_forward_cycle()
     p = out["backtest"]
     print(f"\n最新バー: {out['latest_bar_by_pair']}")
+    for pair, cov in out["data_coverage"].items():
+        flag = " [GAP注意]" if cov.get("has_gap") else ""
+        print(f"  データ被覆[{pair}]: {cov.get('n_bars')}本 {cov.get('first_bar')}〜{cov.get('last_bar')} "
+              f"最大ギャップ={cov.get('max_gap_minutes')}分{flag}")
     print(f"イベント={p['n_events_raw']}件(dedup後{p['n_events_dedup']}、判定不能除外後{p['n_events_trendfiltered']})")
     print(f"トレード数={p['n_trades_total']}(決済済み{p['n_trades_closed']}、保有中{p['n_trades_open']})")
     print(f"最終残高=${p['final_balance']}  勝率={p['win_rate']}  PF={p['profit_factor']}  "
