@@ -1,0 +1,318 @@
+{
+  "generated_at": "2026-08-27T13:42:05.402694",
+  "status": "探索的診断(正式プロトコル外・spec編集なし)。v1(counter_trend_reversal_entry.json)の再設計",
+  "question": "SL幅に「往復コストの最低N倍」というフロアを課せば、逆張り(反発シグナル+50%TP)のコスト込み期待値はプラスに転じるか",
+  "period": {
+    "train_start": "2023-11-01",
+    "train_end": "2025-03-31"
+  },
+  "pairs": [
+    "USD_JPY",
+    "EUR_JPY",
+    "GBP_JPY",
+    "AUD_JPY",
+    "EUR_USD"
+  ],
+  "n_breakout_events_total": 261,
+  "n_signal_found_by_search_window": {
+    "short_3h": 255,
+    "long_24h": 261
+  },
+  "definitions": {
+    "reversal_signal": "v1と同一(analyze_counter_trend_reversal_entry.find_reversal_signal)",
+    "risk_structural": "|entry_price - running_extreme|。v1の0.1/0.5ATRバッファを廃した最もタイトな構造的ストップ(反発を確認した安値/高値そのもの)",
+    "sl_floor": "risk_used = max(risk_structural, floor_mult × 往復コスト)。floor_mult ∈ [0.0, 3.0, 4.0, 5.0, 6.0, 7.0](0=フロアなし)",
+    "tp": "v1と同一: ブレイクバー(H1)のレンジの50%戻し水準(SLフロアとは独立、固定)",
+    "cost_model": "往復スプレッド×2+スリッページ0.5pip×2(v1と同一)",
+    "max_hold_hours": 72
+  },
+  "results": {
+    "short_3h": {
+      "floor_0x": {
+        "n": 255,
+        "by_outcome": {
+          "TP": 110,
+          "SL": 140,
+          "TIMEOUT": 0,
+          "AMBIGUOUS": 5
+        },
+        "win_rate_decided_TP_vs_SL": 0.44,
+        "median_rr_reward_over_risk": 2.305,
+        "mean_r_gross_before_cost": 0.1219,
+        "mean_cost_r": 0.1633,
+        "mean_r_net": -0.0402,
+        "median_r_net": -1.0647,
+        "profit_factor_r_net": 0.939,
+        "positive_r_net_rate": 0.4,
+        "fraction_floored_by_cost": 0.0,
+        "mean_risk_pips": 16.827,
+        "mean_r_net_ci95_bootstrap": [
+          -0.2316,
+          0.1671
+        ]
+      },
+      "floor_3x": {
+        "n": 255,
+        "by_outcome": {
+          "TP": 110,
+          "SL": 140,
+          "TIMEOUT": 0,
+          "AMBIGUOUS": 5
+        },
+        "win_rate_decided_TP_vs_SL": 0.44,
+        "median_rr_reward_over_risk": 2.256,
+        "mean_r_gross_before_cost": 0.1149,
+        "mean_cost_r": 0.1592,
+        "mean_r_net": -0.0431,
+        "median_r_net": -1.0647,
+        "profit_factor_r_net": 0.934,
+        "positive_r_net_rate": 0.4,
+        "fraction_floored_by_cost": 0.0588,
+        "mean_risk_pips": 16.875,
+        "mean_r_net_ci95_bootstrap": [
+          -0.2464,
+          0.1584
+        ]
+      },
+      "floor_4x": {
+        "n": 255,
+        "by_outcome": {
+          "TP": 111,
+          "SL": 139,
+          "TIMEOUT": 0,
+          "AMBIGUOUS": 5
+        },
+        "win_rate_decided_TP_vs_SL": 0.444,
+        "median_rr_reward_over_risk": 2.254,
+        "mean_r_gross_before_cost": 0.111,
+        "mean_cost_r": 0.1494,
+        "mean_r_net": -0.0372,
+        "median_r_net": -1.0622,
+        "profit_factor_r_net": 0.942,
+        "positive_r_net_rate": 0.404,
+        "fraction_floored_by_cost": 0.1608,
+        "mean_risk_pips": 17.106,
+        "mean_r_net_ci95_bootstrap": [
+          -0.2222,
+          0.1692
+        ]
+      },
+      "floor_5x": {
+        "n": 255,
+        "by_outcome": {
+          "TP": 115,
+          "SL": 136,
+          "TIMEOUT": 0,
+          "AMBIGUOUS": 4
+        },
+        "win_rate_decided_TP_vs_SL": 0.4582,
+        "median_rr_reward_over_risk": 2.148,
+        "mean_r_gross_before_cost": 0.1332,
+        "mean_cost_r": 0.1379,
+        "mean_r_net": -0.004,
+        "median_r_net": -1.0544,
+        "profit_factor_r_net": 0.993,
+        "positive_r_net_rate": 0.4183,
+        "fraction_floored_by_cost": 0.2941,
+        "mean_risk_pips": 17.545,
+        "mean_r_net_ci95_bootstrap": [
+          -0.2004,
+          0.1954
+        ]
+      },
+      "floor_6x": {
+        "n": 255,
+        "by_outcome": {
+          "TP": 117,
+          "SL": 134,
+          "TIMEOUT": 0,
+          "AMBIGUOUS": 4
+        },
+        "win_rate_decided_TP_vs_SL": 0.4661,
+        "median_rr_reward_over_risk": 2.065,
+        "mean_r_gross_before_cost": 0.1169,
+        "mean_cost_r": 0.1263,
+        "mean_r_net": -0.009,
+        "median_r_net": -1.0533,
+        "profit_factor_r_net": 0.985,
+        "positive_r_net_rate": 0.4263,
+        "fraction_floored_by_cost": 0.4078,
+        "mean_risk_pips": 18.193,
+        "mean_r_net_ci95_bootstrap": [
+          -0.1978,
+          0.1855
+        ]
+      },
+      "floor_7x": {
+        "n": 255,
+        "by_outcome": {
+          "TP": 121,
+          "SL": 132,
+          "TIMEOUT": 0,
+          "AMBIGUOUS": 2
+        },
+        "win_rate_decided_TP_vs_SL": 0.4783,
+        "median_rr_reward_over_risk": 1.951,
+        "mean_r_gross_before_cost": 0.0962,
+        "mean_cost_r": 0.1155,
+        "mean_r_net": -0.0192,
+        "median_r_net": -1.0378,
+        "profit_factor_r_net": 0.967,
+        "positive_r_net_rate": 0.4348,
+        "fraction_floored_by_cost": 0.498,
+        "mean_risk_pips": 19.025,
+        "mean_r_net_ci95_bootstrap": [
+          -0.192,
+          0.166
+        ]
+      }
+    },
+    "long_24h": {
+      "floor_0x": {
+        "n": 261,
+        "by_outcome": {
+          "TP": 112,
+          "SL": 144,
+          "TIMEOUT": 0,
+          "AMBIGUOUS": 5
+        },
+        "win_rate_decided_TP_vs_SL": 0.4375,
+        "median_rr_reward_over_risk": 2.254,
+        "mean_r_gross_before_cost": 0.116,
+        "mean_cost_r": 0.161,
+        "mean_r_net": -0.0438,
+        "median_r_net": -1.0595,
+        "profit_factor_r_net": 0.933,
+        "positive_r_net_rate": 0.3984,
+        "fraction_floored_by_cost": 0.0,
+        "mean_risk_pips": 17.951,
+        "mean_r_net_ci95_bootstrap": [
+          -0.2476,
+          0.1644
+        ]
+      },
+      "floor_3x": {
+        "n": 261,
+        "by_outcome": {
+          "TP": 112,
+          "SL": 144,
+          "TIMEOUT": 0,
+          "AMBIGUOUS": 5
+        },
+        "win_rate_decided_TP_vs_SL": 0.4375,
+        "median_rr_reward_over_risk": 2.224,
+        "mean_r_gross_before_cost": 0.1091,
+        "mean_cost_r": 0.157,
+        "mean_r_net": -0.0467,
+        "median_r_net": -1.0595,
+        "profit_factor_r_net": 0.929,
+        "positive_r_net_rate": 0.3984,
+        "fraction_floored_by_cost": 0.0575,
+        "mean_risk_pips": 17.998,
+        "mean_r_net_ci95_bootstrap": [
+          -0.2418,
+          0.1614
+        ]
+      },
+      "floor_4x": {
+        "n": 261,
+        "by_outcome": {
+          "TP": 113,
+          "SL": 143,
+          "TIMEOUT": 0,
+          "AMBIGUOUS": 5
+        },
+        "win_rate_decided_TP_vs_SL": 0.4414,
+        "median_rr_reward_over_risk": 2.15,
+        "mean_r_gross_before_cost": 0.1053,
+        "mean_cost_r": 0.1475,
+        "mean_r_net": -0.0409,
+        "median_r_net": -1.0576,
+        "profit_factor_r_net": 0.937,
+        "positive_r_net_rate": 0.4023,
+        "fraction_floored_by_cost": 0.1571,
+        "mean_risk_pips": 18.224,
+        "mean_r_net_ci95_bootstrap": [
+          -0.2399,
+          0.1672
+        ]
+      },
+      "floor_5x": {
+        "n": 261,
+        "by_outcome": {
+          "TP": 117,
+          "SL": 140,
+          "TIMEOUT": 0,
+          "AMBIGUOUS": 4
+        },
+        "win_rate_decided_TP_vs_SL": 0.4553,
+        "median_rr_reward_over_risk": 2.128,
+        "mean_r_gross_before_cost": 0.127,
+        "mean_cost_r": 0.1361,
+        "mean_r_net": -0.0084,
+        "median_r_net": -1.0533,
+        "profit_factor_r_net": 0.986,
+        "positive_r_net_rate": 0.4163,
+        "fraction_floored_by_cost": 0.2912,
+        "mean_risk_pips": 18.655,
+        "mean_r_net_ci95_bootstrap": [
+          -0.1938,
+          0.1851
+        ]
+      },
+      "floor_6x": {
+        "n": 261,
+        "by_outcome": {
+          "TP": 119,
+          "SL": 138,
+          "TIMEOUT": 0,
+          "AMBIGUOUS": 4
+        },
+        "win_rate_decided_TP_vs_SL": 0.463,
+        "median_rr_reward_over_risk": 2.017,
+        "mean_r_gross_before_cost": 0.1111,
+        "mean_cost_r": 0.1247,
+        "mean_r_net": -0.0131,
+        "median_r_net": -1.0471,
+        "profit_factor_r_net": 0.978,
+        "positive_r_net_rate": 0.4241,
+        "fraction_floored_by_cost": 0.4023,
+        "mean_risk_pips": 19.294,
+        "mean_r_net_ci95_bootstrap": [
+          -0.1932,
+          0.1793
+        ]
+      },
+      "floor_7x": {
+        "n": 261,
+        "by_outcome": {
+          "TP": 123,
+          "SL": 136,
+          "TIMEOUT": 0,
+          "AMBIGUOUS": 2
+        },
+        "win_rate_decided_TP_vs_SL": 0.4749,
+        "median_rr_reward_over_risk": 1.932,
+        "mean_r_gross_before_cost": 0.0909,
+        "mean_cost_r": 0.1141,
+        "mean_r_net": -0.023,
+        "median_r_net": -1.0364,
+        "profit_factor_r_net": 0.961,
+        "positive_r_net_rate": 0.4324,
+        "fraction_floored_by_cost": 0.4904,
+        "mean_risk_pips": 20.113,
+        "mean_r_net_ci95_bootstrap": [
+          -0.1947,
+          0.1543
+        ]
+      }
+    }
+  },
+  "caveats": [
+    "反発シグナルが探索窓内に出たイベントのみを対象(v1と同一の除外)。",
+    "1トレンドイベントにつき1トレードのみ(ピラミッディングなし)。",
+    "週末クローズ・両建て証拠金制約は考慮していない。",
+    "TPはSLフロアと無関係に固定しているため、SLが広がるほどRRは機械的に縮む(フロアが効くほど『勝率は上がるがRRが下がる』というトレードオフになる)。",
+    "Train期間のみ。Validation/Testは正式検証のために温存している。"
+  ]
+}
