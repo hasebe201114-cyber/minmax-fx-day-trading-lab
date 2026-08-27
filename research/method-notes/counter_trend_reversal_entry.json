@@ -1,0 +1,113 @@
+{
+  "generated_at": "2026-08-27T13:32:12.711674",
+  "status": "探索的診断(正式プロトコル外・spec編集なし)",
+  "question": "戻りを短期反発シグナルで判定し、浅めSL+50%TPで逆張りすれば勝率80%は実現できるか",
+  "period": {
+    "train_start": "2023-11-01",
+    "train_end": "2025-03-31"
+  },
+  "pairs": [
+    "USD_JPY",
+    "EUR_JPY",
+    "GBP_JPY",
+    "AUD_JPY",
+    "EUR_USD"
+  ],
+  "n_breakout_events_total": 261,
+  "n_signal_found_by_search_window": {
+    "short_3h": 255,
+    "long_24h": 261
+  },
+  "definitions": {
+    "reversal_signal": "ブレイク確定後30分の準備期間を空け、M5のランニング安値/高値(DOWN/UPそれぞれ)を追跡。その安値/高値を付けたバーの高値/安値を、後続バーの終値が反対方向にブレイクした時点をシグナル確定とし、次バー始値でエントリー(先読みなし)",
+    "sl_shallow": "シグナル確定時点のランニング安値/高値から0.1×ATR(M5)だけ離れた位置",
+    "sl_deep": "比較用: 同じ起点から0.5×ATR(M5)だけ離れた位置",
+    "tp": "ブレイクバー(H1)のレンジの50%戻し水準",
+    "cost_model": "往復スプレッド×2+スリッページ0.5pip×2(簡易モデル、既存T-09のSL/トレール向けスリッページより単純化)",
+    "max_hold_hours": 72
+  },
+  "results": {
+    "short_3h": {
+      "shallow_0.1atr": {
+        "n": 255,
+        "by_outcome": {
+          "TP": 113,
+          "SL": 138,
+          "TIMEOUT": 0,
+          "AMBIGUOUS": 4
+        },
+        "win_rate_decided_TP_vs_SL": 0.4502,
+        "median_rr_reward_over_risk": 2.063,
+        "mean_r_gross_before_cost": 0.088,
+        "mean_cost_r": 0.1473,
+        "median_cost_r": 0.1283,
+        "mean_r_net": -0.0586,
+        "median_r_net": -1.0546,
+        "profit_factor_r_net": 0.908,
+        "positive_r_net_rate": 0.4104
+      },
+      "deep_0.5atr": {
+        "n": 255,
+        "by_outcome": {
+          "TP": 124,
+          "SL": 128,
+          "TIMEOUT": 0,
+          "AMBIGUOUS": 3
+        },
+        "win_rate_decided_TP_vs_SL": 0.4921,
+        "median_rr_reward_over_risk": 1.562,
+        "mean_r_gross_before_cost": 0.0194,
+        "mean_cost_r": 0.1074,
+        "median_cost_r": 0.0956,
+        "mean_r_net": -0.0876,
+        "median_r_net": -1.0155,
+        "profit_factor_r_net": 0.845,
+        "positive_r_net_rate": 0.4524
+      }
+    },
+    "long_24h": {
+      "shallow_0.1atr": {
+        "n": 261,
+        "by_outcome": {
+          "TP": 115,
+          "SL": 142,
+          "TIMEOUT": 0,
+          "AMBIGUOUS": 4
+        },
+        "win_rate_decided_TP_vs_SL": 0.4475,
+        "median_rr_reward_over_risk": 2.037,
+        "mean_r_gross_before_cost": 0.0827,
+        "mean_cost_r": 0.1453,
+        "median_cost_r": 0.1275,
+        "mean_r_net": -0.0619,
+        "median_r_net": -1.0514,
+        "profit_factor_r_net": 0.903,
+        "positive_r_net_rate": 0.4086
+      },
+      "deep_0.5atr": {
+        "n": 261,
+        "by_outcome": {
+          "TP": 126,
+          "SL": 132,
+          "TIMEOUT": 0,
+          "AMBIGUOUS": 3
+        },
+        "win_rate_decided_TP_vs_SL": 0.4884,
+        "median_rr_reward_over_risk": 1.542,
+        "mean_r_gross_before_cost": 0.0148,
+        "mean_cost_r": 0.1061,
+        "median_cost_r": 0.0954,
+        "mean_r_net": -0.0909,
+        "median_r_net": -1.0155,
+        "profit_factor_r_net": 0.84,
+        "positive_r_net_rate": 0.4496
+      }
+    }
+  },
+  "caveats": [
+    "反発シグナルが探索窓内に出たイベントのみを対象にしている(出なかったイベントは除外、その除外率はn_signal_found_by_search_window / n_breakout_events_totalで確認できる)。",
+    "1トレンドイベントにつき1トレードのみ(ピラミッディングなし、既存の1イベント1トラッキングとは別モデル)。",
+    "週末クローズ・両建て証拠金制約は考慮していない。",
+    "Train期間のみ。Validation/Testは正式検証のために温存している。"
+  ]
+}
