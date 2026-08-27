@@ -1,0 +1,874 @@
+{
+  "generated_at": "2026-08-27T12:48:24.584754",
+  "status": "探索的診断（正式プロトコル外・spec編集なし）",
+  "question": "N_BREAKOUT後の戻りでトレンドが形成されているという目視印象は、対照群に対して優位か",
+  "period": {
+    "train_start": "2023-11-01",
+    "train_end": "2025-03-31"
+  },
+  "pairs": [
+    "USD_JPY",
+    "EUR_JPY",
+    "GBP_JPY",
+    "AUD_JPY",
+    "EUR_USD"
+  ],
+  "definitions": {
+    "n_breakout": "H1レンジ/ATR(14,プロジェクト実装=TRのSMA) >= 3.5",
+    "direction": "ブレイクバー自身の close>open なら UP、close<open なら DOWN",
+    "anchor": "ブレイクバーの終値時点（アンカーバー自身は先の窓に含めない=先読みなし）",
+    "horizons_h1_bars": [
+      3,
+      6,
+      12,
+      24,
+      72
+    ],
+    "horizon_note": "バー本数ベースのため週末ギャップを跨ぐ。時間ベースではない",
+    "normalization": "全てアンカー時点のATR(H1,14)で割った単位",
+    "barrier_race": "アンカー終値から順行+1.0ATR と 逆行-1.0ATR のどちらに先に触れるかを最大72H1バーまで追跡。同一H1バー内で両側到達した場合はAMBIGUOUS（H1粒度では順序判定不能）",
+    "ctrl_all": "同期間の全H1バーを、そのバー自身の陽線/陰線方向でアンカーにした対照群",
+    "ctrl_normal": "レンジ/ATRが1.0〜1.5の平凡なバーだけをアンカーにした対照群",
+    "retrace_split": "確定後30分〜3時間(M15)でブレイクバーレンジの50%以上戻したか"
+  },
+  "per_pair_events": {
+    "USD_JPY": {
+      "n_h1_bars": 8661,
+      "n_breakout": 70,
+      "n_ctrl_all": 8616,
+      "n_ctrl_normal": 2279
+    },
+    "EUR_JPY": {
+      "n_h1_bars": 8661,
+      "n_breakout": 40,
+      "n_ctrl_all": 8625,
+      "n_ctrl_normal": 2303
+    },
+    "GBP_JPY": {
+      "n_h1_bars": 8661,
+      "n_breakout": 40,
+      "n_ctrl_all": 8633,
+      "n_ctrl_normal": 2357
+    },
+    "AUD_JPY": {
+      "n_h1_bars": 8661,
+      "n_breakout": 31,
+      "n_ctrl_all": 8615,
+      "n_ctrl_normal": 2444
+    },
+    "EUR_USD": {
+      "n_h1_bars": 8661,
+      "n_breakout": 80,
+      "n_ctrl_all": 8586,
+      "n_ctrl_normal": 1934
+    }
+  },
+  "forward_move_by_group": {
+    "BREAKOUT": {
+      "3": {
+        "ret_atr": {
+          "n": 261,
+          "mean": -0.0175,
+          "median": 0.0239,
+          "ci95": [
+            -0.2778,
+            0.2424
+          ],
+          "positive_rate": 0.5057
+        },
+        "mfe_atr": {
+          "n": 261,
+          "mean": 1.6265,
+          "median": 1.1466,
+          "ci95": [
+            1.4134,
+            1.8624
+          ],
+          "positive_rate": 0.9923
+        },
+        "mae_atr": {
+          "n": 261,
+          "mean": -1.4886,
+          "median": -1.0712,
+          "ci95": [
+            -1.6725,
+            -1.3136
+          ],
+          "positive_rate": 0.0
+        }
+      },
+      "6": {
+        "ret_atr": {
+          "n": 261,
+          "mean": -0.0832,
+          "median": 0.0068,
+          "ci95": [
+            -0.3812,
+            0.2326
+          ],
+          "positive_rate": 0.5057
+        },
+        "mfe_atr": {
+          "n": 261,
+          "mean": 2.031,
+          "median": 1.5162,
+          "ci95": [
+            1.8049,
+            2.2907
+          ],
+          "positive_rate": 0.9962
+        },
+        "mae_atr": {
+          "n": 261,
+          "mean": -2.055,
+          "median": -1.4502,
+          "ci95": [
+            -2.2932,
+            -1.8233
+          ],
+          "positive_rate": 0.0
+        }
+      },
+      "12": {
+        "ret_atr": {
+          "n": 261,
+          "mean": 0.0639,
+          "median": -0.0617,
+          "ci95": [
+            -0.3164,
+            0.4237
+          ],
+          "positive_rate": 0.4943
+        },
+        "mfe_atr": {
+          "n": 261,
+          "mean": 2.5024,
+          "median": 1.9496,
+          "ci95": [
+            2.2299,
+            2.7969
+          ],
+          "positive_rate": 0.9962
+        },
+        "mae_atr": {
+          "n": 261,
+          "mean": -2.3669,
+          "median": -1.7014,
+          "ci95": [
+            -2.6302,
+            -2.1268
+          ],
+          "positive_rate": 0.0
+        }
+      },
+      "24": {
+        "ret_atr": {
+          "n": 261,
+          "mean": 0.0548,
+          "median": -0.4233,
+          "ci95": [
+            -0.4035,
+            0.5584
+          ],
+          "positive_rate": 0.4598
+        },
+        "mfe_atr": {
+          "n": 261,
+          "mean": 3.4651,
+          "median": 2.5384,
+          "ci95": [
+            3.0405,
+            3.9226
+          ],
+          "positive_rate": 1.0
+        },
+        "mae_atr": {
+          "n": 261,
+          "mean": -3.0804,
+          "median": -2.2948,
+          "ci95": [
+            -3.3744,
+            -2.7882
+          ],
+          "positive_rate": 0.0
+        }
+      },
+      "72": {
+        "ret_atr": {
+          "n": 261,
+          "mean": -0.4729,
+          "median": -0.4233,
+          "ci95": [
+            -1.2776,
+            0.3852
+          ],
+          "positive_rate": 0.4674
+        },
+        "mfe_atr": {
+          "n": 261,
+          "mean": 5.4229,
+          "median": 3.6628,
+          "ci95": [
+            4.7186,
+            6.2671
+          ],
+          "positive_rate": 1.0
+        },
+        "mae_atr": {
+          "n": 261,
+          "mean": -5.2487,
+          "median": -4.0111,
+          "ci95": [
+            -5.7375,
+            -4.7373
+          ],
+          "positive_rate": 0.0
+        }
+      }
+    },
+    "CTRL_ALL": {
+      "3": {
+        "ret_atr": {
+          "n": 43060,
+          "mean": -0.0111,
+          "median": -0.0208,
+          "ci95": [
+            -0.0243,
+            0.0027
+          ],
+          "positive_rate": 0.4908
+        },
+        "mfe_atr": {
+          "n": 43060,
+          "mean": 0.9625,
+          "median": 0.6706,
+          "ci95": [
+            0.9527,
+            0.9725
+          ],
+          "positive_rate": 0.9846
+        },
+        "mae_atr": {
+          "n": 43060,
+          "mean": -0.9581,
+          "median": -0.6736,
+          "ci95": [
+            -0.9692,
+            -0.948
+          ],
+          "positive_rate": 0.0024
+        }
+      },
+      "6": {
+        "ret_atr": {
+          "n": 43045,
+          "mean": -0.0149,
+          "median": -0.0199,
+          "ci95": [
+            -0.034,
+            0.0049
+          ],
+          "positive_rate": 0.4932
+        },
+        "mfe_atr": {
+          "n": 43045,
+          "mean": 1.4048,
+          "median": 0.9931,
+          "ci95": [
+            1.39,
+            1.4199
+          ],
+          "positive_rate": 0.9902
+        },
+        "mae_atr": {
+          "n": 43045,
+          "mean": -1.4165,
+          "median": -1.0074,
+          "ci95": [
+            -1.431,
+            -1.4015
+          ],
+          "positive_rate": 0.0015
+        }
+      },
+      "12": {
+        "ret_atr": {
+          "n": 43015,
+          "mean": 0.0036,
+          "median": -0.0052,
+          "ci95": [
+            -0.0242,
+            0.0316
+          ],
+          "positive_rate": 0.4987
+        },
+        "mfe_atr": {
+          "n": 43015,
+          "mean": 2.0532,
+          "median": 1.4715,
+          "ci95": [
+            2.0317,
+            2.0741
+          ],
+          "positive_rate": 0.9932
+        },
+        "mae_atr": {
+          "n": 43015,
+          "mean": -2.0584,
+          "median": -1.4983,
+          "ci95": [
+            -2.0786,
+            -2.0378
+          ],
+          "positive_rate": 0.0011
+        }
+      },
+      "24": {
+        "ret_atr": {
+          "n": 42955,
+          "mean": 0.0118,
+          "median": 0.0,
+          "ci95": [
+            -0.0268,
+            0.0501
+          ],
+          "positive_rate": 0.5
+        },
+        "mfe_atr": {
+          "n": 42955,
+          "mean": 2.9664,
+          "median": 2.1995,
+          "ci95": [
+            2.9393,
+            2.9962
+          ],
+          "positive_rate": 0.9954
+        },
+        "mae_atr": {
+          "n": 42955,
+          "mean": -2.9637,
+          "median": -2.2245,
+          "ci95": [
+            -2.9912,
+            -2.9367
+          ],
+          "positive_rate": 0.001
+        }
+      },
+      "72": {
+        "ret_atr": {
+          "n": 42716,
+          "mean": 0.0052,
+          "median": 0.0203,
+          "ci95": [
+            -0.0653,
+            0.0678
+          ],
+          "positive_rate": 0.5013
+        },
+        "mfe_atr": {
+          "n": 42716,
+          "mean": 5.3227,
+          "median": 3.9683,
+          "ci95": [
+            5.2774,
+            5.3721
+          ],
+          "positive_rate": 0.9974
+        },
+        "mae_atr": {
+          "n": 42716,
+          "mean": -5.3053,
+          "median": -3.9435,
+          "ci95": [
+            -5.3551,
+            -5.2552
+          ],
+          "positive_rate": 0.0006
+        }
+      }
+    },
+    "CTRL_NORMAL": {
+      "3": {
+        "ret_atr": {
+          "n": 11316,
+          "mean": -0.022,
+          "median": -0.0306,
+          "ci95": [
+            -0.0503,
+            0.0082
+          ],
+          "positive_rate": 0.489
+        },
+        "mfe_atr": {
+          "n": 11316,
+          "mean": 1.0707,
+          "median": 0.7773,
+          "ci95": [
+            1.0507,
+            1.0903
+          ],
+          "positive_rate": 0.9882
+        },
+        "mae_atr": {
+          "n": 11316,
+          "mean": -1.0682,
+          "median": -0.7584,
+          "ci95": [
+            -1.0903,
+            -1.0456
+          ],
+          "positive_rate": 0.0019
+        }
+      },
+      "6": {
+        "ret_atr": {
+          "n": 11307,
+          "mean": -0.0117,
+          "median": -0.019,
+          "ci95": [
+            -0.0523,
+            0.0304
+          ],
+          "positive_rate": 0.4947
+        },
+        "mfe_atr": {
+          "n": 11307,
+          "mean": 1.5308,
+          "median": 1.1021,
+          "ci95": [
+            1.5002,
+            1.5609
+          ],
+          "positive_rate": 0.9921
+        },
+        "mae_atr": {
+          "n": 11307,
+          "mean": -1.5429,
+          "median": -1.1108,
+          "ci95": [
+            -1.5737,
+            -1.5116
+          ],
+          "positive_rate": 0.0011
+        }
+      },
+      "12": {
+        "ret_atr": {
+          "n": 11297,
+          "mean": 0.0308,
+          "median": 0.0114,
+          "ci95": [
+            -0.0253,
+            0.0891
+          ],
+          "positive_rate": 0.5018
+        },
+        "mfe_atr": {
+          "n": 11297,
+          "mean": 2.1474,
+          "median": 1.5846,
+          "ci95": [
+            2.1072,
+            2.1893
+          ],
+          "positive_rate": 0.9941
+        },
+        "mae_atr": {
+          "n": 11297,
+          "mean": -2.145,
+          "median": -1.5802,
+          "ci95": [
+            -2.186,
+            -2.1036
+          ],
+          "positive_rate": 0.0011
+        }
+      },
+      "24": {
+        "ret_atr": {
+          "n": 11274,
+          "mean": 0.0724,
+          "median": 0.0135,
+          "ci95": [
+            -0.0051,
+            0.1514
+          ],
+          "positive_rate": 0.5018
+        },
+        "mfe_atr": {
+          "n": 11274,
+          "mean": 3.1052,
+          "median": 2.3237,
+          "ci95": [
+            3.0488,
+            3.1611
+          ],
+          "positive_rate": 0.9959
+        },
+        "mae_atr": {
+          "n": 11274,
+          "mean": -3.0323,
+          "median": -2.3103,
+          "ci95": [
+            -3.0881,
+            -2.9759
+          ],
+          "positive_rate": 0.0011
+        }
+      },
+      "72": {
+        "ret_atr": {
+          "n": 11190,
+          "mean": -0.0083,
+          "median": -0.0583,
+          "ci95": [
+            -0.1377,
+            0.1188
+          ],
+          "positive_rate": 0.4962
+        },
+        "mfe_atr": {
+          "n": 11190,
+          "mean": 5.5543,
+          "median": 4.1675,
+          "ci95": [
+            5.4594,
+            5.6526
+          ],
+          "positive_rate": 0.9979
+        },
+        "mae_atr": {
+          "n": 11190,
+          "mean": -5.4466,
+          "median": -4.127,
+          "ci95": [
+            -5.5458,
+            -5.3534
+          ],
+          "positive_rate": 0.0006
+        }
+      }
+    }
+  },
+  "barrier_race_by_group": {
+    "BREAKOUT": {
+      "n": 261,
+      "win": 123,
+      "lose": 126,
+      "ambiguous": 12,
+      "neither": 0,
+      "win_rate_decided": 0.494
+    },
+    "CTRL_ALL": {
+      "n": 7500,
+      "win": 3657,
+      "lose": 3717,
+      "ambiguous": 124,
+      "neither": 2,
+      "win_rate_decided": 0.4959
+    },
+    "CTRL_NORMAL": {
+      "n": 7499,
+      "win": 3707,
+      "lose": 3644,
+      "ambiguous": 147,
+      "neither": 1,
+      "win_rate_decided": 0.5043
+    }
+  },
+  "retrace_stratified": {
+    "confirmed": {
+      "retrace_frac": {
+        "n": 261,
+        "mean": 0.5383,
+        "median": 0.4418,
+        "ci95": [
+          0.4806,
+          0.5948
+        ],
+        "positive_rate": 0.9234
+      },
+      "leaky_same_window": {
+        "RETRACED": {
+          "barrier_race_breakout_direction": {
+            "n": 118,
+            "win": 22,
+            "lose": 89,
+            "ambiguous": 7,
+            "neither": 0,
+            "win_rate_decided": 0.1982
+          },
+          "barrier_race_counter_direction": {
+            "n": 118,
+            "win": 89,
+            "lose": 22,
+            "ambiguous": 7,
+            "neither": 0,
+            "win_rate_decided": 0.8018
+          }
+        },
+        "NOT_RETRACED": {
+          "barrier_race_breakout_direction": {
+            "n": 143,
+            "win": 101,
+            "lose": 37,
+            "ambiguous": 5,
+            "neither": 0,
+            "win_rate_decided": 0.7319
+          },
+          "barrier_race_counter_direction": {
+            "n": 143,
+            "win": 37,
+            "lose": 101,
+            "ambiguous": 5,
+            "neither": 0,
+            "win_rate_decided": 0.2681
+          }
+        }
+      },
+      "clean_after_window": {
+        "RETRACED": {
+          "barrier_race_breakout_direction": {
+            "n": 118,
+            "win": 55,
+            "lose": 54,
+            "ambiguous": 9,
+            "neither": 0,
+            "win_rate_decided": 0.5046
+          },
+          "barrier_race_counter_direction": {
+            "n": 118,
+            "win": 54,
+            "lose": 55,
+            "ambiguous": 9,
+            "neither": 0,
+            "win_rate_decided": 0.4954
+          },
+          "fwd_ret_atr_at_72bars_breakout_direction": {
+            "n": 118,
+            "mean": -0.1887,
+            "median": -0.8939,
+            "ci95": [
+              -1.4545,
+              1.1326
+            ],
+            "positive_rate": 0.4237
+          },
+          "fwd_ret_atr_at_72bars_counter_direction": {
+            "n": 118,
+            "mean": 0.1887,
+            "median": 0.8939,
+            "ci95": [
+              -1.1527,
+              1.5317
+            ],
+            "positive_rate": 0.5678
+          }
+        },
+        "NOT_RETRACED": {
+          "barrier_race_breakout_direction": {
+            "n": 143,
+            "win": 69,
+            "lose": 69,
+            "ambiguous": 5,
+            "neither": 0,
+            "win_rate_decided": 0.5
+          },
+          "barrier_race_counter_direction": {
+            "n": 143,
+            "win": 69,
+            "lose": 69,
+            "ambiguous": 5,
+            "neither": 0,
+            "win_rate_decided": 0.5
+          },
+          "fwd_ret_atr_at_72bars_breakout_direction": {
+            "n": 143,
+            "mean": -0.6358,
+            "median": -0.2254,
+            "ci95": [
+              -1.6039,
+              0.2356
+            ],
+            "positive_rate": 0.4476
+          },
+          "fwd_ret_atr_at_72bars_counter_direction": {
+            "n": 143,
+            "mean": 0.6358,
+            "median": 0.2254,
+            "ci95": [
+              -0.2739,
+              1.6167
+            ],
+            "positive_rate": 0.5524
+          }
+        }
+      }
+    },
+    "bar_open": {
+      "retrace_frac": {
+        "n": 261,
+        "mean": 0.5993,
+        "median": 0.5279,
+        "ci95": [
+          0.5616,
+          0.6423
+        ],
+        "positive_rate": 1.0
+      },
+      "leaky_same_window": {
+        "RETRACED": {
+          "barrier_race_breakout_direction": {
+            "n": 142,
+            "win": 38,
+            "lose": 96,
+            "ambiguous": 8,
+            "neither": 0,
+            "win_rate_decided": 0.2836
+          },
+          "barrier_race_counter_direction": {
+            "n": 142,
+            "win": 96,
+            "lose": 38,
+            "ambiguous": 8,
+            "neither": 0,
+            "win_rate_decided": 0.7164
+          }
+        },
+        "NOT_RETRACED": {
+          "barrier_race_breakout_direction": {
+            "n": 119,
+            "win": 85,
+            "lose": 30,
+            "ambiguous": 4,
+            "neither": 0,
+            "win_rate_decided": 0.7391
+          },
+          "barrier_race_counter_direction": {
+            "n": 119,
+            "win": 30,
+            "lose": 85,
+            "ambiguous": 4,
+            "neither": 0,
+            "win_rate_decided": 0.2609
+          }
+        }
+      },
+      "clean_after_window": {
+        "RETRACED": {
+          "barrier_race_breakout_direction": {
+            "n": 142,
+            "win": 44,
+            "lose": 84,
+            "ambiguous": 14,
+            "neither": 0,
+            "win_rate_decided": 0.3438
+          },
+          "barrier_race_counter_direction": {
+            "n": 142,
+            "win": 84,
+            "lose": 44,
+            "ambiguous": 14,
+            "neither": 0,
+            "win_rate_decided": 0.6562
+          },
+          "fwd_ret_atr_at_72bars_breakout_direction": {
+            "n": 142,
+            "mean": -0.4673,
+            "median": -1.2214,
+            "ci95": [
+              -1.6191,
+              0.7077
+            ],
+            "positive_rate": 0.4014
+          },
+          "fwd_ret_atr_at_72bars_counter_direction": {
+            "n": 142,
+            "mean": 0.4673,
+            "median": 1.2214,
+            "ci95": [
+              -0.6692,
+              1.6058
+            ],
+            "positive_rate": 0.5986
+          }
+        },
+        "NOT_RETRACED": {
+          "barrier_race_breakout_direction": {
+            "n": 119,
+            "win": 62,
+            "lose": 47,
+            "ambiguous": 10,
+            "neither": 0,
+            "win_rate_decided": 0.5688
+          },
+          "barrier_race_counter_direction": {
+            "n": 119,
+            "win": 47,
+            "lose": 62,
+            "ambiguous": 10,
+            "neither": 0,
+            "win_rate_decided": 0.4312
+          },
+          "fwd_ret_atr_at_72bars_breakout_direction": {
+            "n": 119,
+            "mean": -0.6307,
+            "median": -0.5252,
+            "ci95": [
+              -1.6249,
+              0.4328
+            ],
+            "positive_rate": 0.4454
+          },
+          "fwd_ret_atr_at_72bars_counter_direction": {
+            "n": 119,
+            "mean": 0.6307,
+            "median": 0.5252,
+            "ci95": [
+              -0.3936,
+              1.6417
+            ],
+            "positive_rate": 0.5546
+          }
+        }
+      }
+    }
+  },
+  "leakage_note": "leaky_same_window は、戻り幅を測る窓（ブレイク後30分〜3時間）と ±1ATRバリアレースの窓（ブレイクバー終値起点）が重なっているため、『大きく戻った＝すでに逆行バリアに触れている』という同義反復になる。clean_after_window は戻り判定窓の終端で建て直してから判定するため、この自己参照がない。両者の差が、目視で『戻ってからトレンドになる』と見えてしまう錯覚の大きさそのものを表す。",
+  "anchor_note": "confirmed = ブレイクH1バーが確定した時刻(バーオープン+1h)を起点。00-spec.md §『探索窓M』の文言どおりで実運用可能。bar_open = 現行実装(simulate_dow_theory_trend の break_time = h1.index[i])と同じバーオープン時刻起点。判定窓の前半がブレイクバー自身の後半と重なる。",
+  "atr_vs_cost_context": {
+    "USD_JPY": {
+      "median_atr_h1_pips": 23.33,
+      "round_trip_cost_pips": 1.6,
+      "barrier_1atr_over_cost": 14.58
+    },
+    "EUR_JPY": {
+      "median_atr_h1_pips": 24.56,
+      "round_trip_cost_pips": 2.0,
+      "barrier_1atr_over_cost": 12.28
+    },
+    "GBP_JPY": {
+      "median_atr_h1_pips": 30.7,
+      "round_trip_cost_pips": 2.4,
+      "barrier_1atr_over_cost": 12.79
+    },
+    "AUD_JPY": {
+      "median_atr_h1_pips": 17.06,
+      "round_trip_cost_pips": 2.2,
+      "barrier_1atr_over_cost": 7.75
+    },
+    "EUR_USD": {
+      "median_atr_h1_pips": 10.91,
+      "round_trip_cost_pips": 1.6,
+      "barrier_1atr_over_cost": 6.82
+    }
+  },
+  "counter_entry_note": "司令塔の仮説「ブレーク後の戻りでブレーク方向とは逆にエントリーすれば勝率が上がるのでは」への直接の回答は clean_after_window の barrier_race_counter_direction。±1ATRの対称バリアなので、順張りの勝率と逆張りの勝率は必ず足して1になる（＝どちらかが有利ならもう一方は不利）。leaky_same_window の逆張り勝率が高く見えるのは、戻り幅を測る窓の中で既に逆行バリアに触れているのを数えているためで、実運用では取れない。",
+  "caveats": [
+    "コスト（スプレッド・スリッページ・スワップ）は一切考慮していない生の値動きの統計。",
+    "週末クローズ制約・エントリー執行ルールも考慮していないため、戦略の期待値ではない。",
+    "対照群のバリアレースはサンプリング（各通貨最大1500件）で算出している。",
+    "Train期間のみ。Validation/Testは正式検証のために温存している。"
+  ]
+}
