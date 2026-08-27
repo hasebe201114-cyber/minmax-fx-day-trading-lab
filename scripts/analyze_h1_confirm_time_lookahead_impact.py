@@ -253,52 +253,94 @@ def run_period_variant(start: str, end: str, use_confirm_time: bool) -> dict:
     }
 
 
+def load_official_reference() -> dict:
+    """過去の公式検証結果(Train・Validation)を読み込み、再検証との突き合わせ(ギャップ確認)に使う."""
+    ref = {}
+    train_path = ROOT / "research" / "method-notes" / "vol_continuation_candidates_trendfilter_4pairs_trainonly_backtest.json"
+    if train_path.exists():
+        with train_path.open(encoding="utf-8") as f:
+            ref["train"] = json.load(f)["kpi"]["candidate1_n_breakout_only"]
+    val_path = ROOT / "research" / "method-notes" / "vol_breakout_trendfilter_candidate1_validation_backtest.json"
+    if val_path.exists():
+        with val_path.open(encoding="utf-8") as f:
+            ref["validation"] = json.load(f)["validation"]
+    return ref
+
+
 def main() -> int:
-    start, end = PERIODS["train"]
-    print("=== N_BREAKOUT確定時刻の先読み問題: SYS-FX012候補①(現行凍結設計)Trainへの影響 ===")
+    print("=== N_BREAKOUT確定時刻の先読み問題: SYS-FX012候補①(現行凍結設計)の再検証 ===")
+    official = load_official_reference()
 
-    result_bug = run_period_variant(start, end, use_confirm_time=False)
-    result_fixed = run_period_variant(start, end, use_confirm_time=True)
+    periods_out = {}
+    for period_name in ("train", "validation"):
+        start, end = PERIODS[period_name]
+        print(f"\n########## {period_name} ##########")
+        result_bug = run_period_variant(start, end, use_confirm_time=False)
+        result_fixed = run_period_variant(start, end, use_confirm_time=True)
 
-    kpi_bug = evaluate_period("train", result_bug, perm_p_field="perm_p_block",
-                               apply_n_correlation_discount=False, apply_k3m_scale_invariant=True)
-    kpi_fixed = evaluate_period("train", result_fixed, perm_p_field="perm_p_block",
-                                 apply_n_correlation_discount=False, apply_k3m_scale_invariant=True)
+        kpi_bug = evaluate_period(period_name, result_bug, perm_p_field="perm_p_block",
+                                   apply_n_correlation_discount=False, apply_k3m_scale_invariant=True)
+        kpi_fixed = evaluate_period(period_name, result_fixed, perm_p_field="perm_p_block",
+                                     apply_n_correlation_discount=False, apply_k3m_scale_invariant=True)
 
-    print("\n=== 比較サマリ ===")
-    print(f"{'項目':<24}{'既存(バグ)':>14}{'確定時刻修正後':>16}")
-    for key, label in [("n_events_raw", "検出イベント数(生)"), ("n_events_dedup", "dedup後"),
-                        ("n_events_trendfiltered", "判定不能除外後"), ("n_trades", "トレード数"),
-                        ("win_rate", "勝率"), ("mean_r_net", "平均R(net)"),
-                        ("profit_factor", "Profit Factor"), ("payoff_ratio", "ペイオフレシオ"),
-                        ("perm_p_block", "permutation p(block)"), ("total_return_pct", "総リターン%")]:
-        print(f"{label:<24}{str(result_bug.get(key)):>14}{str(result_fixed.get(key)):>16}")
-    print(f"{'必須KPI達成数':<24}{kpi_bug.get('kpi_required_pass_count'):>14}"
-          f"{kpi_fixed.get('kpi_required_pass_count'):>16}")
+        official_kpi = official.get(period_name)
+        print(f"\n--- {period_name}: 過去の公式検証との突き合わせ(再現性チェック) ---")
+        if official_kpi:
+            match = (official_kpi.get("profit_factor") == kpi_bug.get("profit_factor")
+                      and official_kpi.get("kpi_required_pass_count") == kpi_bug.get("kpi_required_pass_count"))
+            print(f"  過去の公式PF={official_kpi.get('profit_factor')}  KPI={official_kpi.get('kpi_required_pass_count')}  "
+                  f"vs 本再検証(バグ再現版)PF={kpi_bug.get('profit_factor')}  KPI={kpi_bug.get('kpi_required_pass_count')}  "
+                  f"→ {'完全一致(再現性OK)' if match else '不一致(要確認)'}")
+        else:
+            print("  過去の公式結果ファイルが見つからず突き合わせ不可")
+
+        print(f"\n--- {period_name}: 比較サマリ ---")
+        print(f"{'項目':<24}{'既存(バグ)':>14}{'確定時刻修正後':>16}")
+        for key, label in [("n_events_raw", "検出イベント数(生)"), ("n_events_dedup", "dedup後"),
+                            ("n_events_trendfiltered", "判定不能除外後"), ("n_trades", "トレード数"),
+                            ("win_rate", "勝率"), ("mean_r_net", "平均R(net)"),
+                            ("profit_factor", "Profit Factor"), ("payoff_ratio", "ペイオフレシオ"),
+                            ("perm_p_block", "permutation p(block)"), ("total_return_pct", "総リターン%")]:
+            print(f"{label:<24}{str(result_bug.get(key)):>14}{str(result_fixed.get(key)):>16}")
+        print(f"{'必須KPI達成数':<24}{kpi_bug.get('kpi_required_pass_count'):>14}"
+              f"{kpi_fixed.get('kpi_required_pass_count'):>16}")
+
+        periods_out[period_name] = {
+            "official_reference": official_kpi,
+            "reproduced_bug": {k: v for k, v in result_bug.items() if k not in ("trades", "equity_curve")},
+            "confirm_time_fixed": {k: v for k, v in result_fixed.items() if k not in ("trades", "equity_curve")},
+            "kpi_reproduced_bug": kpi_bug,
+            "kpi_confirm_time_fixed": kpi_fixed,
+            "reproduction_matches_official": (
+                official_kpi.get("profit_factor") == kpi_bug.get("profit_factor")
+                if official_kpi else None
+            ),
+        }
 
     out = {
         "generated_at": pd.Timestamp.now().isoformat(),
         "purpose": (
-            "N_BREAKOUT値動き分析で発見した「h1.index[break_idx]をバー確定時刻として"
+            "司令塔依頼「バックテストを再検証、過去の検証を繰り返しているので確認の上ギャップを報告」"
+            "への対応。N_BREAKOUT値動き分析で発見した「h1.index[break_idx]をバー確定時刻として"
             "扱っているが実際はバー開始時刻」という問題が、SYS-FX012の現行凍結設計"
-            "(候補①、フォワードテスト実施中)のTrain評価に与える影響を定量化する"
+            "(候補①、フォワードテスト実施中)のTrain・Validation両方の評価に与える影響を定量化する"
         ),
         "method": (
             "h1/atr_h1のインデックスラベルを一律+1時間(H1バー長)シフトしたコピーを"
             "既存の公式関数群(simulate_dow_theory_trend等)にそのまま渡す自然実験。"
             "共有本番コード(backtest_vol_breakout_dow_theory.py等)は一切変更していない。"
-            "m5(実時刻の値動きデータ)は不変。"
+            "m5(実時刻の値動きデータ)は不変。バグ再現版(use_confirm_time=False)が過去の公式"
+            "検証結果と完全一致することを確認した上で、確定時刻修正版と比較する(再現性の裏付け)。"
         ),
         "caveat": (
             "正式プロトコル外の探索的診断。stop_buffer_atr_m5・atr_trail_multiplier_m5等の"
             "パラメータはTrain(バグあり版)から導出された既存値をそのまま流用しており、"
             "確定時刻修正後に再導出はしていない(再導出すれば影響はさらに変わりうる)。"
-            "00-spec.md等は変更せず、KPI判定・採否判断への反映は司令塔判断に委ねる。"
+            "Validationも同一の(再導出していない)パラメータをそのまま適用(既存プロトコルと同じ、"
+            "HARKing防止のため再学習しない)。00-spec.md等は変更せず、KPI判定・採否判断への"
+            "反映は司令塔判断に委ねる。"
         ),
-        "original_bug": {k: v for k, v in result_bug.items() if k not in ("trades", "equity_curve")},
-        "confirm_time_fixed": {k: v for k, v in result_fixed.items() if k not in ("trades", "equity_curve")},
-        "kpi_original_bug": kpi_bug,
-        "kpi_confirm_time_fixed": kpi_fixed,
+        "periods": periods_out,
     }
     out_path = ROOT / "research" / "method-notes" / "h1_confirm_time_lookahead_impact.json"
     out_path.write_text(json.dumps(out, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
