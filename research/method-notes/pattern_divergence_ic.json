@@ -1,0 +1,3339 @@
+{
+  "generated_at": "2026-08-27T12:11:31.267959",
+  "train_period": [
+    "2023-11-01",
+    "2025-03-31"
+  ],
+  "zigzag_threshold_atr": 2.0,
+  "pattern_tolerance_atr": 0.587,
+  "rsi_length": 14,
+  "horizons_h4_bars": {
+    "4h": 1,
+    "1d": 6,
+    "3d": 18,
+    "1w": 42
+  },
+  "effective_pair_count": 1.7,
+  "_note": "divergence_score = 2本目のピボットで勢いが弱まっている度合い(ダブルトップ=RSI(P1)-RSI(P2)、ダブルボトム=RSI(P2)-RSI(P1))。正 = 古典的ダイバージェンス(パターンの想定方向を支持)。前方リターンはパターンの想定方向に符号を揃え済み(正=想定通り)。IC(divergence_score, fwd_return)>0なら「ダイバージェンスが強いほどパターンが機能する」ことを意味する。",
+  "n_total_events": 246,
+  "n_tests": 12,
+  "bonferroni_alpha": 0.004167,
+  "groups": {
+    "all_patterns": {
+      "4h": {
+        "n": 246,
+        "ic": -0.0104,
+        "p_raw_n": 0.8715,
+        "n_effective": 84,
+        "p_value_corr_adjusted": 0.9256,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "1d": {
+        "n": 245,
+        "ic": -0.0415,
+        "p_raw_n": 0.518,
+        "n_effective": 83,
+        "p_value_corr_adjusted": 0.7101,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "3d": {
+        "n": 242,
+        "ic": 0.0261,
+        "p_raw_n": 0.6868,
+        "n_effective": 82,
+        "p_value_corr_adjusted": 0.8167,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "1w": {
+        "n": 238,
+        "ic": -0.0105,
+        "p_raw_n": 0.872,
+        "n_effective": 81,
+        "p_value_corr_adjusted": 0.926,
+        "judgeable": true,
+        "survives_bonferroni": false
+      }
+    },
+    "double_top_all": {
+      "4h": {
+        "n": 132,
+        "ic": -0.0567,
+        "p_raw_n": 0.5188,
+        "n_effective": 45,
+        "p_value_corr_adjusted": 0.7128,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "1d": {
+        "n": 131,
+        "ic": -0.0554,
+        "p_raw_n": 0.5301,
+        "n_effective": 45,
+        "p_value_corr_adjusted": 0.7191,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "3d": {
+        "n": 130,
+        "ic": -0.0352,
+        "p_raw_n": 0.6917,
+        "n_effective": 44,
+        "p_value_corr_adjusted": 0.8218,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "1w": {
+        "n": 129,
+        "ic": -0.0184,
+        "p_raw_n": 0.8367,
+        "n_effective": 44,
+        "p_value_corr_adjusted": 0.9064,
+        "judgeable": true,
+        "survives_bonferroni": false
+      }
+    },
+    "double_bottom_all": {
+      "4h": {
+        "n": 114,
+        "ic": 0.0279,
+        "p_raw_n": 0.7684,
+        "n_effective": 39,
+        "p_value_corr_adjusted": 0.8668,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "1d": {
+        "n": 114,
+        "ic": -0.0229,
+        "p_raw_n": 0.8093,
+        "n_effective": 39,
+        "p_value_corr_adjusted": 0.8907,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "3d": {
+        "n": 112,
+        "ic": 0.095,
+        "p_raw_n": 0.3196,
+        "n_effective": 38,
+        "p_value_corr_adjusted": 0.5728,
+        "judgeable": true,
+        "survives_bonferroni": false
+      },
+      "1w": {
+        "n": 109,
+        "ic": -0.0089,
+        "p_raw_n": 0.9273,
+        "n_effective": 37,
+        "p_value_corr_adjusted": 0.9588,
+        "judgeable": true,
+        "survives_bonferroni": false
+      }
+    }
+  },
+  "survivors": [],
+  "naive_only_hits": [],
+  "events": [
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 60,
+      "break_time": "2023-11-14 20:00:00+09:00",
+      "divergence_score": 8.347868326876018,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0016858709456739618,
+        "1d": -0.0024242596688806017,
+        "3d": 0.007882916205677937,
+        "1w": 0.010379228249192352
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 125,
+      "break_time": "2023-11-29 08:00:00+09:00",
+      "divergence_score": -27.933110246069468,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0009312981404754339,
+        "1d": 0.00017684067381562585,
+        "3d": 0.0020082993736911803,
+        "1w": 0.0188243114059512
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 364,
+      "break_time": "2024-01-24 20:00:00+09:00",
+      "divergence_score": 17.311661969786044,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0027498752726016207,
+        "1d": -0.0016168921156216598,
+        "3d": -0.005099941201072156,
+        "1w": 0.0031529763156985524
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 525,
+      "break_time": "2024-02-29 20:00:00+09:00",
+      "divergence_score": 17.08450398257903,
+      "fwd_returns_pips_signed": {
+        "4h": -0.002384874221037059,
+        "1d": -0.007781570122406656,
+        "3d": -0.005981473321211794,
+        "1w": 0.017488082226945423
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 522,
+      "break_time": "2024-02-29 08:00:00+09:00",
+      "divergence_score": 4.030689941891907,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0002537139055505122,
+        "1d": -0.0037447986457959104,
+        "3d": -0.005060806944463536,
+        "1w": 0.017591100667468496
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 551,
+      "break_time": "2024-03-07 00:00:00+09:00",
+      "divergence_score": -0.28471408791249786,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0011917915106209875,
+        "1d": 0.007754453257517113,
+        "3d": 0.015331376612163439,
+        "1w": 0.001911168171002231
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 642,
+      "break_time": "2024-03-27 16:00:00+09:00",
+      "divergence_score": 2.1393144241885977,
+      "fwd_returns_pips_signed": {
+        "4h": -0.000324015145583445,
+        "1d": -0.0013020361849100937,
+        "3d": -0.0011038659560353992,
+        "1w": -0.0004099607288594598
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 712,
+      "break_time": "2024-04-12 00:00:00+09:00",
+      "divergence_score": -6.389156797183745,
+      "fwd_returns_pips_signed": {
+        "4h": 0.00028707884426104613,
+        "1d": -0.00019578283830234966,
+        "3d": 0.008764320770048073,
+        "1w": 0.009811671456700921
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 717,
+      "break_time": "2024-04-12 20:00:00+09:00",
+      "divergence_score": 7.161048991223126,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0018749290961839193,
+        "1d": -0.006524192222713943,
+        "3d": -0.011054938016780369,
+        "1w": -0.011914691585516834
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 719,
+      "break_time": "2024-04-13 04:00:00+09:00",
+      "divergence_score": -13.800456762536214,
+      "fwd_returns_pips_signed": {
+        "4h": 1.304240084554209e-05,
+        "1d": 0.005631509635223075,
+        "3d": 0.006545423551110652,
+        "1w": 0.009430756298436371
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 745,
+      "break_time": "2024-04-19 08:00:00+09:00",
+      "divergence_score": 14.230210857274628,
+      "fwd_returns_pips_signed": {
+        "4h": -0.00339248336418585,
+        "1d": -0.005158759601784801,
+        "3d": -0.0061020827534310484,
+        "1w": -0.012372543388482704
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 800,
+      "break_time": "2024-05-02 04:00:00+09:00",
+      "divergence_score": 3.009423928457572,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0021263823871242593,
+        "1d": 0.013949106187366667,
+        "3d": 0.01025835652586693,
+        "1w": -0.0022803855059914113
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 779,
+      "break_time": "2024-04-26 20:00:00+09:00",
+      "divergence_score": 14.14750959610285,
+      "fwd_returns_pips_signed": {
+        "4h": 0.002895276883133846,
+        "1d": -0.008813443178044444,
+        "3d": 0.0040738423380517474,
+        "1w": -0.01872836507443676
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 792,
+      "break_time": "2024-04-30 20:00:00+09:00",
+      "divergence_score": -9.789899175064328,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0022854105591827434,
+        "1d": 0.0020507618177578735,
+        "3d": -0.028664013255308873,
+        "1w": -0.00907236934448985
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 936,
+      "break_time": "2024-06-01 04:00:00+09:00",
+      "divergence_score": 12.11770310158581,
+      "fwd_returns_pips_signed": {
+        "4h": 6.355178201378209e-05,
+        "1d": -0.007156281736585335,
+        "3d": -0.007956730030344694,
+        "1w": -0.00015889712715644322
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 941,
+      "break_time": "2024-06-03 20:00:00+09:00",
+      "divergence_score": 0.8870714691517847,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0001472343942205967,
+        "1d": 0.008467135355894051,
+        "3d": 0.0011017449678343283,
+        "1w": -0.0071954688314068704
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1065,
+      "break_time": "2024-07-01 20:00:00+09:00",
+      "divergence_score": -4.946619614711125,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0008292592838605728,
+        "1d": -0.0013246674793743196,
+        "3d": -0.003675005143171539,
+        "1w": -0.000686874839430196
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1087,
+      "break_time": "2024-07-05 12:00:00+09:00",
+      "divergence_score": 13.164504131357539,
+      "fwd_returns_pips_signed": {
+        "4h": -0.00018658108868230272,
+        "1d": 0.0024786092627673284,
+        "3d": -0.0045612448410112805,
+        "1w": 0.016171304259343877
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1114,
+      "break_time": "2024-07-11 20:00:00+09:00",
+      "divergence_score": 0.31751258239165736,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0011471649897840663,
+        "1d": 0.005305387693636199,
+        "3d": 0.0007886510375731959,
+        "1w": 0.013390123652511576
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1257,
+      "break_time": "2024-08-13 20:00:00+09:00",
+      "divergence_score": 5.289321240391985,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0021860313864339176,
+        "1d": 0.0016067104025614398,
+        "3d": -0.006806621354550124,
+        "1w": 0.008464177050248267
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1295,
+      "break_time": "2024-08-22 00:00:00+09:00",
+      "divergence_score": 6.889379489817408,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0014497558665489407,
+        "1d": -0.010159140479359507,
+        "3d": 0.004153778636410976,
+        "1w": -0.005827666834046674
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1331,
+      "break_time": "2024-08-29 20:00:00+09:00",
+      "divergence_score": 11.060667901581368,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0039223711323854715,
+        "1d": 0.001670430678891499,
+        "3d": 0.004708539651213428,
+        "1w": -0.01625803958323413
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1429,
+      "break_time": "2024-09-20 16:00:00+09:00",
+      "divergence_score": -5.400225274385846,
+      "fwd_returns_pips_signed": {
+        "4h": 0.00115698656045371,
+        "1d": -0.0018247990326489827,
+        "3d": -0.0039730275709386476,
+        "1w": -0.0016928577949189005
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1608,
+      "break_time": "2024-10-31 12:00:00+09:00",
+      "divergence_score": 14.172761682200225,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0019104459905774362,
+        "1d": -0.0014709071712397659,
+        "3d": -0.0005518437633886819,
+        "1w": -0.003339251739140181
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1617,
+      "break_time": "2024-11-02 00:00:00+09:00",
+      "divergence_score": 4.012827466696272,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0007188697064206551,
+        "1d": -0.007467520297831598,
+        "3d": 0.008637886373463743,
+        "1w": 0.007100636968275786
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1620,
+      "break_time": "2024-11-04 08:00:00+09:00",
+      "divergence_score": -9.14708938337133,
+      "fwd_returns_pips_signed": {
+        "4h": -0.002191028191986355,
+        "1d": -0.002907169992383274,
+        "3d": -0.01715572293554235,
+        "1w": -0.017738288701035998
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1866,
+      "break_time": "2024-12-30 20:00:00+09:00",
+      "divergence_score": 12.618341517532379,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0007641560268947245,
+        "1d": 0.0020326699641932677,
+        "3d": -0.001774408916581649,
+        "1w": -0.006674220001823272
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1935,
+      "break_time": "2025-01-15 20:00:00+09:00",
+      "divergence_score": 12.030553404045236,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0013555422645383786,
+        "1d": 0.0010050541622739217,
+        "3d": -0.0005565061791079629,
+        "1w": 0.0024279397831525884
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1935,
+      "break_time": "2025-01-15 20:00:00+09:00",
+      "divergence_score": 2.615548344560878,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0013555422645383786,
+        "1d": 0.0010050541622739217,
+        "3d": -0.0005565061791079629,
+        "1w": 0.0024279397831525884
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1899,
+      "break_time": "2025-01-08 00:00:00+09:00",
+      "divergence_score": 0.916876961641627,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0018608660293253365,
+        "1d": 0.003920234670166778,
+        "3d": 0.00035471774974116244,
+        "1w": -0.010905400202515736
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1917,
+      "break_time": "2025-01-11 00:00:00+09:00",
+      "divergence_score": 0.7343897336426153,
+      "fwd_returns_pips_signed": {
+        "4h": -0.00015198338344291074,
+        "1d": 0.003438456971780468,
+        "3d": 0.010255063789982977,
+        "1w": 0.012208483374680057
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1916,
+      "break_time": "2025-01-10 20:00:00+09:00",
+      "divergence_score": -5.18581980539377,
+      "fwd_returns_pips_signed": {
+        "4h": -0.00042422919143092486,
+        "1d": -0.003386179519633714,
+        "3d": -0.007453308574977058,
+        "1w": -0.015605379720418533
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1917,
+      "break_time": "2025-01-11 00:00:00+09:00",
+      "divergence_score": 9.700168612720134,
+      "fwd_returns_pips_signed": {
+        "4h": -0.00015198338344291074,
+        "1d": 0.003438456971780468,
+        "3d": 0.010255063789982977,
+        "1w": 0.012208483374680057
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1934,
+      "break_time": "2025-01-15 16:00:00+09:00",
+      "divergence_score": -7.504907277751947,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0032259844064368437,
+        "1d": 0.007200883696238947,
+        "3d": 0.00380200654161289,
+        "1w": 0.009136345354900044
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1950,
+      "break_time": "2025-01-20 04:00:00+09:00",
+      "divergence_score": 7.816295815581469,
+      "fwd_returns_pips_signed": {
+        "4h": -0.002990266261438279,
+        "1d": -0.004203005950195404,
+        "3d": 0.0007988777790437496,
+        "1w": -0.004639695592819848
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1957,
+      "break_time": "2025-01-21 08:00:00+09:00",
+      "divergence_score": -5.0107710847197,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0024399441711819847,
+        "1d": -0.0038728070896176803,
+        "3d": -0.005419022218879022,
+        "1w": -0.0009921466613791452
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1967,
+      "break_time": "2025-01-23 00:00:00+09:00",
+      "divergence_score": 3.0081803446026356,
+      "fwd_returns_pips_signed": {
+        "4h": -0.00030021302575100606,
+        "1d": -0.003698257462285248,
+        "3d": -0.014195400952653259,
+        "1w": -0.01255137699644937
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1976,
+      "break_time": "2025-01-24 12:00:00+09:00",
+      "divergence_score": -15.372663200856636,
+      "fwd_returns_pips_signed": {
+        "4h": -0.003482421165310612,
+        "1d": -0.0017363013435867103,
+        "3d": -0.0016720476184550748,
+        "1w": 0.002881186952944148
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1984,
+      "break_time": "2025-01-27 16:00:00+09:00",
+      "divergence_score": 4.62147442264515,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0025490445161340247,
+        "1d": -0.009688013031598608,
+        "3d": -0.0033778668589006244,
+        "1w": 0.005124192857033805
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 2025,
+      "break_time": "2025-02-05 08:00:00+09:00",
+      "divergence_score": -9.013000646499144,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0012916611381514898,
+        "1d": 0.0073875441903963335,
+        "3d": 0.011428246214771676,
+        "1w": 0.0029707032375254627
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 2025,
+      "break_time": "2025-02-05 08:00:00+09:00",
+      "divergence_score": 4.002723261034248,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0012916611381514898,
+        "1d": 0.0073875441903963335,
+        "3d": 0.011428246214771676,
+        "1w": 0.0029707032375254627
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2046,
+      "break_time": "2025-02-10 16:00:00+09:00",
+      "divergence_score": 2.1356001366680317,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0029829048459912855,
+        "1d": 0.00027611052485188026,
+        "3d": 0.01112194147536627,
+        "1w": -0.00297631025816969
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 2103,
+      "break_time": "2025-02-22 00:00:00+09:00",
+      "divergence_score": -12.703094057148512,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0007641621736222959,
+        "1d": -0.0013536426440552418,
+        "3d": -0.003614558541904067,
+        "1w": 0.002181743372818623
+      }
+    },
+    {
+      "pair": "USD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2132,
+      "break_time": "2025-02-28 16:00:00+09:00",
+      "divergence_score": 4.394152812268231,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0020859082589419486,
+        "1d": 0.0005916707558188961,
+        "3d": -0.00458566585767084,
+        "1w": -0.023243640580179914
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 131,
+      "break_time": "2023-11-30 08:00:00+09:00",
+      "divergence_score": -22.07230378088108,
+      "fwd_returns_pips_signed": {
+        "4h": 0.00017972403113653002,
+        "1d": -0.0003407672252082605,
+        "3d": 0.011774851883049386,
+        "1w": 0.033061487150849445
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 278,
+      "break_time": "2024-01-05 00:00:00+09:00",
+      "divergence_score": -15.410986179397412,
+      "fwd_returns_pips_signed": {
+        "4h": 0.000921816169277001,
+        "1d": 0.0008397711012442244,
+        "3d": -0.00497730847641531,
+        "1w": 0.006704779827004792
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 253,
+      "break_time": "2023-12-29 00:00:00+09:00",
+      "divergence_score": 0.8586059725831063,
+      "fwd_returns_pips_signed": {
+        "4h": 4.471372041336963e-05,
+        "1d": 0.004988308015117404,
+        "3d": 0.0010736814881937562,
+        "1w": -0.006310093175386555
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 352,
+      "break_time": "2024-01-22 20:00:00+09:00",
+      "divergence_score": 9.553862192940798,
+      "fwd_returns_pips_signed": {
+        "4h": -0.001687942166775258,
+        "1d": 0.00011801425501722917,
+        "3d": 0.006324028316395669,
+        "1w": 0.006049052375057151
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 384,
+      "break_time": "2024-01-30 00:00:00+09:00",
+      "divergence_score": -6.791848523949199,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0014958023323368153,
+        "1d": -0.002889452389324809,
+        "3d": 0.0034696005869898627,
+        "1w": 0.002979487662702951
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 466,
+      "break_time": "2024-02-16 08:00:00+09:00",
+      "divergence_score": -8.458156712275432,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0004020224877487877,
+        "1d": 0.0010506799483245288,
+        "3d": 0.0030007802312299603,
+        "1w": 0.011093664877566134
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 554,
+      "break_time": "2024-03-07 12:00:00+09:00",
+      "divergence_score": -2.2608312607921803,
+      "fwd_returns_pips_signed": {
+        "4h": 0.002677477334919409,
+        "1d": -0.0019539951802078903,
+        "3d": 0.0020942675552086953,
+        "1w": -0.004415781680542352
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 717,
+      "break_time": "2024-04-12 20:00:00+09:00",
+      "divergence_score": -13.100522928522459,
+      "fwd_returns_pips_signed": {
+        "4h": -0.002721374283337852,
+        "1d": -0.009129967068699507,
+        "3d": -0.011917824051953296,
+        "1w": -0.013333123490347099
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 791,
+      "break_time": "2024-04-30 16:00:00+09:00",
+      "divergence_score": -8.373316691518895,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0008026994916159325,
+        "1d": 0.00150851985821987,
+        "3d": -0.022619428797859165,
+        "1w": -0.005985186095473161
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 801,
+      "break_time": "2024-05-02 08:00:00+09:00",
+      "divergence_score": 8.511348421917305,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0025895103394555363,
+        "1d": 0.01672158630034115,
+        "3d": 0.00720367683308254,
+        "1w": -0.004813501404854925
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 926,
+      "break_time": "2024-05-30 12:00:00+09:00",
+      "divergence_score": 2.3558597239863204,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0031743061477076395,
+        "1d": -0.003839749914294366,
+        "3d": -0.007993167763180153,
+        "1w": 0.00039010781656134697
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 946,
+      "break_time": "2024-06-04 16:00:00+09:00",
+      "divergence_score": 3.923339603256615,
+      "fwd_returns_pips_signed": {
+        "4h": -0.000991459872178524,
+        "1d": -0.00753295887510852,
+        "3d": -0.006205646428559142,
+        "1w": -0.00833439206905151
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 986,
+      "break_time": "2024-06-13 04:00:00+09:00",
+      "divergence_score": 7.276128435163159,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0006543557629621333,
+        "1d": -0.004930253543175667,
+        "3d": -0.0015403094876731416,
+        "1w": 0.00618450793392622
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1021,
+      "break_time": "2024-06-20 20:00:00+09:00",
+      "divergence_score": -2.3596631639156556,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0005936444949234954,
+        "1d": 0.0015852423162288076,
+        "3d": 0.004572749737079995,
+        "1w": 0.018097617492666807
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1087,
+      "break_time": "2024-07-05 12:00:00+09:00",
+      "divergence_score": 8.290127369740489,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0006953843427952577,
+        "1d": 0.0018356072582497163,
+        "3d": -0.004342532889324957,
+        "1w": 0.009339573651312882
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1089,
+      "break_time": "2024-07-05 20:00:00+09:00",
+      "divergence_score": -8.77102405303173,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0003099814035980586,
+        "1d": 0.00035578611891295964,
+        "3d": 0.00337486819431021,
+        "1w": -0.009028703922896675
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1093,
+      "break_time": "2024-07-08 08:00:00+09:00",
+      "divergence_score": 8.464943230133834,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0024907759301413535,
+        "1d": -0.003954732720703014,
+        "3d": -0.009018961837511164,
+        "1w": 0.0054518393453939495
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1095,
+      "break_time": "2024-07-08 16:00:00+09:00",
+      "divergence_score": -10.543465811601045,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0015388240222140581,
+        "1d": -0.0001778772364859904,
+        "3d": 0.005606967310562538,
+        "1w": -0.01332471292510995
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1196,
+      "break_time": "2024-07-31 00:00:00+09:00",
+      "divergence_score": -14.45958552823042,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0017940908562668056,
+        "1d": 0.017073934379800093,
+        "3d": 0.035763403203367794,
+        "1w": 0.030877659142535485
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1260,
+      "break_time": "2024-08-14 08:00:00+09:00",
+      "divergence_score": 1.4293807839441044,
+      "fwd_returns_pips_signed": {
+        "4h": -0.005710761881380755,
+        "1d": -0.008375341227198518,
+        "3d": -0.01287417801318469,
+        "1w": -0.009446572013624532
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1261,
+      "break_time": "2024-08-14 12:00:00+09:00",
+      "divergence_score": -4.377830311440455,
+      "fwd_returns_pips_signed": {
+        "4h": -0.00017912678827247674,
+        "1d": 0.001178965178085356,
+        "3d": 0.003895780599576071,
+        "1w": 0.0004507633723029869
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1308,
+      "break_time": "2024-08-24 04:00:00+09:00",
+      "divergence_score": 8.045641785843017,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0034453945779153727,
+        "1d": 0.0020496949663870723,
+        "3d": 0.005284486982522374,
+        "1w": 0.005657688621476531
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1307,
+      "break_time": "2024-08-24 00:00:00+09:00",
+      "divergence_score": -6.173068660287122,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0013680612499404887,
+        "1d": 0.002015260852131995,
+        "3d": 0.0037858380567632466,
+        "1w": 0.0016677261727409132
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1412,
+      "break_time": "2024-09-17 20:00:00+09:00",
+      "divergence_score": 9.694262040594886,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0005834379882152518,
+        "1d": 0.001546633844898615,
+        "3d": 0.020773592289051734,
+        "1w": 0.021258100460628704
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1480,
+      "break_time": "2024-10-02 20:00:00+09:00",
+      "divergence_score": 4.80298940451096,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0011397777428650002,
+        "1d": 0.0022473380371303975,
+        "3d": 0.01014404485588205,
+        "1w": 0.01027901500927797
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1548,
+      "break_time": "2024-10-17 20:00:00+09:00",
+      "divergence_score": 9.800255811233512,
+      "fwd_returns_pips_signed": {
+        "4h": -0.001371754984719864,
+        "1d": 0.0001415885623430313,
+        "3d": -0.005488009550637329,
+        "1w": -0.019180357178278484
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1539,
+      "break_time": "2024-10-16 08:00:00+09:00",
+      "divergence_score": -4.147541916606528,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0001909025694510902,
+        "1d": 0.0006652376621998357,
+        "3d": -0.0013414478570101807,
+        "1w": -0.011327090928026529
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1561,
+      "break_time": "2024-10-21 20:00:00+09:00",
+      "divergence_score": 0.9564257001930727,
+      "fwd_returns_pips_signed": {
+        "4h": 0.001405783587405729,
+        "1d": 0.002570656073640265,
+        "3d": 0.007789759774128768,
+        "1w": 0.01750125353644627
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1635,
+      "break_time": "2024-11-06 20:00:00+09:00",
+      "divergence_score": 3.2436477906905523,
+      "fwd_returns_pips_signed": {
+        "4h": -0.004375529403162659,
+        "1d": -0.001812886490156096,
+        "3d": 0.007967201899905518,
+        "1w": 0.0066572445146722
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1636,
+      "break_time": "2024-11-07 00:00:00+09:00",
+      "divergence_score": -2.4869706876543844,
+      "fwd_returns_pips_signed": {
+        "4h": -0.001361905431542354,
+        "1d": -0.0051016052373746845,
+        "3d": -0.014087943093561428,
+        "1w": -0.013495694209613163
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1645,
+      "break_time": "2024-11-08 12:00:00+09:00",
+      "divergence_score": -6.429565920380973,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0037362065635919706,
+        "1d": 0.0010148182553768592,
+        "3d": 0.0012945300324584963,
+        "1w": 0.004358233660121336
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1665,
+      "break_time": "2024-11-13 16:00:00+09:00",
+      "divergence_score": 8.087375142413677,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0037693727132115384,
+        "1d": -0.0029704679629762865,
+        "3d": -0.009477817784640408,
+        "1w": -0.014404769387715177
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1679,
+      "break_time": "2024-11-16 00:00:00+09:00",
+      "divergence_score": 1.1893135531320809,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0008001034406612817,
+        "1d": -0.007330803971940192,
+        "3d": -0.008338797752745819,
+        "1w": 0.004269819158261967
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1679,
+      "break_time": "2024-11-16 00:00:00+09:00",
+      "divergence_score": -14.24593481648624,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0008001034406612817,
+        "1d": -0.007330803971940192,
+        "3d": -0.008338797752745819,
+        "1w": 0.004269819158261967
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1758,
+      "break_time": "2024-12-04 16:00:00+09:00",
+      "divergence_score": 9.101550931734266,
+      "fwd_returns_pips_signed": {
+        "4h": -0.00048621702022799695,
+        "1d": -0.0024144677465018916,
+        "3d": -0.0005430630149696469,
+        "1w": 0.008949505420154935
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1866,
+      "break_time": "2024-12-30 20:00:00+09:00",
+      "divergence_score": 9.76287345773251,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0008077050602492974,
+        "1d": 0.004892923620609224,
+        "3d": 0.010372152981101834,
+        "1w": 0.003578435191092133
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1967,
+      "break_time": "2025-01-23 00:00:00+09:00",
+      "divergence_score": 6.825968061676875,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0011165302837792268,
+        "1d": -0.0029535407134728686,
+        "3d": -0.005330067179551534,
+        "1w": -0.017117267643710576
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1984,
+      "break_time": "2025-01-27 16:00:00+09:00",
+      "divergence_score": 14.820463466912159,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0028642525307205347,
+        "1d": -0.0019700545820615645,
+        "3d": 0.006636506401934916,
+        "1w": 0.016668299236968664
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1978,
+      "break_time": "2025-01-24 20:00:00+09:00",
+      "divergence_score": 7.125188160222528,
+      "fwd_returns_pips_signed": {
+        "4h": -0.002093589682721664,
+        "1d": -0.013752250379766906,
+        "3d": -0.014382993564534985,
+        "1w": -0.02481685432531222
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2137,
+      "break_time": "2025-03-03 08:00:00+09:00",
+      "divergence_score": 6.382929363488735,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0007084978546760823,
+        "1d": -0.001564470873524293,
+        "3d": 0.028233794822139835,
+        "1w": 0.030167252284197588
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 2127,
+      "break_time": "2025-02-27 20:00:00+09:00",
+      "divergence_score": -9.200876247907296,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0022854811537316166,
+        "1d": -0.00541393537710988,
+        "3d": -0.002477300690499895,
+        "1w": -0.02560746319408569
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2230,
+      "break_time": "2025-03-24 08:00:00+09:00",
+      "divergence_score": 10.758511718802069,
+      "fwd_returns_pips_signed": {
+        "4h": 0.00020959449706214883,
+        "1d": 0.0035940048409521808,
+        "3d": -0.0022590092190082345,
+        "1w": null
+      }
+    },
+    {
+      "pair": "EUR_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2250,
+      "break_time": "2025-03-27 16:00:00+09:00",
+      "divergence_score": 2.2835820982929462,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0012835040804493048,
+        "1d": -0.0026089272054115042,
+        "3d": null,
+        "1w": null
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 90,
+      "break_time": "2023-11-21 16:00:00+09:00",
+      "divergence_score": -0.7146271850458987,
+      "fwd_returns_pips_signed": {
+        "4h": 1.0804211481918458e-05,
+        "1d": -0.007802492244314507,
+        "3d": -0.014964664452975285,
+        "1w": -0.008681161010596128
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 53,
+      "break_time": "2023-11-13 16:00:00+09:00",
+      "divergence_score": 7.503569236308699,
+      "fwd_returns_pips_signed": {
+        "4h": 0.00017753055051539235,
+        "1d": 0.0031424691268062688,
+        "3d": 0.009301994129551794,
+        "1w": 0.0032282784157144917
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 85,
+      "break_time": "2023-11-20 20:00:00+09:00",
+      "divergence_score": -10.689530328457018,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0007762552544434698,
+        "1d": 0.001737976289323484,
+        "3d": -0.010882469015217389,
+        "1w": -0.010829123732527535
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 283,
+      "break_time": "2024-01-05 20:00:00+09:00",
+      "divergence_score": -16.04637398102608,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0009389544645665993,
+        "1d": -0.004665460734107008,
+        "3d": 0.0006562018083071663,
+        "1w": 0.005394086090947603
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 271,
+      "break_time": "2024-01-03 20:00:00+09:00",
+      "divergence_score": 1.04657047871369,
+      "fwd_returns_pips_signed": {
+        "4h": 0.003943603382340122,
+        "1d": 0.014418974402025775,
+        "3d": 0.013868645144130554,
+        "1w": 0.02290247333642359
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 301,
+      "break_time": "2024-01-10 16:00:00+09:00",
+      "divergence_score": -14.19754616308633,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0032151235801629596,
+        "1d": 0.004899743724255501,
+        "3d": 0.004581395248695053,
+        "1w": 0.022636327109760046
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 294,
+      "break_time": "2024-01-09 12:00:00+09:00",
+      "divergence_score": 7.565302954060314,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0008669409796349115,
+        "1d": -0.003145204255705636,
+        "3d": -0.010372057774759469,
+        "1w": -0.02341527827410772
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 301,
+      "break_time": "2024-01-10 16:00:00+09:00",
+      "divergence_score": -8.945029337779872,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0032151235801629596,
+        "1d": 0.004899743724255501,
+        "3d": 0.004581395248695053,
+        "1w": 0.022636327109760046
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 357,
+      "break_time": "2024-01-23 16:00:00+09:00",
+      "divergence_score": 30.690157659518718,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0008668853036768454,
+        "1d": -0.0008084074813750064,
+        "3d": -0.0003830113247946798,
+        "1w": 0.010321885601180192
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 593,
+      "break_time": "2024-03-15 20:00:00+09:00",
+      "divergence_score": -4.378552765757618,
+      "fwd_returns_pips_signed": {
+        "4h": 7.900703956842392e-05,
+        "1d": 0.0005687114100929591,
+        "3d": 0.01411126042317079,
+        "1w": 0.008580457223465565
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 675,
+      "break_time": "2024-04-04 00:00:00+09:00",
+      "divergence_score": -0.6449320731075119,
+      "fwd_returns_pips_signed": {
+        "4h": -0.00015632653518515838,
+        "1d": -0.0032880002065418523,
+        "3d": 0.0003907094551900414,
+        "1w": -0.009165420058057094
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 706,
+      "break_time": "2024-04-11 00:00:00+09:00",
+      "divergence_score": 10.0663748877192,
+      "fwd_returns_pips_signed": {
+        "4h": -0.001017111023192463,
+        "1d": -0.003916712472767259,
+        "3d": -0.002793268792042447,
+        "1w": -0.00315228384591304
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 745,
+      "break_time": "2024-04-19 08:00:00+09:00",
+      "divergence_score": 4.202355142615751,
+      "fwd_returns_pips_signed": {
+        "4h": -0.006223484796013423,
+        "1d": -0.0032550476701391773,
+        "3d": -0.010444435681153053,
+        "1w": -0.025819969891549555
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 761,
+      "break_time": "2024-04-23 20:00:00+09:00",
+      "divergence_score": 5.708709199300166,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0011891379632755772,
+        "1d": 0.0012877365658505724,
+        "3d": 0.018185314873075953,
+        "1w": 0.008273810985347296
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 984,
+      "break_time": "2024-06-12 20:00:00+09:00",
+      "divergence_score": -38.51295425958922,
+      "fwd_returns_pips_signed": {
+        "4h": 0.002869886400758581,
+        "1d": 0.0014783962096771575,
+        "3d": -0.0017859782975886418,
+        "1w": 0.003965755085900469
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 929,
+      "break_time": "2024-05-31 00:00:00+09:00",
+      "divergence_score": 13.498296281686045,
+      "fwd_returns_pips_signed": {
+        "4h": -0.00015019074252453635,
+        "1d": 0.002295110025141156,
+        "3d": -0.009157697497651718,
+        "1w": -0.0032391047082720448
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 983,
+      "break_time": "2024-06-12 16:00:00+09:00",
+      "divergence_score": -3.7689980405688885,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0035275517126898137,
+        "1d": 0.00011454896358120692,
+        "3d": -0.0071829657898137,
+        "1w": 0.002030053438740076
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 946,
+      "break_time": "2024-06-04 16:00:00+09:00",
+      "divergence_score": -0.2637237577928957,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0015926589389083645,
+        "1d": -0.00858543038615256,
+        "3d": -0.007018952681844937,
+        "1w": -0.01588330991091702
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 994,
+      "break_time": "2024-06-14 12:00:00+09:00",
+      "divergence_score": -7.715970835386685,
+      "fwd_returns_pips_signed": {
+        "4h": -0.008686547124825417,
+        "1d": -0.007323664417388187,
+        "3d": -0.002777475379629024,
+        "1w": 0.006786706322223779
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1114,
+      "break_time": "2024-07-11 20:00:00+09:00",
+      "divergence_score": 18.88421056355716,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0002585864119932779,
+        "1d": 0.0002928200544092263,
+        "3d": -0.0024076314991665626,
+        "1w": 0.013915455629821771
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1138,
+      "break_time": "2024-07-17 16:00:00+09:00",
+      "divergence_score": 1.9089686169105207,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0030347697821175856,
+        "1d": 0.005409186204043515,
+        "3d": 0.010714186073983,
+        "1w": 0.0333937546003229
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1156,
+      "break_time": "2024-07-22 12:00:00+09:00",
+      "divergence_score": -7.031296720751442,
+      "fwd_returns_pips_signed": {
+        "4h": -0.004063932195585984,
+        "1d": -0.0009001301345179513,
+        "3d": 0.025863251306290636,
+        "1w": 0.028420569906477233
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1197,
+      "break_time": "2024-07-31 04:00:00+09:00",
+      "divergence_score": -12.08566264815336,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0005906885257367378,
+        "1d": 0.01625275517828495,
+        "3d": 0.044644645157688956,
+        "1w": 0.04487902556882073
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1196,
+      "break_time": "2024-07-31 00:00:00+09:00",
+      "divergence_score": -16.485894621132644,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0018218649124310815,
+        "1d": 0.016801861603289225,
+        "3d": 0.04729774316695501,
+        "1w": 0.048994322672903934
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1221,
+      "break_time": "2024-08-06 00:00:00+09:00",
+      "divergence_score": 2.905272989026898,
+      "fwd_returns_pips_signed": {
+        "4h": 0.011213242933053813,
+        "1d": 0.005899368616475442,
+        "3d": 0.02518845489230781,
+        "1w": 0.03036927675917056
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1269,
+      "break_time": "2024-08-15 20:00:00+09:00",
+      "divergence_score": -2.4376699959445816,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0005636360938936491,
+        "1d": -0.00398057838531507,
+        "3d": -0.00584291796895986,
+        "1w": -0.009325079373397216
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1300,
+      "break_time": "2024-08-22 20:00:00+09:00",
+      "divergence_score": -9.627555805110866,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0009451821223516177,
+        "1d": -0.0004959786674225697,
+        "3d": -0.0012534733293492195,
+        "1w": 0.002460590114604422
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1300,
+      "break_time": "2024-08-22 20:00:00+09:00",
+      "divergence_score": 2.4289174131747586,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0009451821223516177,
+        "1d": -0.0004959786674225697,
+        "3d": -0.0012534733293492195,
+        "1w": 0.002460590114604422
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1357,
+      "break_time": "2024-09-05 00:00:00+09:00",
+      "divergence_score": -7.397843445860772,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0010212154408444363,
+        "1d": 0.0008941681261358525,
+        "3d": 0.012800592061690708,
+        "1w": 0.021791943836237948
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1339,
+      "break_time": "2024-08-31 04:00:00+09:00",
+      "divergence_score": -0.5898367644079912,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0019094549808791328,
+        "1d": 0.005732995917249184,
+        "3d": -0.015381891027145933,
+        "1w": -0.029989323299774995
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1357,
+      "break_time": "2024-09-05 00:00:00+09:00",
+      "divergence_score": 0.7746820176470735,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0010212154408444363,
+        "1d": 0.0008941681261358525,
+        "3d": 0.012800592061690708,
+        "1w": 0.021791943836237948
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1412,
+      "break_time": "2024-09-17 20:00:00+09:00",
+      "divergence_score": 14.177871393032397,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0007816473883526243,
+        "1d": 0.004043020624509452,
+        "3d": 0.026145901586924758,
+        "1w": 0.033128473598056374
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1480,
+      "break_time": "2024-10-02 20:00:00+09:00",
+      "divergence_score": 6.107776668598156,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0017587704490571454,
+        "1d": -0.006879038372615831,
+        "3d": 0.0024593536101420455,
+        "1w": 0.005046224760384632
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1539,
+      "break_time": "2024-10-16 08:00:00+09:00",
+      "divergence_score": 8.886011837591305,
+      "fwd_returns_pips_signed": {
+        "4h": 0.005251786023410254,
+        "1d": 0.0040457059976120036,
+        "3d": -0.0019834513932792674,
+        "1w": -0.009944184652996846
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1608,
+      "break_time": "2024-10-31 12:00:00+09:00",
+      "divergence_score": 5.268073108399406,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0027161490904017427,
+        "1d": 0.004492495962904464,
+        "3d": 0.0007802960453870966,
+        "1w": 0.0014293174655941598
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1608,
+      "break_time": "2024-10-31 12:00:00+09:00",
+      "divergence_score": 12.944902004147096,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0027161490904017427,
+        "1d": 0.004492495962904464,
+        "3d": 0.0007802960453870966,
+        "1w": 0.0014293174655941598
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1632,
+      "break_time": "2024-11-06 08:00:00+09:00",
+      "divergence_score": 8.414929959709298,
+      "fwd_returns_pips_signed": {
+        "4h": -0.003375301061908864,
+        "1d": 0.0028776275679804897,
+        "3d": -0.008485070806924178,
+        "1w": -0.004329502016313214
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1677,
+      "break_time": "2024-11-15 16:00:00+09:00",
+      "divergence_score": -6.7432472485090145,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0015708685963167213,
+        "1d": 0.007577107198630806,
+        "3d": -0.0012741991657296836,
+        "1w": 0.019900975633470708
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1909,
+      "break_time": "2025-01-09 16:00:00+09:00",
+      "divergence_score": -9.244214677511863,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0012614335159613077,
+        "1d": -0.0013643374655059048,
+        "3d": 0.009062012946902342,
+        "1w": 0.020607480704374126
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 2031,
+      "break_time": "2025-02-06 08:00:00+09:00",
+      "divergence_score": -7.863581366396474,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0013658046711428895,
+        "1d": 0.008668941852395307,
+        "3d": 0.011796973187170323,
+        "1w": -0.008432860989105784
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2054,
+      "break_time": "2025-02-12 00:00:00+09:00",
+      "divergence_score": 9.966903507048187,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0023151637678937576,
+        "1d": 0.014212149225926396,
+        "3d": 0.01331122246032379,
+        "1w": -0.002214699846253332
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2122,
+      "break_time": "2025-02-27 00:00:00+09:00",
+      "divergence_score": 7.511774166766045,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0007833299330881616,
+        "1d": 0.0037575651248058506,
+        "3d": 0.011999954525596657,
+        "1w": 0.009144613494474818
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 2130,
+      "break_time": "2025-02-28 08:00:00+09:00",
+      "divergence_score": -15.607454999253257,
+      "fwd_returns_pips_signed": {
+        "4h": -0.003114630924688555,
+        "1d": -0.008914719025306717,
+        "3d": -0.018382183324574086,
+        "1w": -0.007027309276807614
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2149,
+      "break_time": "2025-03-05 08:00:00+09:00",
+      "divergence_score": 15.313761433850047,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0011177620853093373,
+        "1d": 0.0056387208520769505,
+        "3d": -0.0026793533253846036,
+        "1w": 0.0016918268973338257
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 2216,
+      "break_time": "2025-03-20 04:00:00+09:00",
+      "divergence_score": 4.139088764643773,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0014078895890143883,
+        "1d": 0.002226618842653849,
+        "3d": -0.006557772419617969,
+        "1w": -0.0037275333050370563
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2230,
+      "break_time": "2025-03-24 08:00:00+09:00",
+      "divergence_score": 7.430053693920925,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0002994537572842404,
+        "1d": 0.005402175547738253,
+        "3d": 0.0013674633625395671,
+        "1w": null
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 2244,
+      "break_time": "2025-03-26 16:00:00+09:00",
+      "divergence_score": 4.83763034540987,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0017008647583791614,
+        "1d": -0.006909129609593556,
+        "3d": null,
+        "1w": null
+      }
+    },
+    {
+      "pair": "GBP_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2250,
+      "break_time": "2025-03-27 16:00:00+09:00",
+      "divergence_score": -4.0897053883786185,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0016329041417977308,
+        "1d": -0.0011430828083014433,
+        "3d": null,
+        "1w": null
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 96,
+      "break_time": "2023-11-22 16:00:00+09:00",
+      "divergence_score": -4.022565588833089,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0006654415962259463,
+        "1d": 0.002524647302819538,
+        "3d": 0.003983377242556152,
+        "1w": 0.0016667778301888703
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 125,
+      "break_time": "2023-11-29 08:00:00+09:00",
+      "divergence_score": 6.735654451542459,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0018200414022100375,
+        "1d": 0.0030079210745217466,
+        "3d": 0.0002043339232074004,
+        "1w": 0.027707193864335622
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 206,
+      "break_time": "2023-12-18 08:00:00+09:00",
+      "divergence_score": 6.667431757791242,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0027733172500141734,
+        "1d": 0.01188660906885275,
+        "3d": 0.010383854600362064,
+        "1w": 0.01694823732045503
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 251,
+      "break_time": "2023-12-28 16:00:00+09:00",
+      "divergence_score": 15.565693727924156,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0008824522361434717,
+        "1d": -0.0013493177614183338,
+        "3d": 0.001382342614901333,
+        "1w": -0.003959744370153118
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 275,
+      "break_time": "2024-01-04 12:00:00+09:00",
+      "divergence_score": 8.199674382557752,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0024625351815350527,
+        "1d": 0.0029975146181628887,
+        "3d": -0.002820293506146321,
+        "1w": 0.0012371773318839985
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 266,
+      "break_time": "2024-01-03 00:00:00+09:00",
+      "divergence_score": -1.7752641398225535,
+      "fwd_returns_pips_signed": {
+        "4h": -0.00202845101149407,
+        "1d": -0.00521364619069864,
+        "3d": -0.012346027470201193,
+        "1w": -0.013723282428639294
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 275,
+      "break_time": "2024-01-04 12:00:00+09:00",
+      "divergence_score": -4.294904928929419,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0024625351815350527,
+        "1d": 0.0029975146181628887,
+        "3d": -0.002820293506146321,
+        "1w": 0.0012371773318839985
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 357,
+      "break_time": "2024-01-23 16:00:00+09:00",
+      "divergence_score": 25.47252734171645,
+      "fwd_returns_pips_signed": {
+        "4h": -0.001959869490559818,
+        "1d": 0.0009453933334588882,
+        "3d": -0.0004107619692170772,
+        "1w": 0.014327707792411104
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 362,
+      "break_time": "2024-01-24 12:00:00+09:00",
+      "divergence_score": -10.782665062550201,
+      "fwd_returns_pips_signed": {
+        "4h": -0.00043188993647991225,
+        "1d": 7.199979431771197e-05,
+        "3d": -0.0038803107764655564,
+        "1w": 0.006801097461358374
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 392,
+      "break_time": "2024-01-31 08:00:00+09:00",
+      "divergence_score": 5.382978315511814,
+      "fwd_returns_pips_signed": {
+        "4h": -0.00043280229854669727,
+        "1d": 0.007189177937890534,
+        "3d": 0.0030762267218813477,
+        "1w": 0.00011338394392446105
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 510,
+      "break_time": "2024-02-27 08:00:00+09:00",
+      "divergence_score": 6.9310531678466845,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0031501209884341463,
+        "1d": 0.00014249799000243257,
+        "3d": 0.0036911322280790415,
+        "1w": 0.002078409746479437
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 551,
+      "break_time": "2024-03-07 00:00:00+09:00",
+      "divergence_score": 13.249621437466985,
+      "fwd_returns_pips_signed": {
+        "4h": -0.00040787193386915277,
+        "1d": -0.00035687884342117115,
+        "3d": -0.009999878415626995,
+        "1w": -0.0028892754546685495
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 563,
+      "break_time": "2024-03-09 00:00:00+09:00",
+      "divergence_score": -7.7237667177741685,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0009343540032995534,
+        "1d": 0.0024066410192480348,
+        "3d": -0.00534788025788302,
+        "1w": -0.006869150249923628
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 606,
+      "break_time": "2024-03-19 20:00:00+09:00",
+      "divergence_score": 4.990063528169138,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0010964134170441397,
+        "1d": 0.005490289317976682,
+        "3d": 0.001816549361140396,
+        "1w": -0.0016061810914669294
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 563,
+      "break_time": "2024-03-09 00:00:00+09:00",
+      "divergence_score": 11.70068966953798,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0009343540032995534,
+        "1d": 0.0024066410192480348,
+        "3d": -0.00534788025788302,
+        "1w": -0.006869150249923628
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 674,
+      "break_time": "2024-04-03 20:00:00+09:00",
+      "divergence_score": 2.1924120513920684,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0023923215912970974,
+        "1d": 0.010053354990300356,
+        "3d": 0.007139879110773961,
+        "1w": 0.0012873380033919801
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 696,
+      "break_time": "2024-04-09 08:00:00+09:00",
+      "divergence_score": -18.264904883245734,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0006281814354620607,
+        "1d": 0.0021806133274262507,
+        "3d": -0.0014464059340486557,
+        "1w": -0.00968581504860122
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 758,
+      "break_time": "2024-04-23 08:00:00+09:00",
+      "divergence_score": 5.350187429622764,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0018518801870976986,
+        "1d": 0.009010101424802741,
+        "3d": 0.01488008952287867,
+        "1w": 0.014988468712210157
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 891,
+      "break_time": "2024-05-22 20:00:00+09:00",
+      "divergence_score": 9.55122351545343,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0034499740296789483,
+        "1d": -0.0008462189904161477,
+        "3d": -0.003275117340418632,
+        "1w": -0.006463080463722015
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 909,
+      "break_time": "2024-05-27 16:00:00+09:00",
+      "divergence_score": 1.4830023308060092,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0006614042139627685,
+        "1d": 0.0020881633672518163,
+        "3d": -0.004199082757450512,
+        "1w": -0.004940797501006067
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 946,
+      "break_time": "2024-06-04 16:00:00+09:00",
+      "divergence_score": 0.7041536762545633,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0012926993455932845,
+        "1d": -0.008339071758193484,
+        "3d": -0.007306517252283484,
+        "1w": -0.01556598104709117
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 945,
+      "break_time": "2024-06-04 12:00:00+09:00",
+      "divergence_score": 6.810707514680075,
+      "fwd_returns_pips_signed": {
+        "4h": 0.010920613253919242,
+        "1d": 0.001665680160587435,
+        "3d": 0.0024658074524275264,
+        "1w": -0.00448256918904999
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1074,
+      "break_time": "2024-07-03 08:00:00+09:00",
+      "divergence_score": -6.342558592916937,
+      "fwd_returns_pips_signed": {
+        "4h": 0.001686184805089752,
+        "1d": 0.005299115806674415,
+        "3d": 0.00562188833323507,
+        "1w": -0.0014289958633915134
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1114,
+      "break_time": "2024-07-11 20:00:00+09:00",
+      "divergence_score": 1.1960252182459499,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0019358387386914089,
+        "1d": 0.004239525187846205,
+        "3d": 0.00679189452583806,
+        "1w": 0.03094310366079167
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1102,
+      "break_time": "2024-07-09 20:00:00+09:00",
+      "divergence_score": -11.255198894227092,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0008740816948762387,
+        "1d": 0.0033266280138386506,
+        "3d": -0.01429562573170795,
+        "1w": -0.030476858239473437
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1198,
+      "break_time": "2024-07-31 08:00:00+09:00",
+      "divergence_score": -22.25186236503675,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0028625589034634302,
+        "1d": 0.014977641558879817,
+        "3d": 0.04180633453183713,
+        "1w": 0.023143548300194716
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1262,
+      "break_time": "2024-08-14 16:00:00+09:00",
+      "divergence_score": -3.4005969934169045,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0026515400624784746,
+        "1d": 0.0011796264516883426,
+        "3d": 0.0013846369079395515,
+        "1w": 0.004148172305073139
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1280,
+      "break_time": "2024-08-19 12:00:00+09:00",
+      "divergence_score": 9.557204379776579,
+      "fwd_returns_pips_signed": {
+        "4h": -0.003519617294339028,
+        "1d": -0.01414623482379973,
+        "3d": -0.004448610628502436,
+        "1w": -0.006548423843983464
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1295,
+      "break_time": "2024-08-22 00:00:00+09:00",
+      "divergence_score": 11.987670818056088,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0011350913126459972,
+        "1d": -0.0032892414353407062,
+        "3d": -0.000245534345349796,
+        "1w": -0.01057478545046564
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1340,
+      "break_time": "2024-09-02 04:00:00+09:00",
+      "divergence_score": -4.55495670431371,
+      "fwd_returns_pips_signed": {
+        "4h": -0.004435851726007911,
+        "1d": 0.005850615319515917,
+        "3d": -0.02653201219993573,
+        "1w": -0.0453224072535896
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1353,
+      "break_time": "2024-09-04 08:00:00+09:00",
+      "divergence_score": 0.5514771697979626,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0025886790628000256,
+        "1d": 0.00731072676807365,
+        "3d": 0.027563420708381692,
+        "1w": 0.021297696526788812
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1412,
+      "break_time": "2024-09-17 20:00:00+09:00",
+      "divergence_score": 13.999424787927111,
+      "fwd_returns_pips_signed": {
+        "4h": 0.00033388285195723455,
+        "1d": 0.003104977748531468,
+        "3d": 0.023575636347121787,
+        "1w": 0.036779019601466345
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1480,
+      "break_time": "2024-10-02 20:00:00+09:00",
+      "divergence_score": 6.468538298141006,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0009638171878298962,
+        "1d": -0.002079840731425975,
+        "3d": 0.002353257665429709,
+        "1w": -0.001940385999202654
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1500,
+      "break_time": "2024-10-08 00:00:00+09:00",
+      "divergence_score": -0.4512006108131459,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0014124649858198168,
+        "1d": -0.0012705147293017305,
+        "3d": -0.0020200612887473213,
+        "1w": 0.00116188237995285
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1539,
+      "break_time": "2024-10-16 08:00:00+09:00",
+      "divergence_score": -6.028213054069774,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0010319556473579183,
+        "1d": -0.003102670783736272,
+        "3d": -0.007101898210421176,
+        "1w": -0.008872003785027616
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1596,
+      "break_time": "2024-10-29 12:00:00+09:00",
+      "divergence_score": 16.484760309531318,
+      "fwd_returns_pips_signed": {
+        "4h": -0.002781725866588758,
+        "1d": 0.0003184047946822588,
+        "3d": 0.005216683235003572,
+        "1w": -0.01590006109067854
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1634,
+      "break_time": "2024-11-06 16:00:00+09:00",
+      "divergence_score": -0.9621276949145425,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0025091141375463977,
+        "1d": 0.0076954074865751565,
+        "3d": -0.0021728832822320854,
+        "1w": -0.004231596917877667
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1679,
+      "break_time": "2024-11-16 00:00:00+09:00",
+      "divergence_score": 2.157967907631786,
+      "fwd_returns_pips_signed": {
+        "4h": -0.002168697322849411,
+        "1d": -0.006941307449543466,
+        "3d": -0.014360019438580451,
+        "1w": -0.0036419313373876605
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1679,
+      "break_time": "2024-11-16 00:00:00+09:00",
+      "divergence_score": -10.109848253005275,
+      "fwd_returns_pips_signed": {
+        "4h": -0.002168697322849411,
+        "1d": -0.006941307449543466,
+        "3d": -0.014360019438580451,
+        "1w": -0.0036419313373876605
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1667,
+      "break_time": "2024-11-14 00:00:00+09:00",
+      "divergence_score": -2.554439267775905,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0003466324690668543,
+        "1d": 0.0011298652301618972,
+        "3d": 0.007656472288149807,
+        "1w": 0.003025750933209004
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1694,
+      "break_time": "2024-11-20 08:00:00+09:00",
+      "divergence_score": 3.8565833075912224,
+      "fwd_returns_pips_signed": {
+        "4h": 0.002369809747023055,
+        "1d": -0.0020385752871421303,
+        "3d": -0.0032974407894927893,
+        "1w": -0.026211995898892226
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1677,
+      "break_time": "2024-11-15 16:00:00+09:00",
+      "divergence_score": 4.129712677473812,
+      "fwd_returns_pips_signed": {
+        "4h": 0.002061640779825069,
+        "1d": 0.005767327899842023,
+        "3d": -0.008766642080368037,
+        "1w": 0.00781082298633784
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1692,
+      "break_time": "2024-11-20 00:00:00+09:00",
+      "divergence_score": 3.1098380966751122,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0005249161987848083,
+        "1d": -0.00029724454527446653,
+        "3d": -0.0038511978357780308,
+        "1w": -0.024459089899535158
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1824,
+      "break_time": "2024-12-19 08:00:00+09:00",
+      "divergence_score": -4.598043876034133,
+      "fwd_returns_pips_signed": {
+        "4h": -0.006343202864281139,
+        "1d": -0.011450330085144955,
+        "3d": -0.01550307225028913,
+        "1w": -0.011174105359229358
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1867,
+      "break_time": "2024-12-31 00:00:00+09:00",
+      "divergence_score": 9.30659639446813,
+      "fwd_returns_pips_signed": {
+        "4h": 0.002077375273140447,
+        "1d": 0.004857363214888721,
+        "3d": 0.001104667331334852,
+        "1w": -0.0009604774515308279
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 1880,
+      "break_time": "2025-01-03 00:00:00+09:00",
+      "divergence_score": 6.491247778284361,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0013515314291723257,
+        "1d": 0.0005633600993011356,
+        "3d": 0.012999027699406973,
+        "1w": -0.008716064543681235
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1944,
+      "break_time": "2025-01-17 08:00:00+09:00",
+      "divergence_score": -23.08701770449843,
+      "fwd_returns_pips_signed": {
+        "4h": -7.249190941660544e-05,
+        "1d": -0.003762628352406594,
+        "3d": -0.010426097638828402,
+        "1w": -0.004175241955941544
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 1982,
+      "break_time": "2025-01-27 08:00:00+09:00",
+      "divergence_score": -6.725387753407638,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0019295072472598207,
+        "1d": 0.005184172258140052,
+        "3d": 0.01649575049651819,
+        "1w": 0.013031879116409684
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 2041,
+      "break_time": "2025-02-08 00:00:00+09:00",
+      "divergence_score": -6.711808677590291,
+      "fwd_returns_pips_signed": {
+        "4h": -0.00020015696586739296,
+        "1d": -0.0034707284448387554,
+        "3d": -0.018000444256993653,
+        "1w": -0.016105023253172313
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2056,
+      "break_time": "2025-02-12 08:00:00+09:00",
+      "divergence_score": -2.7877971813326354,
+      "fwd_returns_pips_signed": {
+        "4h": -0.001582450645939204,
+        "1d": 0.0005165983149799658,
+        "3d": -3.1004387123445554e-05,
+        "1w": -0.010336197233144162
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2202,
+      "break_time": "2025-03-17 20:00:00+09:00",
+      "divergence_score": -6.694792214940556,
+      "fwd_returns_pips_signed": {
+        "4h": 0.008415846934211935,
+        "1d": 0.00529581793024736,
+        "3d": -0.010633759988230906,
+        "1w": 0.0051485053326496555
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_bottom",
+      "break_idx": 2230,
+      "break_time": "2025-03-24 08:00:00+09:00",
+      "divergence_score": 7.317615532989983,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0001700336883336817,
+        "1d": 0.00731711873080787,
+        "3d": 0.0065043980244974264,
+        "1w": null
+      }
+    },
+    {
+      "pair": "AUD_JPY",
+      "pattern_type": "double_top",
+      "break_idx": 2257,
+      "break_time": "2025-03-28 20:00:00+09:00",
+      "divergence_score": -10.253715236098678,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0019391248228366464,
+        "1d": null,
+        "3d": null,
+        "1w": null
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 36,
+      "break_time": "2023-11-09 00:00:00+09:00",
+      "divergence_score": -2.1679484187150138,
+      "fwd_returns_pips_signed": {
+        "4h": 0.00011204377188395176,
+        "1d": -0.0013829063789971285,
+        "3d": -0.003001839827608141,
+        "1w": 0.014847903827157338
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 59,
+      "break_time": "2023-11-14 16:00:00+09:00",
+      "divergence_score": 6.171597390083377,
+      "fwd_returns_pips_signed": {
+        "4h": 0.01035461426863836,
+        "1d": 0.01253063283046392,
+        "3d": 0.013800859985293346,
+        "1w": 0.017253604028291195
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 79,
+      "break_time": "2023-11-18 00:00:00+09:00",
+      "divergence_score": -13.729099055291115,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0006509611074332206,
+        "1d": 0.003424253261231705,
+        "3d": -0.0025713092940969906,
+        "1w": 0.004474812666495312
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 254,
+      "break_time": "2023-12-29 04:00:00+09:00",
+      "divergence_score": 20.86462762628811,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0002077546695817556,
+        "1d": 0.002161400415492565,
+        "3d": 0.014816164442449459,
+        "1w": 0.011237655450396719
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 284,
+      "break_time": "2024-01-06 00:00:00+09:00",
+      "divergence_score": 13.304179162000146,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0009041550648146712,
+        "1d": 0.000574946057608397,
+        "3d": -0.0012879831145626297,
+        "1w": -0.006667912596649617
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 326,
+      "break_time": "2024-01-16 16:00:00+09:00",
+      "divergence_score": -1.9382684997551962,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0008090317802366825,
+        "1d": 0.0008642168802736327,
+        "3d": 2.7569855122144826e-05,
+        "1w": -0.0004502000709992876
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 349,
+      "break_time": "2024-01-22 08:00:00+09:00",
+      "divergence_score": 3.2015258579278907,
+      "fwd_returns_pips_signed": {
+        "4h": -0.00022005428094375168,
+        "1d": -0.001826082277356894,
+        "3d": -0.0027541651179296273,
+        "1w": -0.005303930623135195
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 359,
+      "break_time": "2024-01-24 00:00:00+09:00",
+      "divergence_score": 6.615748015551304,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0020463665711472068,
+        "1d": -0.005108086006908222,
+        "3d": -0.0017240191423001233,
+        "1w": 0.0008769784502281469
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 406,
+      "break_time": "2024-02-02 16:00:00+09:00",
+      "divergence_score": -10.98129312002343,
+      "fwd_returns_pips_signed": {
+        "4h": -0.006914126775258975,
+        "1d": -0.009832376230284975,
+        "3d": -0.011420142410169157,
+        "1w": -0.01113211460884965
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 395,
+      "break_time": "2024-01-31 20:00:00+09:00",
+      "divergence_score": 8.135924556089229,
+      "fwd_returns_pips_signed": {
+        "4h": -0.003019148096007604,
+        "1d": -0.004836869064312507,
+        "3d": -0.012103763593808006,
+        "1w": -0.010495680073123431
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 411,
+      "break_time": "2024-02-05 08:00:00+09:00",
+      "divergence_score": -8.28660604523811,
+      "fwd_returns_pips_signed": {
+        "4h": 8.349684804262458e-05,
+        "1d": 0.003084730256012011,
+        "3d": -0.0003524654063871008,
+        "1w": 0.005852349960874262
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 550,
+      "break_time": "2024-03-06 20:00:00+09:00",
+      "divergence_score": -12.208497647784185,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0014593518112812898,
+        "1d": 0.0026143086287909734,
+        "3d": 0.004984205654716967,
+        "1w": 0.0003673330742083869
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 539,
+      "break_time": "2024-03-05 00:00:00+09:00",
+      "divergence_score": -12.359825233874133,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0003499562590394828,
+        "1d": -0.00034086460174805044,
+        "3d": 0.007862822575982614,
+        "1w": 0.00785368368772825
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 537,
+      "break_time": "2024-03-04 16:00:00+09:00",
+      "divergence_score": -3.208102948561695,
+      "fwd_returns_pips_signed": {
+        "4h": 0.00056185727540424,
+        "1d": -0.0003133034184915201,
+        "3d": 0.0039355648855113196,
+        "1w": 0.00682220450697725
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 613,
+      "break_time": "2024-03-21 00:00:00+09:00",
+      "divergence_score": 9.200783184231454,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0019496484452705687,
+        "1d": -0.00476652767501691,
+        "3d": -0.006913825716442973,
+        "1w": -0.010768392413808156
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 705,
+      "break_time": "2024-04-10 20:00:00+09:00",
+      "divergence_score": 14.988569738284198,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0015821462783442847,
+        "1d": 0.004483037701068671,
+        "3d": 0.008939348029470384,
+        "1w": 0.009896860822526193
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 737,
+      "break_time": "2024-04-18 00:00:00+09:00",
+      "divergence_score": 8.629116042350802,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0005059353822331331,
+        "1d": -0.002383209827640273,
+        "3d": -0.002383209827640273,
+        "1w": 0.0008805373720041643
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 760,
+      "break_time": "2024-04-23 16:00:00+09:00",
+      "divergence_score": 1.0667519497135345,
+      "fwd_returns_pips_signed": {
+        "4h": 0.004064855881235188,
+        "1d": 0.0031203612325146762,
+        "3d": 0.006902319749925376,
+        "1w": 0.005848544479541848
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 760,
+      "break_time": "2024-04-23 16:00:00+09:00",
+      "divergence_score": 9.65925643388264,
+      "fwd_returns_pips_signed": {
+        "4h": 0.004064855881235188,
+        "1d": 0.0031203612325146762,
+        "3d": 0.006902319749925376,
+        "1w": 0.005848544479541848
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 779,
+      "break_time": "2024-04-26 20:00:00+09:00",
+      "divergence_score": -1.4360096770717519,
+      "fwd_returns_pips_signed": {
+        "4h": -0.002403476376434857,
+        "1d": -0.0035144164485902407,
+        "3d": 0.0010117475990921998,
+        "1w": -0.007815818706628619
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 891,
+      "break_time": "2024-05-22 20:00:00+09:00",
+      "divergence_score": 14.453047623480401,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0011175197767970546,
+        "1d": 0.0008218558705860579,
+        "3d": -0.0027101037023699037,
+        "1w": -0.0014942308876079863
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 909,
+      "break_time": "2024-05-27 16:00:00+09:00",
+      "divergence_score": -9.067936881948022,
+      "fwd_returns_pips_signed": {
+        "4h": -0.00041433603244514505,
+        "1d": 0.0014258448245062089,
+        "3d": -0.004178837945419123,
+        "1w": 0.0012052018331630554
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 942,
+      "break_time": "2024-06-04 00:00:00+09:00",
+      "divergence_score": -5.92260309399601,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0012105650781377847,
+        "1d": -0.0013866125262872453,
+        "3d": -0.00039466740605439976,
+        "1w": -0.004534279227060484
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 965,
+      "break_time": "2024-06-07 20:00:00+09:00",
+      "divergence_score": 5.599199788429885,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0006383421823253216,
+        "1d": 0.007016335199601972,
+        "3d": 0.004997344845967228,
+        "1w": 0.007379627751908452
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1062,
+      "break_time": "2024-07-01 08:00:00+09:00",
+      "divergence_score": 2.6909038259430105,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0013844304909001598,
+        "1d": -0.0018426837660114326,
+        "3d": 0.002924562355969329,
+        "1w": 0.005812864895262726
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1062,
+      "break_time": "2024-07-01 08:00:00+09:00",
+      "divergence_score": 2.948024576592431,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0013844304909001598,
+        "1d": -0.0018426837660114326,
+        "3d": 0.002924562355969329,
+        "1w": 0.005812864895262726
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1189,
+      "break_time": "2024-07-29 20:00:00+09:00",
+      "divergence_score": -8.034511626110834,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0005638411596278342,
+        "1d": 0.0009527818711700387,
+        "3d": 0.0021473536574275615,
+        "1w": -0.00943242613605752
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1177,
+      "break_time": "2024-07-26 00:00:00+09:00",
+      "divergence_score": 10.439139437900117,
+      "fwd_returns_pips_signed": {
+        "4h": 0.00023964900752544704,
+        "1d": 0.0008293096933228716,
+        "3d": -0.003934758369408056,
+        "1w": 0.009249214886906665
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1188,
+      "break_time": "2024-07-29 16:00:00+09:00",
+      "divergence_score": -2.6797265561491415,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0018843878546211529,
+        "1d": 0.00023073905822380836,
+        "3d": 0.00476400614255694,
+        "1w": -0.00729155051358063
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1201,
+      "break_time": "2024-07-31 20:00:00+09:00",
+      "divergence_score": 3.704721404851668,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0004896368009059404,
+        "1d": -0.0027111948170553957,
+        "3d": 0.011667350225516848,
+        "1w": 0.008831947894202774
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1323,
+      "break_time": "2024-08-28 12:00:00+09:00",
+      "divergence_score": 4.354623329106445,
+      "fwd_returns_pips_signed": {
+        "4h": 0.002029327157585567,
+        "1d": 0.0017507243041486598,
+        "3d": 0.008684895757833572,
+        "1w": 0.0032975011123282105
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1419,
+      "break_time": "2024-09-19 00:00:00+09:00",
+      "divergence_score": -2.386547237468932,
+      "fwd_returns_pips_signed": {
+        "4h": -0.002217703925272929,
+        "1d": 0.0014070813454510334,
+        "3d": -0.0015707396924072997,
+        "1w": 0.0025617383660983956
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1394,
+      "break_time": "2024-09-13 00:00:00+09:00",
+      "divergence_score": 9.869333294520473,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0013010364950835213,
+        "1d": 0.0015628461429103846,
+        "3d": 0.005760483257257379,
+        "1w": 0.004717223876727766
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1474,
+      "break_time": "2024-10-01 20:00:00+09:00",
+      "divergence_score": 9.534205913173238,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0004514998902799272,
+        "1d": 0.0036358414236553754,
+        "3d": 0.009706876420438201,
+        "1w": 0.012481993450872489
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1445,
+      "break_time": "2024-09-25 04:00:00+09:00",
+      "divergence_score": -4.841765519686852,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0002501429401263605,
+        "1d": -0.0050968646896523,
+        "3d": -0.00215560697593542,
+        "1w": -0.014942848163295178
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1461,
+      "break_time": "2024-09-27 20:00:00+09:00",
+      "divergence_score": 6.599796075172463,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0009576444470260209,
+        "1d": 0.0010371589928686725,
+        "3d": -0.0100516008977007,
+        "1w": -0.017570671999492374
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1603,
+      "break_time": "2024-10-30 16:00:00+09:00",
+      "divergence_score": 0.5088537180903927,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0013466276396490312,
+        "1d": 0.0030135633052641997,
+        "3d": 0.005256314371722054,
+        "1w": -0.005284089270382458
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1704,
+      "break_time": "2024-11-22 00:00:00+09:00",
+      "divergence_score": -13.09813908663304,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0010208901712434534,
+        "1d": 0.006649692258933859,
+        "3d": -0.0016103139779953327,
+        "1w": -0.003398627637693011
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1686,
+      "break_time": "2024-11-19 00:00:00+09:00",
+      "divergence_score": 4.474491419094065,
+      "fwd_returns_pips_signed": {
+        "4h": 0.00013209915003973421,
+        "1d": -0.000698528399038785,
+        "3d": -0.010529508489995398,
+        "1w": -0.0038953229800894745
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1698,
+      "break_time": "2024-11-21 00:00:00+09:00",
+      "divergence_score": -19.29030401933978,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0006736339007185066,
+        "1d": 0.004747258317350719,
+        "3d": 0.0026705330799184426,
+        "1w": -0.0016405961033789523
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1694,
+      "break_time": "2024-11-20 08:00:00+09:00",
+      "divergence_score": 7.786699283624266,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0007836214093598082,
+        "1d": -0.004388626898471186,
+        "3d": -0.010855232414348527,
+        "1w": -0.003990586766980199
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1697,
+      "break_time": "2024-11-20 20:00:00+09:00",
+      "divergence_score": 0.7814735510374575,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0010540560765100598,
+        "1d": -0.000978125211526036,
+        "3d": 0.003712274744965577,
+        "1w": -0.003774269304820936
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1771,
+      "break_time": "2024-12-06 20:00:00+09:00",
+      "divergence_score": -7.026782554824223,
+      "fwd_returns_pips_signed": {
+        "4h": -0.002811317159073269,
+        "1d": 0.00012287392677992615,
+        "3d": -0.007962195736798607,
+        "1w": -0.007228809985899733
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1823,
+      "break_time": "2024-12-19 04:00:00+09:00",
+      "divergence_score": -11.979760581512423,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0037895086691145663,
+        "1d": -0.0017085028697531174,
+        "3d": -0.005578022276056097,
+        "1w": -0.008398519747227925
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1834,
+      "break_time": "2024-12-21 00:00:00+09:00",
+      "divergence_score": 11.966014101282909,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0003545742510830674,
+        "1d": -0.00408040390831662,
+        "3d": -0.0033495081438253554,
+        "1w": -0.006314869529614867
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1866,
+      "break_time": "2024-12-30 20:00:00+09:00",
+      "divergence_score": -3.987188017760083,
+      "fwd_returns_pips_signed": {
+        "4h": 7.688537355670516e-05,
+        "1d": 0.0028197904323729595,
+        "3d": 0.011998074986457951,
+        "1w": 0.01015178307833945
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1916,
+      "break_time": "2025-01-10 20:00:00+09:00",
+      "divergence_score": -14.749091326484077,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0011612419761843733,
+        "1d": 0.0050352819811737524,
+        "3d": -0.005272026762513957,
+        "1w": -0.011220654118767964
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1899,
+      "break_time": "2025-01-08 00:00:00+09:00",
+      "divergence_score": -3.9718774290973187,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0008405594562685068,
+        "1d": 0.004006237274627053,
+        "3d": 0.010963243962351665,
+        "1w": 0.007288972854727467
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1954,
+      "break_time": "2025-01-20 20:00:00+09:00",
+      "divergence_score": -1.0268040839910597,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0017778124141839477,
+        "1d": -0.0026727187252613624,
+        "3d": -0.000605062373496737,
+        "1w": -0.0010855313204228972
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1957,
+      "break_time": "2025-01-21 08:00:00+09:00",
+      "divergence_score": 3.243092410598848,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0017921497098156366,
+        "1d": -0.0024997849743133085,
+        "3d": -0.005883753194350368,
+        "1w": -0.0035555080506584624
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 1961,
+      "break_time": "2025-01-22 00:00:00+09:00",
+      "divergence_score": -14.21844545392883,
+      "fwd_returns_pips_signed": {
+        "4h": 0.00014381660531298524,
+        "1d": -0.001237677354511399,
+        "3d": 0.006317973655269642,
+        "1w": -4.794346507527858e-05
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 2012,
+      "break_time": "2025-02-03 04:00:00+09:00",
+      "divergence_score": 5.6647063536994295,
+      "fwd_returns_pips_signed": {
+        "4h": 0.002939756681831645,
+        "1d": -0.008922432601867116,
+        "3d": -0.014839609629955685,
+        "1w": -0.00890310108569579
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 1988,
+      "break_time": "2025-01-28 08:00:00+09:00",
+      "divergence_score": 3.1002667594633095,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0003641311679016268,
+        "1d": -1.9168104274984443e-05,
+        "3d": 0.004225940076393521,
+        "1w": 0.0025526375106718416
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_bottom",
+      "break_idx": 2122,
+      "break_time": "2025-02-27 00:00:00+09:00",
+      "divergence_score": -2.0981769502755867,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0002573965780466314,
+        "1d": -0.006782865134964559,
+        "3d": -0.0005436104449850002,
+        "1w": 0.03428253862076288
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 2127,
+      "break_time": "2025-02-27 20:00:00+09:00",
+      "divergence_score": 6.874692118366745,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0003071312050247979,
+        "1d": 0.0009985215031688768,
+        "3d": -0.008694793026526038,
+        "1w": -0.03923695304302762
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 2124,
+      "break_time": "2025-02-27 08:00:00+09:00",
+      "divergence_score": 5.859244513654183,
+      "fwd_returns_pips_signed": {
+        "4h": -7.639784179820641e-05,
+        "1d": 0.008487753377942345,
+        "3d": -0.0018891332781758516,
+        "1w": -0.035730313350734365
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 2220,
+      "break_time": "2025-03-20 20:00:00+09:00",
+      "divergence_score": 11.246109946279887,
+      "fwd_returns_pips_signed": {
+        "4h": -0.0017344457813312092,
+        "1d": 0.0005449415246361472,
+        "3d": 0.0008591105501545987,
+        "1w": null
+      }
+    },
+    {
+      "pair": "EUR_USD",
+      "pattern_type": "double_top",
+      "break_idx": 2213,
+      "break_time": "2025-03-19 16:00:00+09:00",
+      "divergence_score": 0.4818806200036505,
+      "fwd_returns_pips_signed": {
+        "4h": 0.0014689548275449715,
+        "1d": 0.004966395139639659,
+        "3d": 0.005538192628242997,
+        "1w": 0.010578595802673757
+      }
+    }
+  ]
+}
