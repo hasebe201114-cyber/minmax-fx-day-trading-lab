@@ -1,0 +1,255 @@
+{
+  "generated_at": "2026-08-27T03:49:50.349667",
+  "system": "SYS-FX010 (EXP-FX000004)",
+  "purpose": "過去REJECT戦略について、H1確定時刻先読みバグと同種の問題が判定に影響していないかをbacktest_carry_baseline.pyについて確認する",
+  "lookahead_path_found": true,
+  "lookahead_path_location": "scripts/backtest_carry_baseline.py:99,211 atr_at_entry = atr_d1.asof(entry_time)",
+  "lookahead_path_description": "atr_d1(D1バーの左ラベル=開始時刻でインデックス)を、週初のM5エントリー時刻(月曜00:00台)に対して.asof()で参照すると、まだ形成中の月曜の日足ATR(23:55まで確定しない)を返してしまう。最大先読み幅=D1バー1本=24時間。",
+  "false_positive_check": {
+    "no_stop_variant(公式REJECT判定に使用)": "k_stop=Noneのためstop_price=None固定となり、atr_at_entryの値自体はPnL/イグジットタイミングに一切使われない。使われるのはNaN判定によるサンプル除外のみ(ATRウォームアップ期間14営業日以外はNaNにならない)。実測結果: シフト前後で完全に同一(影響なしを実証)",
+    "with_stop_variant(Trainのみの試行、過学習のため不採用・最終判定には未使用)": "stop_price算出にatr_at_entryの値を直接使うため影響あり。ただしこのバリアントはTrainで過学習と判明しValidationで崩れたため、そもそもSYS-FX010のREJECT根拠(no_stopバリアントの3期間評価 + 価格変動/スワップの収益構造分解)には採用されていない"
+  },
+  "reproduction_check": {
+    "official_carry_no_stop_tvt_json_exists": true,
+    "official_summary_by_period": {
+      "train": {
+        "label": "no_stop_train",
+        "n_cycles": 284,
+        "final_equity_jpy": 1043855.0,
+        "total_return_pct": 4.39,
+        "win_rate": 0.549,
+        "monthly_sharpe": 0.507,
+        "max_dd_pct": 6.81,
+        "max_dd_monthly_pct": 4.93,
+        "profit_factor": 1.195,
+        "payoff_ratio": 0.98,
+        "n_stopped": 0
+      },
+      "validation": {
+        "label": "no_stop_validation",
+        "n_cycles": 128,
+        "final_equity_jpy": 1063227.0,
+        "total_return_pct": 6.32,
+        "win_rate": 0.625,
+        "monthly_sharpe": 4.721,
+        "max_dd_pct": 0.74,
+        "max_dd_monthly_pct": 0.0,
+        "profit_factor": 2.731,
+        "payoff_ratio": 1.638,
+        "n_stopped": 0
+      },
+      "test": {
+        "label": "no_stop_test",
+        "n_cycles": 136,
+        "final_equity_jpy": 1036694.0,
+        "total_return_pct": 3.67,
+        "win_rate": 0.699,
+        "monthly_sharpe": 2.496,
+        "max_dd_pct": 2.04,
+        "max_dd_monthly_pct": 1.12,
+        "profit_factor": 1.56,
+        "payoff_ratio": 0.673,
+        "n_stopped": 0
+      }
+    }
+  },
+  "no_stop_variant_results(official_reject_basis)": {
+    "train": {
+      "reproduced_bug": {
+        "period": "train",
+        "n_cycles_total": 284,
+        "n_by_pair": {
+          "USD_JPY": 71,
+          "EUR_JPY": 71,
+          "GBP_JPY": 71,
+          "AUD_JPY": 71
+        },
+        "n_trades_effective": 82.92818244200139,
+        "perm_p_value": 0.4845,
+        "summary": {
+          "label": "no_stop_train",
+          "n_cycles": 284,
+          "final_equity_jpy": 1043855.0,
+          "total_return_pct": 4.39,
+          "win_rate": 0.549,
+          "monthly_sharpe": 0.507,
+          "max_dd_pct": 6.81,
+          "max_dd_monthly_pct": 4.93,
+          "profit_factor": 1.195,
+          "payoff_ratio": 0.98,
+          "n_stopped": 0
+        }
+      },
+      "confirm_time_fixed": {
+        "period": "train",
+        "n_cycles_total": 284,
+        "n_by_pair": {
+          "USD_JPY": 71,
+          "EUR_JPY": 71,
+          "GBP_JPY": 71,
+          "AUD_JPY": 71
+        },
+        "n_trades_effective": 82.92818244200139,
+        "perm_p_value": 0.4845,
+        "summary": {
+          "label": "no_stop_train",
+          "n_cycles": 284,
+          "final_equity_jpy": 1043855.0,
+          "total_return_pct": 4.39,
+          "win_rate": 0.549,
+          "monthly_sharpe": 0.507,
+          "max_dd_pct": 6.81,
+          "max_dd_monthly_pct": 4.93,
+          "profit_factor": 1.195,
+          "payoff_ratio": 0.98,
+          "n_stopped": 0
+        }
+      }
+    },
+    "validation": {
+      "reproduced_bug": {
+        "period": "validation",
+        "n_cycles_total": 128,
+        "n_by_pair": {
+          "USD_JPY": 32,
+          "EUR_JPY": 32,
+          "GBP_JPY": 32,
+          "AUD_JPY": 32
+        },
+        "n_trades_effective": 37.376082227380905,
+        "perm_p_value": 0.4306,
+        "summary": {
+          "label": "no_stop_validation",
+          "n_cycles": 128,
+          "final_equity_jpy": 1063227.0,
+          "total_return_pct": 6.32,
+          "win_rate": 0.625,
+          "monthly_sharpe": 4.721,
+          "max_dd_pct": 0.74,
+          "max_dd_monthly_pct": 0.0,
+          "profit_factor": 2.731,
+          "payoff_ratio": 1.638,
+          "n_stopped": 0
+        }
+      },
+      "confirm_time_fixed": {
+        "period": "validation",
+        "n_cycles_total": 128,
+        "n_by_pair": {
+          "USD_JPY": 32,
+          "EUR_JPY": 32,
+          "GBP_JPY": 32,
+          "AUD_JPY": 32
+        },
+        "n_trades_effective": 37.376082227380905,
+        "perm_p_value": 0.4306,
+        "summary": {
+          "label": "no_stop_validation",
+          "n_cycles": 128,
+          "final_equity_jpy": 1063227.0,
+          "total_return_pct": 6.32,
+          "win_rate": 0.625,
+          "monthly_sharpe": 4.721,
+          "max_dd_pct": 0.74,
+          "max_dd_monthly_pct": 0.0,
+          "profit_factor": 2.731,
+          "payoff_ratio": 1.638,
+          "n_stopped": 0
+        }
+      }
+    },
+    "test": {
+      "reproduced_bug": {
+        "period": "test",
+        "n_cycles_total": 136,
+        "n_by_pair": {
+          "USD_JPY": 34,
+          "EUR_JPY": 34,
+          "GBP_JPY": 34,
+          "AUD_JPY": 34
+        },
+        "n_trades_effective": 39.712087366592215,
+        "perm_p_value": 0.4426,
+        "summary": {
+          "label": "no_stop_test",
+          "n_cycles": 136,
+          "final_equity_jpy": 1036694.0,
+          "total_return_pct": 3.67,
+          "win_rate": 0.699,
+          "monthly_sharpe": 2.496,
+          "max_dd_pct": 2.04,
+          "max_dd_monthly_pct": 1.12,
+          "profit_factor": 1.56,
+          "payoff_ratio": 0.673,
+          "n_stopped": 0
+        }
+      },
+      "confirm_time_fixed": {
+        "period": "test",
+        "n_cycles_total": 136,
+        "n_by_pair": {
+          "USD_JPY": 34,
+          "EUR_JPY": 34,
+          "GBP_JPY": 34,
+          "AUD_JPY": 34
+        },
+        "n_trades_effective": 39.712087366592215,
+        "perm_p_value": 0.4426,
+        "summary": {
+          "label": "no_stop_test",
+          "n_cycles": 136,
+          "final_equity_jpy": 1036694.0,
+          "total_return_pct": 3.67,
+          "win_rate": 0.699,
+          "monthly_sharpe": 2.496,
+          "max_dd_pct": 2.04,
+          "max_dd_monthly_pct": 1.12,
+          "profit_factor": 1.56,
+          "payoff_ratio": 0.673,
+          "n_stopped": 0
+        }
+      }
+    }
+  },
+  "with_stop_variant_results(unused_reference)": {
+    "reproduced_bug": {
+      "n_cycles_no_stop": 284,
+      "k_stop_derived": 2.3858,
+      "n_cycles_with_stop": 284,
+      "n_stopped": 61,
+      "with_stop_summary": {
+        "label": "k_stop=2.386",
+        "n_cycles": 284,
+        "final_equity_jpy": 1039542.0,
+        "total_return_pct": 3.95,
+        "win_rate": 0.539,
+        "monthly_sharpe": 0.591,
+        "max_dd_pct": 6.27,
+        "max_dd_monthly_pct": 4.39,
+        "profit_factor": 1.173,
+        "payoff_ratio": 1.005,
+        "n_stopped": 61
+      }
+    },
+    "confirm_time_fixed": {
+      "n_cycles_no_stop": 284,
+      "k_stop_derived": 2.3542,
+      "n_cycles_with_stop": 284,
+      "n_stopped": 65,
+      "with_stop_summary": {
+        "label": "k_stop=2.354",
+        "n_cycles": 284,
+        "final_equity_jpy": 1041099.0,
+        "total_return_pct": 4.11,
+        "win_rate": 0.535,
+        "monthly_sharpe": 0.598,
+        "max_dd_pct": 6.19,
+        "max_dd_monthly_pct": 4.32,
+        "profit_factor": 1.182,
+        "payoff_ratio": 1.026,
+        "n_stopped": 65
+      }
+    }
+  },
+  "conclusion": "公式のREJECT判定根拠(no_stopバリアント、Train/Validation/Test)は先読みバグの影響を受けていないことを実測で確認した(シフト前後で結果が完全一致)。 ストップ有りバリアント(不採用)はatr_at_entryの値を直接使うため影響を受けるが、そもそも最終判定には使われていないため、SYS-FX010のREJECT判定自体は覆らない。REJECT根拠の本質(価格変動とスワップの収益構造分解、方向性予測力の欠如)は本バグの影響を受けない別系統の分析であり、この点でもREJECT判定は堅牢。"
+}

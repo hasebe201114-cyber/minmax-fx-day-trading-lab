@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-08-27T00:00:00",
+  "purpose": "過去REJECT戦略について、H1確定時刻先読みバグ(h1_confirm_time_lookahead_impact.json)と同種の問題が判定に影響していないかを、SYS-FX007(EXP-FX000001)・SYS-FX008(EXP-FX000002)について確認する。両者とも本番バックテストエンジンが同一のsrc/minmax_fx_dt/backtest/runner.pyを共有するため、まとめて記録する",
+  "method": "コードレビュー(実際に先読みが成立する経路の特定)。両システムとも本番エンジンに構造的な確定バー保護が既に実装されていることを確認したため、資産の追加のシフト実験(反実仮想バックテスト)は不要と判断した。判断の妥当性は git 履歴による時系列確認で裏付けている",
+
+  "SYS-FX007": {
+    "reject_status": "REJECT確定(2026-08-16)",
+    "production_engine": "src/minmax_fx_dt/backtest/runner.py run_backtest() -> evaluate_mtf()",
+    "lookahead_path_found": false,
+    "code_review_evidence": [
+      "runner.py:66-83 last_confirmed_bar_ts(): resample既定(label='left')でH4/D1バーのインデックスラベルがバー開始時刻であることを前提に、「index<=ts の最後の要素(=進行中バー)」の1本前を確定済みバーとして返す設計になっている(OBS000007チェック#2で導入)。境界ケース(ts=バー開始直後/バー終了直前)を手計算で検証し、先読みが生じないことを確認した",
+      "runner.py:167-171 SL/TPチェックは進行中H4バーの高安ではなく、このST(M15)バー自身の高安のみを使用(OBS000007チェック#1で修正)",
+      "src/minmax_fx_dt/strategy/multi_timeframe.py: last_mt_ts/last_st_tsはengineの状態更新・ログ用途のみに使われ、Timedelta等の日付演算には一切使われていない(純粋な位置ベース参照)",
+      "src/minmax_fx_dt/strategy/range_breakout.py: timestampはメタデータとして保持されるのみで、有効期限等の日付演算ロジックは存在しない",
+      "src/minmax_fx_dt/strategy/support_resistance.py:343-345 detect_support_resistance()のlookback_days窓は「確定済みの最後のバー時刻から過去365日」という後方参照のみで、未来情報の漏洩経路にはならない",
+      "scripts/derive_sltp_donchian_params.py・derive_trend_strength_thresholds.py・ablation_sweep.py: resample()利用はあるが、いずれも.iloc[]による純粋な位置ベース処理のみで、バーラベルを使った日付演算(break_time+Timedelta等)は存在しない(偽陽性チェック)"
+    ],
+    "git_history_evidence": {
+      "lookahead_fix_commit": "4490a6e fix(backtest): resolve look-ahead bias and state-machine bugs in SYS-FX007 engine (2026-08-15 00:28 UTC)",
+      "official_tvt_rerun_commit": "8c2104b feat(tvt): execute train/val/test 15 cells on fixed engine + verified data (2026-08-15 09:32 UTC)",
+      "reject_decision_date": "2026-08-16",
+      "conclusion": "SYS-FX007のREJECT確定(2026-08-16)は、先読み修正(4490a6e)適用・TVT再実行(8c2104b)の後に行われており、REJECT判定の根拠となったTrain/Validation/Test結果は既にこの型の先読みバグの影響を受けていないコードで生成されたもの"
+    },
+    "conclusion": "先読み経路なし。REJECT判定は影響を受けていない"
+  },
+
+  "SYS-FX008": {
+    "reject_status": "REJECT確定(2026-08-16、SYS-FX007と同日)",
+    "production_engine": "src/minmax_fx_dt/backtest/trend_follow_runner.py run_trend_follow_backtest()",
+    "lookahead_path_found": false,
+    "code_review_evidence": [
+      "trend_follow_runner.py:8-13 docstring自身が「runner.pyと同じ設計を踏襲する」と明記しており、実際に`from minmax_fx_dt.backtest.runner import _slice_by_period, last_confirmed_bar_ts`でSYS-FX007と同一の確定バー保護関数をそのままimportして使用(154-164行目)",
+      "トレーリングストップ更新はこのバーのOpenのみ使用(133-143行目、先読み回避)",
+      "scripts/derive_trend_follow_params.py: zigzag_pivot_indices()の返す位置(バー数)のみを使う純粋な位置ベース計算、日付演算なし(偽陽性チェック)",
+      "scripts/derive_trend_follow_trail_multiplier.py:92-95 confirmed_d1_ts = d1_slice.index[-1] を使ってh4_slice をh4.index<=confirmed_d1_tsで絞り込んでいるが、confirmed_d1_tsはd1_slice(loop変数iまでのD1バー、その日の終値を含む)の開始時刻ラベルであり、これはH1確定時刻バグとは逆方向(過度に保守的=当日のH4バーをほぼ除外し、前日までのH4バーしか使わない)の設計になっている。これは先読みではなくデータの過少利用(効率の問題)であり、未来情報の漏洩ではないため対象のバグには該当しない"
+    ],
+    "conclusion": "先読み経路なし。REJECT判定は影響を受けていない"
+  },
+
+  "overall_conclusion": "SYS-FX007・SYS-FX008ともに、本番バックテストエンジン(runner.py由来のlast_confirmed_bar_ts()による確定バー保護)がH1確定時刻先読みバグと同型の問題を構造的に回避しており、パラメータ導出スクリプトにも該当する先読み経路は見つからなかった。両システムのREJECT確定判定は覆らない"
+}

@@ -1,0 +1,198 @@
+{
+  "generated_at": "2026-08-27T03:52:19.397040",
+  "purpose": "SYS-FX013〜021(SYS-FX012改善ループの派生)について、H1確定時刻先読みバグの共有関係をimport追跡で確認し、実測2件(SYS-FX012本体・SYS-FX013)から残りへの論理的な影響評価を行う",
+  "shared_engine_verification": {
+    "SYS-FX013": {
+      "script": "scripts/backtest_sysfx013_new_pairs_trainonly.py",
+      "reject_status": "REJECT確定(2026-08-22)",
+      "note": "3通貨(GBP_USD/AUD_USD/NZD_USD)とも個別Trainでmean_r_net明確にマイナス",
+      "exists": true,
+      "found_markers": {
+        "simulate_dow_theory_trend": false,
+        "to_h1": true,
+        "find_trades_trendfiltered": true,
+        "run_period": false,
+        "detect_candidate1": true
+      },
+      "direct_break_time_pattern": false,
+      "shares_engine": true
+    },
+    "SYS-FX014": {
+      "script": "scripts/explore_m30_trend_detection_trainonly.py",
+      "reject_status": "REJECT確定(2026-08-23)",
+      "note": "M30トレンド判定層、頻度ベース再導出後もTrain KPI 1/9のまま",
+      "exists": true,
+      "found_markers": {
+        "simulate_dow_theory_trend": true,
+        "to_h1": false,
+        "find_trades_trendfiltered": false,
+        "run_period": true,
+        "detect_candidate1": true
+      },
+      "direct_break_time_pattern": false,
+      "shares_engine": true
+    },
+    "SYS-FX015": {
+      "script": "scripts/explore_m3_entry_trainonly.py",
+      "reject_status": "REJECT確定(2026-08-23)",
+      "note": "M3エントリー層、再導出パラメータがM5版とほぼ同一でperm_p≈0.07の壁を越えられず",
+      "exists": true,
+      "found_markers": {
+        "simulate_dow_theory_trend": true,
+        "to_h1": true,
+        "find_trades_trendfiltered": false,
+        "run_period": true,
+        "detect_candidate1": false
+      },
+      "direct_break_time_pattern": false,
+      "shares_engine": true
+    },
+    "SYS-FX016(new_jpy_pairs)": {
+      "script": "scripts/backtest_sysfx016_new_jpy_pairs_trainonly.py",
+      "reject_status": "司令塔判断待ち(REJECT未確定、本タスクの対象外)",
+      "note": "NZD/CAD/CHF_JPY個別Train評価",
+      "exists": true,
+      "found_markers": {
+        "simulate_dow_theory_trend": false,
+        "to_h1": true,
+        "find_trades_trendfiltered": true,
+        "run_period": false,
+        "detect_candidate1": true
+      },
+      "direct_break_time_pattern": false,
+      "shares_engine": true
+    },
+    "SYS-FX016(pooled_6pairs)": {
+      "script": "scripts/backtest_sysfx016_pooled_6pairs_trainonly.py",
+      "reject_status": "司令塔判断待ち(REJECT未確定、本タスクの対象外)",
+      "note": "6通貨プールで実効n増加も質的指標悪化",
+      "exists": true,
+      "found_markers": {
+        "simulate_dow_theory_trend": false,
+        "to_h1": true,
+        "find_trades_trendfiltered": true,
+        "run_period": false,
+        "detect_candidate1": true
+      },
+      "direct_break_time_pattern": false,
+      "shares_engine": true
+    },
+    "SYS-FX017": {
+      "script": "scripts/backtest_sysfx017_max_entry_seq_trainonly.py",
+      "reject_status": "REJECT確定(2026-08-23)",
+      "note": "max_entry_seq=3、ペイオフ改善もperm_p悪化(0.031→0.0539)でKPI7/9→5/9",
+      "exists": true,
+      "found_markers": {
+        "simulate_dow_theory_trend": false,
+        "to_h1": false,
+        "find_trades_trendfiltered": false,
+        "run_period": true,
+        "detect_candidate1": true
+      },
+      "direct_break_time_pattern": false,
+      "shares_engine": true
+    },
+    "SYS-FX018": {
+      "script": "scripts/backtest_sysfx018_breakeven_sweep_trainonly.py",
+      "reject_status": "司令塔判断待ち(REJECT未確定、本タスクの対象外)",
+      "note": "breakeven_trigger_r感度分析",
+      "exists": true,
+      "found_markers": {
+        "simulate_dow_theory_trend": true,
+        "to_h1": true,
+        "find_trades_trendfiltered": false,
+        "run_period": true,
+        "detect_candidate1": false
+      },
+      "direct_break_time_pattern": false,
+      "shares_engine": true
+    },
+    "SYS-FX019": {
+      "script": "scripts/backtest_sysfx019_pooled_breakeven_combo_trainonly.py",
+      "reject_status": "REJECT確定(2026-08-23)",
+      "note": "B1×A2組み合わせ、必須KPI(5/9)・perm_p(0.0829)ともB1/A2単独より悪化",
+      "exists": true,
+      "found_markers": {
+        "simulate_dow_theory_trend": true,
+        "to_h1": true,
+        "find_trades_trendfiltered": false,
+        "run_period": true,
+        "detect_candidate1": false
+      },
+      "direct_break_time_pattern": false,
+      "shares_engine": true
+    },
+    "SYS-FX020": {
+      "script": "scripts/backtest_sysfx020_h4_confirm_trainonly.py",
+      "reject_status": "REJECT確定(2026-08-23)",
+      "note": "H4継続確認、実効n・全KPI・Sharpe・PF・ペイオフ・DD・perm_pすべてH1版を下回る",
+      "exists": true,
+      "found_markers": {
+        "simulate_dow_theory_trend": true,
+        "to_h1": true,
+        "find_trades_trendfiltered": false,
+        "run_period": true,
+        "detect_candidate1": false
+      },
+      "direct_break_time_pattern": false,
+      "shares_engine": true
+    },
+    "SYS-FX021": {
+      "script": "scripts/backtest_sysfx021_no_reversal_confirm_trainonly.py",
+      "reject_status": "REJECT確定(2026-08-23)",
+      "note": "継続確認条件緩和(H1/H4両方)、KPI1/9・Sharpeマイナス転落・DD3倍・perm_p非有意",
+      "exists": true,
+      "found_markers": {
+        "simulate_dow_theory_trend": true,
+        "to_h1": true,
+        "find_trades_trendfiltered": false,
+        "run_period": true,
+        "detect_candidate1": false
+      },
+      "direct_break_time_pattern": false,
+      "shares_engine": true
+    }
+  },
+  "all_targets_share_engine": true,
+  "empirical_confirmations": {
+    "SYS-FX012(候補①、フォワードテスト中の凍結設計)": {
+      "train_pf_bug_to_fixed": [
+        1.874,
+        1.043
+      ],
+      "validation_pf_bug_to_fixed": [
+        2.318,
+        0.813
+      ],
+      "validation_mean_r_net_bug_to_fixed": [
+        0.5268,
+        -0.1214
+      ],
+      "direction": "先読み除去で成績悪化(PF低下・平均R符号反転)。バグは成績を過大評価する方向に作用していた"
+    },
+    "SYS-FX013(非JPY通貨、REJECT確定)": {
+      "mean_r_net_bug_to_fixed": {
+        "GBP_USD": [
+          -0.2372,
+          -0.521
+        ],
+        "AUD_USD": [
+          -0.3159,
+          -0.7189
+        ],
+        "NZD_USD": [
+          -0.6297,
+          -1.0511
+        ]
+      },
+      "reject_verdict_flips": false,
+      "direction": "先読み除去で3通貨ともさらにマイナス方向へ悪化。バグは成績を過大評価する方向に作用していた"
+    }
+  },
+  "additional_lookahead_note_h4_variants": [
+    "SYS-FX020・SYS-FX021(H4版)は、検出層のbreak_time先読み(最大1時間)に加えて、型崩れ後の継続確認層(confirm_bars=h4)でも同型の問題を持つ(backtest_vol_breakout_dow_theory.py:383 `cur_h1_pos = confirm.index.searchsorted(ts, side='right') - 1` は、confirm=h4のとき形成中のH4バーの高安を「確定済み」として参照しうる。最大先読み幅はH4バー1本=4時間)。ただしSYS-FX020・SYS-FX021はいずれもH1版基準を全指標で下回るという最も明確な形でREJECTされており、この追加の先読みが結論を覆すには、先読み除去で成績が「改善」する必要があるが、実測2件(FX012本体・FX013)はいずれも先読み除去で成績が悪化する方向だったため、H4版がこの傾向から逆転すると考える根拠はない"
+  ],
+  "logical_generalization": "SYS-FX014/015/016/017/018/019/020/021は全てimport追跡により`simulate_dow_theory_trend()`(backtest_vol_breakout_dow_theory.py:345-346のbreak_time=h1.index[break_idx]先読みパターンを含む)を直接・間接に経由することを確認した(SYS-FX014はM30バーを、SYS-FX015はM3バーを引数に渡すのみで関数自体は完全に同一)。したがって同一の先読み経路・同一メカニズムの影響を受ける。実測した2件(SYS-FX012本体の候補①、SYS-FX013の非JPY通貨)はいずれも「先読み除去で成績がさらに悪化する」方向であり、バグはエッジを過大評価する方向に作用していたことが確認された。REJECT確定済みの6件(014/015/017/019/020/021)は、いずれも比較対象としているH1版基準(候補①、先読み込みでTrain PF1.874・7/9達成)自体をすでに下回る/改善不十分と判定されてREJECTされている。先読み除去でその基準自体がさらに悪化する(Train PF1.043・1/9)ため、基準を下回っていた派生版が先読み除去後に基準を上回るように転じる可能性は極めて低い(基準点も同じ方向に沈むため、相対順位が逆転する具体的な機序が見当たらない)。したがって、これら6件のREJECT判定が先読み除去によって覆るとは考えにくい。",
+  "out_of_scope_note": "SYS-FX016・SYS-FX018は「司令塔判断待ち」でREJECT未確定のため、本タスク(過去のREJECT判定の再検証)の対象外。将来これらについて採否判断を行う際は、本結果(先読みはエッジを過大評価する方向に作用)を踏まえ、先読み除去後のパラメータで再評価することを推奨する",
+  "conclusion": "SYS-FX013〜021のいずれについても、H1確定時刻先読みバグの除去によってREJECT判定が覆る(=本来は有望だった)ケースは見つからなかった。実測した2件(SYS-FX012本体・SYS-FX013)はいずれも先読み除去で成績がさらに悪化しており、残り6件のREJECT確定分についても、同一の(先読み込みで既に過大評価されていた)基準を下回っていたことを踏まえると、先読み除去でREJECTが覆る可能性は低いと論理的に判断できる。"
+}
