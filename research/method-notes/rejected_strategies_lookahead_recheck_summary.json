@@ -1,0 +1,165 @@
+{
+  "generated_at": "2026-08-27T04:07:05.263004",
+  "purpose": "司令塔依頼: 過去にREJECT(不採用)とした戦略について、2026-08-26発見のH1確定時刻先読みバグ(h1_confirm_time_lookahead_impact.json)と同種の問題が判定に影響していないかを確認する",
+  "systems_reviewed": [
+    {
+      "system": "SYS-FX007 (EXP-FX000001)",
+      "reject_date": "2026-08-16",
+      "lookahead_path_found": false,
+      "reject_overturned": false,
+      "summary": "本番エンジン(runner.py last_confirmed_bar_ts)が確定バー保護を構造的に実装済み。REJECT確定はこの保護が導入された後のTVT再実行結果に基づく"
+    },
+    {
+      "system": "SYS-FX008 (EXP-FX000002)",
+      "reject_date": "2026-08-17",
+      "lookahead_path_found": false,
+      "reject_overturned": false,
+      "summary": "trend_follow_runner.pyはrunner.pyのlast_confirmed_bar_ts()をそのまま再利用。derive_trend_follow_trail_multiplier.pyに保守的な過少利用はあるが先読みではない"
+    },
+    {
+      "system": "SYS-FX009 v2 (EXP-FX000003)",
+      "reject_date": "2026-08-17",
+      "lookahead_path_found": true,
+      "lookahead_path": "scripts/derive_double_pattern_params.py:195 lt_at_break = lt_dir.asof(h4.index[j]) (H1版はscripts/derive_double_pattern_params_h1.py:188、同型)",
+      "reject_overturned": null,
+      "summary": "derive_double_pattern_params.pyのlt_dir.asof()にD1バー最大24時間の先読み。影響はatr_trail_multiplier導出のみ(pattern_tolerance_atr/stop_buffer_atr/max_bars_since_second_pivotは影響なしと確認)。production engine自体はlast_confirmed_bar_ts()で保護済み。感度分析結果はtrain_kpi_sensitivityを参照",
+      "parameter_drift": {
+        "atr_trail_multiplier_bug": 2.68,
+        "atr_trail_multiplier_fixed": 2.5,
+        "delta": -0.18,
+        "pooled_n_lt_matched_signals_bug": 121,
+        "pooled_n_lt_matched_signals_fixed": 119
+      },
+      "train_kpi_sensitivity": {
+        "caveat": "正式なパラメータ再導出ではない。atr_trail_multiplierのみを修正版の値に差し替えた感度分析(production run_double_pattern_backtest自体は無変更)。他パラメータ(pattern_tolerance_atr等、影響なしと確認済み)は公式値を据え置き。00-spec.md・double_pattern_params.jsonへの反映は司令塔判断に委ねる",
+        "bug_param": {
+          "atr_trail_multiplier": 2.68,
+          "n_trades_total_5pairs": 13,
+          "pairs_evaluated": [
+            "USD_JPY"
+          ],
+          "perm_p_value_pooled": 0.963,
+          "per_pair": {
+            "USD_JPY": {
+              "n_trades": 13,
+              "sharpe_monthly": -1.328,
+              "profit_factor_monthly": 0.1472,
+              "max_dd_monthly_pct": 0.9253,
+              "payoff_ratio": 0.2355
+            }
+          }
+        },
+        "fixed_param": {
+          "atr_trail_multiplier": 2.5,
+          "n_trades_total_5pairs": 13,
+          "pairs_evaluated": [
+            "USD_JPY"
+          ],
+          "perm_p_value_pooled": 0.958,
+          "per_pair": {
+            "USD_JPY": {
+              "n_trades": 13,
+              "sharpe_monthly": -1.328,
+              "profit_factor_monthly": 0.1472,
+              "max_dd_monthly_pct": 0.9253,
+              "payoff_ratio": 0.2355
+            }
+          }
+        }
+      }
+    },
+    {
+      "system": "SYS-FX010 (EXP-FX000004)",
+      "reject_date": "2026-08-19",
+      "lookahead_path_found": true,
+      "lookahead_path": "scripts/backtest_carry_baseline.py:99,211 atr_at_entry = atr_d1.asof(entry_time)",
+      "reject_overturned": false,
+      "summary": "backtest_carry_baseline.pyのatr_d1.asof()にD1バー最大24時間の先読みが存在するが、公式REJECT判定に使われたno_stopバリアントはk_stop=Noneのためこの値がPnLに一切使われず、実測(シフト前後の比較)でも影響ゼロを確認。ストップ有りバリアント(不採用・未使用)には影響するが判定への実害なし"
+    },
+    {
+      "system": "SYS-FX013 (EXP-FX000007)",
+      "reject_date": "2026-08-22",
+      "lookahead_path_found": true,
+      "lookahead_path": "scripts/backtest_vol_breakout_dow_theory.py:345-346 (simulate_dow_theory_trend、SYS-FX012と共有)",
+      "reject_overturned": false,
+      "summary": "SYS-FX012本体と同一のH1確定時刻先読みバグ(最大1時間)を実測で確認。先読み除去でGBP_USD/AUD_USD/NZD_USDの3通貨ともmean_r_netがさらにマイナス方向に悪化し、REJECT判定はむしろ強化された"
+    },
+    {
+      "system": "SYS-FX014",
+      "reject_date": "REJECT確定(2026-08-23)",
+      "lookahead_path_found": true,
+      "lookahead_path": "backtest_vol_breakout_dow_theory.py:345-346 simulate_dow_theory_trend() (SYS-FX012/013と共有エンジン)",
+      "reject_overturned": false,
+      "summary": "実測はしていないが、import追跡によりSYS-FX012/013と完全に同一の先読み経路を共有すると確認。実測2件(FX012本体・FX013)がいずれも「先読み除去で成績悪化」だったことから、既にH1版基準を下回ってREJECTされたこれらの派生版が先読み除去で基準を上回るように転じる可能性は論理的に低いと判断(詳細根拠はfx01x_h1_engine_family_lookahead_summary.json参照)",
+      "note": "M30トレンド判定層、頻度ベース再導出後もTrain KPI 1/9のまま"
+    },
+    {
+      "system": "SYS-FX015",
+      "reject_date": "REJECT確定(2026-08-23)",
+      "lookahead_path_found": true,
+      "lookahead_path": "backtest_vol_breakout_dow_theory.py:345-346 simulate_dow_theory_trend() (SYS-FX012/013と共有エンジン)",
+      "reject_overturned": false,
+      "summary": "実測はしていないが、import追跡によりSYS-FX012/013と完全に同一の先読み経路を共有すると確認。実測2件(FX012本体・FX013)がいずれも「先読み除去で成績悪化」だったことから、既にH1版基準を下回ってREJECTされたこれらの派生版が先読み除去で基準を上回るように転じる可能性は論理的に低いと判断(詳細根拠はfx01x_h1_engine_family_lookahead_summary.json参照)",
+      "note": "M3エントリー層、再導出パラメータがM5版とほぼ同一でperm_p≈0.07の壁を越えられず"
+    },
+    {
+      "system": "SYS-FX017",
+      "reject_date": "REJECT確定(2026-08-23)",
+      "lookahead_path_found": true,
+      "lookahead_path": "backtest_vol_breakout_dow_theory.py:345-346 simulate_dow_theory_trend() (SYS-FX012/013と共有エンジン)",
+      "reject_overturned": false,
+      "summary": "実測はしていないが、import追跡によりSYS-FX012/013と完全に同一の先読み経路を共有すると確認。実測2件(FX012本体・FX013)がいずれも「先読み除去で成績悪化」だったことから、既にH1版基準を下回ってREJECTされたこれらの派生版が先読み除去で基準を上回るように転じる可能性は論理的に低いと判断(詳細根拠はfx01x_h1_engine_family_lookahead_summary.json参照)",
+      "note": "max_entry_seq=3、ペイオフ改善もperm_p悪化(0.031→0.0539)でKPI7/9→5/9"
+    },
+    {
+      "system": "SYS-FX019",
+      "reject_date": "REJECT確定(2026-08-23)",
+      "lookahead_path_found": true,
+      "lookahead_path": "backtest_vol_breakout_dow_theory.py:345-346 simulate_dow_theory_trend() (SYS-FX012/013と共有エンジン)",
+      "reject_overturned": false,
+      "summary": "実測はしていないが、import追跡によりSYS-FX012/013と完全に同一の先読み経路を共有すると確認。実測2件(FX012本体・FX013)がいずれも「先読み除去で成績悪化」だったことから、既にH1版基準を下回ってREJECTされたこれらの派生版が先読み除去で基準を上回るように転じる可能性は論理的に低いと判断(詳細根拠はfx01x_h1_engine_family_lookahead_summary.json参照)",
+      "note": "B1×A2組み合わせ、必須KPI(5/9)・perm_p(0.0829)ともB1/A2単独より悪化"
+    },
+    {
+      "system": "SYS-FX020",
+      "reject_date": "REJECT確定(2026-08-23)",
+      "lookahead_path_found": true,
+      "lookahead_path": "backtest_vol_breakout_dow_theory.py:345-346 simulate_dow_theory_trend() (SYS-FX012/013と共有エンジン)",
+      "reject_overturned": false,
+      "summary": "実測はしていないが、import追跡によりSYS-FX012/013と完全に同一の先読み経路を共有すると確認。実測2件(FX012本体・FX013)がいずれも「先読み除去で成績悪化」だったことから、既にH1版基準を下回ってREJECTされたこれらの派生版が先読み除去で基準を上回るように転じる可能性は論理的に低いと判断(詳細根拠はfx01x_h1_engine_family_lookahead_summary.json参照)",
+      "note": "H4継続確認、実効n・全KPI・Sharpe・PF・ペイオフ・DD・perm_pすべてH1版を下回る"
+    },
+    {
+      "system": "SYS-FX021",
+      "reject_date": "REJECT確定(2026-08-23)",
+      "lookahead_path_found": true,
+      "lookahead_path": "backtest_vol_breakout_dow_theory.py:345-346 simulate_dow_theory_trend() (SYS-FX012/013と共有エンジン)",
+      "reject_overturned": false,
+      "summary": "実測はしていないが、import追跡によりSYS-FX012/013と完全に同一の先読み経路を共有すると確認。実測2件(FX012本体・FX013)がいずれも「先読み除去で成績悪化」だったことから、既にH1版基準を下回ってREJECTされたこれらの派生版が先読み除去で基準を上回るように転じる可能性は論理的に低いと判断(詳細根拠はfx01x_h1_engine_family_lookahead_summary.json参照)",
+      "note": "継続確認条件緩和(H1/H4両方)、KPI1/9・Sharpeマイナス転落・DD3倍・perm_p非有意"
+    }
+  ],
+  "most_important_conclusion": "調査した全システム(SYS-FX007〜FX021、SYS-FX012本体・SYS-FX013は実測、SYS-FX014/015/017/019/020/021は共有エンジンの確認+論理整理)について、H1/D1確定時刻先読みバグを除去したことで過去のREJECT判定が覆る(=本来は有望だったと判明する)ケースは**見つからなかった**。",
+  "two_failure_modes_examined": {
+    "パラメータ導出の汚染(懸念1)": "SYS-FX009のatr_trail_multiplier導出(derive_double_pattern_params.py)にD1バー確定時刻の誤用を発見。ただし影響はこの1パラメータのみで、他の判定に使う全パラメータ(pattern_tolerance_atr等)・production engine自体は無関係と確認。感度分析の結果はtrain_kpi_sensitivityを参照",
+    "先読みが不利に働くケース(懸念2)": "SYS-FX012本体・SYS-FX013の両方で、先読み除去後にmean_r_net/Profit Factorがむしろ悪化することを確認した。これは「形成途中のバーに飛び込んで早期エントリーすることで、確定を待てば避けられたはずの損失を被っていた」という懸念2の仮説と整合する結果であり、先読みバグはこれらのシステムの成績を過大評価する方向に一貫して作用していた(過小評価方向には作用していなかった)"
+  },
+  "engines_confirmed_lookahead_free": [
+    "src/minmax_fx_dt/backtest/runner.py (SYS-FX007)",
+    "src/minmax_fx_dt/backtest/trend_follow_runner.py (SYS-FX008)",
+    "src/minmax_fx_dt/backtest/double_pattern_runner.py (SYS-FX009、production backtest本体)"
+  ],
+  "engines_confirmed_with_lookahead": [
+    "scripts/backtest_vol_breakout_dow_theory.py simulate_dow_theory_trend() (SYS-FX011/012/013/014/015/017/019/020/021が共有、最大1時間、H4版は最大4時間)",
+    "scripts/derive_double_pattern_params.py lt_direction_series().asof() (SYS-FX009、最大24時間、atr_trail_multiplierのみに影響)",
+    "scripts/backtest_carry_baseline.py atr_d1.asof() (SYS-FX010、最大24時間、公式no_stopバリアントには実害なし)"
+  ],
+  "artifacts": {
+    "fx007_fx008": "research/method-notes/fx007_fx008_no_lookahead_finding.json",
+    "fx009": "research/method-notes/fx009_lt_asof_lookahead_impact.json",
+    "fx010": "research/method-notes/fx010_carry_atr_asof_lookahead_impact.json",
+    "fx012_reference(pre-existing)": "research/method-notes/h1_confirm_time_lookahead_impact.json",
+    "fx013": "research/method-notes/fx013_h1_confirm_time_lookahead_impact.json",
+    "fx014_021_family": "research/method-notes/fx01x_h1_engine_family_lookahead_summary.json"
+  }
+}

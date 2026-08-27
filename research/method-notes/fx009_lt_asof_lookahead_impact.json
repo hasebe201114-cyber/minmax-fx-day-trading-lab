@@ -1,0 +1,137 @@
+{
+  "generated_at": "2026-08-27T04:03:16.101126",
+  "system": "SYS-FX009 v2 (EXP-FX000003)",
+  "purpose": "過去REJECT戦略について、H1確定時刻先読みバグ(h1_confirm_time_lookahead_impact.json)と同種の問題(バーラベル=開始時刻を確定時刻として誤用)が判定に影響していないかをderive_double_pattern_params.pyについて確認する",
+  "lookahead_path_found": true,
+  "lookahead_path_location": "scripts/derive_double_pattern_params.py:195 lt_at_break = lt_dir.asof(h4.index[j]) (H1版はscripts/derive_double_pattern_params_h1.py:188、同型)",
+  "lookahead_path_description": "lt_direction_series(d1)が返すSeriesは、d1.index[k](D1バー開始時刻、例:00:00)をラベルに持つが値はそのD1バーの終値(23:55確定)ベースのSMAクロス方向。lt_dir.asof(h4.index[j])が同日中(00:00〜23:55)のH4/H1ブレイク時刻に対して呼ばれると、その日がまだ終わっていないのに、その日の終値まで使ったLT方向を返してしまう。最大先読み幅はD1バー1本分=24時間。",
+  "false_positive_check": {
+    "pattern_tolerance_atr_stop_buffer_atr": "lt_dirを参照しない純粋な位置ベース計算のため影響なし",
+    "max_bars_since_second_pivot": "lt_at_break判定より前にpooled_lags.append()済み、結果に関わらずループは1件で打ち切りのため影響なし",
+    "atr_trail_multiplier": "lt_at_break==required_ltの場合のみMFE集計対象に採用するため影響あり",
+    "production_engine": "double_pattern_runner.pyはlast_confirmed_bar_ts()で確定済みバーのみ参照しており、この.asof()パターンは使っていない(先読みなし)。影響はパラメータ導出(atr_trail_multiplier)経由のみ"
+  },
+  "reproduction_check": {
+    "official": {
+      "generated_at": "2026-08-17T12:03:50.083870",
+      "train_period": [
+        "2023-11-01",
+        "2025-03-31"
+      ],
+      "zigzag_threshold_atr": 2.0,
+      "pattern_tolerance_atr": 0.587,
+      "stop_buffer_atr": 0.636,
+      "max_bars_since_second_pivot": 30,
+      "staleness_raw_p90_bars": 28.0,
+      "atr_trail_multiplier": 2.44,
+      "trail_mfe_horizon_h4_bars": 30,
+      "lt_sma_short": 10,
+      "lt_sma_long": 20,
+      "lt_sma_source": "EXP-FX000002/10-result/trend_follow_params.json (全ペアMA(10,20)に収束、再利用)",
+      "pooled_n_triplets": 1748,
+      "pooled_n_break_lags": 354,
+      "pooled_n_lt_matched_signals": 171,
+      "_note": "この値はTrain/Validation/Testいずれの結果を見た後も変更しない",
+      "pairs": {
+        "USD_JPY": {
+          "n_alternating_triplets": 367,
+          "delta_atr_median": 1.396
+        },
+        "EUR_JPY": {
+          "n_alternating_triplets": 331,
+          "delta_atr_median": 1.5
+        },
+        "GBP_JPY": {
+          "n_alternating_triplets": 339,
+          "delta_atr_median": 1.46
+        },
+        "AUD_JPY": {
+          "n_alternating_triplets": 336,
+          "delta_atr_median": 1.413
+        },
+        "EUR_USD": {
+          "n_alternating_triplets": 375,
+          "delta_atr_median": 1.256
+        }
+      }
+    },
+    "reproduced_bug": {
+      "variant": "original(bug)",
+      "pattern_tolerance_atr": 0.712,
+      "stop_buffer_atr": 0.636,
+      "staleness_raw_p90_bars": 32.8,
+      "max_bars_since_second_pivot": 30,
+      "pooled_n_triplets": 1507,
+      "pooled_n_break_lags": 293,
+      "pooled_n_lt_matched_signals": 121,
+      "atr_trail_multiplier": 2.68
+    },
+    "reproduction_matches_official": false,
+    "mismatch_root_cause_investigation": {
+      "finding": "再現不一致(pattern_tolerance_atr 0.712 vs 公式0.587、atr_trail_multiplier 2.68 vs 公式2.44等)の原因を調査した結果、本セッションのスクリプトや手法の誤りではなく、共有本番コードの独立した不具合修正が公式ファイル生成後に適用されたことによるデータ差異と判明した。",
+      "evidence": [
+        "コミット 1338e7d 'fix: ZigZagピボット検出の退化ケース(P1/ネックライン同一足)を修正' (2026-08-17T22:20:19Z)が、double_pattern_params.json公式生成時刻(2026-08-17T12:03:50Z、同日午前)より後にzigzag_pivots_typed()(src/minmax_fx_dt/strategy/support_resistance.py)を変更している",
+        "USD_JPYの生CSV(data/raw/ds-1/ohlcv_USD_JPY_5min_20231101_20260815.csv)のTrain期間(2023-11-01〜2025-03-31)部分は、2026-08-15取得時点(コミット518b2e9)と現在で完全に一致(diff結果0行)しており、価格データそのものの変更ではないことを確認済み",
+        "したがって、公式double_pattern_params.jsonは「退化ケース修正前」のzigzag_pivots_typed()で生成されたものであり、現在のコード(修正後)で再現しようとすると必然的に異なる値になる"
+      ],
+      "relation_to_lookahead_bug": "このZigZag退化ケース修正は、本調査対象の先読みバグ(lt_dir.asof())とは完全に独立した別種の不具合(パターン検出ロジックの境界条件の誤り)であり、先読み(未来情報の参照)とは無関係。本調査の結論には影響しない",
+      "impact_on_this_analysis": "本スクリプトのバグ再現版・確定時刻修正版は、いずれも現在のコード(zigzag退化ケース修正後)を共通の土台として使っているため、両者間の比較(先読み除去の効果)自体は内部整合的で有効。ただし「公式2026-08-17ファイルとの完全一致」は、後続の別の不具合修正により原理的に再現不可能であることが判明した(過去のコード状態を明示的にcheckoutしない限り)。atr_trail_multiplierの絶対値(2.44 公式 → 2.68 現コードバグ版 → 2.5 現コード修正版)の変化は、先読み修正分とzigzag修正分が混在しているため、先読み単独の寄与分は「現コードのバグ版(2.68)→現コードの確定時刻修正版(2.5)」の差分(-0.18、約7%減)として読むのが正しい"
+    }
+  },
+  "confirm_time_fixed": {
+    "variant": "confirm_time_fixed",
+    "pattern_tolerance_atr": 0.712,
+    "stop_buffer_atr": 0.636,
+    "staleness_raw_p90_bars": 32.8,
+    "max_bars_since_second_pivot": 30,
+    "pooled_n_triplets": 1507,
+    "pooled_n_break_lags": 293,
+    "pooled_n_lt_matched_signals": 119,
+    "atr_trail_multiplier": 2.5
+  },
+  "parameter_drift": {
+    "atr_trail_multiplier_bug": 2.68,
+    "atr_trail_multiplier_fixed": 2.5,
+    "delta": -0.18,
+    "pooled_n_lt_matched_signals_bug": 121,
+    "pooled_n_lt_matched_signals_fixed": 119
+  },
+  "train_kpi_sensitivity": {
+    "caveat": "正式なパラメータ再導出ではない。atr_trail_multiplierのみを修正版の値に差し替えた感度分析(production run_double_pattern_backtest自体は無変更)。他パラメータ(pattern_tolerance_atr等、影響なしと確認済み)は公式値を据え置き。00-spec.md・double_pattern_params.jsonへの反映は司令塔判断に委ねる",
+    "bug_param": {
+      "atr_trail_multiplier": 2.68,
+      "n_trades_total_5pairs": 13,
+      "pairs_evaluated": [
+        "USD_JPY"
+      ],
+      "perm_p_value_pooled": 0.963,
+      "per_pair": {
+        "USD_JPY": {
+          "n_trades": 13,
+          "sharpe_monthly": -1.328,
+          "profit_factor_monthly": 0.1472,
+          "max_dd_monthly_pct": 0.9253,
+          "payoff_ratio": 0.2355
+        }
+      }
+    },
+    "fixed_param": {
+      "atr_trail_multiplier": 2.5,
+      "n_trades_total_5pairs": 13,
+      "pairs_evaluated": [
+        "USD_JPY"
+      ],
+      "perm_p_value_pooled": 0.958,
+      "per_pair": {
+        "USD_JPY": {
+          "n_trades": 13,
+          "sharpe_monthly": -1.328,
+          "profit_factor_monthly": 0.1472,
+          "max_dd_monthly_pct": 0.9253,
+          "payoff_ratio": 0.2355
+        }
+      }
+    }
+  },
+  "conclusion": "REJECT判定を覆すか: 覆らない。理由: (1) production engine(double_pattern_runner.py)自体はlast_confirmed_bar_ts()で保護されており先読みなし。(2) 先読みの影響を受けるatr_trail_multiplierは現コード基準で2.68→2.5(約7%減)の変化に留まり、Train感度分析(USD_JPY単独、production engine無変更)ではn_trades=13(バグ版・修正版とも同数)・perm_p=0.963→0.958(いずれも非有意)とほぼ無風で、判定を左右する差ではない。(3) SYS-FX009のREJECT根拠は00-spec.md記載の通りTrain通過後のValidationでの符号反転(陳腐化シグナル回転売買バグ修正後、Train/Validation/Testすべて明確にFAIL、perm_p 0.271/0.774/0.474)であり、atr_trail_multiplierの小幅な変化では説明できない規模の崩壊。したがってSYS-FX009のREJECT確定は先読みバグの影響を受けておらず、判定は覆らない。なお、公式パラメータファイル自体が本調査と無関係な別の不具合(ZigZag退化ケース、1338e7dで修正済み)の影響を受けていた可能性がある点は、司令塔判断のため別途記録する価値がある(本分析のスコープ外)"
+}
