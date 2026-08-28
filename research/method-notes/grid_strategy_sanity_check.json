@@ -1,0 +1,132 @@
+{
+  "generated_at": "2026-08-28T03:38:52.367723",
+  "status": "探索的サニティチェック(正式プロトコル外・spec編集なし)",
+  "question": "両建て・グリッド戦略は、最も単純な設計でコスト込み基本的な経済性を持つか",
+  "period": {
+    "train_start": "2023-11-01",
+    "train_end": "2025-03-31"
+  },
+  "pairs": [
+    "USD_JPY",
+    "EUR_JPY",
+    "GBP_JPY",
+    "AUD_JPY"
+  ],
+  "params": {
+    "timeframe": "H4",
+    "reanchor_bars": 30,
+    "n_levels": 5,
+    "grid_step_atr_mult": 1.0,
+    "cost_model": "スプレッド(通貨別)+スリッページ0.5pip×2(往復)、手数料は本サニティチェックでは簡略化のため未計上"
+  },
+  "per_pair": {
+    "USD_JPY": {
+      "n_trades": 641,
+      "n_tp": 455,
+      "n_stop": 62,
+      "n_mark": 124,
+      "sum_net_pips": 7605.04,
+      "mean_net_pips": 11.8643,
+      "max_concurrent_exposure": 5
+    },
+    "EUR_JPY": {
+      "n_trades": 661,
+      "n_tp": 459,
+      "n_stop": 58,
+      "n_mark": 144,
+      "sum_net_pips": 6213.81,
+      "mean_net_pips": 9.4006,
+      "max_concurrent_exposure": 9
+    },
+    "GBP_JPY": {
+      "n_trades": 673,
+      "n_tp": 475,
+      "n_stop": 75,
+      "n_mark": 123,
+      "sum_net_pips": 8375.13,
+      "mean_net_pips": 12.4445,
+      "max_concurrent_exposure": 5
+    },
+    "AUD_JPY": {
+      "n_trades": 617,
+      "n_tp": 419,
+      "n_stop": 72,
+      "n_mark": 126,
+      "sum_net_pips": 1540.4,
+      "mean_net_pips": 2.4966,
+      "max_concurrent_exposure": 9
+    }
+  },
+  "pooled": {
+    "n_trades": 2592,
+    "win_rate": 0.7458,
+    "profit_factor": 1.341,
+    "payoff_ratio": 0.4573,
+    "mean_net_pips": 9.1568,
+    "sum_net_pips": 23734.37,
+    "max_concurrent_exposure_any_pair": 9
+  },
+  "by_outcome": {
+    "TP": {
+      "n": 1808,
+      "sum_pips": 89497.04,
+      "mean_pips": 49.5006,
+      "min_pips": 15.24,
+      "max_pips": 154.05
+    },
+    "STOP": {
+      "n": 267,
+      "sum_pips": -39821.81,
+      "mean_pips": -149.1453,
+      "min_pips": -611.41,
+      "max_pips": -17.84
+    },
+    "MARK": {
+      "n": 517,
+      "sum_pips": -25940.86,
+      "mean_pips": -50.1758,
+      "min_pips": -399.85,
+      "max_pips": 267.19
+    }
+  },
+  "by_outcome_side": {
+    "buy_TP": {
+      "n": 1045,
+      "sum_pips": 54558.01,
+      "mean_pips": 52.2086
+    },
+    "buy_STOP": {
+      "n": 143,
+      "sum_pips": -23088.17,
+      "mean_pips": -161.4557
+    },
+    "buy_MARK": {
+      "n": 229,
+      "sum_pips": -9104.38,
+      "mean_pips": -39.7571
+    },
+    "sell_TP": {
+      "n": 763,
+      "sum_pips": 34939.04,
+      "mean_pips": 45.7917
+    },
+    "sell_STOP": {
+      "n": 124,
+      "sum_pips": -16733.64,
+      "mean_pips": -134.9487
+    },
+    "sell_MARK": {
+      "n": 288,
+      "sum_pips": -16836.49,
+      "mean_pips": -58.46
+    }
+  },
+  "caveats": [
+    "手数料(COMMISSION_RATE_ROUND_TRIP)は本サニティチェックでは計上していない(概算のみ)。",
+    "ポジションサイズはグリッド段ごとに固定(ロット均一)、複利サイジングは未実装。",
+    "K7m(両建て証拠金消費率)は本チェックでは概算できていない(最大同時保有ポジション数のみ記録)。",
+    "H4クローズ時点の高安のみで判定しており、H4バー内の高安到達順序は考慮していない(同一バー内で利確と損切りが両方発生しうる場合の順序依存性は未対応)。",
+    "スワップポイントは計上していない(両建てで正味計算が必要、DS-7流用が必要)。",
+    "Train期間のみ。正式なKPI評価・Validation/Testでの検証は未実施。"
+  ]
+}
