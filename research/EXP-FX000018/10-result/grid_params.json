@@ -1,0 +1,111 @@
+{
+  "generated_at": "2026-08-28T07:39:37.594452",
+  "exp_id": "EXP-FX000018",
+  "sys_id": "SYS-FX024",
+  "phase_gate": "ゲート2 (パラメータ導出)",
+  "spec_ref": "research/EXP-FX000018/00-spec.md §2 (D1〜D3)・§8",
+  "period": {
+    "train_start": "2023-11-01",
+    "train_end": "2025-03-31"
+  },
+  "pairs": [
+    "USD_JPY",
+    "EUR_JPY",
+    "GBP_JPY",
+    "AUD_JPY"
+  ],
+  "method": {
+    "D1_reanchor_bars": "argmin_(h in [6,120]) VR(h) の4通貨中央値 → 6の倍数に丸め → [6,30]にクリップ(週末フラット制約)",
+    "D2_grid_step_atr_mult": "h* = argmin_(h in [1,30]) VR(h) の4通貨中央値、k = median(|P_(t+h*) - P_t| / ATR_t) を4通貨プールで算出 → サニティ帯[0.4,2.5]",
+    "D3_n_levels": "Env_a = max(maxHigh[a+1..a+R] - C_a, C_a - minLow[a+1..a+R]) / ATR_a の4通貨プール80パーセンタイル Env_80 に対し N = round(Env_80 / k) - 1 → クリップ[3,12]",
+    "pnl_independence": "損益・勝率・PF・シャープ等の成績指標は本導出で一切参照していない"
+  },
+  "derived": {
+    "reanchor_bars_h4": 24,
+    "reanchor_bars_raw_median": 21.0,
+    "reanchor_bars_before_weekend_clip": 24,
+    "h_star_bars": 14,
+    "grid_step_atr_mult": 1.72,
+    "grid_step_atr_mult_raw": 1.7173,
+    "grid_step_clipped": false,
+    "env_p80_atr": 5.9867,
+    "n_levels": 3,
+    "n_levels_raw": 2,
+    "grid_full_span_atr": 6.88
+  },
+  "currency_exclusion_check": {
+    "criterion": "cost_ratio_pair = (2*spread + 1.0) / (k * median ATR_H4[pips]) が4通貨中央値の2.0倍を超える通貨のみ除外候補",
+    "cost_ratio_by_pair": {
+      "USD_JPY": 0.01842,
+      "EUR_JPY": 0.02266,
+      "GBP_JPY": 0.02201,
+      "AUD_JPY": 0.03587
+    },
+    "median_cost_ratio": 0.02234,
+    "exclusion_threshold": 0.04467,
+    "excluded_pairs": [],
+    "_note": "探索診断でAUD/JPYが弱かったことを理由とする除外は、結果を見てからの選択(cherry-picking)に該当するため行わない (spec §8)"
+  },
+  "per_pair": {
+    "USD_JPY": {
+      "vr_at_h1": 1.0,
+      "vr_min_long_range": 1.0311,
+      "r_argmin_raw": 27,
+      "vr_min_short_range": 1.0,
+      "h_star_raw": 1,
+      "displacement_median_atr": 1.6966,
+      "n_displacement_samples": 2233,
+      "env_p80_atr": 6.5265,
+      "n_env_samples": 2223,
+      "median_atr_h4_pips": 50.51,
+      "grid_step_pips": 86.87,
+      "cost_pips_worst_case": 1.6,
+      "cost_ratio": 0.01842
+    },
+    "EUR_JPY": {
+      "vr_at_h1": 1.0,
+      "vr_min_long_range": 0.939,
+      "r_argmin_raw": 27,
+      "vr_min_short_range": 0.939,
+      "h_star_raw": 27,
+      "displacement_median_atr": 1.7809,
+      "n_displacement_samples": 2233,
+      "env_p80_atr": 6.02,
+      "n_env_samples": 2223,
+      "median_atr_h4_pips": 51.31,
+      "grid_step_pips": 88.25,
+      "cost_pips_worst_case": 2.0,
+      "cost_ratio": 0.02266
+    },
+    "GBP_JPY": {
+      "vr_at_h1": 1.0,
+      "vr_min_long_range": 0.9538,
+      "r_argmin_raw": 12,
+      "vr_min_short_range": 0.9538,
+      "h_star_raw": 12,
+      "displacement_median_atr": 1.6821,
+      "n_displacement_samples": 2233,
+      "env_p80_atr": 5.8323,
+      "n_env_samples": 2223,
+      "median_atr_h4_pips": 63.4,
+      "grid_step_pips": 109.05,
+      "cost_pips_worst_case": 2.4,
+      "cost_ratio": 0.02201
+    },
+    "AUD_JPY": {
+      "vr_at_h1": 1.0,
+      "vr_min_long_range": 0.9061,
+      "r_argmin_raw": 15,
+      "vr_min_short_range": 0.9061,
+      "h_star_raw": 15,
+      "displacement_median_atr": 1.7158,
+      "n_displacement_samples": 2233,
+      "env_p80_atr": 5.6252,
+      "n_env_samples": 2223,
+      "median_atr_h4_pips": 35.66,
+      "grid_step_pips": 61.33,
+      "cost_pips_worst_case": 2.2,
+      "cost_ratio": 0.03587
+    }
+  }
+}

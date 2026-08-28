@@ -1,0 +1,214 @@
+{
+  "P_derived(凍結: N=3,k=1.72,R=24) / G0_mark": {
+    "params": {
+      "n_levels": 3,
+      "grid_step_atr_mult": 1.72,
+      "reanchor_bars": 24
+    },
+    "carry_over": false,
+    "dollar_based": {
+      "n_trades": 1053,
+      "win_rate": 0.5546,
+      "final_balance_usd": 844.65,
+      "total_return_pct": -15.54,
+      "profit_factor": 0.814,
+      "monthly_sharpe": -1.477,
+      "max_dd_pct_mtm": 18.72,
+      "perm_p_week": 0.7682,
+      "kpi_required": "4/11",
+      "outcome_breakdown": {
+        "TP": {
+          "n": 434,
+          "share": 0.4122,
+          "sum_usd": 615.82,
+          "mean_usd": 1.4189
+        },
+        "STOP": {
+          "n": 147,
+          "share": 0.1396,
+          "sum_usd": -456.35,
+          "mean_usd": -3.1044
+        },
+        "WEEKEND": {
+          "n": 183,
+          "share": 0.1738,
+          "sum_usd": -76.62,
+          "mean_usd": -0.4187
+        },
+        "MARK": {
+          "n": 289,
+          "share": 0.2745,
+          "sum_usd": -238.2,
+          "mean_usd": -0.8242
+        }
+      },
+      "swap_total_usd": -13.12
+    },
+    "uniform_lot_pip_view": {
+      "n_trades": 1053,
+      "sum_net_pips": -4621.4,
+      "mean_net_pips": -4.389,
+      "win_rate": 0.5584,
+      "profit_factor_pips": 0.897
+    }
+  },
+  "P_derived(凍結: N=3,k=1.72,R=24) / G1_carry": {
+    "params": {
+      "n_levels": 3,
+      "grid_step_atr_mult": 1.72,
+      "reanchor_bars": 24
+    },
+    "carry_over": true,
+    "dollar_based": {
+      "n_trades": 1052,
+      "win_rate": 0.5741,
+      "final_balance_usd": 798.27,
+      "total_return_pct": -20.17,
+      "profit_factor": 0.782,
+      "monthly_sharpe": -1.824,
+      "max_dd_pct_mtm": 23.73,
+      "perm_p_week": 0.8102,
+      "kpi_required": "3/11",
+      "outcome_breakdown": {
+        "TP": {
+          "n": 495,
+          "share": 0.4705,
+          "sum_usd": 677.61,
+          "mean_usd": 1.3689
+        },
+        "STOP": {
+          "n": 198,
+          "share": 0.1882,
+          "sum_usd": -602.82,
+          "mean_usd": -3.0445
+        },
+        "WEEKEND": {
+          "n": 359,
+          "share": 0.3413,
+          "sum_usd": -276.53,
+          "mean_usd": -0.7703
+        }
+      },
+      "swap_total_usd": -12.83
+    },
+    "uniform_lot_pip_view": {
+      "n_trades": 1052,
+      "sum_net_pips": -8270.6,
+      "mean_net_pips": -7.862,
+      "win_rate": 0.5713,
+      "profit_factor_pips": 0.841
+    }
+  },
+  "P_sanity(探索診断の仮置き: N=5,k=1.0,R=30) / G0_mark": {
+    "params": {
+      "n_levels": 5,
+      "grid_step_atr_mult": 1.0,
+      "reanchor_bars": 30
+    },
+    "carry_over": false,
+    "dollar_based": {
+      "n_trades": 2355,
+      "win_rate": 0.6633,
+      "final_balance_usd": 731.88,
+      "total_return_pct": -26.81,
+      "profit_factor": 0.736,
+      "monthly_sharpe": -2.166,
+      "max_dd_pct_mtm": 30.72,
+      "perm_p_week": 0.8611,
+      "kpi_required": "3/11",
+      "outcome_breakdown": {
+        "TP": {
+          "n": 1493,
+          "share": 0.634,
+          "sum_usd": 737.17,
+          "mean_usd": 0.4938
+        },
+        "STOP": {
+          "n": 449,
+          "share": 0.1907,
+          "sum_usd": -753.41,
+          "mean_usd": -1.678
+        },
+        "WEEKEND": {
+          "n": 413,
+          "share": 0.1754,
+          "sum_usd": -251.88,
+          "mean_usd": -0.6099
+        }
+      },
+      "swap_total_usd": -17.69
+    },
+    "uniform_lot_pip_view": {
+      "n_trades": 2355,
+      "sum_net_pips": -13551.3,
+      "mean_net_pips": -5.754,
+      "win_rate": 0.6624,
+      "profit_factor_pips": 0.848
+    }
+  },
+  "P_sanity(探索診断の仮置き: N=5,k=1.0,R=30) / G1_carry": {
+    "params": {
+      "n_levels": 5,
+      "grid_step_atr_mult": 1.0,
+      "reanchor_bars": 30
+    },
+    "carry_over": true,
+    "dollar_based": {
+      "n_trades": 2355,
+      "win_rate": 0.6633,
+      "final_balance_usd": 731.88,
+      "total_return_pct": -26.81,
+      "profit_factor": 0.736,
+      "monthly_sharpe": -2.166,
+      "max_dd_pct_mtm": 30.72,
+      "perm_p_week": 0.8611,
+      "kpi_required": "3/11",
+      "outcome_breakdown": {
+        "TP": {
+          "n": 1493,
+          "share": 0.634,
+          "sum_usd": 737.17,
+          "mean_usd": 0.4938
+        },
+        "STOP": {
+          "n": 449,
+          "share": 0.1907,
+          "sum_usd": -753.41,
+          "mean_usd": -1.678
+        },
+        "WEEKEND": {
+          "n": 413,
+          "share": 0.1754,
+          "sum_usd": -251.88,
+          "mean_usd": -0.6099
+        }
+      },
+      "swap_total_usd": -17.69
+    },
+    "uniform_lot_pip_view": {
+      "n_trades": 2355,
+      "sum_net_pips": -13551.3,
+      "mean_net_pips": -5.754,
+      "win_rate": 0.6624,
+      "profit_factor_pips": 0.848
+    }
+  },
+  "_reference": {
+    "prescreen_sanity_check": {
+      "source": "research/method-notes/grid_strategy_sanity_check.json (scripts/explore_grid_strategy_sanity_check.py、正式プロトコル外)",
+      "n_trades": 2592,
+      "win_rate": 0.746,
+      "profit_factor": 1.341,
+      "sum_net_pips": 23734,
+      "_diff_from_formal_engine": [
+        "H4足の高安のみで判定(同一バー内の順序未解決)。正式エンジンはM5足で順序解決",
+        "手数料(0.00004)未計上。正式エンジンは計上",
+        "スワップ(DS-7)未計上。正式エンジンは水曜3倍込みで正味計上",
+        "週末強制決済なし(本PJ共通ルール違反)。正式エンジンは週内最終H4バーで全決済",
+        "証拠金ガードなし。正式エンジンは合算方式30%でガード",
+        "ロット均一・複利なし。正式エンジンは残高1%/グリッド面の複利サイジング"
+      ]
+    }
+  },
+  "_generated_at": "2026-08-28T07:31:38.962794"
+}
