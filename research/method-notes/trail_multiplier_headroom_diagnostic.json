@@ -1,0 +1,72 @@
+{
+  "purpose": "コスト構造改善(方向性a)の一次診断。正式プロトコル外、Train単独、K4m/K5mへの感度をトレール幅のみで確認する",
+  "period": {
+    "start": "2023-11-01",
+    "end": "2025-03-31"
+  },
+  "stop_buffer_atr_m5": 0.703,
+  "candidates": [
+    1.0,
+    1.5,
+    2.0,
+    3.0
+  ],
+  "results": [
+    {
+      "trail_mult_factor": 1.0,
+      "trail_width_price_note": "stop_buffer_atr_m5 × factor",
+      "n_trades": 524,
+      "win_rate": 0.6031,
+      "mean_r_gross": 0.5861,
+      "mean_cost_r": 0.2574,
+      "spread_cost_multiplier_k5m": 2.277,
+      "payoff_ratio": 1.1582,
+      "profit_factor_r": 1.7596,
+      "mean_r_net": 0.3286,
+      "monthly_sharpe_r": 0.9139,
+      "total_r_net": 172.2
+    },
+    {
+      "trail_mult_factor": 1.5,
+      "trail_width_price_note": "stop_buffer_atr_m5 × factor",
+      "n_trades": 482,
+      "win_rate": 0.5685,
+      "mean_r_gross": 0.6531,
+      "mean_cost_r": 0.2496,
+      "spread_cost_multiplier_k5m": 2.616,
+      "payoff_ratio": 1.4642,
+      "profit_factor_r": 1.9288,
+      "mean_r_net": 0.4035,
+      "monthly_sharpe_r": 0.8809,
+      "total_r_net": 194.47
+    },
+    {
+      "trail_mult_factor": 2.0,
+      "trail_width_price_note": "stop_buffer_atr_m5 × factor",
+      "n_trades": 431,
+      "win_rate": 0.5499,
+      "mean_r_gross": 0.7184,
+      "mean_cost_r": 0.2474,
+      "spread_cost_multiplier_k5m": 2.904,
+      "payoff_ratio": 1.7083,
+      "profit_factor_r": 2.0869,
+      "mean_r_net": 0.471,
+      "monthly_sharpe_r": 0.8758,
+      "total_r_net": 203.01
+    },
+    {
+      "trail_mult_factor": 3.0,
+      "trail_width_price_note": "stop_buffer_atr_m5 × factor",
+      "n_trades": 355,
+      "win_rate": 0.5183,
+      "mean_r_gross": 0.9356,
+      "mean_cost_r": 0.237,
+      "spread_cost_multiplier_k5m": 3.948,
+      "payoff_ratio": 2.5279,
+      "profit_factor_r": 2.7201,
+      "mean_r_net": 0.6986,
+      "monthly_sharpe_r": 0.7317,
+      "total_r_net": 248.0
+    }
+  ]
+}
