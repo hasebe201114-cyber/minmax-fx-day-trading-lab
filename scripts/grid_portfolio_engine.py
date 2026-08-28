@@ -142,6 +142,8 @@ def simulate(
     max_hold_h4_bars: int | None = None,
     rel_gap_p99: dict[str, float] | None = None,
     weekend_gap_budget_pct: float = WEEKEND_GAP_LOSS_BUDGET_PCT,
+    range_filter_er_max: float | None = None,
+    range_filter_window: int | None = None,
     verbose: bool = True,
 ) -> dict:
     """グリッド戦略のポートフォリオシミュレーション (4通貨同時、両建て、MTMエクイティ).
@@ -158,6 +160,10 @@ def simulate(
         rel_gap_p99: 通貨別の週明け相対窓開け99パーセンタイル (amendment-01 §3 W2、
             `10-result/weekend_gap_risk.json`)。weekend_carry=True のときのみ使用。
         weekend_gap_budget_pct: 週末を跨ぐ想定窓開け損失の上限 (MTM equity比%)。
+        range_filter_er_max: レンジ判定フィルターの閾値 (amendment-02 §2)。アンカー時点の
+            Efficiency Ratio がこれを上回る (=トレンド寄り) 世代ではグリッドを張らない。
+            None でフィルター無効。
+        range_filter_window: ER のルックバック窓 (H4本数)。既定は reanchor_bars と同一。
     """
     if weekend_carry and (rel_gap_p99 is None or max_hold_h4_bars is None):
         raise ValueError("weekend_carry=True には rel_gap_p99 と max_hold_h4_bars が必須です "
@@ -179,6 +185,21 @@ def simulate(
         h4 = to_h4(m5_by_pair[pair])
         h4_by_pair[pair] = h4
         atr_by_pair[pair] = atr_ind(h4["high"], h4["low"], h4["close"], length=ATR_LENGTH).to_numpy(dtype=float)
+    # amendment-02 §2: レンジ判定フィルター用の Efficiency Ratio (H4終値、無方向・先読みなし)
+    er_window = range_filter_window if range_filter_window is not None else reanchor_bars
+    er_by_pair: dict[str, np.ndarray] = {}
+    if range_filter_er_max is not None:
+        for pair in pairs:
+            c = h4_by_pair[pair]["close"].to_numpy(dtype=float)
+            step_abs = np.abs(np.diff(c, prepend=c[0]))
+            cum = np.cumsum(step_abs)
+            er = np.full(len(c), np.nan)
+            for i in range(er_window, len(c)):
+                denom = cum[i] - cum[i - er_window]
+                if denom > 0:
+                    er[i] = abs(c[i] - c[i - er_window]) / denom
+            er_by_pair[pair] = er
+
     ref_h4_index = h4_by_pair[pairs[0]].index
     for pair in pairs[1:]:
         if not h4_by_pair[pair].index.equals(ref_h4_index):
@@ -248,6 +269,8 @@ def simulate(
     max_weekend_gap_loss_ratio = 0.0
     n_weekend_carry_positions = 0
     max_hold_bars_m5 = (max_hold_h4_bars * 48) if max_hold_h4_bars else None
+    n_anchor_checks = 0
+    n_anchor_blocked_by_range_filter = 0
 
     def unrealized_usd(bar: int) -> float:
         total = 0.0
@@ -360,10 +383,17 @@ def simulate(
             g.sell_occupied = [False] * n_levels
 
     def make_generation(pair: str, h4_pos: int, bar: int) -> Generation | None:
-        nonlocal next_gen_id
+        nonlocal next_gen_id, n_anchor_checks, n_anchor_blocked_by_range_filter
         a = atr_by_pair[pair][h4_pos]
         if not np.isfinite(a) or a <= 0:
             return None
+        if range_filter_er_max is not None:
+            n_anchor_checks += 1
+            er_val = er_by_pair[pair][h4_pos]
+            # ER が算出できない (ウォームアップ中) 期間は保守的にグリッドを張らない
+            if not np.isfinite(er_val) or er_val > range_filter_er_max:
+                n_anchor_blocked_by_range_filter += 1
+                return None
         center = float(h4_by_pair[pair]["close"].iloc[h4_pos])
         step = float(a) * grid_step_atr_mult
         # spec §4.1: 片側全段約定→最外段ストップの損失が残高の RISK_PCT_PER_GRID になるロット
@@ -602,8 +632,8 @@ def simulate(
                             if not carry_over:
                                 close_all(pair, bar, "MARK", closes[pair][bar], SLIPPAGE_PIPS_MARKET)
                             newg = make_generation(pair, h4_pos, bar)
+                            gens[pair] = newg
                             if newg is not None:
-                                gens[pair] = newg
                                 bars_since_anchor[pair] = 0
             equity = balance + unrealized_usd(bar)
             m_sum, m_max = margin_pcts(bar, equity)
@@ -659,4 +689,8 @@ def simulate(
         "liquidation_events": liquidation_events,
         "max_weekend_gap_loss_ratio_pct": max_weekend_gap_loss_ratio * 100.0,
         "n_weekend_carry_position_slots": n_weekend_carry_positions,
+        "range_filter_er_max": range_filter_er_max,
+        "range_filter_window": er_window if range_filter_er_max is not None else None,
+        "n_anchor_checks": n_anchor_checks,
+        "n_anchor_blocked_by_range_filter": n_anchor_blocked_by_range_filter,
     }

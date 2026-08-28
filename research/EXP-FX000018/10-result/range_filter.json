@@ -1,0 +1,87 @@
+{
+  "generated_at": "2026-08-28T08:23:31.177835",
+  "exp_id": "EXP-FX000018",
+  "sys_id": "SYS-FX024",
+  "spec_ref": "research/EXP-FX000018/00-spec-amendment-02.md §2",
+  "period": {
+    "train_start": "2023-11-01",
+    "train_end": "2025-03-31"
+  },
+  "pairs": [
+    "USD_JPY",
+    "EUR_JPY",
+    "GBP_JPY",
+    "AUD_JPY"
+  ],
+  "method": {
+    "indicator": "Kaufman Efficiency Ratio (H4終値、無方向・先読みなし)",
+    "lookback_window": 24,
+    "lookback_window_source": "凍結済みの再アンカー周期 R をそのまま使用(新規パラメータではない)",
+    "threshold_rule": "Train期間・4通貨プールの ER 分布の中央値(トレンド寄りの半分を除外)",
+    "pnl_independence": "損益・勝率等の成績指標は本導出で一切参照していない"
+  },
+  "derived": {
+    "er_max": 0.2013,
+    "lookback_window": 24
+  },
+  "per_pair": {
+    "USD_JPY": {
+      "n_bars": 2236,
+      "er_p25": 0.1017,
+      "er_median": 0.2074,
+      "er_p75": 0.3574
+    },
+    "EUR_JPY": {
+      "n_bars": 2236,
+      "er_p25": 0.111,
+      "er_median": 0.2085,
+      "er_p75": 0.3282
+    },
+    "GBP_JPY": {
+      "n_bars": 2236,
+      "er_p25": 0.0947,
+      "er_median": 0.2041,
+      "er_p75": 0.3251
+    },
+    "AUD_JPY": {
+      "n_bars": 2236,
+      "er_p25": 0.0907,
+      "er_median": 0.1862,
+      "er_p75": 0.3044
+    }
+  },
+  "regime_forward_structure_check": {
+    "USD_JPY": {
+      "n_keep": 1083,
+      "n_drop": 1129,
+      "keep_fwd_range_median_atr": 5.391,
+      "drop_fwd_range_median_atr": 5.08,
+      "keep_fwd_net_displacement_median_atr": 2.52,
+      "drop_fwd_net_displacement_median_atr": 2.075
+    },
+    "EUR_JPY": {
+      "n_keep": 1064,
+      "n_drop": 1148,
+      "keep_fwd_range_median_atr": 5.331,
+      "drop_fwd_range_median_atr": 5.304,
+      "keep_fwd_net_displacement_median_atr": 2.357,
+      "drop_fwd_net_displacement_median_atr": 2.411
+    },
+    "GBP_JPY": {
+      "n_keep": 1092,
+      "n_drop": 1120,
+      "keep_fwd_range_median_atr": 5.06,
+      "drop_fwd_range_median_atr": 5.116,
+      "keep_fwd_net_displacement_median_atr": 2.17,
+      "drop_fwd_net_displacement_median_atr": 2.347
+    },
+    "AUD_JPY": {
+      "n_keep": 1174,
+      "n_drop": 1038,
+      "keep_fwd_range_median_atr": 4.801,
+      "drop_fwd_range_median_atr": 5.259,
+      "keep_fwd_net_displacement_median_atr": 1.988,
+      "drop_fwd_net_displacement_median_atr": 2.436
+    }
+  }
+}
