@@ -1,0 +1,161 @@
+{
+  "generated_at": "2026-08-28T12:53:50.205969",
+  "exp_id": "EXP-FX000019",
+  "sys_id": "SYS-FX025",
+  "spec_ref": "research/EXP-FX000019/00-spec.md",
+  "weight": 0.5,
+  "pairs": [
+    "USD_JPY",
+    "EUR_JPY",
+    "GBP_JPY",
+    "AUD_JPY"
+  ],
+  "periods": {
+    "train": [
+      "2023-11-01",
+      "2025-03-31"
+    ],
+    "validation": [
+      "2025-04-01",
+      "2025-11-30"
+    ]
+  },
+  "kpi_thresholds": {
+    "monthly_sharpe": 0.4,
+    "profit_factor": 1.2,
+    "monthly_expectancy_positive": true,
+    "max_dd_monthly_pct": 10.0,
+    "max_dd_yearly_pct": 20.0,
+    "payoff_ratio": 1.5,
+    "spread_cost_multiplier": 3.0,
+    "min_n_trades_effective": 300,
+    "permutation_p_value": 0.05
+  },
+  "results": {
+    "train": {
+      "label": "blend_train",
+      "n_days": 505,
+      "total_return_pct": 123.07,
+      "monthly_sharpe": 3.11,
+      "max_dd_pct": 4.83,
+      "max_dd_monthly_pct": 4.83,
+      "n_trades": 1330,
+      "win_rate": 0.5932,
+      "profit_factor": 1.585,
+      "payoff_ratio": 1.087,
+      "spread_cost_multiplier": 2.25,
+      "n_trades_effective": 1330.0,
+      "permutation_p_week_block": 0.1728,
+      "permutation_p_day_block_reference": 0.038,
+      "permutation_n_week_clusters": "block_sign_flip(k_clusters=74)",
+      "max_consecutive_losses": 14,
+      "k3m_scale_invariant": {
+        "n_trades": 1330,
+        "win_rate": 0.5932,
+        "observed_max_consecutive_losses": 14,
+        "iid_null_mean": 7.58,
+        "iid_null_median": 7,
+        "observed_percentile_in_null": 0.9963,
+        "alpha": 0.05,
+        "pass_": false
+      },
+      "monthly_expectancy_positive": true,
+      "kpi_pass": {
+        "monthly_sharpe": true,
+        "profit_factor": true,
+        "monthly_expectancy_positive": true,
+        "max_dd_monthly_pct": true,
+        "max_dd_yearly_pct": true,
+        "payoff_ratio": false,
+        "spread_cost_multiplier": false,
+        "min_n_trades_effective": true,
+        "permutation_p_value": false
+      },
+      "kpi_required_pass_count": "6/9",
+      "kpi_required_all_pass": false,
+      "correlation": -0.224,
+      "standalone_X_sysfx011": {
+        "n_days": 506,
+        "total_return_pct": 384.83,
+        "monthly_sharpe": 2.94,
+        "max_dd_pct": 10.08,
+        "max_dd_monthly_pct": 10.08
+      },
+      "standalone_Y_sysfx024_RA": {
+        "n_days": 506,
+        "total_return_pct": -3.01,
+        "monthly_sharpe": -0.308,
+        "max_dd_pct": 13.43,
+        "max_dd_monthly_pct": 13.43
+      },
+      "n_trades_X": 524,
+      "n_trades_Y": 806,
+      "blend_improves_sharpe": true,
+      "blend_improves_dd": true,
+      "verdict_3stage": "再現した"
+    },
+    "validation": {
+      "label": "blend_validation",
+      "n_days": 227,
+      "total_return_pct": 37.51,
+      "monthly_sharpe": 2.565,
+      "max_dd_pct": 3.6,
+      "max_dd_monthly_pct": 3.6,
+      "n_trades": 474,
+      "win_rate": 0.6076,
+      "profit_factor": 1.809,
+      "payoff_ratio": 1.168,
+      "spread_cost_multiplier": 3.33,
+      "n_trades_effective": 474.0,
+      "permutation_p_week_block": 0.1459,
+      "permutation_p_day_block_reference": 0.0809,
+      "permutation_n_week_clusters": "block_sign_flip(k_clusters=35)",
+      "max_consecutive_losses": 9,
+      "k3m_scale_invariant": {
+        "n_trades": 474,
+        "win_rate": 0.6076,
+        "observed_max_consecutive_losses": 9,
+        "iid_null_mean": 6.19,
+        "iid_null_median": 6,
+        "observed_percentile_in_null": 0.9343,
+        "alpha": 0.05,
+        "pass_": true
+      },
+      "monthly_expectancy_positive": true,
+      "kpi_pass": {
+        "monthly_sharpe": true,
+        "profit_factor": true,
+        "monthly_expectancy_positive": true,
+        "max_dd_monthly_pct": true,
+        "max_dd_yearly_pct": true,
+        "payoff_ratio": false,
+        "spread_cost_multiplier": true,
+        "min_n_trades_effective": true,
+        "permutation_p_value": false
+      },
+      "kpi_required_pass_count": "7/9",
+      "kpi_required_all_pass": false,
+      "correlation": -0.0583,
+      "standalone_X_sysfx011": {
+        "n_days": 228,
+        "total_return_pct": 70.95,
+        "monthly_sharpe": 1.81,
+        "max_dd_pct": 5.56,
+        "max_dd_monthly_pct": 5.56
+      },
+      "standalone_Y_sysfx024_RA": {
+        "n_days": 228,
+        "total_return_pct": 8.09,
+        "monthly_sharpe": 1.191,
+        "max_dd_pct": 6.33,
+        "max_dd_monthly_pct": 6.33
+      },
+      "n_trades_X": 133,
+      "n_trades_Y": 341,
+      "blend_improves_sharpe": true,
+      "blend_improves_dd": true,
+      "verdict_3stage": "再現した"
+    }
+  },
+  "validation_verdict": "再現した"
+}
