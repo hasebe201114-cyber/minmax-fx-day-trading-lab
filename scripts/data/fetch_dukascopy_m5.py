@@ -20,7 +20,10 @@ n を増やす方向として通貨拡大は SYS-FX016/019 で失敗済み（質
 ## 取得方式
 
 エンドポイント: {BASE}/{SYMBOL}/{YYYY}/{MM-1:02d}/{DD:02d}/BID_candles_min_1.bi5
-    - {MM} は0始まり（01月=00）、{DD} は0始まりではなく実日付-1 の0始まり
+    - **{MM} は0始まり（01月=00）だが、{DD} は1始まり**（実日付そのもの）。
+      月と日でインデックスの基点が違うという非対称な仕様であり、`{DD-1}` にすると
+      全データが1日ずれる（2026-08-28 に実際に踏んだ。GMO重複期間との照合で発覚）。
+      日パス `00` は 404 を返すことで1始まりであることが確認できる
     - 1ファイルが1日分のM1バーを含む（日初(UTC)からの秒オフセット）
     - レコード形式: >IIIIIf (offset_sec, open, close, low, high, volume)、LZMA圧縮
     - volume<=0 は非取引時間の停滞バーとして除外（H1版と同一の扱い）
@@ -79,7 +82,8 @@ def month_range(start: str, end: str):
 
 def fetch_day(symbol: str, year: int, month: int, day: int) -> bytes | None:
     """1日分のM1 bi5を取得。データ不存在(404)はNoneを返す."""
-    url = f"{BASE_URL}/{symbol}/{year}/{month - 1:02d}/{day - 1:02d}/BID_candles_min_1.bi5"
+    # 月は0始まり、日は1始まり（非対称。詳細はモジュール docstring 参照）
+    url = f"{BASE_URL}/{symbol}/{year}/{month - 1:02d}/{day:02d}/BID_candles_min_1.bi5"
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     for attempt in range(MAX_RETRIES):
         try:
@@ -146,11 +150,45 @@ def fetch_chunk_m5(pair: str, ym_list: list[tuple[int, int]]) -> pd.DataFrame:
     return pd.DataFrame({c: m1[c].resample("5min").agg(a) for c, a in agg}).dropna()
 
 
+def verify_against_ds1(pair: str = "USD_JPY", year: int = 2023, month: int = 11) -> None:
+    """DS-1(GMO) と重複する月を取得して突き合わせ、日付マッピングの誤りを検出する.
+
+    2026-08-28 に「日パスを 0 始まりと誤解して全データが1日ずれる」バグを踏んだ。
+    ずれていても価格系列としては自然に見えてしまい、目視では気づけない。取得の前に
+    必ずこの検証を通し、**中央値差が閾値を超えたら即座に中断する**。
+    """
+    import glob as _glob
+
+    files = sorted(_glob.glob(str(ROOT / "data" / "raw" / "ds-1" / f"ohlcv_{pair}_5min_*.csv")))
+    if not files:
+        print("  [検証スキップ] DS-1 の突き合わせ用データが見つかりません")
+        return
+    gmo = pd.concat([pd.read_csv(f, parse_dates=["timestamp"]) for f in files])
+    gmo = gmo.drop_duplicates(subset="timestamp").set_index("timestamp").sort_index()
+    duka = fetch_chunk_m5(pair, [(year, month)])
+    if duka.empty:
+        raise SystemExit("検証用データの取得に失敗しました")
+    j = duka.join(gmo, how="inner", lsuffix="_d", rsuffix="_g")
+    if len(j) < 500:
+        raise SystemExit(f"検証: 共通バーが {len(j)} 本しかなく突き合わせできません")
+    pip = 0.01 if "JPY" in pair else 0.0001
+    med = float(((j["close_d"] - j["close_g"]).abs() / pip).median())
+    corr = float(j["close_d"].corr(j["close_g"]))
+    print(f"  [検証] {pair} {year}-{month:02d}: 共通{len(j):,}本  close差 中央値={med:.3f}pips  相関={corr:.6f}")
+    if med > 3.0 or corr < 0.99:
+        raise SystemExit(
+            f"検証失敗: 中央値差 {med:.3f}pips / 相関 {corr:.6f}。日付マッピングを疑ってください"
+            "（月は0始まり・日は1始まり）。取得を中断します。")
+    print("  [検証] OK — 日付マッピングは DS-1 と整合しています\n")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--start", required=True, help="YYYY-MM (両端含む)")
     ap.add_argument("--end", required=True, help="YYYY-MM (両端含む)")
     ap.add_argument("--pairs", nargs="*", default=["USD_JPY", "EUR_JPY", "GBP_JPY", "AUD_JPY"])
+    ap.add_argument("--skip-verify", action="store_true",
+                    help="DS-1との突き合わせ検証を省略する（非推奨）")
     args = ap.parse_args()
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -158,6 +196,10 @@ def main() -> int:
     print(f"=== Dukascopy M1→M5 取得: {args.start} 〜 {args.end} ({len(months)}ヶ月) ===")
     print("※ 司令塔判断(2026-08-28)により、本データは正式なTrain評価に使用する。")
     print("   ただしコスト仮定は保守側に倒すこと (EXP-FX000020 spec で事前登録)\n")
+
+    if not args.skip_verify:
+        print("[事前検証] DS-1(GMO) 重複期間との突き合わせで日付マッピングを確認します")
+        verify_against_ds1()
 
     for pair in args.pairs:
         out_path = OUT_DIR / f"ohlcv_{pair}_5min_{args.start}_{args.end}.csv"
