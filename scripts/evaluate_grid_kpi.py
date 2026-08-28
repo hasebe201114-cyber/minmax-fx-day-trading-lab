@@ -155,7 +155,8 @@ def evaluate_grid_period(period_name: str, sim: dict, *, seed: int = 42) -> dict
     reference = {k: v for k, v in kpi_pass.items() if KPI_GATE_TIER[k] == "参考"}
 
     outcome_breakdown: dict[str, dict] = {}
-    for outcome in ("TP", "STOP", "WEEKEND", "MARK", "PERIOD_END"):
+    for outcome in ("TP", "STOP", "WEEKEND", "MARK", "WEEKEND_TRIM", "MAX_HOLD",
+                    "LIQUIDATION", "PERIOD_END"):
         sub = [t for t in trades if t["outcome"] == outcome]
         if sub:
             vals = [t["dollar_pnl"] for t in sub]
@@ -166,6 +167,13 @@ def evaluate_grid_period(period_name: str, sim: dict, *, seed: int = 42) -> dict
             }
 
     swap_total = float(np.sum([t["swap_usd"] for t in trades])) if n_trades else 0.0
+
+    # amendment-01 §5.1: 週末を跨いだポジションの件数と損益 (ISO年-週が建てと決済で異なるもの)
+    weekend_crossing = [
+        t for t in trades
+        if pd.Timestamp(t["entry_time"]).isocalendar()[:2] != pd.Timestamp(t["exit_time"]).isocalendar()[:2]
+    ]
+    weekend_crossing_pnl = float(np.sum([t["dollar_pnl"] for t in weekend_crossing])) if weekend_crossing else 0.0
 
     return {
         "period": period_name,
@@ -205,6 +213,21 @@ def evaluate_grid_period(period_name: str, sim: dict, *, seed: int = 42) -> dict
         "both_side_stop_events": sim["both_side_stop_events"],
         "swap_total_usd": round(swap_total, 2),
         "outcome_breakdown": outcome_breakdown,
+        # --- amendment-01 §5.1 の必須報告項目 (週末持ち越しを許可した場合のリスク実態) ---
+        "weekend_carry": sim.get("weekend_carry", False),
+        "max_hold_h4_bars": sim.get("max_hold_h4_bars"),
+        "n_weekend_crossing_trades": len(weekend_crossing),
+        "weekend_crossing_pnl_usd": round(weekend_crossing_pnl, 2),
+        "weekend_crossing_mean_usd": (round(weekend_crossing_pnl / len(weekend_crossing), 4)
+                                      if weekend_crossing else None),
+        "n_adverse_gap_fills": sim.get("n_adverse_gap_fills", 0),
+        "adverse_gap_slippage_usd": round(sim.get("adverse_gap_slippage_usd", 0.0), 2),
+        "min_maintenance_pct": (round(sim["min_maintenance_pct"], 1)
+                                if sim.get("min_maintenance_pct") else None),
+        "n_alert_bars": sim.get("n_alert_bars", 0),
+        "n_entry_blocked_alert": sim.get("n_entry_blocked_alert", 0),
+        "liquidation_events": sim.get("liquidation_events", 0),
+        "max_weekend_gap_loss_ratio_pct": round(sim.get("max_weekend_gap_loss_ratio_pct", 0.0), 2),
         "trades_per_currency": trades_per_currency,
         "kpi_pass": kpi_pass,
         "kpi_required_pass_count": f"{sum(required.values())}/{len(required)}",
@@ -225,6 +248,13 @@ def print_period(r: dict) -> None:
     print(f"  K7m(合算)={r['k7m_margin_sum_pct']}%  [参考 MAX方式={r['k7m_margin_max_method_reference']}%]  "
           f"最大同時保有={r['max_concurrent_positions']}  ガード発動率={r['guard_block_rate']}")
     print(f"  スワップ合計=${r['swap_total_usd']}  両側同時ストップ={r['both_side_stop_events']}件")
+    if r.get("weekend_carry"):
+        print(f"  [週末持ち越し] 週跨ぎトレード={r['n_weekend_crossing_trades']}件 "
+              f"損益=${r['weekend_crossing_pnl_usd']:+.2f}(平均${r['weekend_crossing_mean_usd']:+.3f})  "
+              f"最大保有={r['max_hold_h4_bars']}本(H4)")
+        print(f"  [リスク対策] 窓開け不利約定={r['n_adverse_gap_fills']}件(相当額${r['adverse_gap_slippage_usd']:.2f})  "
+              f"最小証拠金維持率={r['min_maintenance_pct']}%  アラート水準バー={r['n_alert_bars']}  "
+              f"ロスカット={r['liquidation_events']}回  週末想定窓開け損失の最大={r['max_weekend_gap_loss_ratio_pct']}%")
     print(f"  outcome内訳: " + "  ".join(
         f"{k}:n={v['n']}({v['share']:.1%}) 平均${v['mean_usd']:+.2f}" for k, v in r["outcome_breakdown"].items()))
     ng = [k for k, v in r["kpi_pass"].items() if not v and KPI_GATE_TIER[k] == "必須"]

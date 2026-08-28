@@ -55,6 +55,11 @@ LEVERAGE = 25.0
 MARGIN_GUARD_PCT = 30.0
 ATR_LENGTH = 14
 
+# --- amendment-01 §3 (司令塔判断「緩和しても良い。リスク対策は必要」への対応、事前登録済み) ---
+WEEKEND_GAP_LOSS_BUDGET_PCT = 10.0   # W2: 週末を跨ぐ想定窓開け損失の上限 (MTM equity比%)
+LIQUIDATION_MAINTENANCE_PCT = 100.0  # W4: 証拠金維持率がこれを下回ると全ポジション強制決済
+ALERT_MAINTENANCE_PCT = 125.0        # W4: これを下回ると新規エントリー停止 (ロスカットアラート)
+
 
 def pip_size(pair: str) -> float:
     return 0.01 if "JPY" in pair else 0.0001
@@ -133,6 +138,10 @@ def simulate(
     margin_guard: bool = True,
     apply_swap: bool = True,
     initial_capital: float = INITIAL_CAPITAL_USD,
+    weekend_carry: bool = False,
+    max_hold_h4_bars: int | None = None,
+    rel_gap_p99: dict[str, float] | None = None,
+    weekend_gap_budget_pct: float = WEEKEND_GAP_LOSS_BUDGET_PCT,
     verbose: bool = True,
 ) -> dict:
     """グリッド戦略のポートフォリオシミュレーション (4通貨同時、両建て、MTMエクイティ).
@@ -142,7 +151,17 @@ def simulate(
             True = G1(持ち越し方式、既存ポジションは生まれた世代の利確幅・ストップを保持)
         margin_guard: 証拠金ガード(合算方式K7m>30%となる新規建てを見送る)を有効にするか。
             False は spec §5.2 の反実仮想(K7m_unguarded)用。
+        weekend_carry: True で週末持ち越しを許可する (amendment-01、司令塔判断 2026-08-28)。
+            False は本PJ従来の週末フラット (週内最終H4バーで全決済・グリッド破棄)。
+        max_hold_h4_bars: 最大保有期間 (H4本数、amendment-01 §3 W3)。超過分は成行決済
+            (outcome=MAX_HOLD)。None で無制限。weekend_carry=True のときは必須。
+        rel_gap_p99: 通貨別の週明け相対窓開け99パーセンタイル (amendment-01 §3 W2、
+            `10-result/weekend_gap_risk.json`)。weekend_carry=True のときのみ使用。
+        weekend_gap_budget_pct: 週末を跨ぐ想定窓開け損失の上限 (MTM equity比%)。
     """
+    if weekend_carry and (rel_gap_p99 is None or max_hold_h4_bars is None):
+        raise ValueError("weekend_carry=True には rel_gap_p99 と max_hold_h4_bars が必須です "
+                         "(amendment-01 §3 W2/W3)")
     raw_m5 = {pair: load_m5(pair, start, end) for pair in pairs}
 
     # 全通貨で共通のM5タイムラインを先に確定させ、H4足・ATRはその共通軸から生成する
@@ -167,6 +186,7 @@ def simulate(
     if verbose:
         print(f"  共通M5タイムライン: {n_bars:,}bars ({index[0]} 〜 {index[-1]})")
 
+    opens = {p: m5_by_pair[p]["open"].reindex(index).to_numpy(dtype=float) for p in pairs}
     lows = {p: m5_by_pair[p]["low"].reindex(index).to_numpy(dtype=float) for p in pairs}
     highs = {p: m5_by_pair[p]["high"].reindex(index).to_numpy(dtype=float) for p in pairs}
     closes = {p: m5_by_pair[p]["close"].reindex(index).to_numpy(dtype=float) for p in pairs}
@@ -219,6 +239,15 @@ def simulate(
     max_concurrent = 0
     max_margin_sum_pct = 0.0
     max_margin_max_pct = 0.0
+    n_adverse_gap_fills = 0
+    adverse_gap_slippage_usd = 0.0
+    n_entry_blocked_alert = 0
+    n_alert_bars = 0
+    min_maintenance_pct = float("inf")
+    liquidation_events = 0
+    max_weekend_gap_loss_ratio = 0.0
+    n_weekend_carry_positions = 0
+    max_hold_bars_m5 = (max_hold_h4_bars * 48) if max_hold_h4_bars else None
 
     def unrealized_usd(bar: int) -> float:
         total = 0.0
@@ -252,6 +281,24 @@ def simulate(
             total_max += max(long_m, short_m)
         return (total_sum / equity * 100.0, total_max / equity * 100.0)
 
+    def gap_fill_price(pos: Position, bar: int, trigger_price: float, is_stop: bool) -> tuple[float, bool]:
+        """amendment-01 §3 W1: 窓開けで水準を飛び越えた場合は寄り値で約定させる.
+
+        Returns: (約定価格, 不利側の窓開けだったか)
+        """
+        op = opens[pos.pair][bar]
+        if not np.isfinite(op):
+            return trigger_price, False
+        # 逆指値(買い=下方向/売り=上方向)は水準を飛び越えた分だけ不利、
+        # 指値利確(買い=上方向/売り=下方向)は飛び越えた分だけ有利に約定する。
+        if is_stop:
+            gapped = (op <= trigger_price) if pos.side == "buy" else (op >= trigger_price)
+        else:
+            gapped = (op >= trigger_price) if pos.side == "buy" else (op <= trigger_price)
+        if not gapped:
+            return trigger_price, False
+        return float(op), is_stop
+
     def close_position(pos: Position, bar: int, exit_price: float, reason: str, slippage_pips: float) -> None:
         nonlocal balance, ruined
         pip = pip_size(pos.pair)
@@ -281,6 +328,27 @@ def simulate(
             "balance_after": balance,
             "hold_bars_m5": bar - pos.entry_bar,
         })
+
+    def required_margin_usd(bar: int) -> float:
+        rate = usdjpy[bar]
+        total = 0.0
+        for pair, poss in open_positions.items():
+            if not poss:
+                continue
+            price = closes[pair][bar]
+            total += sum(pos.units * price / LEVERAGE / rate for pos in poss)
+        return total
+
+    def est_weekend_gap_loss(bar: int, rate: float) -> float:
+        """amendment-01 §3 W2: 週末を跨ぐ想定窓開け損失 (通貨間は分散効果を認めず単純合算)."""
+        total = 0.0
+        for pr, poss in open_positions.items():
+            if not poss:
+                continue
+            price = closes[pr][bar]
+            net = sum((pos.units if pos.side == "buy" else -pos.units) for pos in poss)
+            total += abs(net) * price / rate * (rel_gap_p99 or {}).get(pr, 0.0)
+        return total
 
     def close_all(pair: str, bar: int, reason: str, price: float, slippage: float) -> None:
         for pos in list(open_positions[pair]):
@@ -336,19 +404,23 @@ def simulate(
                     jpy = (swap_long if pos.side == "buy" else swap_short) * (pos.units / 1000.0) * mult
                     pos.swap_usd += jpy / rate
 
-        # 2) 各通貨の執行判定
+        # 2) 決済フェーズ (全通貨。証拠金は口座横断のため、決済 → 維持率判定 → 新規建て の順に分ける)
         for pair in pairs:
             g = gens[pair]
             lo, hi = lows[pair][bar], highs[pair][bar]
             if not np.isfinite(lo):
                 continue
 
-            # 2a) 損切り優先 (spec §3.4)
+            # 2a) 損切り優先 (spec §3.4)。窓開けは寄り値約定 (amendment-01 §3 W1)
             stopped_sides = set()
             for pos in list(open_positions[pair]):
                 hit = (pos.side == "buy" and lo <= pos.stop_price) or (pos.side == "sell" and hi >= pos.stop_price)
                 if hit:
-                    close_position(pos, bar, pos.stop_price, "STOP", SLIPPAGE_PIPS_STOP)
+                    fill, adverse = gap_fill_price(pos, bar, pos.stop_price, is_stop=True)
+                    if adverse:
+                        n_adverse_gap_fills += 1
+                        adverse_gap_slippage_usd += abs(fill - pos.stop_price) * pos.units / usdjpy[bar]
+                    close_position(pos, bar, fill, "STOP", SLIPPAGE_PIPS_STOP)
                     open_positions[pair].remove(pos)
                     if g is not None and pos.gen_id == g.gen_id:
                         if pos.side == "buy":
@@ -361,11 +433,12 @@ def simulate(
             if len(stopped_sides) == 2:
                 both_side_stop_events += 1
 
-            # 2b) 利確
+            # 2b) 利確。窓開けは寄り値約定 (有利側に働く、amendment-01 §3 W1)
             for pos in list(open_positions[pair]):
                 hit = (pos.side == "buy" and hi >= pos.tp_price) or (pos.side == "sell" and lo <= pos.tp_price)
                 if hit:
-                    close_position(pos, bar, pos.tp_price, "TP", SLIPPAGE_PIPS_LIMIT)
+                    fill, _ = gap_fill_price(pos, bar, pos.tp_price, is_stop=False)
+                    close_position(pos, bar, fill, "TP", SLIPPAGE_PIPS_LIMIT)
                     open_positions[pair].remove(pos)
                     if g is not None and pos.gen_id == g.gen_id:
                         if pos.side == "buy":
@@ -373,8 +446,48 @@ def simulate(
                         else:
                             g.sell_occupied[pos.level_idx] = False
 
-            # 2c) 新規エントリー (指値)
-            if g is not None and not ruined:
+            # 2c) 最大保有期間 (amendment-01 §3 W3)
+            if max_hold_bars_m5 is not None:
+                for pos in list(open_positions[pair]):
+                    if bar - pos.entry_bar >= max_hold_bars_m5:
+                        close_position(pos, bar, closes[pair][bar], "MAX_HOLD", SLIPPAGE_PIPS_MARKET)
+                        open_positions[pair].remove(pos)
+                        if g is not None and pos.gen_id == g.gen_id:
+                            if pos.side == "buy":
+                                g.buy_occupied[pos.level_idx] = False
+                            else:
+                                g.sell_occupied[pos.level_idx] = False
+
+        # 2d) 証拠金維持率の判定 (amendment-01 §3 W4、口座横断・全M5バー)
+        entry_blocked_by_alert = False
+        if any(open_positions.values()):
+            equity_bar = balance + unrealized_usd(bar)
+            req = required_margin_usd(bar)
+            if req > 0:
+                maintenance = equity_bar / req * 100.0
+                min_maintenance_pct = min(min_maintenance_pct, maintenance)
+                if maintenance < LIQUIDATION_MAINTENANCE_PCT:
+                    liquidation_events += 1
+                    for pair in pairs:
+                        close_all(pair, bar, "LIQUIDATION", closes[pair][bar], SLIPPAGE_PIPS_MARKET)
+                        gens[pair] = None
+                        bars_since_anchor[pair] = 0
+                    entry_blocked_by_alert = True
+                elif maintenance < ALERT_MAINTENANCE_PCT:
+                    n_alert_bars += 1
+                    entry_blocked_by_alert = True
+
+        # 3) 新規建てフェーズ (全通貨)
+        for pair in pairs:
+            g = gens[pair]
+            lo, hi = lows[pair][bar], highs[pair][bar]
+            if not np.isfinite(lo):
+                continue
+            if g is None or ruined:
+                continue
+            if entry_blocked_by_alert:
+                n_entry_blocked_alert += 1
+            else:
                 n_buy_open = sum(1 for p in open_positions[pair] if p.side == "buy")
                 n_sell_open = sum(1 for p in open_positions[pair] if p.side == "sell")
                 for side in ("buy", "sell"):
@@ -427,17 +540,55 @@ def simulate(
                         else:
                             n_sell_open += 1
 
-        # 3) 週末強制決済 (全通貨、グリッド破棄)
+        # 4) 週末の扱い
         if is_week_last[bar]:
-            for pair in pairs:
-                close_all(pair, bar, "WEEKEND", closes[pair][bar], SLIPPAGE_PIPS_MARKET)
-                gens[pair] = None
-                bars_since_anchor[pair] = 0
+            if not weekend_carry:
+                # 従来: 週内最終バーで全決済・グリッド破棄 (本PJ共通ルール)
+                for pair in pairs:
+                    close_all(pair, bar, "WEEKEND", closes[pair][bar], SLIPPAGE_PIPS_MARKET)
+                    gens[pair] = None
+                    bars_since_anchor[pair] = 0
+            else:
+                # amendment-01 §3 W2: 週末ネットエクスポージャー上限。
+                # 想定窓開け損失が MTM equity の budget% を超える分だけ、含み損の大きい
+                # ポジションから順に成行決済して持ち越し量を削る。
+                equity_ws = balance + unrealized_usd(bar)
+                rate = usdjpy[bar]
 
-        # 4) H4バー確定時: 再アンカー判定 + MTMサンプリング
+                budget = weekend_gap_budget_pct / 100.0 * equity_ws
+                est = est_weekend_gap_loss(bar, rate)
+                if equity_ws > 0:
+                    max_weekend_gap_loss_ratio = max(max_weekend_gap_loss_ratio, est / equity_ws)
+                while est > budget and any(open_positions.values()):
+                    worst_pair, worst_pos, worst_pnl = None, None, None
+                    for pr, poss in open_positions.items():
+                        price = closes[pr][bar]
+                        for pos in poss:
+                            gross = ((price - pos.entry_price) if pos.side == "buy"
+                                     else (pos.entry_price - price))
+                            pnl = gross * pos.units / rate
+                            if worst_pnl is None or pnl < worst_pnl:
+                                worst_pair, worst_pos, worst_pnl = pr, pos, pnl
+                    if worst_pos is None:
+                        break
+                    g_w = gens[worst_pair]
+                    close_position(worst_pos, bar, closes[worst_pair][bar],
+                                   "WEEKEND_TRIM", SLIPPAGE_PIPS_MARKET)
+                    open_positions[worst_pair].remove(worst_pos)
+                    if g_w is not None and worst_pos.gen_id == g_w.gen_id:
+                        if worst_pos.side == "buy":
+                            g_w.buy_occupied[worst_pos.level_idx] = False
+                        else:
+                            g_w.sell_occupied[worst_pos.level_idx] = False
+                    est = est_weekend_gap_loss(bar, rate)
+                n_weekend_carry_positions += sum(len(v) for v in open_positions.values())
+
+        # 5) H4バー確定時: 再アンカー判定 + MTMサンプリング
         if is_h4_close[bar]:
             h4_pos = h4_pos_of_bar[bar]
-            if h4_pos >= 0 and not is_week_last[bar]:
+            # 週末フラット時は週内最終バーでグリッドを破棄するため再アンカーしない。
+            # 週末持ち越し時 (weekend_carry) は週境界と無関係に R 本ごとに再アンカーする。
+            if h4_pos >= 0 and (weekend_carry or not is_week_last[bar]):
                 for pair in pairs:
                     g = gens[pair]
                     if g is None:
@@ -496,4 +647,16 @@ def simulate(
         "max_concurrent_positions": max_concurrent,
         "max_margin_sum_pct": max_margin_sum_pct,
         "max_margin_max_pct": max_margin_max_pct,
+        # --- amendment-01 §5.1 の必須報告項目 ---
+        "weekend_carry": weekend_carry,
+        "max_hold_h4_bars": max_hold_h4_bars,
+        "n_adverse_gap_fills": n_adverse_gap_fills,
+        "adverse_gap_slippage_usd": adverse_gap_slippage_usd,
+        "n_entry_blocked_alert": n_entry_blocked_alert,
+        "n_alert_bars": n_alert_bars,
+        "min_maintenance_pct": (None if min_maintenance_pct == float("inf")
+                                else min_maintenance_pct),
+        "liquidation_events": liquidation_events,
+        "max_weekend_gap_loss_ratio_pct": max_weekend_gap_loss_ratio * 100.0,
+        "n_weekend_carry_position_slots": n_weekend_carry_positions,
     }

@@ -1,0 +1,82 @@
+{
+  "generated_at": "2026-08-28T08:11:10.721152",
+  "exp_id": "EXP-FX000018",
+  "sys_id": "SYS-FX024",
+  "spec_ref": "research/EXP-FX000018/00-spec-amendment-01.md §3 W2",
+  "period": {
+    "train_start": "2023-11-01",
+    "train_end": "2025-03-31"
+  },
+  "pairs": [
+    "USD_JPY",
+    "EUR_JPY",
+    "GBP_JPY",
+    "AUD_JPY"
+  ],
+  "method": {
+    "definition": "週内最終M5バーの終値 → 週明け最初のM5バーの始値の相対変化率 |open_mon - close_fri| / close_fri",
+    "percentile": 99,
+    "aggregation": "通貨別に算出。ポートフォリオ合計は分散効果を認めず単純合算(保守側)。同一通貨の両建て分は窓開けに対し物理的に相殺するためネット想定元本で評価",
+    "budget_pct": 10.0,
+    "pnl_independence": "損益・勝率等の成績指標は本導出で一切参照していない"
+  },
+  "derived": {
+    "rel_gap_p99": {
+      "USD_JPY": 0.00453,
+      "EUR_JPY": 0.007104,
+      "GBP_JPY": 0.006345,
+      "AUD_JPY": 0.0071
+    },
+    "weekend_gap_loss_budget_pct": 10.0
+  },
+  "per_pair": {
+    "USD_JPY": {
+      "n_weekends": 73,
+      "rel_gap_p50": 0.00039,
+      "rel_gap_p95": 0.002214,
+      "rel_gap_p99": 0.00453,
+      "rel_gap_max": 0.004612,
+      "gap_pips_p50": 5.9,
+      "gap_pips_p99": 69.95,
+      "gap_pips_max": 70.6,
+      "signed_gap_mean": -0.000214,
+      "share_up_gaps": 0.3699
+    },
+    "EUR_JPY": {
+      "n_weekends": 73,
+      "rel_gap_p50": 0.000519,
+      "rel_gap_p95": 0.003215,
+      "rel_gap_p99": 0.007104,
+      "rel_gap_max": 0.015236,
+      "gap_pips_p50": 8.4,
+      "gap_pips_p99": 113.04,
+      "gap_pips_max": 245.3,
+      "signed_gap_mean": -0.000348,
+      "share_up_gaps": 0.4247
+    },
+    "GBP_JPY": {
+      "n_weekends": 73,
+      "rel_gap_p50": 0.000531,
+      "rel_gap_p95": 0.00241,
+      "rel_gap_p99": 0.006345,
+      "rel_gap_max": 0.010724,
+      "gap_pips_p50": 10.2,
+      "gap_pips_p99": 123.82,
+      "gap_pips_max": 206.4,
+      "signed_gap_mean": -0.000325,
+      "share_up_gaps": 0.3288
+    },
+    "AUD_JPY": {
+      "n_weekends": 73,
+      "rel_gap_p50": 0.000757,
+      "rel_gap_p95": 0.003027,
+      "rel_gap_p99": 0.0071,
+      "rel_gap_max": 0.011332,
+      "gap_pips_p50": 7.4,
+      "gap_pips_p99": 70.13,
+      "gap_pips_max": 109.3,
+      "signed_gap_mean": -0.000183,
+      "share_up_gaps": 0.4247
+    }
+  }
+}
