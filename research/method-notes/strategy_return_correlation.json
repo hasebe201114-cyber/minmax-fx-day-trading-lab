@@ -1,0 +1,87 @@
+{
+  "generated_at": "2026-08-28T11:46:08.320750",
+  "status": "探索診断（正式プロトコル外・spec編集なし）",
+  "question": "既存戦略のリターン相関は、合成によってシャープ改善が見込める水準か",
+  "period": {
+    "train_start": "2023-11-01",
+    "train_end": "2025-03-31",
+    "common_days": 505
+  },
+  "standalone": {
+    "SYS-FX011 (trailonly版, Train)": {
+      "label": "SYS-FX011 (trailonly版, Train)",
+      "n_days": 506,
+      "total_return_pct": 384.83,
+      "monthly_sharpe": 2.94,
+      "max_dd_peak_relative_pct": 10.08
+    },
+    "SYS-FX024 B-A (グリッド/週末フラット)": {
+      "label": "SYS-FX024 B-A (グリッド/週末フラット)",
+      "n_days": 514,
+      "total_return_pct": -13.67,
+      "monthly_sharpe": -1.176,
+      "max_dd_peak_relative_pct": 16.54
+    },
+    "SYS-FX024 R-A (グリッド/週末持越+ﾚﾝｼﾞﾌｨﾙﾀ)": {
+      "label": "SYS-FX024 R-A (グリッド/週末持越+ﾚﾝｼﾞﾌｨﾙﾀ)",
+      "n_days": 514,
+      "total_return_pct": -1.4,
+      "monthly_sharpe": -0.118,
+      "max_dd_peak_relative_pct": 13.43
+    }
+  },
+  "correlation_matrix": {
+    "SYS-FX011 (trailonly版, Train)": {
+      "SYS-FX011 (trailonly版, Train)": 1.0,
+      "SYS-FX024 B-A (グリッド/週末フラット)": -0.2458,
+      "SYS-FX024 R-A (グリッド/週末持越+ﾚﾝｼﾞﾌｨﾙﾀ)": -0.224
+    },
+    "SYS-FX024 B-A (グリッド/週末フラット)": {
+      "SYS-FX011 (trailonly版, Train)": -0.2458,
+      "SYS-FX024 B-A (グリッド/週末フラット)": 1.0,
+      "SYS-FX024 R-A (グリッド/週末持越+ﾚﾝｼﾞﾌｨﾙﾀ)": 0.5803
+    },
+    "SYS-FX024 R-A (グリッド/週末持越+ﾚﾝｼﾞﾌｨﾙﾀ)": {
+      "SYS-FX011 (trailonly版, Train)": -0.224,
+      "SYS-FX024 B-A (グリッド/週末フラット)": 0.5803,
+      "SYS-FX024 R-A (グリッド/週末持越+ﾚﾝｼﾞﾌｨﾙﾀ)": 1.0
+    }
+  },
+  "equal_weight_blends": {
+    "SYS-FX011 (trailonly版, Train) + SYS-FX024 B-A (グリッド/週末フラット)": {
+      "correlation": -0.2458,
+      "total_return_pct": 111.4,
+      "monthly_sharpe": 2.897,
+      "max_dd_peak_relative_pct": 5.84,
+      "component_sharpes": [
+        2.94,
+        -1.176
+      ]
+    },
+    "SYS-FX011 (trailonly版, Train) + SYS-FX024 R-A (グリッド/週末持越+ﾚﾝｼﾞﾌｨﾙﾀ)": {
+      "correlation": -0.224,
+      "total_return_pct": 123.07,
+      "monthly_sharpe": 3.11,
+      "max_dd_peak_relative_pct": 4.83,
+      "component_sharpes": [
+        2.94,
+        -0.118
+      ]
+    },
+    "SYS-FX024 B-A (グリッド/週末フラット) + SYS-FX024 R-A (グリッド/週末持越+ﾚﾝｼﾞﾌｨﾙﾀ)": {
+      "correlation": 0.5803,
+      "total_return_pct": -8.09,
+      "monthly_sharpe": -0.816,
+      "max_dd_peak_relative_pct": 13.41,
+      "component_sharpes": [
+        -1.176,
+        -0.118
+      ]
+    }
+  },
+  "caveats": [
+    "Train期間のみ。合成の効果が Validation で再現するかは未確認",
+    "日次リバランス・取引コストなしの理想化。実際には合成のためのリバランスコストがかかる",
+    "SYS-FX024 の期待値は負(PF<1)であり、期待値が負の戦略を足して合成シャープが上がるのは相関が強い負でかつ期待値がほぼゼロの場合に限られる"
+  ]
+}
