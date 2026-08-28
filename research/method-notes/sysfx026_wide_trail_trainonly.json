@@ -1,0 +1,53 @@
+{
+  "purpose": "SYS-FX026(SYS-FX011のATRトレール幅3.0倍再設計)の正式$パイプラインTrain評価",
+  "pre_registration": {
+    "trail_mult_factor": 3.0,
+    "note": "OBS000013で事前登録した単一候補。他水準はこのEXPでは試さない"
+  },
+  "result": {
+    "period": "SYS-FX026",
+    "monthly_sharpe": 2.192,
+    "max_dd_pct": 12.08,
+    "max_dd_monthly_pct": 12.08,
+    "max_dd_pct_of_initial_capital_reference": 69.56,
+    "max_dd_monthly_pct_of_initial_capital_reference": 23.66,
+    "profit_factor": 2.386,
+    "payoff_ratio": 2.217,
+    "max_consecutive_losses": 8,
+    "k3m_scale_invariant": {
+      "n_trades": 355,
+      "win_rate": 0.5183,
+      "observed_max_consecutive_losses": 8,
+      "iid_null_mean": 7.41,
+      "iid_null_median": 7,
+      "observed_percentile_in_null": 0.594,
+      "alpha": 0.05,
+      "pass_": true
+    },
+    "monthly_expectancy_positive": true,
+    "spread_cost_multiplier": 3.95,
+    "n_trades_effective": 355.0,
+    "permutation_p_clustered": 0.005,
+    "kpi_pass": {
+      "monthly_sharpe": true,
+      "profit_factor": true,
+      "monthly_expectancy_positive": true,
+      "max_dd_monthly_pct": false,
+      "max_dd_yearly_pct": true,
+      "max_consecutive_losses": true,
+      "payoff_ratio": true,
+      "spread_cost_multiplier": true,
+      "min_n_trades_effective": true,
+      "permutation_p_value": true
+    },
+    "kpi_pass_count": "9/10",
+    "kpi_required_pass_count": "8/9",
+    "kpi_required_all_pass": false,
+    "kpi_reference_pass_count": "1/1",
+    "n_trades": 355,
+    "final_balance_usd": 9124.81,
+    "total_return_pct": 812.48,
+    "trail_mult_factor": 3.0,
+    "atr_trail_multiplier_m5": 2.109
+  }
+}
