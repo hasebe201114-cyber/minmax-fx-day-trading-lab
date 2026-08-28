@@ -1,0 +1,120 @@
+{
+  "generated_at": "2026-08-28T13:56:54.712071+00:00",
+  "exp_id": "EXP-FX000020",
+  "spec_ref": "research/EXP-FX000020/00-spec.md §2.1・§2.2",
+  "method": {
+    "source": "Dukascopy BID/ASK H1 candles (認証不要の公開フィード)",
+    "spread_definition": "spread_t = ask_close - bid_close（pips換算）、通貨・期間ごとの中央値",
+    "era_ratio": "median_spread(拡張期間) / median_spread(GMO基準期間)",
+    "conservative_spread": "GMO_SPREAD × max(1.0, era_ratio)（楽観側に倒さない）",
+    "pnl_independence": "損益・勝率等の成績指標は本導出で一切参照していない"
+  },
+  "gmo_spread_pips": {
+    "USD_JPY": 0.3,
+    "EUR_JPY": 0.5,
+    "GBP_JPY": 0.7,
+    "AUD_JPY": 0.6
+  },
+  "measurements": {
+    "USD_JPY": {
+      "extension_2021_11_to_2023_10": {
+        "n_bars": 9407,
+        "median_pips": 0.6,
+        "p25_pips": 0.5,
+        "p75_pips": 0.8,
+        "mean_pips": 0.9694
+      },
+      "gmo_baseline_2023_11_to_2024_10": {
+        "n_bars": 5214,
+        "median_pips": 0.6,
+        "p25_pips": 0.5,
+        "p75_pips": 0.8,
+        "mean_pips": 0.9999
+      }
+    },
+    "EUR_JPY": {
+      "extension_2021_11_to_2023_10": {
+        "n_bars": 12021,
+        "median_pips": 1.2,
+        "p25_pips": 0.9,
+        "p75_pips": 1.5,
+        "mean_pips": 1.6365
+      },
+      "gmo_baseline_2023_11_to_2024_10": {
+        "n_bars": 6249,
+        "median_pips": 1.1,
+        "p25_pips": 0.9,
+        "p75_pips": 1.4,
+        "mean_pips": 1.7034
+      }
+    },
+    "GBP_JPY": {
+      "extension_2021_11_to_2023_10": {
+        "n_bars": 12047,
+        "median_pips": 2.2,
+        "p25_pips": 1.8,
+        "p75_pips": 2.9,
+        "mean_pips": 3.1125
+      },
+      "gmo_baseline_2023_11_to_2024_10": {
+        "n_bars": 6248,
+        "median_pips": 2.1,
+        "p25_pips": 1.8,
+        "p75_pips": 2.5,
+        "mean_pips": 2.9874
+      }
+    },
+    "AUD_JPY": {
+      "extension_2021_11_to_2023_10": {
+        "n_bars": 6813,
+        "median_pips": 0.9,
+        "p25_pips": 0.7,
+        "p75_pips": 1.2,
+        "mean_pips": 1.5479
+      },
+      "gmo_baseline_2023_11_to_2024_10": {
+        "n_bars": 6248,
+        "median_pips": 0.8,
+        "p25_pips": 0.6,
+        "p75_pips": 1.0,
+        "mean_pips": 1.3552
+      }
+    }
+  },
+  "era_ratio": {
+    "USD_JPY": 1.0,
+    "EUR_JPY": 1.0909,
+    "GBP_JPY": 1.0476,
+    "AUD_JPY": 1.125
+  },
+  "conservative_spread_pips": {
+    "USD_JPY": 0.3,
+    "EUR_JPY": 0.5455,
+    "GBP_JPY": 0.7333,
+    "AUD_JPY": 0.675
+  },
+  "sensitivity_levels": {
+    "base_era_ratio": {
+      "USD_JPY": 0.3,
+      "EUR_JPY": 0.5455,
+      "GBP_JPY": 0.7333,
+      "AUD_JPY": 0.675
+    },
+    "sensitivity_x1.5": {
+      "USD_JPY": 0.45,
+      "EUR_JPY": 0.8182,
+      "GBP_JPY": 1.0999,
+      "AUD_JPY": 1.0125
+    },
+    "sensitivity_x2.0": {
+      "USD_JPY": 0.6,
+      "EUR_JPY": 1.091,
+      "GBP_JPY": 1.4666,
+      "AUD_JPY": 1.35
+    }
+  },
+  "caveats": [
+    "Dukascopy は GMO とは別ブローカーであり、その BID/ASK スプレッドが GMO の当時のスプレッドと一致する保証はない。era_ratio は『市況としてスプレッドがどれだけ広かったか』の代理指標として使う",
+    "出来高0のバーを除外しているため、低流動性帯（スプレッドが最も広がる時間帯）が測定から抜けている可能性がある。この方向のバイアスは楽観側であり、感度分析(x1.5/x2.0)で補う"
+  ]
+}
