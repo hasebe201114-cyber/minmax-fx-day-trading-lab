@@ -65,6 +65,13 @@ def coverage_report(pairs: list[str]) -> dict:
         full = load_m5_extended(pair, "2000-01-01", "2100-01-01")
         ext = full[(full.index >= EXTENDED_TRAIN[0]) & (full.index <= "2023-10-31")]
         cur = full[(full.index >= CURRENT_TRAIN[0]) & (full.index <= CURRENT_TRAIN[1])]
+        # 「日がまるごと欠ける」ケースの検出（当初の品質ゲートはこれを見落としていた。
+        # 存在する日はすべて288本あるため「密度100%」と報告されてしまう）
+        gaps = ext.index.to_series().diff()
+        non_weekend_gaps = gaps[(gaps > pd.Timedelta("28h")) & (gaps < pd.Timedelta("40h"))]
+        long_gaps = gaps[gaps >= pd.Timedelta("40h")]
+        # 週末は約49〜55時間。それを超えるものは取得漏れの疑い
+        suspicious_long = long_gaps[long_gaps > pd.Timedelta("60h")]
         by_day_ext = ext.groupby(ext.index.date).size()
         by_day_cur = cur.groupby(cur.index.date).size()
         med_cur = float(by_day_cur.median()) if len(by_day_cur) else 0.0
@@ -78,6 +85,12 @@ def coverage_report(pairs: list[str]) -> dict:
             "thin_days_pct": round(thin / len(by_day_ext) * 100, 2) if len(by_day_ext) else None,
             "density_vs_current_pct": round(
                 (float(by_day_ext.median()) / med_cur * 100), 1) if med_cur else None,
+            "missing_single_days": int(len(non_weekend_gaps)),
+            "suspicious_long_gaps": int(len(suspicious_long)),
+            "max_gap_hours": round(float(gaps.max().total_seconds() / 3600), 1) if len(gaps) > 1 else None,
+            "total_missing_hours_beyond_weekend": round(float(
+                (non_weekend_gaps.sum() + suspicious_long.sum()).total_seconds() / 3600), 1)
+            if (len(non_weekend_gaps) or len(suspicious_long)) else 0.0,
             "extension_first": str(ext.index[0]) if len(ext) else None,
             "extension_last": str(ext.index[-1]) if len(ext) else None,
         }
