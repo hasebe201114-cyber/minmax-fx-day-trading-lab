@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-08-28T22:26:30.662085",
-  "strategy": "SYS-FX012",
-  "design": "SYS-FX012凍結最良候補(候補①N_BREAKOUT単独+H1トレンド判定不能除外フィルター、4通貨)。00-spec.md「フォワードテスト仕様」節に事前登録済み。新規パラメータなし",
-  "note": "司令塔の明示指示(2026-08-22)により、必須KPI13/18未達・C品質チーム未レビューのままフォワードテスト(ペーパートレード、実発注なし)を実施中。cutoff以降の全期間を毎回再計算する",
+  "generated_at": "2026-08-28T22:26:51.731122",
+  "strategy": "SYS-FX026",
+  "design": "SYS-FX026凍結構成(素のN_BREAKOUT+価格反応型ショック抑制、トレール幅3.0倍、risk_pct 0.65%、4通貨)。全パラメータはTrain単独由来で、Validation/Testからは一切導出していない(EXP-FX000021 amendment-01 §3・amendment-02 §2)",
+  "note": "司令塔判断「1のあと2へ」(2026-08-28)により投入。Test判定はB(部分的に再現、未達=K5m 2.56<3.0)で採用GOは未具申(amendment-02 §10)。フォワードテストの目的は、ゲートを一切緩めずに実効nを本物の未見データで積み増し、K5mが基準線のどちら側に落ち着くのかを判定すること。ペーパートレード、実発注なし",
   "params": {
-    "trail_mult_m5": 0.703,
-    "risk_pct": 0.01,
-    "apply_h1_trend_filter": true
+    "trail_mult_m5": 2.109,
+    "risk_pct": 0.0065,
+    "apply_h1_trend_filter": false
   },
   "cutoff": "2026-08-15 06:00:00",
   "latest_bar_by_pair": {
@@ -54,7 +54,7 @@
     "cutoff": "2026-08-15 06:00:00",
     "n_events_raw": 3,
     "n_events_dedup": 3,
-    "n_events_trendfiltered": 2,
+    "n_events_trendfiltered": 3,
     "n_trades_total": 0,
     "n_trades_closed": 0,
     "n_trades_open": 0,

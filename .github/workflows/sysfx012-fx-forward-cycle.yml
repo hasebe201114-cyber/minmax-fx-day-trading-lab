@@ -1,4 +1,4 @@
-name: SYS-FX012 Forward Test Cycle (Weekly)
+name: FX Forward Test Cycle (Weekly, SYS-FX012 + SYS-FX026)
 
 # 00-spec.md §「フォワードテスト仕様」§「監視サイクル」に基づく週次サイクル。
 # cutoff 2026-08-15 06:00 JST 以降のデータを毎サイクルで再取得・再計算し、
@@ -11,6 +11,13 @@ name: SYS-FX012 Forward Test Cycle (Weekly)
 # 注: trading-app-v2 側の sysfx012-fx-forward-sync.yml (月曜 12:00 JST) は
 # 本 workflow が commit した ledger を public/data/forward-fx-sysfx012/ へ
 # コピーして公開 Web UI へ反映する役。両者は依存関係にある。
+#
+# 2026-08-28 追加: 司令塔判断「1のあと2へ」(EXP-FX000021 amendment-02) により
+# SYS-FX026 をフォワードテストへ投入。同一の M5 データ取得を共有し、1 ジョブで
+# 2 戦略分の ledger を更新する (sysfx012 / sysfx026)。run_forward_test_cycle.py は
+# --strategy でパラメータ化済みで、既定 (sysfx012) は従来と完全に同一の出力を返す
+# ことを回帰確認済み。ワークフロー名は変えたがファイル名は据え置き
+# (trading-app-v2 の sysfx012-fx-forward-sync.yml が本 workflow に依存するため)。
 #
 # 2026-08-27 修正 (OBS000009 不具合2): M5データの永続先を data/curated/
 # ds-1-forward.json (.gitignore対象、ランナー間で永続しない) から
@@ -121,7 +128,14 @@ jobs:
       # 検出→filter→M5 シミュレーション。出力: research/method-notes/sysfx012_forward_test_ledger.json
       - name: Run SYS-FX012 forward test cycle
         run: |
-          PYTHONPATH=src python3 scripts/forward_test/run_forward_test_cycle.py
+          PYTHONPATH=src python3 scripts/forward_test/run_forward_test_cycle.py --strategy sysfx012
+
+      # SYS-FX026 (EXP-FX000021): 同じ M5 データを共有して 2 戦略目を評価する。
+      # Test 判定は B (部分的に再現、未達=K5m 2.56<3.0) で採用GOは未具申。
+      # フォワードの目的はゲートを緩めずに実効nを本物の未見データで積むこと。
+      - name: Run SYS-FX026 forward test cycle
+        run: |
+          PYTHONPATH=src python3 scripts/forward_test/run_forward_test_cycle.py --strategy sysfx026
 
       # ---- commit/push (dry_run でない場合のみ) ----
       - name: Commit and push ledger
@@ -130,17 +144,20 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          if git diff --quiet research/method-notes/sysfx012_forward_test_ledger.json; then
-            echo "No change in ledger, skip commit"
+          LEDGERS="research/method-notes/sysfx012_forward_test_ledger.json research/method-notes/sysfx026_forward_test_ledger.json"
+
+          if git diff --quiet ${LEDGERS}; then
+            echo "No change in ledgers, skip commit"
             exit 0
           fi
 
-          # generated_at を含めてコミットメッセージを生成
+          # generated_at と決済済みトレード数を両戦略分まとめてコミットメッセージへ
           GEN=$(python3 -c "import json; print(json.load(open('research/method-notes/sysfx012_forward_test_ledger.json'))['generated_at'])")
-          TRADES=$(python3 -c "import json; d=json.load(open('research/method-notes/sysfx012_forward_test_ledger.json')); print(d['backtest']['n_trades_closed'])")
+          T12=$(python3 -c "import json; d=json.load(open('research/method-notes/sysfx012_forward_test_ledger.json')); print(d['backtest']['n_trades_closed'])")
+          T26=$(python3 -c "import json; d=json.load(open('research/method-notes/sysfx026_forward_test_ledger.json')); print(d['backtest']['n_trades_closed'])")
 
-          git add research/method-notes/sysfx012_forward_test_ledger.json
-          git commit -m "chore(sysfx012): FX forward test weekly cycle — closed trades ${TRADES} (generated ${GEN})"
+          git add ${LEDGERS}
+          git commit -m "chore(forward): FX forward test weekly cycle — closed trades sysfx012=${T12} sysfx026=${T26} (generated ${GEN})"
 
           # rebase して push (他ブランチ/手動 push との競合回避)
           if ! git pull --rebase origin main; then
@@ -149,13 +166,15 @@ jobs:
             exit 1
           fi
           git push origin main
-          echo "[OK] committed and pushed SYS-FX012 forward test cycle"
+          echo "[OK] committed and pushed FX forward test cycle (sysfx012 + sysfx026)"
 
       # 成果物のログ保存 (CI アーティファクト、30日保持)
       - name: Upload ledger as artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: sysfx012-fx-forward-cycle-${{ github.run_id }}
-          path: research/method-notes/sysfx012_forward_test_ledger.json
+          name: fx-forward-cycle-${{ github.run_id }}
+          path: |
+            research/method-notes/sysfx012_forward_test_ledger.json
+            research/method-notes/sysfx026_forward_test_ledger.json
           retention-days: 30

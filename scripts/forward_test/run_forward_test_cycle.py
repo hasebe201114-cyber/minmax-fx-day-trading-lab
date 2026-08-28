@@ -62,7 +62,7 @@ from backtest_vol_breakout_dow_theory_4pairs_v7_trailonly_1000usd import (  # no
 from backtest_vol_continuation_candidates_trendfilter_4pairs_trainonly import (  # noqa: E402
     detect_candidate1,
 )
-from derive_vol_breakout_entry_params import to_h1  # noqa: E402
+from derive_vol_breakout_entry_params import N_BREAKOUT, to_h1  # noqa: E402
 from evaluate_vol_breakout_dow_theory_kpi import evaluate_period  # noqa: E402
 from price_shock_filter import make_price_shock_check  # noqa: E402
 from minmax_fx_dt.backtest.permutation import (  # noqa: E402
@@ -75,6 +75,68 @@ DS1_JSON = ROOT / "data" / "curated" / "ds-1.json"
 DS1_FORWARD_JSON = ROOT / "data" / "curated" / "ds-1-forward.json"
 RAW_FORWARD_DIR = ROOT / "data" / "raw" / "ds-1-forward"
 OUT_PATH = ROOT / "research" / "method-notes" / "sysfx012_forward_test_ledger.json"
+
+# ---------------------------------------------------------------------------
+# 複数戦略のフォワードテスト対応 (2026-08-28)
+#
+# 司令塔判断「1のあと2へ」(EXP-FX000021 amendment-02) により、SYS-FX026 を
+# フォワードテストへ投入する。本スクリプトは元々 SYS-FX012 専用だったため、
+# **既定の挙動を一切変えずに** 戦略を差し替えられるようパラメータ化した。
+#
+# `--strategy sysfx012` (既定) は従来と完全に同一の結果を返す (回帰確認済み)。
+#
+# 2戦略の違いは「検出層・トレール幅・リスク率・出力先」の4点のみで、
+# データ読み込み・被覆診断・コストモデル・複利エクイティ・KPI評価は共有する。
+# ---------------------------------------------------------------------------
+
+
+def _detect_sysfx012(h1: pd.DataFrame, atr_h1: pd.Series) -> tuple[pd.Series, pd.Series]:
+    """SYS-FX012: 候補①(N_BREAKOUT=3.5単独)。H1トレンド判定不能除外は別途適用."""
+    return detect_candidate1(h1, atr_h1)
+
+
+def _detect_sysfx026(h1: pd.DataFrame, atr_h1: pd.Series) -> tuple[pd.Series, pd.Series]:
+    """SYS-FX026: 素の N_BREAKOUT (H1トレンドフィルターなし)。
+
+    `backtest_vol_breakout_dow_theory_4pairs_v7_trailonly_1000usd.find_trades_for_period()`
+    と同一の検出ロジック (ratio >= N_BREAKOUT、方向はブレイクバーの陽陰) を、
+    フォワード側の (up, down) ブールSeries形式に合わせて表現したもの。
+    """
+    ratio = (h1["high"] - h1["low"]) / atr_h1
+    is_break = ratio >= N_BREAKOUT
+    bullish = h1["close"] > h1["open"]
+    return (is_break & bullish).fillna(False), (is_break & ~bullish).fillna(False)
+
+
+STRATEGIES: dict[str, dict] = {
+    "sysfx012": {
+        "label": "SYS-FX012",
+        "detect": _detect_sysfx012,
+        "apply_h1_trend_filter": True,   # H1ダウ理論トレンド判定不能イベントを除外
+        "trail_mult_m5": ATR_TRAIL_MULTIPLIER_M5,   # = stop_buffer × 1.0 (T-02)
+        "risk_pct": RISK_PCT_PER_TRADE,             # = 1.00%
+        "out_path": ROOT / "research" / "method-notes" / "sysfx012_forward_test_ledger.json",
+        "design": "SYS-FX012凍結最良候補(候補①N_BREAKOUT単独+H1トレンド判定不能除外フィルター、4通貨)。"
+                  "00-spec.md「フォワードテスト仕様」節に事前登録済み。新規パラメータなし",
+        "note": "司令塔の明示指示(2026-08-22)により、必須KPI13/18未達・C品質チーム未レビューのまま"
+                "フォワードテスト(ペーパートレード、実発注なし)を実施中。cutoff以降の全期間を毎回再計算する",
+    },
+    "sysfx026": {
+        "label": "SYS-FX026",
+        "detect": _detect_sysfx026,
+        "apply_h1_trend_filter": False,  # SYS-FX026 の基盤は SYS-FX011 系でトレンドフィルター無し
+        "trail_mult_m5": STOP_BUFFER_ATR_M5 * 3.0,  # 親spec で事前登録した3.0倍
+        "risk_pct": 0.0065,                          # amendment-01 §3 の機械的導出 (0.65%)
+        "out_path": ROOT / "research" / "method-notes" / "sysfx026_forward_test_ledger.json",
+        "design": "SYS-FX026凍結構成(素のN_BREAKOUT+価格反応型ショック抑制、トレール幅3.0倍、"
+                  "risk_pct 0.65%、4通貨)。全パラメータはTrain単独由来で、Validation/Testからは"
+                  "一切導出していない(EXP-FX000021 amendment-01 §3・amendment-02 §2)",
+        "note": "司令塔判断「1のあと2へ」(2026-08-28)により投入。Test判定はB(部分的に再現、"
+                "未達=K5m 2.56<3.0)で採用GOは未具申(amendment-02 §10)。フォワードテストの目的は、"
+                "ゲートを一切緩めずに実効nを本物の未見データで積み増し、K5mが基準線のどちら側に"
+                "落ち着くのかを判定すること。ペーパートレード、実発注なし",
+    },
+}
 
 
 def load_m5_forward(pair: str) -> pd.DataFrame:
@@ -154,8 +216,11 @@ def compute_data_coverage(m5_by_pair: dict[str, pd.DataFrame], cutoff: pd.Timest
     return coverage
 
 
-def find_forward_trades(pair: str, m5: pd.DataFrame, shock_check, cutoff: pd.Timestamp):
-    """凍結済み候補①+判定不能除外フィルターを、cutoff以降のイベントのみに適用。
+def find_forward_trades(pair: str, m5: pd.DataFrame, shock_check, cutoff: pd.Timestamp,
+                         cfg: dict | None = None):
+    """凍結済みの戦略構成を、cutoff以降のイベントのみに適用。
+
+    cfg 省略時は SYS-FX012 構成 (従来の既定挙動と完全に同一)。
 
     cutoff以前のバーはATR(H1)・zigzagピボットの文脈計算にのみ使う(先読みなし、
     Validationでのwarmupと同じ扱い)。新規トレンドイベントの検出(=positions)は
@@ -165,7 +230,8 @@ def find_forward_trades(pair: str, m5: pd.DataFrame, shock_check, cutoff: pd.Tim
     atr_h1 = atr_ind(h1["high"], h1["low"], h1["close"], length=14)
     atr_m5 = atr_ind(m5["high"], m5["low"], m5["close"], length=14)
 
-    up, down = detect_candidate1(h1, atr_h1)
+    cfg = cfg or STRATEGIES["sysfx012"]
+    up, down = cfg["detect"](h1, atr_h1)
     positions, directions = [], []
     for i in range(len(h1)):
         if h1.index[i] < cutoff:
@@ -184,19 +250,21 @@ def find_forward_trades(pair: str, m5: pd.DataFrame, shock_check, cutoff: pd.Tim
     n_events_trendfiltered = 0
     trades = []
     for pos in dedup_positions:
-        h1_trend = h1_dow_trend_direction(h1, atr_h1, pos)
-        if h1_trend is None:
-            continue
+        if cfg["apply_h1_trend_filter"]:
+            h1_trend = h1_dow_trend_direction(h1, atr_h1, pos)
+            if h1_trend is None:
+                continue
         n_events_trendfiltered += 1
         direction = dedup_directions[pos]
         trades.extend(simulate_dow_theory_trend(
-            m5, atr_m5, h1, atr_h1, pos, direction, STOP_BUFFER_ATR_M5, ATR_TRAIL_MULTIPLIER_M5,
+            m5, atr_m5, h1, atr_h1, pos, direction, STOP_BUFFER_ATR_M5, cfg["trail_mult_m5"],
             blackout_check=shock_check, tp_levels=TP_LEVELS_TRAILONLY, skip_first_entry=False,
             atr_trail_series=atr_m5, m5_exit=True, breakeven_trigger_r=BREAKEVEN_TRIGGER_R))
     return trades, len(positions), n_events_dedup, n_events_trendfiltered
 
 
-def run_forward_cycle() -> dict:
+def run_forward_cycle(cfg: dict | None = None) -> dict:
+    cfg = cfg or STRATEGIES["sysfx012"]
     m5_by_pair, h1_by_pair, atr_h1_by_pair = {}, {}, {}
     latest_bar_by_pair = {}
     for pair in SELECTED_PAIRS:
@@ -213,7 +281,7 @@ def run_forward_cycle() -> dict:
     still_open_trades: list[dict] = []
     n_raw_total = n_dedup_total = n_trendfiltered_total = 0
     for pair, m5 in m5_by_pair.items():
-        trades, n_raw, n_dedup, n_trendfiltered = find_forward_trades(pair, m5, shock_check, CUTOFF)
+        trades, n_raw, n_dedup, n_trendfiltered = find_forward_trades(pair, m5, shock_check, CUTOFF, cfg)
         n_raw_total += n_raw
         n_dedup_total += n_dedup
         n_trendfiltered_total += n_trendfiltered
@@ -280,8 +348,9 @@ def run_forward_cycle() -> dict:
                 t["risk_dollars"] = 0.0
                 t["skipped_ruin"] = True
             else:
-                max_risk_pct = MAX_LEVERAGE / t["leverage_ratio"] if t["leverage_ratio"] > 0 else RISK_PCT_PER_TRADE
-                effective_risk_pct = min(RISK_PCT_PER_TRADE, max_risk_pct)
+                risk_pct = cfg["risk_pct"]
+                max_risk_pct = MAX_LEVERAGE / t["leverage_ratio"] if t["leverage_ratio"] > 0 else risk_pct
+                effective_risk_pct = min(risk_pct, max_risk_pct)
                 t["risk_dollars"] = balance * effective_risk_pct
                 t["effective_risk_pct"] = effective_risk_pct
                 t["skipped_ruin"] = False
@@ -343,31 +412,43 @@ def run_forward_cycle() -> dict:
 
     out = {
         "generated_at": pd.Timestamp.now().isoformat(),
-        "design": "SYS-FX012凍結最良候補(候補①N_BREAKOUT単独+H1トレンド判定不能除外フィルター、4通貨)。"
-                  "00-spec.md「フォワードテスト仕様」節に事前登録済み。新規パラメータなし",
-        "note": "司令塔の明示指示(2026-08-22)により、必須KPI13/18未達・C品質チーム未レビューのまま"
-                "フォワードテスト(ペーパートレード、実発注なし)を実施中。cutoff以降の全期間を毎回再計算する",
+        "strategy": cfg["label"],
+        "design": cfg["design"],
+        "note": cfg["note"],
+        "params": {"trail_mult_m5": cfg["trail_mult_m5"], "risk_pct": cfg["risk_pct"],
+                   "apply_h1_trend_filter": cfg["apply_h1_trend_filter"]},
         "cutoff": str(CUTOFF),
         "latest_bar_by_pair": latest_bar_by_pair,
         "data_coverage": data_coverage,
         "backtest": period_result,
         "kpi": kpi,
     }
-    OUT_PATH.write_text(json.dumps(out, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
+    cfg["out_path"].write_text(json.dumps(out, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
     return out
 
 
 def main() -> int:
-    print("=== SYS-FX012 フォワードテスト・サイクル実行 ===")
+    import argparse
+
+    parser = argparse.ArgumentParser(description="フォワードテスト・サイクル実行")
+    parser.add_argument("--strategy", default="sysfx012", choices=sorted(STRATEGIES),
+                        help="対象戦略 (既定 sysfx012 = 従来と完全に同一の挙動)")
+    args = parser.parse_args()
+    cfg = STRATEGIES[args.strategy]
+
+    print(f"=== {cfg['label']} フォワードテスト・サイクル実行 ===")
     print(f"cutoff = {CUTOFF} (JST)")
-    out = run_forward_cycle()
+    print(f"パラメータ: trail_m5={cfg['trail_mult_m5']:.4f}  risk_pct={cfg['risk_pct']*100:.2f}%  "
+          f"H1トレンドフィルター={cfg['apply_h1_trend_filter']}")
+    out = run_forward_cycle(cfg)
     p = out["backtest"]
     print(f"\n最新バー: {out['latest_bar_by_pair']}")
     for pair, cov in out["data_coverage"].items():
         flag = " [GAP注意]" if cov.get("has_gap") else ""
         print(f"  データ被覆[{pair}]: {cov.get('n_bars')}本 {cov.get('first_bar')}〜{cov.get('last_bar')} "
               f"最大ギャップ={cov.get('max_gap_minutes')}分{flag}")
-    print(f"イベント={p['n_events_raw']}件(dedup後{p['n_events_dedup']}、判定不能除外後{p['n_events_trendfiltered']})")
+    filt_label = "判定不能除外後" if cfg["apply_h1_trend_filter"] else "フィルター無し"
+    print(f"イベント={p['n_events_raw']}件(dedup後{p['n_events_dedup']}、{filt_label}{p['n_events_trendfiltered']})")
     print(f"トレード数={p['n_trades_total']}(決済済み{p['n_trades_closed']}、保有中{p['n_trades_open']})")
     print(f"最終残高=${p['final_balance']}  勝率={p['win_rate']}  PF={p['profit_factor']}  "
           f"ペイオフ={p['payoff_ratio']}  perm_p(block)={p['perm_p_block']}")
@@ -375,7 +456,7 @@ def main() -> int:
         print(f"KPI: {out['kpi']['kpi_required_pass_count']}")
     else:
         print("KPI: 決済済みトレードなし、評価不可(想定通り。母数がまだ小さい初期段階)")
-    print(f"\n[出力]: {OUT_PATH}")
+    print(f"\n[出力]: {cfg['out_path']}")
     return 0
 
 
