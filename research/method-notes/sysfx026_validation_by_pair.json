@@ -1,0 +1,87 @@
+{
+  "purpose": "SYS-FX026 Validation の単一通貨依存を暴くための独立集計（C査読の過去指摘に対応）",
+  "period": {
+    "start": "2025-04-01",
+    "end": "2025-11-30"
+  },
+  "params": {
+    "trail_mult_factor": 3.0,
+    "risk_pct_per_trade": 0.006500000000000001
+  },
+  "overall": {
+    "n": 91,
+    "win_rate": 0.5495,
+    "mean_r_net": 0.8688,
+    "profit_factor_r": 3.724,
+    "payoff_ratio_r": 3.054,
+    "spread_cost_multiplier_k5m": 5.493
+  },
+  "by_pair": {
+    "AUD_JPY": {
+      "n": 30,
+      "win_rate": 0.6,
+      "mean_r_net": 1.9645,
+      "profit_factor_r": 7.922,
+      "payoff_ratio_r": 5.281,
+      "spread_cost_multiplier_k5m": 8.099
+    },
+    "EUR_JPY": {
+      "n": 6,
+      "win_rate": 0.5,
+      "mean_r_net": 0.2444,
+      "profit_factor_r": 6.561,
+      "payoff_ratio_r": 6.561,
+      "spread_cost_multiplier_k5m": 2.327
+    },
+    "GBP_JPY": {
+      "n": 17,
+      "win_rate": 0.4118,
+      "mean_r_net": -0.2184,
+      "profit_factor_r": 0.561,
+      "payoff_ratio_r": 0.801,
+      "spread_cost_multiplier_k5m": -0.508
+    },
+    "USD_JPY": {
+      "n": 38,
+      "win_rate": 0.5789,
+      "mean_r_net": 0.5886,
+      "profit_factor_r": 2.896,
+      "payoff_ratio_r": 2.106,
+      "spread_cost_multiplier_k5m": 4.906
+    }
+  },
+  "leave_one_out": {
+    "AUD_JPY": {
+      "n": 61,
+      "win_rate": 0.5246,
+      "mean_r_net": 0.3299,
+      "profit_factor_r": 1.981,
+      "payoff_ratio_r": 1.795,
+      "spread_cost_multiplier_k5m": 3.165
+    },
+    "EUR_JPY": {
+      "n": 85,
+      "win_rate": 0.5529,
+      "mean_r_net": 0.9128,
+      "profit_factor_r": 3.698,
+      "payoff_ratio_r": 2.99,
+      "spread_cost_multiplier_k5m": 5.705
+    },
+    "GBP_JPY": {
+      "n": 74,
+      "win_rate": 0.5811,
+      "mean_r_net": 1.1185,
+      "profit_factor_r": 5.023,
+      "payoff_ratio_r": 3.621,
+      "spread_cost_multiplier_k5m": 6.47
+    },
+    "USD_JPY": {
+      "n": 53,
+      "win_rate": 0.5283,
+      "mean_r_net": 1.0696,
+      "profit_factor_r": 4.291,
+      "payoff_ratio_r": 3.831,
+      "spread_cost_multiplier_k5m": 5.776
+    }
+  }
+}
