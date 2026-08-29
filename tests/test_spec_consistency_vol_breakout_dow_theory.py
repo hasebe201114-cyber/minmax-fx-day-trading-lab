@@ -39,8 +39,18 @@ def test_detection_layer_matches_spec_section3():
 
 
 def test_entry_layer_matches_spec_section4():
-    """§4.1 追跡開始・§4.2 スイング検出・§4.7 安全上限。"""
-    assert WINDOW_START_MIN == 30  # ブレイクバー確定後30分(準備期間)
+    """§4.1 追跡開始・§4.2 スイング検出・§4.7 安全上限。
+
+    ⚠️ 本テストは「定数の値」しか検証していない。2026-08-28、この形式では
+    `WINDOW_START_MIN == 30` が正しいまま **「何から30分か」という基準点の
+    取り違え**（OBS000009 不具合1、バー確定後のはずがバー始値起点だった）を
+    検出できないことが判明した。**意味の検証は
+    `tests/test_lookahead_entry_window.py` が担う**（PJ000004 Q16 R3）。
+
+    時刻・期間・基準点に関わるパラメータを追加する場合、本ファイルへの
+    定数 assert だけで済ませてはならない。
+    """
+    assert WINDOW_START_MIN == 30  # ブレイクバー確定後30分(準備期間)。基準点の検証は上記参照
     assert ZIGZAG_THRESHOLD_ATR_M5 == 1.0
     assert MAX_TREND_HOURS == 72  # 追跡上限時間
     assert MAX_HOLD_BARS == 24 * 10  # 240 H1バー相当=2,880 M5バー=10日

@@ -67,6 +67,12 @@ TP_LEVELS_TRAILONLY: list[tuple[float, float]] = []  # T-13: 段階利確を全�
 TP_LEVELS = TP_LEVELS_TRAILONLY  # コストモデルのTP_CUM_FRACTION計算にも同じ水準を使用
 BREAKEVEN_TRIGGER_R = 1.0  # T-13: 旧TP1水準(1.0R)を建値移行の唯一のトリガーとして転用
 
+# OBS000009 不具合1 / PJ000004 Q16 (2026-08-28): 探索窓の起点をブレイクバー「確定後」に直す。
+# 旧実装は H1 インデックス(=バー始値時刻)+30分 を起点にしており、バー確定の30分前から
+# エントリー探索を始める先読みだった。00-spec.md は一貫して「確定後30分」と記載しており、
+# 実装だけが仕様と食い違っていた。SYS-FX026 は修正版で評価する。
+BAR_CLOSE_ANCHORED = True
+
 SPREAD_PIPS = {"USD_JPY": 0.3, "EUR_JPY": 0.5, "GBP_JPY": 0.7, "AUD_JPY": 0.6, "EUR_USD": 0.3}
 SLIPPAGE_PIPS_MARKET_LEG = 0.5  # 週末強制クローズ・MAX_HOLD向け(高ボラ非依存の一般成行)
 SLIPPAGE_PIPS_STOP_TRIGGERED = 1.0  # T-09: SL・トレーリング向け(高ボラ局面限定の逆指値、レビュー提案レンジ0.5〜1.0pipの上限)
@@ -118,7 +124,8 @@ def find_trades_for_period(pair: str, m5: pd.DataFrame, shock_check) -> tuple[li
                                                   blackout_check=shock_check,
                                                   tp_levels=TP_LEVELS_TRAILONLY, skip_first_entry=False,
                                                   atr_trail_series=atr_m5, m5_exit=True,
-                                                  breakeven_trigger_r=BREAKEVEN_TRIGGER_R))
+                                                  breakeven_trigger_r=BREAKEVEN_TRIGGER_R,
+                                                  bar_close_anchored=BAR_CLOSE_ANCHORED))
     return trades, h1, atr_h1
 
 

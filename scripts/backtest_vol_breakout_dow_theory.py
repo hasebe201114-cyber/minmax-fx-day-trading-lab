@@ -285,7 +285,8 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
                                cost_ratio_check=None,
                                max_entry_seq: int | None = None,
                                confirm_bars: pd.DataFrame | None = None,
-                               confirm_mode: str = "new_extreme") -> list[dict]:
+                               confirm_mode: str = "new_extreme",
+                               bar_close_anchored: bool = False) -> list[dict]:
     """1トレンドイベントをM5ダウ理論で追跡し、1通貨1ポジション制約下で連続的に
     押し目買い/戻り売りをシミュレートする。M5で型崩れしてもH1が型崩れ前の高値
     (UP)/安値(DOWN)を更新したら追跡を再開する。
@@ -343,8 +344,25 @@ def simulate_dow_theory_trend(m5: pd.DataFrame, atr_m5: pd.Series, h1: pd.DataFr
     confirm = confirm_bars if confirm_bars is not None else h1
     break_bar = h1.iloc[break_idx]
     break_time = h1.index[break_idx]
-    start_time = break_time + pd.Timedelta(minutes=WINDOW_START_MIN)
-    end_time = break_time + pd.Timedelta(hours=MAX_TREND_HOURS)
+
+    # ---- 探索窓の起点（OBS000009 不具合1 / PJ000004 Q16、2026-08-28）----
+    # `to_h1()` は `resample("1h")` を label 既定(=left) で使うため、`h1.index[i]` は
+    # バーの「始値時刻」である。したがって `break_time + 30分` はバー確定の30分「前」
+    # にあたり、ブレイク判定に使う (high-low)/ATR も UP/DOWN 判定も break_bar の
+    # high/low もまだ確定していない時点でエントリー探索を始めてしまう = 先読み。
+    #
+    # `bar_close_anchored=True` で spec 通りの「ブレイクバー**確定後**」起点に直す。
+    # 既定を False（旧挙動）に据え置いているのは、稼働中の SYS-FX012 フォワードテストを
+    # 含む既存戦略の結果を無断で変えないため。既定を反転するかは OBS000009 として
+    # 司令塔判断を仰ぐ（判断が出るまで、新規の正式評価は True を明示指定すること）。
+    bar_duration = pd.Timedelta(0)
+    if bar_close_anchored:
+        if len(h1.index) < 2:
+            raise ValueError("bar_close_anchored=True には2本以上のバーが必要")
+        bar_duration = pd.Timedelta(np.median(np.diff(h1.index.values)))
+    anchor_time = break_time + bar_duration
+    start_time = anchor_time + pd.Timedelta(minutes=WINDOW_START_MIN)
+    end_time = anchor_time + pd.Timedelta(hours=MAX_TREND_HOURS)
 
     start_pos = m5.index.searchsorted(start_time, side="right")
     end_pos = m5.index.searchsorted(end_time, side="right")
