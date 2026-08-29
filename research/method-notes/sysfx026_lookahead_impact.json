@@ -1,0 +1,98 @@
+{
+  "purpose": "OBS000009 不具合1（探索窓起点の先読み）の SYS-FX026 への影響検算（C査読指摘の独立確認）",
+  "mechanism": "to_h1()のresample('1h')はlabel既定=left(バー始値時刻)。start_time=始値+30分はバー確定の30分前にあたり、確定後にしか分からない高値/安値/終値を使ってエントリーしうる",
+  "spec_says": "00-spec.md は「ブレイクバー確定後30分」と明記しており実装と食い違う",
+  "caveat": "『該当トレードを除外』は正しい修正の近似。本来は窓起点を+1hして全期間を再実行すべきで、その場合ポジション占有のゲーティングが変わり別のトレード集合になる",
+  "not_a_test_redraw": "これはTestを引き直す行為ではなく、消費済みTest結果に対するバグ診断である",
+  "periods": {
+    "train": {
+      "n_trades": 355,
+      "n_lookahead": 41,
+      "pct_lookahead": 11.5,
+      "offset_min_median": 40.0,
+      "net_pnl_usd": 3621.6,
+      "net_pnl_lookahead_usd": 308.74,
+      "pct_pnl_from_lookahead": 8.5,
+      "four_conditions_reported": {
+        "n": 355,
+        "mean_r_net": 0.6986,
+        "payoff_r": 2.528,
+        "k5m": 3.948,
+        "perm_p_block": 0.0045,
+        "unmet": [],
+        "classification": "A_再現した"
+      },
+      "four_conditions_excl_lookahead": {
+        "n": 314,
+        "mean_r_net": 0.7062,
+        "payoff_r": 2.519,
+        "k5m": 3.812,
+        "perm_p_block": 0.002,
+        "unmet": [],
+        "classification": "A_再現した"
+      },
+      "verdict_flips": false
+    },
+    "validation": {
+      "n_trades": 91,
+      "n_lookahead": 17,
+      "pct_lookahead": 18.7,
+      "offset_min_median": 40.0,
+      "net_pnl_usd": 632.72,
+      "net_pnl_lookahead_usd": -55.85,
+      "pct_pnl_from_lookahead": -8.8,
+      "four_conditions_reported": {
+        "n": 91,
+        "mean_r_net": 0.8688,
+        "payoff_r": 3.054,
+        "k5m": 5.493,
+        "perm_p_block": 0.0245,
+        "unmet": [],
+        "classification": "A_再現した"
+      },
+      "four_conditions_excl_lookahead": {
+        "n": 74,
+        "mean_r_net": 1.1544,
+        "payoff_r": 3.334,
+        "k5m": 6.707,
+        "perm_p_block": 0.0115,
+        "unmet": [],
+        "classification": "A_再現した"
+      },
+      "verdict_flips": false
+    },
+    "test": {
+      "n_trades": 121,
+      "n_lookahead": 20,
+      "pct_lookahead": 16.5,
+      "offset_min_median": 40.0,
+      "net_pnl_usd": 431.37,
+      "net_pnl_lookahead_usd": 161.36,
+      "pct_pnl_from_lookahead": 37.4,
+      "four_conditions_reported": {
+        "n": 121,
+        "mean_r_net": 0.4894,
+        "payoff_r": 1.981,
+        "k5m": 2.561,
+        "perm_p_block": 0.0405,
+        "unmet": [
+          "K5m>=3.0"
+        ],
+        "classification": "B_部分的に再現"
+      },
+      "four_conditions_excl_lookahead": {
+        "n": 101,
+        "mean_r_net": 0.3547,
+        "payoff_r": 1.659,
+        "k5m": 2.085,
+        "perm_p_block": 0.1114,
+        "unmet": [
+          "K5m>=3.0",
+          "permutation_p<0.05"
+        ],
+        "classification": "C_再現しなかった"
+      },
+      "verdict_flips": true
+    }
+  }
+}
