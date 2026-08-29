@@ -67,7 +67,8 @@ def find_trades(pair: str, m5: pd.DataFrame, shock_check, breakeven_trigger_r: f
         trades.extend(simulate_dow_theory_trend(
             m5, atr_m5, h1, atr_h1, pos, direction, STOP_BUFFER_ATR_M5, ATR_TRAIL_MULTIPLIER_M5,
             blackout_check=shock_check, tp_levels=TP_LEVELS_TRAILONLY, skip_first_entry=False,
-            atr_trail_series=atr_m5, m5_exit=True, breakeven_trigger_r=breakeven_trigger_r))
+            atr_trail_series=atr_m5, m5_exit=True, breakeven_trigger_r=breakeven_trigger_r,
+            bar_close_anchored=True))  # OBS000009不具合1/PJ000004 Q16(2026-08-28): 先読み修正
     return trades
 
 
