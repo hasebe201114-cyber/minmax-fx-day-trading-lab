@@ -74,6 +74,48 @@ STRATEGY_GO_THRESHOLD: dict[str, float] = {
 # (5通貨・数年で数十〜数百件) では原理的に届かないため、60%を実務上の下限とした。
 MIN_N_TRADES_STATISTICAL = 300  # 勝率60%相当のエッジを検出力80%で検出できる最小n
 
+# min_n_trades の「期間考慮」(2026-08-28、司令塔判断 (b)「n値は、期間を考慮」)
+#
+# 背景: MIN_N_TRADES_STATISTICAL=300 は Train (2023-11〜2025-03、約17ヶ月) の
+# 実測トレード値幅分布から導出した検出力シミュレーションの結果である。この値を
+# Validation (8.0ヶ月) や Test (8.4ヶ月) といった**より短い窓へそのまま適用すると、
+# 同じ絶対件数を約半分の期間で要求する = 約2倍のトレード頻度を要求する**ことになる。
+# 本PJのスコープ (保有期間 数日〜数週間・4通貨) では、戦略の優劣と無関係に
+# 短い窓では原理的に達成できない (EXP-FX000021 amendment-01 §7)。
+#
+# 恒久ルール: 閾値を「基準窓 (Train と同じ長さ) あたり300件」と読み替え、
+# 評価窓の長さに比例させる。**300 という水準自体は緩めない。**
+#
+# 重要な但し書き (PJ000004 Q15 に明記): 検出力80%という保証は n の絶対値に依存する
+# ため、期間比例化した閾値は「その窓で戦略が想定どおりの頻度でトレードしたか」を
+# 見る指標であって、「弱いエッジを検出するのに十分な検出力があるか」の保証ではない。
+# 短い窓で閾値を満たしても、統計的検出力そのものは不足したままである。
+REFERENCE_WINDOW_MONTHS = 16.95  # Train: 2023-11-01〜2025-03-31
+
+
+def min_n_trades_for_window(window_months: float,
+                            base: int = MIN_N_TRADES_STATISTICAL,
+                            reference_months: float = REFERENCE_WINDOW_MONTHS) -> int:
+    """評価窓の長さを考慮した min_n_trades 閾値を返す (司令塔判断 (b)、2026-08-28).
+
+    基準窓 (Train と同じ長さ) で `base` 件を要求し、それより短い/長い窓では
+    窓長に比例させる。四捨五入して整数を返す。
+
+    >>> min_n_trades_for_window(16.95)   # Train と同じ長さ
+    300
+    >>> min_n_trades_for_window(7.98)    # Validation (8.0ヶ月)
+    141
+    >>> min_n_trades_for_window(8.44)    # Test (8.4ヶ月)
+    149
+
+    注意: 本関数は「頻度が想定どおりか」を見るためのものであり、検出力80%の保証は
+    n の絶対値に依存するため短い窓では失われる (上のコメント参照)。
+    """
+    if window_months <= 0:
+        raise ValueError(f"window_months must be positive, got {window_months}")
+    return round(base * window_months / reference_months)
+
+
 # SYS-FX007 の K1m〜K7m 閾値 (research/EXP-FX000001/00-spec.md から転記)
 KPI_THRESHOLDS: dict[str, dict[str, float]] = {
     "SYS-FX007": {

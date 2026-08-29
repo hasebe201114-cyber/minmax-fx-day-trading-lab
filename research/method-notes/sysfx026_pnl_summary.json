@@ -1,0 +1,343 @@
+{
+  "purpose": "SYS-FX026 の3期間収支レポート（新しい検証ではなく既確定結果の再集計）",
+  "params": {
+    "trail_mult_factor": 3.0,
+    "atr_trail_multiplier_m5": 2.109,
+    "risk_pct_per_trade": 0.006500000000000001,
+    "initial_capital_usd": 1000.0,
+    "sizing": "複利（その時点の残高 × risk_pct をリスクに晒す）"
+  },
+  "periods": {
+    "train": {
+      "period": "train",
+      "start": "2023-11-01",
+      "end": "2025-03-31",
+      "months": 17.0,
+      "n_trades": 355,
+      "initial_capital_usd": 1000.0,
+      "final_balance_usd": 4621.6,
+      "net_pnl_usd": 3621.6,
+      "total_return_pct": 362.16,
+      "monthly_return_pct_avg": 21.36,
+      "max_dd_peak_relative_pct": 8.1,
+      "gross_profit_usd": 5993.77,
+      "gross_loss_usd": 2372.17,
+      "total_cost_usd": 1216.25,
+      "cost_pct_of_gross_profit": 20.3,
+      "win_rate": 0.5183,
+      "n_wins": 184,
+      "n_losses": 171,
+      "avg_win_usd": 32.57,
+      "avg_loss_usd": -13.87,
+      "largest_win_usd": 296.01,
+      "largest_loss_usd": -51.65,
+      "profit_factor": 2.72,
+      "payoff_ratio": 2.528,
+      "mean_r_net": 0.6986,
+      "mean_r_gross": 0.9356,
+      "mean_cost_r": 0.237,
+      "k5m_spread_cost_multiplier": 3.948,
+      "monthly_pnl_usd": {
+        "2023-11": 93.36,
+        "2023-12": 64.0,
+        "2024-01": -6.44,
+        "2024-02": 59.28,
+        "2024-03": 225.16,
+        "2024-04": 617.99,
+        "2024-05": 275.42,
+        "2024-06": -15.64,
+        "2024-07": 1197.11,
+        "2024-08": 95.13,
+        "2024-09": 307.75,
+        "2024-10": -12.21,
+        "2024-11": 71.81,
+        "2024-12": 144.11,
+        "2025-01": 389.68,
+        "2025-02": 32.12,
+        "2025-03": 82.98
+      },
+      "n_months_positive": 14,
+      "n_months_negative": 3,
+      "worst_month_usd": -15.64,
+      "best_month_usd": 1197.11,
+      "pnl_concentration": {
+        "top1": {
+          "sum_usd": 296.01,
+          "pct_of_gross_profit": 4.9,
+          "pct_of_net_pnl": 8.2
+        },
+        "top3": {
+          "sum_usd": 668.88,
+          "pct_of_gross_profit": 11.2,
+          "pct_of_net_pnl": 18.5
+        },
+        "top5": {
+          "sum_usd": 962.34,
+          "pct_of_gross_profit": 16.1,
+          "pct_of_net_pnl": 26.6
+        },
+        "net_pnl_excl_top5_usd": 2659.25,
+        "still_profitable_excl_top5": true
+      },
+      "by_pair": {
+        "AUD_JPY": {
+          "n": 60,
+          "net_pnl_usd": -5.25,
+          "win_rate": 0.4167,
+          "mean_r_net": 0.1687
+        },
+        "EUR_JPY": {
+          "n": 72,
+          "net_pnl_usd": 1263.37,
+          "win_rate": 0.5694,
+          "mean_r_net": 1.0669
+        },
+        "GBP_JPY": {
+          "n": 88,
+          "net_pnl_usd": 951.93,
+          "win_rate": 0.5455,
+          "mean_r_net": 0.7002
+        },
+        "USD_JPY": {
+          "n": 135,
+          "net_pnl_usd": 1411.55,
+          "win_rate": 0.5185,
+          "mean_r_net": 0.7367
+        }
+      },
+      "by_exit_reason": {
+        "SL_INITIAL_NO_TP": {
+          "n": 345,
+          "net_pnl_usd": 3439.31,
+          "mean_pnl_usd": 9.97
+        },
+        "WEEKEND_NO_TP": {
+          "n": 10,
+          "net_pnl_usd": 182.28,
+          "mean_pnl_usd": 18.23
+        }
+      },
+      "perm_p_block": 0.005,
+      "leverage_ratio_stats": {
+        "median": 1002.0,
+        "max": 3492.5
+      },
+      "n_leverage_capped": 0
+    },
+    "validation": {
+      "period": "validation",
+      "start": "2025-04-01",
+      "end": "2025-11-30",
+      "months": 8.0,
+      "n_trades": 91,
+      "initial_capital_usd": 1000.0,
+      "final_balance_usd": 1632.72,
+      "net_pnl_usd": 632.72,
+      "total_return_pct": 63.27,
+      "monthly_return_pct_avg": 7.93,
+      "max_dd_peak_relative_pct": 3.1,
+      "gross_profit_usd": 872.73,
+      "gross_loss_usd": 240.01,
+      "total_cost_usd": 142.96,
+      "cost_pct_of_gross_profit": 16.4,
+      "win_rate": 0.5495,
+      "n_wins": 50,
+      "n_losses": 41,
+      "avg_win_usd": 17.45,
+      "avg_loss_usd": -5.85,
+      "largest_win_usd": 246.48,
+      "largest_loss_usd": -14.09,
+      "profit_factor": 3.724,
+      "payoff_ratio": 3.054,
+      "mean_r_net": 0.8688,
+      "mean_r_gross": 1.0621,
+      "mean_cost_r": 0.1934,
+      "k5m_spread_cost_multiplier": 5.493,
+      "monthly_pnl_usd": {
+        "2025-04": 152.93,
+        "2025-05": -4.36,
+        "2025-06": 94.05,
+        "2025-07": -38.51,
+        "2025-08": 47.13,
+        "2025-09": 64.51,
+        "2025-10": 332.21,
+        "2025-11": -15.24
+      },
+      "n_months_positive": 5,
+      "n_months_negative": 3,
+      "worst_month_usd": -38.51,
+      "best_month_usd": 332.21,
+      "pnl_concentration": {
+        "top1": {
+          "sum_usd": 246.48,
+          "pct_of_gross_profit": 28.2,
+          "pct_of_net_pnl": 39.0
+        },
+        "top3": {
+          "sum_usd": 392.97,
+          "pct_of_gross_profit": 45.0,
+          "pct_of_net_pnl": 62.1
+        },
+        "top5": {
+          "sum_usd": 473.52,
+          "pct_of_gross_profit": 54.3,
+          "pct_of_net_pnl": 74.8
+        },
+        "net_pnl_excl_top5_usd": 159.2,
+        "still_profitable_excl_top5": true
+      },
+      "by_pair": {
+        "AUD_JPY": {
+          "n": 30,
+          "net_pnl_usd": 486.04,
+          "win_rate": 0.6,
+          "mean_r_net": 1.9645
+        },
+        "EUR_JPY": {
+          "n": 6,
+          "net_pnl_usd": 11.86,
+          "win_rate": 0.5,
+          "mean_r_net": 0.2444
+        },
+        "GBP_JPY": {
+          "n": 17,
+          "net_pnl_usd": -37.5,
+          "win_rate": 0.4118,
+          "mean_r_net": -0.2184
+        },
+        "USD_JPY": {
+          "n": 38,
+          "net_pnl_usd": 172.32,
+          "win_rate": 0.5789,
+          "mean_r_net": 0.5886
+        }
+      },
+      "by_exit_reason": {
+        "SL_INITIAL_NO_TP": {
+          "n": 88,
+          "net_pnl_usd": 550.7,
+          "mean_pnl_usd": 6.26
+        },
+        "WEEKEND_NO_TP": {
+          "n": 3,
+          "net_pnl_usd": 82.02,
+          "mean_pnl_usd": 27.34
+        }
+      },
+      "perm_p_block": 0.027,
+      "leverage_ratio_stats": {
+        "median": 722.7,
+        "max": 2421.8
+      },
+      "n_leverage_capped": 0
+    },
+    "test": {
+      "period": "test",
+      "start": "2025-12-01",
+      "end": "2026-08-15",
+      "months": 8.4,
+      "n_trades": 121,
+      "initial_capital_usd": 1000.0,
+      "final_balance_usd": 1431.37,
+      "net_pnl_usd": 431.37,
+      "total_return_pct": 43.14,
+      "monthly_return_pct_avg": 5.11,
+      "max_dd_peak_relative_pct": 5.78,
+      "gross_profit_usd": 811.48,
+      "gross_loss_usd": 380.12,
+      "total_cost_usd": 276.62,
+      "cost_pct_of_gross_profit": 34.1,
+      "win_rate": 0.5207,
+      "n_wins": 63,
+      "n_losses": 58,
+      "avg_win_usd": 12.88,
+      "avg_loss_usd": -6.55,
+      "largest_win_usd": 67.2,
+      "largest_loss_usd": -12.58,
+      "profit_factor": 2.152,
+      "payoff_ratio": 1.981,
+      "mean_r_net": 0.4894,
+      "mean_r_gross": 0.803,
+      "mean_cost_r": 0.3136,
+      "k5m_spread_cost_multiplier": 2.561,
+      "monthly_pnl_usd": {
+        "2025-12": -8.06,
+        "2026-01": 56.46,
+        "2026-02": 31.43,
+        "2026-03": 20.68,
+        "2026-04": 82.47,
+        "2026-05": 20.22,
+        "2026-06": 169.62,
+        "2026-07": 6.33,
+        "2026-08": 52.23
+      },
+      "n_months_positive": 8,
+      "n_months_negative": 1,
+      "worst_month_usd": -8.06,
+      "best_month_usd": 169.62,
+      "pnl_concentration": {
+        "top1": {
+          "sum_usd": 67.2,
+          "pct_of_gross_profit": 8.3,
+          "pct_of_net_pnl": 15.6
+        },
+        "top3": {
+          "sum_usd": 155.27,
+          "pct_of_gross_profit": 19.1,
+          "pct_of_net_pnl": 36.0
+        },
+        "top5": {
+          "sum_usd": 220.24,
+          "pct_of_gross_profit": 27.1,
+          "pct_of_net_pnl": 51.1
+        },
+        "net_pnl_excl_top5_usd": 211.12,
+        "still_profitable_excl_top5": true
+      },
+      "by_pair": {
+        "AUD_JPY": {
+          "n": 30,
+          "net_pnl_usd": 116.49,
+          "win_rate": 0.5667,
+          "mean_r_net": 0.4942
+        },
+        "EUR_JPY": {
+          "n": 18,
+          "net_pnl_usd": -15.79,
+          "win_rate": 0.4444,
+          "mean_r_net": -0.0881
+        },
+        "GBP_JPY": {
+          "n": 26,
+          "net_pnl_usd": 76.61,
+          "win_rate": 0.4615,
+          "mean_r_net": 0.4038
+        },
+        "USD_JPY": {
+          "n": 47,
+          "net_pnl_usd": 254.06,
+          "win_rate": 0.5532,
+          "mean_r_net": 0.755
+        }
+      },
+      "by_exit_reason": {
+        "SL_INITIAL_NO_TP": {
+          "n": 114,
+          "net_pnl_usd": 340.75,
+          "mean_pnl_usd": 2.99
+        },
+        "WEEKEND_NO_TP": {
+          "n": 7,
+          "net_pnl_usd": 90.62,
+          "mean_pnl_usd": 12.95
+        }
+      },
+      "perm_p_block": 0.044,
+      "leverage_ratio_stats": {
+        "median": 1141.1,
+        "max": 8957.8
+      },
+      "n_leverage_capped": 10
+    }
+  }
+}

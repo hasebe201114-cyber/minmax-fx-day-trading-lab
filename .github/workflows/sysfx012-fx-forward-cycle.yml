@@ -133,7 +133,15 @@ jobs:
       # SYS-FX026 (EXP-FX000021): 同じ M5 データを共有して 2 戦略目を評価する。
       # Test 判定は B (部分的に再現、未達=K5m 2.56<3.0) で採用GOは未具申。
       # フォワードの目的はゲートを緩めずに実効nを本物の未見データで積むこと。
+      #
+      # 【2026-08-28 一時停止】司令塔指示「フォワードに入る前に、トレード条件の
+      # ドキュメント化・収支まとめ・サブエージェントレビューを実施し、通過したら
+      # フォワード基盤を構築」を受け、レビュー通過まで本ステップを無効化する。
+      # run_forward_test_cycle.py は毎回 cutoff〜最新を全期間再計算する設計のため、
+      # 一時停止してもデータは一切失われない (再開時に自動的に埋まる)。
+      # 再開時は if 条件を削除するだけでよい。
       - name: Run SYS-FX026 forward test cycle
+        if: false   # レビュー通過後に削除して再開する
         run: |
           PYTHONPATH=src python3 scripts/forward_test/run_forward_test_cycle.py --strategy sysfx026
 
@@ -144,7 +152,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          LEDGERS="research/method-notes/sysfx012_forward_test_ledger.json research/method-notes/sysfx026_forward_test_ledger.json"
+          # sysfx026 は一時停止中のため存在しない場合がある。存在するものだけを対象にする
+          LEDGERS="research/method-notes/sysfx012_forward_test_ledger.json"
+          if [ -f research/method-notes/sysfx026_forward_test_ledger.json ]; then
+            LEDGERS="${LEDGERS} research/method-notes/sysfx026_forward_test_ledger.json"
+          fi
 
           if git diff --quiet ${LEDGERS}; then
             echo "No change in ledgers, skip commit"
@@ -154,7 +166,11 @@ jobs:
           # generated_at と決済済みトレード数を両戦略分まとめてコミットメッセージへ
           GEN=$(python3 -c "import json; print(json.load(open('research/method-notes/sysfx012_forward_test_ledger.json'))['generated_at'])")
           T12=$(python3 -c "import json; d=json.load(open('research/method-notes/sysfx012_forward_test_ledger.json')); print(d['backtest']['n_trades_closed'])")
-          T26=$(python3 -c "import json; d=json.load(open('research/method-notes/sysfx026_forward_test_ledger.json')); print(d['backtest']['n_trades_closed'])")
+          T26=$(python3 -c "
+          import json, pathlib
+          f = pathlib.Path('research/method-notes/sysfx026_forward_test_ledger.json')
+          print(json.load(f.open())['backtest']['n_trades_closed'] if f.exists() else 'paused')
+          ")
 
           git add ${LEDGERS}
           git commit -m "chore(forward): FX forward test weekly cycle — closed trades sysfx012=${T12} sysfx026=${T26} (generated ${GEN})"
@@ -177,4 +193,5 @@ jobs:
           path: |
             research/method-notes/sysfx012_forward_test_ledger.json
             research/method-notes/sysfx026_forward_test_ledger.json
+          if-no-files-found: warn
           retention-days: 30
