@@ -15,6 +15,7 @@ lp-strategy-lab（流動性プール戦略）および trading-app-v2（BTC キ�
 - **指標**: `pandas-ta`
 - **分析**: `scipy`, `pandas`
 - **バックテスト**: `backtrader`, `vectorbt`, `optuna`（optional）
+- **統計**: `scipy.stats`, `minmax_fx_dt.statistics.dsr`（DSR = Deflated Sharpe Ratio, Bailey & Lopez de Prado 2014 — **2026-08-29 Phase 1 マージ**）
 - **ログ**: `structlog`, `python-dotenv`
 - **品質**: `pytest`, `ruff`, `mypy`, `black`（dev）
 
@@ -23,6 +24,7 @@ lp-strategy-lab（流動性プール戦略）および trading-app-v2（BTC キ�
 - `risk/sizing.py` — ポジションサイズ決定（親PJ踏襲 + 本PJ向けに SYS-FX007 用に拡張）
 - `decision/criteria.py` — 撤退/採用判定（K1m〜K7m 7 指標で評価、親PJの単一 Sharpe から拡張）
 - `notify/discord.py` — Discord Webhook 通知
+- `statistics/dsr.py` — **DSR (Deflated Sharpe Ratio) 実装**。Bailey & Lopez de Prado (2014) 公式の numpy/scipy 実装。`minmax-fx-eval-framework` v0.2 から 2026-08-29 Phase 1 マージ。**参考値扱い**（必須 KPI 化は Phase 2 マージで対応）。使用例: `research/method-notes/dsr_for_ledger.json`
 
 将来の TS/Node 採用は親PJ v2 との並走領域（ダッシュボード等）に限定。
 

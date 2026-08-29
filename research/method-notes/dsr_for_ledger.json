@@ -1,0 +1,158 @@
+{
+  "generated_at": "2026-08-29T21:31:02.400057",
+  "phase": "Phase 1 merge (2026-08-29)",
+  "source_pj": "minmax-fx-eval-framework v0.2",
+  "note": "DSR values are reference only. They do NOT change existing verdicts.",
+  "results": [
+    {
+      "sys_id": "SYS-FX007",
+      "source": "research\\EXP-FX000001\\10-result\\train_val_test\\tvt_A1_A2_combined.json",
+      "n_trials_conservative": 6,
+      "n_trials_liberal": null,
+      "synthetic": false,
+      "dsr_conservative": {
+        "sharpe_observed": -1.0878,
+        "expected_max_sharpe": 1.3001,
+        "skewness": -0.1826,
+        "kurtosis": 2.6783,
+        "n_observations": 34,
+        "n_trials": 6,
+        "dsr": 0.0,
+        "psr": 0.0,
+        "z_statistic": -12.0412,
+        "passes_threshold": false,
+        "threshold": 0.95
+      },
+      "dsr_liberal": null
+    },
+    {
+      "sys_id": "SYS-FX008",
+      "source": "research\\EXP-FX000002\\10-result\\train_val_test\\tvt_USD_JPY_train.json",
+      "n_trials_conservative": 3,
+      "n_trials_liberal": null,
+      "synthetic": false,
+      "dsr_conservative": {
+        "sharpe_observed": 0.9506,
+        "expected_max_sharpe": 0.8528,
+        "skewness": 1.6119,
+        "kurtosis": 7.7382,
+        "n_observations": 34,
+        "n_trials": 3,
+        "dsr": 0.7139,
+        "psr": 1.0,
+        "z_statistic": 0.5648,
+        "passes_threshold": false,
+        "threshold": 0.95
+      },
+      "dsr_liberal": null
+    },
+    {
+      "sys_id": "SYS-FX009 v2",
+      "source": "research\\EXP-FX000003\\10-result\\train_val_test\\tvt_USD_JPY_train.json",
+      "n_trials_conservative": 1,
+      "n_trials_liberal": null,
+      "synthetic": false,
+      "dsr_conservative": {
+        "sharpe_observed": 0.2631,
+        "expected_max_sharpe": 0.0,
+        "skewness": -0.1343,
+        "kurtosis": 3.0609,
+        "n_observations": 34,
+        "n_trials": 1,
+        "dsr": 0.9279,
+        "psr": 0.9279,
+        "z_statistic": 1.4603,
+        "passes_threshold": false,
+        "threshold": 0.95
+      },
+      "dsr_liberal": null
+    },
+    {
+      "sys_id": "SYS-FX010",
+      "source": "research\\method-notes\\carry_no_stop_tvt.json",
+      "n_trials_conservative": 5,
+      "n_trials_liberal": null,
+      "synthetic": true,
+      "dsr_conservative": {
+        "sharpe_observed": 3.7859,
+        "expected_max_sharpe": 1.1926,
+        "skewness": 0.3382,
+        "kurtosis": 2.4389,
+        "n_observations": 34,
+        "n_trials": 5,
+        "dsr": 1.0,
+        "psr": 1.0,
+        "z_statistic": 6.7469,
+        "passes_threshold": true,
+        "threshold": 0.95
+      },
+      "dsr_liberal": null
+    },
+    {
+      "sys_id": "SYS-FX011 v7",
+      "source": "research\\method-notes\\vol_breakout_v7_trade_ledger.json",
+      "n_trials_conservative": 7,
+      "n_trials_liberal": 12,
+      "synthetic": false,
+      "dsr_conservative": {
+        "sharpe_observed": 1.8852,
+        "expected_max_sharpe": 1.3868,
+        "skewness": 2.5137,
+        "kurtosis": 10.4622,
+        "n_observations": 34,
+        "n_trials": 7,
+        "dsr": 0.9074,
+        "psr": 1.0,
+        "z_statistic": 1.3252,
+        "passes_threshold": false,
+        "threshold": 0.95
+      },
+      "dsr_liberal": {
+        "sharpe_observed": 1.8852,
+        "expected_max_sharpe": 1.6648,
+        "skewness": 2.5137,
+        "kurtosis": 10.4622,
+        "n_observations": 34,
+        "n_trials": 12,
+        "dsr": 0.7211,
+        "psr": 1.0,
+        "z_statistic": 0.586,
+        "passes_threshold": false,
+        "threshold": 0.95
+      }
+    },
+    {
+      "sys_id": "SYS-FX011 T-13",
+      "source": "research\\method-notes\\vol_breakout_dow_theory_4pairs_v7_trailonly_1000usd_backtest.json",
+      "n_trials_conservative": 7,
+      "n_trials_liberal": 12,
+      "synthetic": false,
+      "dsr_conservative": {
+        "sharpe_observed": 2.4342,
+        "expected_max_sharpe": 1.3868,
+        "skewness": 1.4851,
+        "kurtosis": 5.525,
+        "n_observations": 34,
+        "n_trials": 7,
+        "dsr": 0.9985,
+        "psr": 1.0,
+        "z_statistic": 2.9759,
+        "passes_threshold": true,
+        "threshold": 0.95
+      },
+      "dsr_liberal": {
+        "sharpe_observed": 2.4342,
+        "expected_max_sharpe": 1.6648,
+        "skewness": 1.4851,
+        "kurtosis": 5.525,
+        "n_observations": 34,
+        "n_trials": 12,
+        "dsr": 0.9856,
+        "psr": 1.0,
+        "z_statistic": 2.1859,
+        "passes_threshold": true,
+        "threshold": 0.95
+      }
+    }
+  ]
+}

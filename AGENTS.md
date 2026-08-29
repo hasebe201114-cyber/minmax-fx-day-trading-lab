@@ -16,6 +16,7 @@
 ## 重要ルール
 
 - **デイトレード FX 検証のスコープ**: 当日クローズ。持ち越し禁止。
+- **DSR 関数の扱い**: `minmax_fx_dt.statistics.dsr.deflated_sharpe_ratio()` は参考値。`decision/criteria.py` の必須ゲートには未組込（Phase 1 マージ・2026-08-29）。`portfolio-ledger.md` の各戦略 DSR 値と `research/method-notes/dsr_for_ledger.json` を参照。
 - **検証の閾値**: バックテスト結果を見る前に spec で数値固定（HARKing 防止）
 - **B 実装 / C 品質 は別エージェント**で実行（同じ実装者が自分の結果を評価しない）
 - **本番採用 GO は司令塔（ユーザー）の明示判断**。C の「採用可」は参考意見
