@@ -54,6 +54,7 @@ from backtest_vol_continuation_candidates_trendfilter_4pairs_trainonly import ( 
     detect_candidate1,
 )
 from derive_vol_breakout_entry_params import to_h1  # noqa: E402
+from live_monitor.fetch_m5_ohlcv import load_forward_csv  # noqa: E402
 from evaluate_vol_breakout_dow_theory_kpi import evaluate_period  # noqa: E402
 from price_shock_filter import make_price_shock_check  # noqa: E402
 from minmax_fx_dt.backtest.permutation import (  # noqa: E402
@@ -68,15 +69,27 @@ OUT_PATH = ROOT / "research" / "method-notes" / "sysfx012_forward_test_ledger.js
 
 
 def load_m5_forward(pair: str) -> pd.DataFrame:
-    """既存ds-1.json(凍結、warmup文脈用)+ds-1-forward.json(新規)を結合。
+    """既存ds-1.json(凍結、warmup文脈用)+cutoff以降のフォワードバーを結合。
 
-    どちらのファイルにも触れず(書き込みしない)、in-memoryで結合するのみ。
+    フォワードバーの正本は git 管理の `data/raw/ds-1-forward/*.csv`
+    (fetch_m5_ohlcv.py が追記)。ds-1-forward.json は .gitignore 対象の派生物で、
+    使い捨て runner には存在しないため、CSV を必ず読む。両方あれば和集合を取る
+    (2026-08-29: JSON だけに依存していたためフォワード区間が毎回 2 日分に
+    縮んでいた消失バグの修正)。
+
+    どのファイルにも書き込みはせず、in-memoryで結合するのみ。
     """
     frames = []
     with DS1_JSON.open(encoding="utf-8") as f:
         ds1 = json.load(f)
     if pair in ds1["pairs"]:
         df = pd.DataFrame(ds1["pairs"][pair]["data"])
+        df["timestamp"] = pd.to_datetime(df["timestamp"]).dt.tz_localize(None)
+        frames.append(df.set_index("timestamp"))
+
+    csv_records = load_forward_csv(pair)
+    if csv_records:
+        df = pd.DataFrame(csv_records)
         df["timestamp"] = pd.to_datetime(df["timestamp"]).dt.tz_localize(None)
         frames.append(df.set_index("timestamp"))
 

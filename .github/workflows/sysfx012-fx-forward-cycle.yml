@@ -75,16 +75,20 @@ jobs:
           print(f'[OK] ds-1.json regenerated: {result}')
           "
 
-      # ---- ds-1-forward.json のライブ更新 (M5 OHLCV) ----
+      # ---- フォワードバー (M5 OHLCV) のライブ更新 ----
       # (2026-08-26 追加): update-ds1-forward.yml の処理と同等。
       # 別 workflow だと Actions runner 間で working tree が共有されないため、
       # cycle 内で同じ処理を実行して最新 M5 データを取り込む。
-      - name: Fetch live M5 OHLCV and merge into ds-1-forward.json
-        # 過去 2 日分 (昨日 + 今日) を GMO API から取得。
-        # 既存 ds-1-forward.json の最新バー timestamp 以降のみ追記 (重複防止)。
+      # (2026-08-29): バーの正本は git 管理の data/raw/ds-1-forward/*.csv。
+      # checkout 済みの CSV に対して差分だけを追記する。
+      - name: Fetch live M5 OHLCV and merge into forward bars
+        # 過去 9 日分 (週次サイクル 7 日 + 余裕 2 日) を GMO API から取得。
+        # 正本の data/raw/ds-1-forward/*.csv にマージし、重複バーは追記しない。
+        # 毎時 workflow (update-ds1-forward.yml) が数日止まっていても、この
+        # 週次の取り直しで穴が自動的に埋まる (self-healing) ようにしている。
         # 公開エンドポイントのみ、API キー不要。
         run: |
-          PYTHONPATH=src python3 scripts/live_monitor/fetch_m5_ohlcv.py --all-pairs --lookback-days 2
+          PYTHONPATH=src python3 scripts/live_monitor/fetch_m5_ohlcv.py --all-pairs --lookback-days 9
 
       # ---- フォワードテスト cycle 実行 ----
       # load_m5_forward() が ds-1.json (warmup) + ds-1-forward.json (新規) を結合。
@@ -101,8 +105,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          if git diff --quiet research/method-notes/sysfx012_forward_test_ledger.json; then
-            echo "No change in ledger, skip commit"
+          if git diff --quiet research/method-notes/sysfx012_forward_test_ledger.json data/raw/ds-1-forward/; then
+            echo "No change in ledger / forward bars, skip commit"
             exit 0
           fi
 
@@ -110,7 +114,9 @@ jobs:
           GEN=$(python3 -c "import json; print(json.load(open('research/method-notes/sysfx012_forward_test_ledger.json'))['generated_at'])")
           TRADES=$(python3 -c "import json; d=json.load(open('research/method-notes/sysfx012_forward_test_ledger.json')); print(d['backtest']['n_trades_closed'])")
 
-          git add research/method-notes/sysfx012_forward_test_ledger.json
+          # ledger だけでなくフォワードバーの正本 CSV も一緒に commit する
+          # (2026-08-29 の消失バグ修正: runner 破棄でバーが失われないように)
+          git add research/method-notes/sysfx012_forward_test_ledger.json data/raw/ds-1-forward/
           git commit -m "chore(sysfx012): FX forward test weekly cycle — closed trades ${TRADES} (generated ${GEN})"
 
           # rebase して push (他ブランチ/手動 push との競合回避)

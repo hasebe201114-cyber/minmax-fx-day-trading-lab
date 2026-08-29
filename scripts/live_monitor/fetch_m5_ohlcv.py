@@ -16,6 +16,18 @@ M5 OHLCV を取得し、`data/curated/ds-1-forward.json` に追記マージす�
 - 修正: 本スクリプトを毎時実行する workflow update-ds1-forward.yml を追加
 - 想定: 毎時 5 分に GMO API から過去 2 日分取得 → 既存 JSON に追記 → cycle 実行時に最新反映
 
+【フォワードデータ消失バグ (2026-08-29 発見) 修正】
+- 原因: ds-1-forward.json は .gitignore 対象で、GitHub Actions runner は毎回
+  使い捨てのため、毎時 workflow が「追記マージ」した結果が次回実行に一切残らない
+  (毎回 lookback 2 日分だけの JSON が作られ、runner 終了とともに消える)
+- 結果: 週次 cycle が読めるフォワード区間は「実行直前の 2 日分」のみ。
+  cutoff (2026-08-15 06:00 JST) 〜 実行 2 日前までが恒久的な空白となり、
+  ledger は n_events_raw=0 (真値は 6) という誤った値を報告し続けていた
+- 修正: バーの正本を git 管理の追記型 CSV `data/raw/ds-1-forward/*.csv` に移し、
+  ds-1-forward.json はそこから再生成される派生物として扱う (既存 data/raw/ds-1/
+  と同じ「raw CSV が正本・curated JSON は派生」構造に揃えた)。JSON が無い runner
+  でも CSV から全期間を復元できる
+
 Usage:
     PYTHONPATH=src python3 scripts/live_monitor/fetch_m5_ohlcv.py --all-pairs
     PYTHONPATH=src python3 scripts/live_monitor/fetch_m5_ohlcv.py --pair USD_JPY --lookback-days 3
@@ -43,7 +55,72 @@ TARGET_PAIRS = ["USD_JPY", "EUR_JPY", "GBP_JPY", "AUD_JPY"]
 INTERVAL = "5min"
 RATE_LIMIT_SLEEP = 0.1
 FORWARD_JSON = ROOT / "data" / "curated" / "ds-1-forward.json"
+# バーの正本 (git 管理・追記型)。ds-1-forward.json はここからの派生物。
+FORWARD_CSV_DIR = ROOT / "data" / "raw" / "ds-1-forward"
+CSV_COLUMNS = ["timestamp", "open", "high", "low", "close"]
 JST = timezone(timedelta(hours=9))
+
+FORWARD_SOURCE_NOTE = (
+    "GMO Coin 外国為替FX ライブ取得 (cutoff 2026-08-15 06:00 JST 以降、"
+    "scripts/live_monitor/fetch_m5_ohlcv.py)"
+)
+
+
+def csv_path(pair: str) -> Path:
+    """通貨ペアごとの追記型 CSV パス."""
+    return FORWARD_CSV_DIR / f"ohlcv_{pair}_5min_forward.csv"
+
+
+def load_forward_csv(pair: str) -> list[dict]:
+    """git 管理の追記型 CSV から 1 通貨分の records を読む (無ければ空)."""
+    path = csv_path(pair)
+    if not path.exists():
+        return []
+    df = pd.read_csv(path)
+    if df.empty:
+        return []
+    # JSON 側 (ds-1-forward.json) の timestamp は isoformat 文字列。
+    # CSV は "2026-08-15 06:00:00+09:00" 形式で保存されるため、突き合わせ前に揃える。
+    df["timestamp"] = (
+        pd.to_datetime(df["timestamp"], utc=True).dt.tz_convert(JST).map(lambda t: t.isoformat())
+    )
+    return [
+        {
+            "timestamp": str(row.timestamp),
+            "open": float(row.open),
+            "high": float(row.high),
+            "low": float(row.low),
+            "close": float(row.close),
+        }
+        for row in df.itertuples(index=False)
+    ]
+
+
+def write_forward_csv(pair: str, records: list[dict]) -> None:
+    """1 通貨分の records を CSV へ書き出す (timestamp 昇順・重複排除済み前提).
+
+    書式は `scripts/data/fetch_ds1_ohlcv.py` の出力と揃える (timestamp を
+    Asia/Tokyo の tz 付き index にして出力)。同ディレクトリの日付範囲別 CSV と
+    混在しても `aggregate_to_json()` が symbol 単位で結合・重複排除できる。
+    """
+    if not records:
+        return
+    FORWARD_CSV_DIR.mkdir(parents=True, exist_ok=True)
+    df = pd.DataFrame(records, columns=CSV_COLUMNS)
+    df["timestamp"] = pd.to_datetime(df["timestamp"], utc=True).dt.tz_convert("Asia/Tokyo")
+    df.set_index("timestamp").sort_index().to_csv(csv_path(pair))
+
+
+def pair_dict_from_records(records: list[dict]) -> dict:
+    """records から ds-1-forward.json の pair エントリを組み立てる."""
+    return {
+        "data": records,
+        "n_bars": len(records),
+        "start": records[0]["timestamp"] if records else None,
+        "end": records[-1]["timestamp"] if records else None,
+        "columns": ["open", "high", "low", "close"],
+        "source": FORWARD_SOURCE_NOTE,
+    }
 
 
 def klines_to_records(klines: list[dict]) -> list[dict]:
@@ -74,47 +151,49 @@ def fetch_one_day(client: GMOClient, symbol: str, date: pd.Timestamp) -> list[di
         return []
 
 
-def load_existing() -> dict:
-    """既存 ds-1-forward.json を読み込み (存在しなければ初期化)."""
-    if FORWARD_JSON.exists():
-        with FORWARD_JSON.open(encoding="utf-8") as f:
-            return json.load(f)
-    return {
+def load_existing(pairs: list[str] | None = None) -> dict:
+    """既存バーを読み込む.
+
+    正本は git 管理の `data/raw/ds-1-forward/*.csv`。使い捨て runner では
+    ds-1-forward.json (.gitignore 対象) が存在しないため、CSV から全期間を
+    復元する。JSON が手元にある場合はそこにも入っているバーを取り込み、
+    両者の和集合を返す (どちらか一方しか無い環境でも欠落しない)。
+    """
+    out = {
         "schema_version": "1.0",
         "generated_at": datetime.now(JST).isoformat(),
         "interval": INTERVAL,
         "pairs": {},
     }
+    if FORWARD_JSON.exists():
+        with FORWARD_JSON.open(encoding="utf-8") as f:
+            out = json.load(f)
+            out.setdefault("pairs", {})
+
+    for pair in pairs if pairs is not None else TARGET_PAIRS:
+        csv_records = load_forward_csv(pair)
+        if not csv_records:
+            continue
+        existing_pair = out["pairs"].get(pair, {"data": []})
+        merged_pair, _ = merge_pair(existing_pair, csv_records)
+        out["pairs"][pair] = merged_pair
+    return out
 
 
 def merge_pair(existing_pair: dict, new_records: list[dict]) -> tuple[dict, int]:
     """1 通貨分の records を既存 pair にマージ. 戻り値: (新 pair dict, 追加件数)."""
-    if not new_records:
-        return existing_pair, 0
-    existing_ts = {r["timestamp"] for r in existing_pair.get("data", [])}
+    existing_records = existing_pair.get("data", [])
+    existing_ts = {r["timestamp"] for r in existing_records}
     added = [r for r in new_records if r["timestamp"] not in existing_ts]
-    if not added:
-        return existing_pair, 0
-    merged = existing_pair.get("data", []) + added
+    merged = existing_records + added
     merged.sort(key=lambda r: r["timestamp"])
-    new_pair = dict(existing_pair)
-    new_pair["data"] = merged
-    new_pair["n_bars"] = len(merged)
-    if merged:
-        new_pair["start"] = merged[0]["timestamp"]
-        new_pair["end"] = merged[-1]["timestamp"]
-    new_pair["columns"] = ["open", "high", "low", "close"]
-    new_pair["source"] = (
-        "GMO Coin 外国為替FX ライブ取得 (cutoff 2026-08-15 06:00 JST 以降、"
-        "scripts/live_monitor/fetch_m5_ohlcv.py)"
-    )
-    return new_pair, len(added)
+    return pair_dict_from_records(merged), len(added)
 
 
 def fetch_and_merge(pairs: list[str], lookback_days: int = 2) -> tuple[dict, int]:
-    """pair ごとに fetch → 既存 JSON にマージ → 返す."""
+    """pair ごとに fetch → 既存バー (正本 CSV) にマージ → 返す."""
     client = GMOClient("", "")  # 公開エンドポイントのみ
-    out = load_existing()
+    out = load_existing(pairs)
     today_jst = datetime.now(JST).date()
     days = [today_jst - timedelta(days=i) for i in range(lookback_days)]
     days.reverse()  # 古い→新しい順 (重複排除のため)
@@ -162,6 +241,15 @@ def main() -> int:
         targets = [args.pair]
 
     out, added = fetch_and_merge(targets, args.lookback_days)
+
+    # 正本 (git 管理・追記型 CSV) を先に更新する。
+    # ds-1-forward.json は .gitignore 対象で使い捨て runner とともに消えるため、
+    # ここを書き損ねると次回実行でバーが失われる (2026-08-29 に修正した消失バグ)。
+    for symbol in targets:
+        records = out.get("pairs", {}).get(symbol, {}).get("data", [])
+        write_forward_csv(symbol, records)
+        print(f"  [CSV] {csv_path(symbol).relative_to(ROOT)}: {len(records)} bars")
+
     FORWARD_JSON.parent.mkdir(parents=True, exist_ok=True)
     FORWARD_JSON.write_text(json.dumps(out, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
     size = FORWARD_JSON.stat().st_size

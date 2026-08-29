@@ -1,0 +1,72 @@
+{
+  "generated_at": "2026-08-29T07:53:44.623697",
+  "cutoff": "2026-08-15 06:00:00",
+  "latest_bar_by_pair": {
+    "USD_JPY": "2026-08-29 05:55:00",
+    "EUR_JPY": "2026-08-29 05:55:00",
+    "GBP_JPY": "2026-08-29 05:55:00",
+    "AUD_JPY": "2026-08-29 05:55:00"
+  },
+  "note": "凍結設計のまま、cutoff以降のイベントがトレードに至らなかった理由を1件ずつ内訳表示したもの。新規パラメータ・閾値の導入は一切なし",
+  "n_events_dedup": 6,
+  "drop_reason_counts": {
+    "price_shock_filter": 3,
+    "h1_trend_undetermined": 3
+  },
+  "events": [
+    {
+      "pair": "USD_JPY",
+      "h1_time": "2026-08-19 21:00:00",
+      "direction": "DOWN",
+      "h1_dow_trend": "DOWN",
+      "shock_blocked": true,
+      "n_trades": 0,
+      "dropped_by": "price_shock_filter"
+    },
+    {
+      "pair": "USD_JPY",
+      "h1_time": "2026-08-28 23:00:00",
+      "direction": "UP",
+      "h1_dow_trend": "UP",
+      "shock_blocked": true,
+      "n_trades": 0,
+      "dropped_by": "price_shock_filter"
+    },
+    {
+      "pair": "EUR_JPY",
+      "h1_time": "2026-08-19 21:00:00",
+      "direction": "DOWN",
+      "h1_dow_trend": null,
+      "shock_blocked": null,
+      "n_trades": 0,
+      "dropped_by": "h1_trend_undetermined"
+    },
+    {
+      "pair": "EUR_JPY",
+      "h1_time": "2026-08-28 23:00:00",
+      "direction": "DOWN",
+      "h1_dow_trend": null,
+      "shock_blocked": null,
+      "n_trades": 0,
+      "dropped_by": "h1_trend_undetermined"
+    },
+    {
+      "pair": "GBP_JPY",
+      "h1_time": "2026-08-19 21:00:00",
+      "direction": "DOWN",
+      "h1_dow_trend": "DOWN",
+      "shock_blocked": true,
+      "n_trades": 0,
+      "dropped_by": "price_shock_filter"
+    },
+    {
+      "pair": "GBP_JPY",
+      "h1_time": "2026-08-28 23:00:00",
+      "direction": "UP",
+      "h1_dow_trend": null,
+      "shock_blocked": null,
+      "n_trades": 0,
+      "dropped_by": "h1_trend_undetermined"
+    }
+  ]
+}

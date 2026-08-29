@@ -1,16 +1,21 @@
 name: SYS-FX012 Forward M5 OHLCV Live Update (Hourly)
 
 # FX012 フォワードテスト用 M5 OHLCV を毎時 GMO API から取得し、
-# data/curated/ds-1-forward.json を追記マージする。
-#
-# .gitignore で ds-1-forward.json は除外されているため commit しない
-# (毎回 1.4MB+ の更新で履歴が膨らむのを回避)。
+# 追記型 CSV data/raw/ds-1-forward/*.csv (git 管理・バーの正本) を更新して
+# commit/push する。派生物の data/curated/ds-1-forward.json は .gitignore 対象。
 #
 # フォワードテスト本体 (sysfx012-fx-forward-cycle.yml) は別途 weekly 実行で
-# このファイルを読み込み、ledger の latest_bar_by_pair を最新化する。
+# この CSV を読み込み、ledger の latest_bar_by_pair を最新化する。
 #
 # 2026-08-26 追加: latest_bar_by_pair が 08-24 16:25 JST で止まる問題の修正
 # (live-ticker-poll.yml は bid/ask 気配値のみ取得で M5 OHLCV は更新していなかった)
+#
+# 2026-08-29 修正 (フォワードデータ消失バグ): 旧版は「ds-1-forward.json へ追記
+# マージ」するだけで何も commit していなかった。runner は毎回使い捨てのため
+# 追記結果が次回に残らず、週次 cycle が読めるフォワード区間は毎回「直前 2 日分」
+# だけになっていた。cutoff (2026-08-15 06:00 JST) 以降の大半が恒久的な空白と
+# なり、ledger は n_events_raw=0 と報告し続けた (実データでの真値は 6 件)。
+# 修正: 正本を git 管理の CSV に移し、毎時 commit/push する。
 
 on:
   schedule:
@@ -19,7 +24,7 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: read   # 読み取りのみ (ds-1-forward.json は .gitignore で除外)
+  contents: write   # data/raw/ds-1-forward/*.csv の commit/push に必要
 
 jobs:
   update:
@@ -49,9 +54,7 @@ jobs:
         run: |
           PYTHONPATH=src python3 scripts/live_monitor/fetch_m5_ohlcv.py --all-pairs --lookback-days 2
 
-      - name: Print summary (no commit; ds-1-forward.json is .gitignore'd)
-        # 1.4MB+ の更新が毎回 commit されると履歴が膨らむため commit は行わない。
-        # フォワードテスト本体 (cycle.yml) は最新ファイルを Actions runner 上で直接読む。
+      - name: Print summary
         run: |
           python3 -c "
           import json
@@ -61,3 +64,23 @@ jobs:
           print(f'generated_at: {d[\"generated_at\"]}')
           for pair, p in d.get('pairs', {}).items():
               print(f'  {pair:<8} n_bars={p[\"n_bars\"]:>5} end={p[\"end\"]}')"
+
+      # 正本の CSV を commit/push する。ここを飛ばすと runner の破棄と同時に
+      # 取得したバーが失われる (2026-08-29 に修正した消失バグの再発防止)。
+      # 追記型のため 1 回の差分は 4 通貨 × 12 行程度で、履歴は肥大化しない。
+      - name: Commit and push forward bars (raw CSV)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/raw/ds-1-forward/
+          if git diff --cached --quiet; then
+            echo "変更なし、コミットをスキップ"
+            exit 0
+          fi
+          git commit -m "chore(sysfx012): フォワード M5 バー追記 $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          if ! git pull --rebase origin main; then
+            git rebase --abort || true
+            echo "::warning::git pull --rebase failed (conflict). Aborted. 次回実行で再取得される"
+            exit 1
+          fi
+          git push origin main
