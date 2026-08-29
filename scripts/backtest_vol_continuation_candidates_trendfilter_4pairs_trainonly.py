@@ -155,7 +155,8 @@ def find_trades_trendfiltered(pair: str, m5: pd.DataFrame, shock_check, detect_f
             m5, atr_m5, h1, atr_h1, pos, direction, STOP_BUFFER_ATR_M5, ATR_TRAIL_MULTIPLIER_M5,
             blackout_check=shock_check, tp_levels=TP_LEVELS_TRAILONLY, skip_first_entry=False,
             atr_trail_series=atr_m5, m5_exit=True, breakeven_trigger_r=BREAKEVEN_TRIGGER_R,
-            cost_ratio_check=cost_ratio_check, max_entry_seq=max_entry_seq))
+            cost_ratio_check=cost_ratio_check, max_entry_seq=max_entry_seq,
+            bar_close_anchored=True))  # OBS000009不具合1/PJ000004 Q16(2026-08-28): 先読み修正
     return trades, len(positions), n_events_dedup, n_events_trendfiltered
 
 

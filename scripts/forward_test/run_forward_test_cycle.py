@@ -258,6 +258,7 @@ def find_forward_trades(pair: str, m5: pd.DataFrame, shock_check, cutoff: pd.Tim
         direction = dedup_directions[pos]
         trades.extend(simulate_dow_theory_trend(
             m5, atr_m5, h1, atr_h1, pos, direction, STOP_BUFFER_ATR_M5, cfg["trail_mult_m5"],
+            bar_close_anchored=True,  # OBS000009不具合1/PJ000004 Q16(2026-08-28): 先読み修正、両戦略とも適用
             blackout_check=shock_check, tp_levels=TP_LEVELS_TRAILONLY, skip_first_entry=False,
             atr_trail_series=atr_m5, m5_exit=True, breakeven_trigger_r=BREAKEVEN_TRIGGER_R))
     return trades, len(positions), n_events_dedup, n_events_trendfiltered

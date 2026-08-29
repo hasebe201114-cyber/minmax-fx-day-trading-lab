@@ -166,7 +166,29 @@ Test の月次シャープは 2.391 と高いままだが、**サイジングで
    **S戦略チームの推奨は (a)。** SYS-FX012 のフォワードは実運用移行を目的としており、
    実行不可能なエントリーを含んだまま積み上げても移行判断に使えないため。
 
+## 6. 司令塔回答と最終確定（2026-08-28）
+
+司令塔「そうしてください」（§4 の2点への回答）を受け、以下を確定する。
+
+1. **SYS-FX026 は REJECT 確定。** §3 の判定（Test C、事前登録どおり採用を具申しない）を
+   正式に確定する。提案元の `OBS000013` を `90不採用/` へ移動した
+2. **`OBS000009` 不具合1 の既定を (a) で反転し、SYS-FX011・SYS-FX012 を修正版で再評価する。**
+   `研究/method-notes` の該当実装（`backtest_vol_breakout_dow_theory_4pairs_v7_trailonly_1000usd.py`・
+   `backtest_vol_continuation_candidates_trendfilter_4pairs_trainonly.py`・
+   `scripts/forward_test/run_forward_test_cycle.py`）に `bar_close_anchored=True` を明示指定した。
+   **共有関数 `simulate_dow_theory_trend()` 自体の既定は引き続き `False`**
+   （数十本の過去の探索的スクリプト・REJECT確定済みの決定を蒸し返さないため、PJ000004 Q12-5 の
+   data dredging 防止規則に準拠。SYS-FX011/012 の**現行の公式実装**のみ明示的に修正版へ切替）
+   結果は `research/ACTIVE.md`・`obs/.../PJ000003` に記録する（本amendmentはSYS-FX026限定のため）
+
+**SYS-FX012 のフォワードテストは仕切り直す。** 決済済みトレードは0件のままだったため
+（`research/method-notes/sysfx012_forward_test_ledger.json`、2026-08-28時点）、破棄すべき
+実績は無く、コード修正のみで次回の週次サイクルから修正版が適用される。
+
 ## 5. 変更履歴
 - 2026-08-28: 初版作成。**先読みを修正して3期間を再計算し、Test 判定が B → C へ反転**。
   Train の最大DDも 8.10%→10.75% と K2m を割り、「Train 9/9」を撤回。
   再発防止として `tests/test_lookahead_entry_window.py` を新設（PJ000004 Q16 R3）
+- 2026-08-28: §6（司令塔回答と最終確定）を追記。**SYS-FX026 REJECT確定**。
+  先読み修正の既定を (a) で反転し、SYS-FX011・SYS-FX012 の現行公式実装とフォワード基盤に
+  `bar_close_anchored=True` を適用（共有関数自体の既定は変更せず、過去の探索スクリプトは対象外）
