@@ -231,7 +231,9 @@ SYS-FX026（EXP-FX000021）の C品質チーム査読で本不具合が再発見
 | **SYS-FX011**（同一モジュール） | 同上 | ✅ 適用・再評価済み |
 | **SYS-FX012** | `backtest_vol_continuation_candidates_trendfilter_4pairs_trainonly.py` | ✅ 適用・再評価済み |
 | SYS-FX012 フォワード | `scripts/forward_test/run_forward_test_cycle.py` | ✅ 適用（決済済みトレード0件のため破棄すべき実績なし） |
-| SYS-FX018・SYS-FX025・EXP-FX000020（拡張Train） | 同エンジン系列を使用 | **未対応。別途司令塔確認が必要**（本対応のスコープ外） |
+| SYS-FX018・SYS-FX012（extended版） | `backtest_sysfx018_breakeven_sweep_trainonly.py`（`fx018.run_period(1.0/2.0,...)`） | ✅ 2026-08-29対応完了（司令塔指示「先読みの、訂正進めてください」） |
+| SYS-FX025（トレンド構成要素） | v7モジュール経由でSYS-FX011と同一修正が適用済み | ✅ 対応済み（グリッド構成要素`grid_portfolio_engine.simulate`は別エンジンのため対象外） |
+| EXP-FX000020（拡張Train再評価） | 上記実装をすべて使用 | ✅ 2026-08-29再計算完了。**全4戦略・全3コスト水準で分類は不変（REJECT確定のまま）**、詳細は`EXP-FX000020/00-spec.md`§10.9 |
 
 **再評価の結果（修正前 → 修正後）**:
 
