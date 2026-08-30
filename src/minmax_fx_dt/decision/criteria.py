@@ -37,6 +37,10 @@ from typing import TypedDict
 import numpy as np
 
 from ..backtest.permutation import effective_pair_count
+from ..statistics.dsr import (
+    DSR_REQUIRED_THRESHOLD,
+    deflated_sharpe_ratio,
+)
 
 ROOT = Path(__file__).resolve().parents[3]
 REGIME_LATEST = ROOT / "research" / "regime_latest.json"
@@ -73,6 +77,57 @@ STRATEGY_GO_THRESHOLD: dict[str, float] = {
 # 勝率55%相当まで拾おうとすると n=1,165 まで跳ね上がり、本PJの実測シグナル頻度
 # (5通貨・数年で数十〜数百件) では原理的に届かないため、60%を実務上の下限とした。
 MIN_N_TRADES_STATISTICAL = 300  # 勝率60%相当のエッジを検出力80%で検出できる最小n
+
+# v0.3 (2026-08-30, minmax-fx-eval-framework からの Phase 2 マージ):
+# - K4m 1.5 → 1.2 (M-S1: Lopez de Prado 2018 推奨範囲)
+# - n_hard_floor 300 → 60 (M-S3: Bailey 2014 MinTRL 整合)
+# - DSR ≥ 0.95 を必須ゲートに追加 (M-S2: PBO 経験的閾値)
+# - DSR_PASS_CAP 5/年 (M-S2: 戦略数上限)
+# 詳細: research/メソッドフレームワーク再設計/00-spec-v0.3.md
+KPI_THRESHOLDS_V0_3: dict[str, dict[str, float]] = {
+    "SYS-FX007": {
+        "sharpe_monthly": 0.4,
+        "profit_factor_monthly": 1.2,
+        "max_dd_monthly_pct": 10.0,
+        "max_dd_yearly_pct": 20.0,
+        "payoff_ratio": 1.2,  # v0.3 緩和
+        "spread_cost_multiple": 3.0,
+        "backtest_forward_divergence_pct": 30.0,
+        "max_margin_usage_pct": 30.0,
+        "weak_breakout_exclusion_pct": 30.0,
+        "n_hard_floor": 60,  # v0.3 新設 (旧 min_n_trades 300)
+        "permutation_p_value": 0.05,
+        "dsr_threshold": DSR_REQUIRED_THRESHOLD,  # 0.95
+    },
+    "SYS-FX008": {
+        "sharpe_monthly": 0.4,
+        "profit_factor_monthly": 1.2,
+        "max_dd_monthly_pct": 10.0,
+        "max_dd_yearly_pct": 20.0,
+        "payoff_ratio": 1.2,
+        "spread_cost_multiple": 3.0,
+        "backtest_forward_divergence_pct": 30.0,
+        "max_margin_usage_pct": 30.0,
+        "weak_breakout_exclusion_pct": 0.0,
+        "n_hard_floor": 60,
+        "permutation_p_value": 0.05,
+        "dsr_threshold": DSR_REQUIRED_THRESHOLD,
+    },
+    "SYS-FX009": {
+        "sharpe_monthly": 0.4,
+        "profit_factor_monthly": 1.2,
+        "max_dd_monthly_pct": 10.0,
+        "max_dd_yearly_pct": 20.0,
+        "payoff_ratio": 1.2,
+        "spread_cost_multiple": 3.0,
+        "backtest_forward_divergence_pct": 30.0,
+        "max_margin_usage_pct": 30.0,
+        "weak_breakout_exclusion_pct": 0.0,
+        "n_hard_floor": 60,
+        "permutation_p_value": 0.05,
+        "dsr_threshold": DSR_REQUIRED_THRESHOLD,
+    },
+}
 
 # SYS-FX007 の K1m〜K7m 閾値 (research/EXP-FX000001/00-spec.md から転記)
 KPI_THRESHOLDS: dict[str, dict[str, float]] = {
@@ -305,8 +360,8 @@ def is_range_regime(regime: str) -> bool:
     return regime == "RANGE"
 
 
-def evaluate_kpis(stats: Stats) -> list[KPIEvaluation]:
-    """K1m〜K7m + 統計的有意性 評価 (本PJ固有).
+def evaluate_kpis_v0_1(stats: Stats) -> list[KPIEvaluation]:
+    """K1m〜K7m + 統計的有意性 評価 (本PJ固有・v0.1 互換).
 
     OBS000005 差し戻し1 (独立監査追記2 での明記事項): K5m・K6m・min_n_trades・
     permutation_p_value を含む spec 記載の全ゲートを評価する。バックテストのみ
@@ -553,6 +608,232 @@ def evaluate_kpis(stats: Stats) -> list[KPIEvaluation]:
         )
 
     return evals
+
+
+# ============================================================
+# v0.3 評価ロジック (2026-08-30, minmax-fx-eval-framework Phase 2 マージ)
+# ============================================================
+# 既存 v0.1 の evaluate_kpis() は破壊しない.
+# 新規 evaluate_kpis_v0_3() を追加し、evaluate_kpis() はデフォルトで v0.1 を維持.
+
+
+def evaluate_kpis_v0_3(stats: Stats) -> list[KPIEvaluation]:
+    """K1m〜K7m + DSR 評価 (v0.3・必須ゲート化).
+
+    起源:
+        minmax-fx-eval-framework v0.2 / v0.3 から Phase 2 マージ (2026-08-30).
+        詳細: research/メソッドフレームワーク再設計/00-spec-v0.3.md
+
+    v0.1 との差分:
+        - K4m 1.5 → 1.2 (M-S1)
+        - min_n_trades 300 → n_hard_floor 60 (M-S3)
+        - DSR ≥ 0.95 を必須ゲートに追加 (M-S2)
+        - DSR_PASS_CAP 5/年 は PJ レベル管理（本関数では未実装）
+
+    注意:
+        DSR 評価には `returns`（月次リターン列）と `n_trials`（改善ループ・通貨・閾値選択の積）が
+        必須。どちらも未指定なら判定対象外（applicable=False）として扱う。
+    """
+    strategy_id = stats.get("strategy_id", "")
+    thresholds = KPI_THRESHOLDS_V0_3.get(strategy_id)
+    if not thresholds:
+        return []
+
+    evals: list[KPIEvaluation] = []
+
+    # K1m: 月次 Sharpe
+    sharpe = float(stats.get("sharpe_monthly", stats.get("sharpe", 0.0)))
+    evals.append(
+        KPIEvaluation(
+            "K1m_sharpe",
+            sharpe,
+            thresholds["sharpe_monthly"],
+            sharpe >= thresholds["sharpe_monthly"],
+        )
+    )
+
+    # K1m: 月次 PF
+    pf = float(stats.get("profit_factor_monthly", 0.0))
+    evals.append(
+        KPIEvaluation(
+            "K1m_pf",
+            pf,
+            thresholds["profit_factor_monthly"],
+            pf >= thresholds["profit_factor_monthly"],
+        )
+    )
+
+    # K1m: 月次期待値 > 0円
+    expectancy = float(stats.get("expectancy_jpy", 0.0))
+    evals.append(
+        KPIEvaluation(
+            "K1m_expectancy",
+            expectancy,
+            0.0,
+            expectancy > 0.0,
+            "1トレードあたり期待値(円)",
+        )
+    )
+
+    # K2m: 月間 DD
+    max_dd_m = abs(float(stats.get("max_dd_monthly_pct", stats.get("max_dd", 0.0))))
+    evals.append(
+        KPIEvaluation(
+            "K2m_dd_monthly",
+            max_dd_m,
+            thresholds["max_dd_monthly_pct"],
+            max_dd_m <= thresholds["max_dd_monthly_pct"],
+        )
+    )
+
+    # K2m: 年間 DD
+    max_dd_y = abs(float(stats.get("max_dd_yearly_pct", max_dd_m)))
+    evals.append(
+        KPIEvaluation(
+            "K2m_dd_yearly",
+            max_dd_y,
+            thresholds["max_dd_yearly_pct"],
+            max_dd_y <= thresholds["max_dd_yearly_pct"],
+        )
+    )
+
+    # K4m: ペイオフレシオ (v0.3: 1.2 に緩和)
+    pr = float(stats.get("payoff_ratio", 0.0))
+    evals.append(
+        KPIEvaluation(
+            "K4m_payoff",
+            pr,
+            thresholds["payoff_ratio"],
+            pr >= thresholds["payoff_ratio"],
+        )
+    )
+
+    # K5m: スプレッドコスト倍率
+    edge = float(stats.get("edge_per_trade_jpy", stats.get("expectancy_jpy", 0.0)))
+    spread_rt = float(stats.get("spread_round_trip_jpy", 0.0))
+    if spread_rt > 0:
+        multiple = edge / spread_rt
+        evals.append(
+            KPIEvaluation(
+                "K5m_spread_cost_multiple",
+                multiple,
+                thresholds["spread_cost_multiple"],
+                multiple >= thresholds["spread_cost_multiple"],
+                f"edge={edge:.1f}円 / spread往復={spread_rt:.1f}円",
+            )
+        )
+    else:
+        evals.append(
+            KPIEvaluation(
+                "K5m_spread_cost_multiple",
+                0.0,
+                thresholds["spread_cost_multiple"],
+                False,
+                "spread_round_trip_jpy 未提供のため判定対象外",
+                applicable=False,
+            )
+        )
+
+    # n_hard_floor: v0.3 で 50→60 (M-S3: Bailey MinTRL)
+    n_trades = int(stats.get("n_trades", 0))
+    evals.append(
+        KPIEvaluation(
+            "n_hard_floor",
+            float(n_trades),
+            thresholds["n_hard_floor"],
+            n_trades >= thresholds["n_hard_floor"],
+            f"名目n={n_trades} (v0.3 hard floor)",
+        )
+    )
+
+    # permutation p 値
+    p_value = stats.get("permutation_p_value")
+    if p_value is None:
+        evals.append(
+            KPIEvaluation(
+                "permutation_p_value",
+                float("nan"),
+                thresholds["permutation_p_value"],
+                False,
+                "permutation test 未実行のため判定対象外",
+                applicable=False,
+            )
+        )
+    else:
+        p_value = float(p_value)
+        evals.append(
+            KPIEvaluation(
+                "permutation_p_value",
+                p_value,
+                thresholds["permutation_p_value"],
+                p_value < thresholds["permutation_p_value"],
+            )
+        )
+
+    # DSR (v0.3 新規必須ゲート)
+    returns = stats.get("returns")
+    n_trials = int(stats.get("n_trials", 1))
+    if returns is not None and len(returns) >= 3:
+        periods_per_year = int(stats.get("periods_per_year", 12))
+        try:
+            dsr_result = deflated_sharpe_ratio(
+                returns,
+                n_trials=n_trials,
+                periods_per_year=periods_per_year,
+                threshold=thresholds["dsr_threshold"],
+            )
+            evals.append(
+                KPIEvaluation(
+                    "DSR",
+                    dsr_result.dsr,
+                    dsr_result.threshold,
+                    dsr_result.passes_threshold,
+                    f"DSR={dsr_result.dsr:.4f}, SR_obs={dsr_result.sharpe_observed:.3f}, "
+                    f"E[max SR*]={dsr_result.expected_max_sharpe:.3f} (N={n_trials})",
+                )
+            )
+        except ValueError as e:
+            evals.append(
+                KPIEvaluation(
+                    "DSR",
+                    float("nan"),
+                    thresholds["dsr_threshold"],
+                    False,
+                    f"DSR 計算失敗: {e}",
+                    applicable=False,
+                )
+            )
+    else:
+        evals.append(
+            KPIEvaluation(
+                "DSR",
+                float("nan"),
+                thresholds["dsr_threshold"],
+                False,
+                "returns 未提供または n<3 のため判定対象外（DSR 計算不能）",
+                applicable=False,
+            )
+        )
+
+    return evals
+
+
+def evaluate_kpis(stats: Stats, *, version: str = "v0.1") -> list[KPIEvaluation]:
+    """KPI 評価（v0.1 / v0.3 切替可能）.
+
+    2026-08-30 Phase 2 マージで v0.3 対応.
+    既存呼び出しは version 未指定で v0.1（後方互換）.
+
+    Args:
+        stats: 評価対象の統計量 dict。
+        version: "v0.1" (デフォルト・既存) または "v0.3" (Phase 2 新規).
+    """
+    if version == "v0.3":
+        return evaluate_kpis_v0_3(stats)
+    elif version == "v0.1":
+        return evaluate_kpis_v0_1(stats)
+    else:
+        raise ValueError(f"version must be 'v0.1' or 'v0.3', got {version}")
 
 
 def kpi_pass_summary(evals: list[KPIEvaluation]) -> dict:

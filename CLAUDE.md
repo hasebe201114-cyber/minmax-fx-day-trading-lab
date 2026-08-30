@@ -15,16 +15,17 @@ lp-strategy-lab（流動性プール戦略）および trading-app-v2（BTC キ�
 - **指標**: `pandas-ta`
 - **分析**: `scipy`, `pandas`
 - **バックテスト**: `backtrader`, `vectorbt`, `optuna`（optional）
-- **統計**: `scipy.stats`, `minmax_fx_dt.statistics.dsr`（DSR = Deflated Sharpe Ratio, Bailey & Lopez de Prado 2014 — **2026-08-29 Phase 1 マージ**）
+- **統計**: `scipy.stats`, `minmax_fx_dt.statistics.dsr`（DSR = Deflated Sharpe Ratio, Bailey & Lopez de Prado 2014 — **2026-08-29 Phase 1 マージ / 2026-08-30 Phase 2 マージで必須ゲート化**）、`minmax_fx_dt.statistics.n_trials_counter`（n_trials 厳密カウントヘルパー）
 - **ログ**: `structlog`, `python-dotenv`
 - **品質**: `pytest`, `ruff`, `mypy`, `black`（dev）
 
 親PJからの流用資産（`src/minmax_fx_dt/` 配下）:
 - `data/gmo_fx_client.py` — GMO Coin 外国為替FX API クライアント（HMAC-SHA256 認証、klines / ticker / symbols / order 全エンドポイント）
 - `risk/sizing.py` — ポジションサイズ決定（親PJ踏襲 + 本PJ向けに SYS-FX007 用に拡張）
-- `decision/criteria.py` — 撤退/採用判定（K1m〜K7m 7 指標で評価、親PJの単一 Sharpe から拡張）
+- `decision/criteria.py` — 撤退/採用判定（K1m〜K7m 7 指標で評価、親PJの単一 Sharpe から拡張）。**v0.3 必須ゲート対応 (2026-08-30 Phase 2)**: `evaluate_kpis_v0_3()` 追加、`evaluate_kpis(stats, *, version="v0.1")` 形式のディスパッチャで呼び分け。**後方互換のため v0.1 がデフォルト**。
 - `notify/discord.py` — Discord Webhook 通知
-- `statistics/dsr.py` — **DSR (Deflated Sharpe Ratio) 実装**。Bailey & Lopez de Prado (2014) 公式の numpy/scipy 実装。`minmax-fx-eval-framework` v0.2 から 2026-08-29 Phase 1 マージ。**参考値扱い**（必須 KPI 化は Phase 2 マージで対応）。使用例: `research/method-notes/dsr_for_ledger.json`
+- `statistics/dsr.py` — **DSR (Deflated Sharpe Ratio) 実装**。Bailey & Lopez de Prado (2014) 公式の numpy/scipy 実装。`minmax-fx-eval-framework` v0.2 から 2026-08-29 Phase 1 マージ → 2026-08-30 Phase 2 マージで **必須ゲート化** (DSR ≥ 0.95 必須)。使用例: `research/method-notes/dsr_for_ledger.json`
+- `statistics/n_trials_counter.py` — **n_trials 厳密カウントヘルパー** (v0.3 M-R2)。`count_n_trials()` 関数と `KNOWN_STRATEGY_N_TRIALS` プリセット辞書を提供。改善ループ・通貨選択・閾値選択すべての自由度を積算 (conservative) / 和算 (liberal) で評価。
 
 将来の TS/Node 採用は親PJ v2 との並走領域（ダッシュボード等）に限定。
 
@@ -98,12 +99,27 @@ LP 戦略ラボの「HARKing 防止（試算前に評価基準を数値で固定
 - **K1m**: 月次 Profit Factor > 1.2、**月次シャープレシオ ≥ 0.4**、月次期待値 > 0
 - **K2m**: 最大DD（月間） ≤ 証拠金の 10%、**最大DD（年間） ≤ 証拠金の 20%**
 - **K3m**: 最大連続損失 ≤ 5 トレード
-- **K4m**: ペイオフレシオ ≥ 1.5（= 平均利益 ≥ 平均損失 × 1.5）
+- **K4m**: ペイオフレシオ ≥ 1.5（= 平均利益 ≥ 平均損失 × 1.5）— **v0.3 で 1.2 に緩和して必須化** (M-S1)
 - **K5m**: 1トレードあたり期待値 > スプレッド往復コスト × 3
 - **K6m**: バックテストとフォワードテストの KPI 乖離率 ≤ 30%
 - **K7m**: 両建て状態の最大証拠金消費率 ≤ 30%（証拠金に対する比率）
 
 これらは `STRATEGY-BRIEF.md` で確定し、戦略 SYS-FX001〜SYS-FX??? ごとに spec へ転記する。
+
+### v0.3 必須ゲート（2026-08-30 Phase 2 マージ）
+
+[minmax-fx-eval-framework](https://github.com/hasebe201114-cyber/minmax-fx-eval-framework) v0.3 から取り込んだ必須ゲート:
+
+- **DSR (Deflated Sharpe Ratio) ≥ 0.95 必須** (M-S1) — 参考値 → 必須ゲートに格上げ。
+- **K4m (ペイオフレシオ) ≥ 1.2 必須** (M-S1) — 1.5 から 1.2 に緩和して必須化。
+- **n_hard_floor = 60 ヶ月** (M-S3) — 最低検証期間のハードフロア。
+- **DSR_PASS_CAP = 5/年** (M-S2) — 過年度に DSR PASS 判定できる戦略数の上限。
+- **n_trials 厳密カウント** (M-R2) — 改善ループ・通貨選択・閾値選択すべての自由度を積算。`KNOWN_STRATEGY_N_TRIALS` で戦略別に管理（`src/minmax_fx_dt/statistics/n_trials_counter.py`）。
+- **DSR 分布 p5 閾値** (M-R1) — ランダムリサンプリング 100 標本の下側 5 パーセンタイル ≥ 0.95 でロバスト性を評価。
+
+**呼び出し**: `evaluate_kpis(stats, *, version="v0.3")` または新 PJ では省略時デフォルト。**後方互換のため親 PJ では `version="v0.1"` がデフォルト**（既存 25+ テストケースを保護）。
+
+詳細: `src/minmax_fx_dt/decision/criteria.py` の `KPI_THRESHOLDS_V0_3` 定数と `evaluate_kpis_v0_3()` 関数、`src/minmax_fx_dt/statistics/n_trials_counter.py` の `KNOWN_STRATEGY_N_TRIALS`。
 
 ## コードインライン
 - イン前に影響範囲を確認

@@ -16,7 +16,8 @@
 ## 重要ルール
 
 - **デイトレード FX 検証のスコープ**: 当日クローズ。持ち越し禁止。
-- **DSR 関数の扱い**: `minmax_fx_dt.statistics.dsr.deflated_sharpe_ratio()` は参考値。`decision/criteria.py` の必須ゲートには未組込（Phase 1 マージ・2026-08-29）。`portfolio-ledger.md` の各戦略 DSR 値と `research/method-notes/dsr_for_ledger.json` を参照。
+- **DSR 関数の扱い** (Phase 2 マージ・2026-08-30): `minmax_fx_dt.statistics.dsr.deflated_sharpe_ratio()` は **`decision/criteria.py` の必須ゲートに組込済 (v0.3)**。`evaluate_kpis(stats, *, version="v0.3")` 経由で利用。**後方互換のため親 PJ では `version="v0.1"` がデフォルト**（既存 25+ テストケースを保護）。`portfolio-ledger.md` の各戦略 DSR 値と `research/method-notes/dsr_for_ledger.json` を参照。
+- **n_trials 厳密カウント** (v0.3 M-R2): 改善ループ・通貨選択・閾値選択すべての自由度を積算。`minmax_fx_dt.statistics.n_trials_counter.KNOWN_STRATEGY_N_TRIALS` に戦略別エントリ。新戦略着手時は同テーブルに登録すること。`scripts/calc_dsr_for_ledger.py` のローダーはリテラル n_trials 値を禁止（テスト `test_n_trials_ledger_consistency.py::test_loaders_have_no_literal_n_trials` で担保）。
 - **検証の閾値**: バックテスト結果を見る前に spec で数値固定（HARKing 防止）
 - **B 実装 / C 品質 は別エージェント**で実行（同じ実装者が自分の結果を評価しない）
 - **本番採用 GO は司令塔（ユーザー）の明示判断**。C の「採用可」は参考意見
@@ -50,4 +51,5 @@
   - `引き継ぎ/02済み/`（過去）
 
 ## 変更履歴
+- 2026-08-30: Phase 2 マージ対応 (v0.3 必須ゲート化) — DSR を必須ゲートに格上げ、n_trials 厳密カウント (M-R2) を導入、evaluate_kpis(version="v0.3") ディスパッチャ追加。
 - 2026-08-13: 初版作成

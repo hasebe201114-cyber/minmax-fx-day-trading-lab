@@ -1,7 +1,7 @@
-"""portfolio-ledger.md 用 DSR 一括計算スクリプト.
+"""portfolio-ledger.md 用 DSR 一括計算スクリプト (v0.3 対応・M-R2 厳密カウント).
 
 起源:
-    minmax-fx-eval-framework v0.2 から Phase 1 マージ (2026-08-29).
+    minmax-fx-eval-framework v0.2/v0.3 から Phase 1/2 マージ (2026-08-29/30).
     親 PJ のポートフォリオ台帳 (portfolio-ledger.md) の各戦略に
     DSR (Deflated Sharpe Ratio) を参考値として追記するためのスクリプト。
 
@@ -15,6 +15,12 @@
     - SYS-FX010: research/method-notes/carry_no_stop_tvt.json
     - SYS-FX011 v7: research/method-notes/vol_breakout_v7_trade_ledger.json
     - SYS-FX011 T-13: research/method-notes/vol_breakout_dow_theory_4pairs_v7_trailonly_1000usd_backtest.json
+
+v0.3 改訂 (Phase 2 マージ, 2026-08-30):
+    - n_trials を KNOWN_STRATEGY_N_TRIALS から取得（保守的カウント）
+    - 通貨選択・閾値選択・改善ループすべてを積算
+    - SYS-FX010 エントリ追加
+    - breakdown dict (n_improvement_loops, n_grid_search_combinations, ...) も出力
 
 出力:
     - research/method-notes/dsr_for_ledger.json
@@ -30,6 +36,10 @@ from typing import Any
 import numpy as np
 
 from minmax_fx_dt.statistics.dsr import deflated_sharpe_ratio
+from minmax_fx_dt.statistics.n_trials_counter import (
+    KNOWN_STRATEGY_N_TRIALS,
+    count_n_trials,
+)
 
 
 ROOT = Path("C:/Users/Atsushi Hasebe/.minimax-agent/projects/minmax-fx-day-trading-lab")
@@ -98,18 +108,36 @@ def safe_dsr(returns: list[float], *, n_trials: int, periods_per_year: int = 12)
 # ============================================================
 
 
+def _trials_breakdown(sys_id: str) -> dict:
+    """sys_id から KNOWN_STRATEGY_N_TRIALS を引いて breakdown dict を返す.
+
+    Raises:
+        KeyError: KNOWN_STRATEGY_N_TRIALS に未登録の sys_id.
+    """
+    if sys_id not in KNOWN_STRATEGY_N_TRIALS:
+        raise KeyError(
+            f"sys_id={sys_id!r} が KNOWN_STRATEGY_N_TRIALS に未登録です。"
+            "scripts/calc_dsr_for_ledger.py の loader 関数を追加するか、"
+            "n_trials_counter.py の KNOWN_STRATEGY_N_TRIALS にエントリを追加してください。"
+        )
+    return KNOWN_STRATEGY_N_TRIALS[sys_id].to_dict()
+
+
 def load_sysfx011_v7_ledger() -> dict:
     """SYS-FX011 v7: monthly フィールドから直接取得."""
     f = ROOT / "research/method-notes/vol_breakout_v7_trade_ledger.json"
     j = json.loads(f.read_text(encoding="utf-8"))
     month_pnls = {m["month"]: m["sum_dollar_pnl"] for m in j["monthly"]}
     monthly_returns = compute_monthly_returns_from_pnls(month_pnls, initial_cash=1000.0)
+    sys_id = "SYS-FX011 v7"
+    breakdown = _trials_breakdown(sys_id)
     return {
-        "sys_id": "SYS-FX011 v7",
+        "sys_id": sys_id,
         "source": str(f.relative_to(ROOT)),
         "monthly_returns": monthly_returns,
-        "n_trials": 7,
-        "n_trials_liberal": 12,
+        "n_trials": breakdown["n_trials_conservative"],
+        "n_trials_liberal": breakdown["n_trials_liberal"],
+        "n_trials_breakdown": breakdown,
     }
 
 
@@ -129,12 +157,15 @@ def load_sysfx011_t13_backtest() -> dict:
         month_pnls[month_key] = month_pnls.get(month_key, 0.0) + t["dollar_pnl"]
     month_pnls = dict(sorted(month_pnls.items()))
     monthly_returns = compute_monthly_returns_from_pnls(month_pnls, initial_cash=1000.0)
+    sys_id = "SYS-FX011 T-13"
+    breakdown = _trials_breakdown(sys_id)
     return {
-        "sys_id": "SYS-FX011 T-13",
+        "sys_id": sys_id,
         "source": str(f.relative_to(ROOT)),
         "monthly_returns": monthly_returns,
-        "n_trials": 7,
-        "n_trials_liberal": 12,
+        "n_trials": breakdown["n_trials_conservative"],
+        "n_trials_liberal": breakdown["n_trials_liberal"],
+        "n_trials_breakdown": breakdown,
     }
 
 
@@ -152,11 +183,15 @@ def load_sysfx008_backtest() -> dict:
     start, end = "2023-11-01", "2026-08-15"
     month_pnls = distribute_pnls_to_months(all_pnls, start, end)
     monthly_returns = compute_monthly_returns_from_pnls(month_pnls, initial_cash=1_000_000.0)
+    sys_id = "SYS-FX008"
+    breakdown = _trials_breakdown(sys_id)
     return {
-        "sys_id": "SYS-FX008",
+        "sys_id": sys_id,
         "source": str(f.relative_to(ROOT)),
         "monthly_returns": monthly_returns,
-        "n_trials": 3,
+        "n_trials": breakdown["n_trials_conservative"],
+        "n_trials_liberal": breakdown["n_trials_liberal"],
+        "n_trials_breakdown": breakdown,
     }
 
 
@@ -174,11 +209,15 @@ def load_sysfx009_backtest() -> dict:
     start, end = "2023-11-01", "2026-08-15"
     month_pnls = distribute_pnls_to_months(all_pnls, start, end)
     monthly_returns = compute_monthly_returns_from_pnls(month_pnls, initial_cash=1_000_000.0)
+    sys_id = "SYS-FX009 v2"
+    breakdown = _trials_breakdown(sys_id)
     return {
-        "sys_id": "SYS-FX009 v2",
+        "sys_id": sys_id,
         "source": str(f.relative_to(ROOT)),
         "monthly_returns": monthly_returns,
-        "n_trials": 1,
+        "n_trials": breakdown["n_trials_conservative"],
+        "n_trials_liberal": breakdown["n_trials_liberal"],
+        "n_trials_breakdown": breakdown,
     }
 
 
@@ -197,11 +236,15 @@ def load_sysfx007_backtest() -> dict:
 
     month_pnls = distribute_pnls_to_months(all_pnls, start, end)
     monthly_returns = compute_monthly_returns_from_pnls(month_pnls, initial_cash=1_000_000.0)
+    sys_id = "SYS-FX007"
+    breakdown = _trials_breakdown(sys_id)
     return {
-        "sys_id": "SYS-FX007",
+        "sys_id": sys_id,
         "source": str(f.relative_to(ROOT)),
         "monthly_returns": monthly_returns,
-        "n_trials": 6,
+        "n_trials": breakdown["n_trials_conservative"],
+        "n_trials_liberal": breakdown["n_trials_liberal"],
+        "n_trials_breakdown": breakdown,
     }
 
 
@@ -216,11 +259,15 @@ def load_sysfx010_carry() -> dict:
         mean = sr * std
         np.random.seed(42 + hash(period_name) % 1000)
         synthetic_returns.extend(np.random.normal(mean, std, n_months_by_period[period_name]).tolist())
+    sys_id = "SYS-FX010"
+    breakdown = _trials_breakdown(sys_id)
     return {
-        "sys_id": "SYS-FX010",
+        "sys_id": sys_id,
         "source": str(f.relative_to(ROOT)),
         "monthly_returns": synthetic_returns,
-        "n_trials": 5,
+        "n_trials": breakdown["n_trials_conservative"],
+        "n_trials_liberal": breakdown["n_trials_liberal"],
+        "n_trials_breakdown": breakdown,
         "_synthetic": True,
     }
 
@@ -232,7 +279,7 @@ def load_sysfx010_carry() -> dict:
 
 def main() -> int:
     print("=" * 80)
-    print("DSR for portfolio-ledger.md (parent PJ Phase 1 merge)")
+    print("DSR for portfolio-ledger.md (parent PJ Phase 2 merge, v0.3 必須ゲート化)")
     print("=" * 80)
     print()
 
@@ -258,6 +305,7 @@ def main() -> int:
             "source": data["source"],
             "n_trials_conservative": data["n_trials"],
             "n_trials_liberal": data.get("n_trials_liberal"),
+            "n_trials_breakdown": data.get("n_trials_breakdown"),
             "synthetic": data.get("_synthetic", False),
             "dsr_conservative": dsr_cons,
             "dsr_liberal": dsr_lib,
@@ -266,6 +314,14 @@ def main() -> int:
         print(f"## {data['sys_id']}")
         if data.get("_synthetic"):
             print("  WARNING: monthly returns are synthetic")
+        breakdown = data.get("n_trials_breakdown")
+        if breakdown:
+            print(f"  n_trials breakdown: loops={breakdown['n_improvement_loops']}, "
+                  f"grid={breakdown['n_grid_search_combinations']}, "
+                  f"ccy={breakdown['n_currency_choices']}, "
+                  f"period={breakdown['n_period_choices']}, "
+                  f"thresh={breakdown['n_threshold_choices']} "
+                  f"({breakdown.get('notes', '')})")
         if "error" in dsr_cons:
             print(f"  ERROR: {dsr_cons['error']}")
         else:
@@ -283,9 +339,16 @@ def main() -> int:
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     output = {
         "generated_at": datetime.now().isoformat(),
-        "phase": "Phase 1 merge (2026-08-29)",
-        "source_pj": "minmax-fx-eval-framework v0.2",
-        "note": "DSR values are reference only. They do NOT change existing verdicts.",
+        "phase": "Phase 2 merge (2026-08-30, v0.3 必須ゲート化)",
+        "source_pj": "minmax-fx-eval-framework v0.3 (M-R2 厳密 n_trials)",
+        "v0_3_thresholds": {
+            "dsr_required": 0.95,
+            "k4m_payoff_ratio": 1.2,
+            "n_hard_floor_months": 60,
+            "dsr_pass_cap_per_year": 5,
+        },
+        "note": "v0.3 必須ゲート化: DSR≥0.95 / K4m≥1.2 / n_hard_floor=60 / DSR_PASS_CAP=5/年。 "
+                "conservative (積算) と liberal (和算) の両 n_trials で DSR を計算。",
         "results": results,
     }
     OUTPUT_PATH.write_text(json.dumps(output, indent=2, ensure_ascii=False), encoding="utf-8")

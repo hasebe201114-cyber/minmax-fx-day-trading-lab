@@ -26,3 +26,25 @@
 > **2026-08-21追記（外部レビューT-06波及確認）**: SYS-FX011の外部レビューでF2「`permutation_test_clustered()`は通貨ペア単位(4〜5種)でしか符号を独立に引かないため、検定の実効標本サイズが通貨ペア数まで縮小しp値の下限に張り付く」という検定設計の欠陥が判明し、`permutation_test_block()`（クラスタ=エントリー日）へ差し替えた。この関数はSYS-FX010（EXP-FX000004、`backtest_carry_no_stop_tvt.py`）でも使用していたため波及を確認したところ、**SYS-FX010の`00-spec.md`は元々permutation_p_valueを「参考値」（主要判断基準にしない）と明示的に位置付けており、実際の不採用判断はスワップ/価格変動の内訳分解とValidation過学習の発見に基づく**ため、検定方式の差し替えによってSYS-FX010の結論（不採用）は変わらない。SYS-FX007〜009はいずれも`permutation_test_clustered()`ではなく独立符号版（単一通貨評価）またはSYS-FX011着手前の実装のため対象外。
 
 > **2026-08-29追記（Phase 1 マージ: DSR 関数の追加）**: [minmax-fx-eval-framework](https://github.com/hasebe201114-cyber/minmax-fx-eval-framework) v0.2 から DSR (Deflated Sharpe Ratio, Bailey & Lopez de Prado 2014) を `src/minmax_fx_dt/statistics/dsr.py` に追加。**参考値扱い**（必須 KPI 化は Phase 2 マージで対応）。各戦略の DSR 値は本表「DSR (参考値)」列を参照。`scripts/calc_dsr_for_ledger.py` で再計算可能。`tests/test_dsr.py` に 16 件の回帰テスト。**判定結果は DSR 追加によって変更なし**（SYS-FX011 T-13 のみ DSR=0.9985 で真のエッジ保有の可能性を補強、それ以外は DSR でも棄却）。詳細: `research/method-notes/dsr_for_ledger.json`。
+
+> **2026-08-30追記（Phase 2 マージ: v0.3 必須ゲート化）**: v0.3 で DSR を**参考値 → 必須ゲート**へ格上げ。同時に以下を実装:
+> - **DSR ≥ 0.95 必須** (M-S1): v0.2 の参考値 0.95 を必須化。
+> - **K4m (ペイオフレシオ) ≥ 1.2 必須** (M-S1): v0.2 の参考値 1.5 を 1.2 に緩和して必須化。
+> - **n_hard_floor = 60 ヶ月** (M-S3): 最低検証期間のハードフロア。
+> - **DSR_PASS_CAP = 5/年** (M-S2): 過年度の DSR PASS 戦略数上限。
+> - **n_trials 厳密カウント** (M-R2): 改善ループ・通貨選択・閾値選択すべての自由度を積算。`KNOWN_STRATEGY_N_TRIALS` で戦略別に管理。
+> - **DSR 分布 p5 閾値** (M-R1): ランダムリサンプリング100標本の下側5パーセンタイルでロバスト性を評価。
+> - **evaluate_kpis_v0_3()** 追加、`evaluate_kpis(version="v0.3")` ディスパッチャ経由。**後方互換のため v0.1 評価がデフォルト**。
+>
+> **DSR 値 (v0.3 厳密 n_trials 適用後)** — `scripts/calc_dsr_for_ledger.py` 再計算結果 (`research/method-notes/dsr_for_ledger.json`):
+>
+> | SYS ID | DSR (v0.2) | n_trials (v0.2) | DSR (v0.3 保守) | n_trials (v0.3 保守) | DSR (v0.3 緩) | n_trials (v0.3 緩) | 判定 |
+> |---|---|---|---|---|---|---|---|
+> | SYS-FX007 | 0.0000 | 6 | 0.0000 | 6 | 0.0000 | 10 | ❌ (一貫) |
+> | SYS-FX008 | 0.7139 | 3 | 0.7139 | 3 | 0.0059 | 7 | ❌ (一貫) |
+> | SYS-FX009 v2 | 0.9279 | 1 | 0.9279 | 1 | 0.0000 | 5 | ❌ (一貫) |
+> | SYS-FX010 | 1.0000 ⚠️合成 | 5 | 1.0000 ⚠️合成 | 5 | 1.0000 ⚠️合成 | 9 | ⚠️合成 (v0.2 と同一) |
+> | SYS-FX011 v7 | 0.9074 | 7 | **0.3357** | **28** | 0.6856 | 13 | ❌ (悪化) |
+> | SYS-FX011 T-13 | 0.9980 | 7 | **0.8657** | **28** | 0.9811 | 13 | ❌ 保守 / ✅ 緩 |
+>
+> **結論**: v0.3 必須ゲート化で SYS-FX011 v7 は保守・緩ともに FAIL、SYS-FX011 T-13 は保守 (n=28) で FAIL。新 PJ の M-R1 分布 (`p5 ≥ 0.95`) では v0.3 DSR ベースライン値が異なる (train+val+test 全体 vs 2024 USD/JPY のみ) ため別途参照。詳細: `research/メソッドフレームワーク再設計/PHASE2_MERGE_PROPOSAL.md` (新 PJ 側)、`scripts/calc_dsr_for_ledger.py`、`src/minmax_fx_dt/statistics/n_trials_counter.py` の `KNOWN_STRATEGY_N_TRIALS`。
