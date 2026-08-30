@@ -70,6 +70,27 @@ SYS-FX012の実運用移行に向け、実発注を一切行わずに以下3点�
 - `.github/workflows/sysfx012-fx-forward-cycle.yml`(週次月曜00:00 UTC): Claude使い捨てセッションRoutineの不具合を受け、SYS-FX012週次フォワードテストサイクル自体もGitHub Actionsへ移管。`data/curated/ds-1.json`(479MB、.gitignore対象)を`data/raw/ds-1/*.csv`から都度再生成してから`run_forward_test_cycle.py`を実行し、ledgerをcommit/push
 - `trading-app-v2`側に`sysfx012-fx-forward-sync.yml`(月曜12:00 JST)があり、本リポジトリがcommitしたledgerを公開Web UIへ同期する(クロスリポジトリ連携)
 
+### フォワードデータ消失バグ（2026-08-29 発見・修正）
+
+上記の`update-ds1-forward.yml`には、**取得したM5バーが1件も残らない**という致命的な欠陥があった。
+
+**内容**: `data/curated/ds-1-forward.json`を.gitignore対象にした一方で、workflowは「既存JSONへ追記マージ」した結果を**何もコミットしていなかった**。GitHub Actions runnerは毎回使い捨てのため、毎時の追記結果はジョブ終了とともに消える。結果として、週次cycleがフォワード区間として読めるのは常に「実行直前の`--lookback-days 2`分」だけとなり、cutoff（2026-08-15 06:00 JST）以降の大半が恒久的な空白になっていた。
+
+**影響**: `sysfx012_forward_test_ledger.json`は`n_events_raw=0`（イベントゼロ）を報告し続けていたが、実データでの真値は**6件**だった。ledgerは「イベントが無かった」のか「データが無かった」のかを区別できる情報を持たないため、**フォワードテストが実質的に何も観測していない状態が2週間気づかれずに続いた**。「Routineは成功と記録されるのに実データが更新されない」（2026-08-24に発覚したClaude Routineの不具合）と同型の、成功したように見える無音の失敗である。
+
+**修正**:
+
+1. バーの正本を git 管理の追記型CSV `data/raw/ds-1-forward/*.csv` に移し、`ds-1-forward.json`はそこから何度でも再生成できる派生物として扱う（`data/raw/ds-1/`＋`ds-1.json`と同じ「raw CSVが正本・curated JSONは派生」構造に統一）。既存の`weekly_cycle.py`が元々この構造で書かれていたのに対し、2026-08-26に追加した2つのworkflowだけがそこを迂回していたのが混入経路
+2. `fetch_m5_ohlcv.py`: CSVの読み書き（`load_forward_csv`/`write_forward_csv`）を追加し、JSONが存在しない環境でもCSVから全期間を復元する（`load_existing()`はJSONとCSVの和集合を返すため、どちらか一方しか無い環境でも欠落しない）
+3. `run_forward_test_cycle.py`: `load_m5_forward()`が正本CSVを直接読むよう変更。fetchステップの実行順序に依存しなくなった
+4. `update-ds1-forward.yml`: `permissions: contents: write`に変更し、毎時CSVをcommit/push
+5. `sysfx012-fx-forward-cycle.yml`: lookbackを2日→**9日**（週次7日＋余裕2日）に拡大し、毎時workflowが数日停止しても週次で穴が自動的に埋まるようにした（self-healing）。ledgerと同時にCSVもcommit
+6. 回帰テスト`tests/test_forward_csv_persistence.py`（4件）を新設。「JSON不在時にCSVから全期間が復元されること」を固定した
+
+**再計測結果**: cutoff以降の全期間（2026-08-15 06:00 〜 08-29 05:55 JST、10営業日）をバックフィルして再計算したところ、イベントは0件→**6件**（dedup後6、H1トレンド判定不能除外後3）。トレード数は0件のまま（内訳は下記）。
+
+**受け入れ基準Dへの反映**: 「蓄積データが再分析可能な形でコミットされる」という基準は、live-tickerについては満たされていたが、M5 OHLCVについては満たされていなかった。本修正で両方が満たされる。
+
 つまり、EXP-FX000016 Stage 1で目指していた「決定的な作業にLLMエージェントセッションを使わない」自動化は、最終的に**GitHub Actions 3ワークフローの組み合わせ**で実現された。`reconcile_divergence.py`(コンポーネントB/C)は未統合のまま、セッション起動時の手動実行を継続する(Firebase版への移植構想も含めて不要になったため、Python版のまま`update-ds1-forward.yml`等への統合を今後検討)。
 
 ## Stage 1 受け入れ基準（事前登録）

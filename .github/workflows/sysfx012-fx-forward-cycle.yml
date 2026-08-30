@@ -88,21 +88,20 @@ jobs:
           print(f'[OK] ds-1.json regenerated: {result}')
           "
 
-      # ---- data/raw/ds-1-forward/*.csv のライブ更新 (M5 OHLCV) ----
+      # ---- フォワードバー (M5 OHLCV) のライブ更新 ----
       # (2026-08-26 追加): update-ds1-forward.yml の処理と同等。
       # 別 workflow だと Actions runner 間で working tree が共有されないため、
-      # cycle 内でも同じ処理を実行して最新 M5 データを取り込む(hourly job が
-      # 何らかの理由で失敗していた場合の冗長経路にもなる)。
-      #
-      # 2026-08-27 修正 (OBS000009 不具合2): 永続先を data/curated/ds-1-forward.json
-      # (.gitignore対象、ランナー間で永続しない) から data/raw/ds-1-forward/*.csv
-      # (git管理) に変更。ここで取得した分も明示的に commit/push する。
-      - name: Fetch live M5 OHLCV and merge into data/raw/ds-1-forward/*.csv
-        # 過去 2 日分 (昨日 + 今日) を GMO API から取得。
-        # 既存 raw CSV の最新バー timestamp 以降のみ追記 (重複排除込み)。
+      # cycle 内で同じ処理を実行して最新 M5 データを取り込む。
+      # (2026-08-29): バーの正本は git 管理の data/raw/ds-1-forward/*.csv。
+      # checkout 済みの CSV に対して差分だけを追記する。
+      - name: Fetch live M5 OHLCV and merge into forward bars
+        # 過去 9 日分 (週次サイクル 7 日 + 余裕 2 日) を GMO API から取得。
+        # 正本の data/raw/ds-1-forward/*.csv にマージし、重複バーは追記しない。
+        # 毎時 workflow (update-ds1-forward.yml) が数日止まっていても、この
+        # 週次の取り直しで穴が自動的に埋まる (self-healing) ようにしている。
         # 公開エンドポイントのみ、API キー不要。
         run: |
-          PYTHONPATH=src python3 scripts/live_monitor/fetch_m5_ohlcv.py --all-pairs --lookback-days 2
+          PYTHONPATH=src python3 scripts/live_monitor/fetch_m5_ohlcv.py --all-pairs --lookback-days 9
 
       - name: Commit and push raw M5 CSV if changed
         if: ${{ github.event.inputs.dry_run != 'true' }}
@@ -158,8 +157,8 @@ jobs:
             LEDGERS="${LEDGERS} research/method-notes/sysfx026_forward_test_ledger.json"
           fi
 
-          if git diff --quiet ${LEDGERS}; then
-            echo "No change in ledgers, skip commit"
+          if git diff --quiet ${LEDGERS} data/raw/ds-1-forward/; then
+            echo "No change in ledger / forward bars, skip commit"
             exit 0
           fi
 
@@ -172,7 +171,9 @@ jobs:
           print(json.load(f.open())['backtest']['n_trades_closed'] if f.exists() else 'paused')
           ")
 
-          git add ${LEDGERS}
+          # ledger だけでなくフォワードバーの正本 CSV も一緒に commit する
+          # (2026-08-29 の消失バグ修正: runner 破棄でバーが失われないように)
+          git add ${LEDGERS} data/raw/ds-1-forward/
           git commit -m "chore(forward): FX forward test weekly cycle — closed trades sysfx012=${T12} sysfx026=${T26} (generated ${GEN})"
 
           # rebase して push (他ブランチ/手動 push との競合回避)

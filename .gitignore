@@ -67,6 +67,9 @@ data/curated/ds-1-m3-train-4pairs.json
 
 # SYS-FX012 フォワードテスト用 M5 OHLCV (cutoff 2026-08-15 06:00 JST 以降)
 # (2026-08-26 追加): 毎時 workflow (update-ds1-forward.yml) が更新するため
-# 履歴が肥大化する。GitHub Actions runner 上で直接読み書きされる。
-# 初回構築: `python scripts/live_monitor/fetch_m5_ohlcv.py --all-pairs --lookback-days 2`
+# 履歴が肥大化する。
+# (2026-08-29 追記): バーの正本は git 管理の追記型 CSV
+# `data/raw/ds-1-forward/*.csv` 側にある (data/raw/ds-1/ と同じ「raw CSV が正本・
+# curated JSON は派生物」構造)。本 JSON は CSV から何度でも再生成できる派生物。
+# 再生成: `python scripts/live_monitor/fetch_m5_ohlcv.py --all-pairs --lookback-days 2`
 data/curated/ds-1-forward.json
