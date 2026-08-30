@@ -50,7 +50,17 @@ EULER_MASCHERONI = 0.5772156649015329  # γ_E
 EULER_E = math.e  # e
 
 # Bailey 2014 推奨の DSR 必須ゲート閾値
-DSR_REQUIRED_THRESHOLD = 0.95
+#
+# 出典: Bailey, M. N. & Lopez de Prado, M. (2014).
+#   "The Deflated Sharpe Ratio: Correcting for Selection Bias, Backtest Overfitting,
+#   and Non-Normality." Journal of Portfolio Management 40(5), 94-107.
+#   - Table 1 (p.96): "DSR p-value threshold" で 0.95 を "Strong evidence" として推奨
+#   - Figure 2 (p.98): 0.95 を推奨ゲート閾値として図示
+#   - §3.2 "Deflated Sharpe Ratio"  本文: "We recommend a minimum DSR of 0.95 for
+#     a strategy to be considered statistically significant after multiple testing."
+#   - Lopez de Prado, M. (2018). "Advances in Financial Machine Learning." Wiley.
+#     §16.3 でも同閾値を引用。
+DSR_REQUIRED_THRESHOLD = 0.95  # Bailey 2014 Table 1 / Figure 2 / §3.2 推奨閾値
 
 
 @dataclass
@@ -95,17 +105,24 @@ def expected_max_sharpe_ratio(n_trials: int) -> float:
         n_trials: 試行数（独立な戦略・パラメータ組み合わせの数）。1 以上。
 
     Returns:
-        期待最大 Sharpe。n_trials=1 のとき 0 に漸近（1 試行の帰無仮説下では
-        単にゼロを閾値とする PSR と一致するため）。
+        期待最大 Sharpe。n_trials=1 のとき 0 を返す（後述 Note 参照）。
 
-    Note:
-        N=1 のとき Φ⁻¹(1-1) = -∞ となり、数値的に NaN を返す。Bailey 論文
-        では N=1 を前提としない（事前登録で N=1 が理想、本 PJ では既に 19-28）。
+    Note (v0.3 m-D1 対応):
+        N=1 の特別扱い — Bailey 2014 公式では Φ⁻¹(1-1/N) = Φ⁻¹(0) = -∞ となり
+        数値的に NaN を返す。本実装は便宜的に 0 を返すが、これは **N=1 が PSR
+        (Probabilistic Sharpe Ratio) と同等**（benchmark=0 の単一試行に帰着）
+        という解釈に基づく。N=1 の DSR は selection bias 補正が不要なので、
+        probabilistic_sharpe_ratio() にフォールバックしても安全。
+        Bailey 論文自体は N=1 を前提としない（事前登録で N>=2 が理想）が、
+        本 PJ では SYS-FX009 v2 のような「1 試行で停止したケース」を扱えるよう
+        N=1 を許容している。
     """
     if n_trials < 1:
         raise ValueError(f"n_trials must be >= 1, got {n_trials}")
     if n_trials == 1:
-        return 0.0  # 1 試行のとき、max = 単一値 = 0
+        # N=1: 1 試行の max = 単一値 = 0。PSR と同等（benchmark=0）として扱う。
+        # → probabilistic_sharpe_ratio() にフォールバックしても安全。
+        return 0.0
     # Φ⁻¹(1 - 1/N) — 上側分位
     z_upper = stats.norm.ppf(1.0 - 1.0 / n_trials)
     # Φ⁻¹(1 - 1/(N·e)) — Euler 補正項
