@@ -49,18 +49,31 @@ from scipy import stats
 EULER_MASCHERONI = 0.5772156649015329  # γ_E
 EULER_E = math.e  # e
 
-# Bailey 2014 推奨の DSR 必須ゲート閾値
+# DSR 必須ゲート閾値 (v0.3 必須化)
 #
-# 出典: Bailey, M. N. & Lopez de Prado, M. (2014).
+# ⚠️ 2026-09-01 重要訂正 (claude code 環境 C 査読 30-claudecode-c-review.md B-1 反映)
+#
+# 以前 (commit fed71a4) は Bailey 2014 論文に「Table 1 (p.96)」「Figure 2 (p.98)」
+# および引用符付き "We recommend a minimum DSR of 0.95..." の記述があるかのように
+# 注釈していたが、claude code 環境 C が実物 PDF を全文検索した結果、
+# これらの図表名・章番号・引用文は論文中に存在しないことが判明した
+# (citation hallucination)。これは Mavis 環境 C 査読 m-S3 への対応で
+# 同一 LLM による自己査読では見抜けなかった典型例である。
+#
+# 実態として 0.95 という閾値は:
+# 1. Bailey & Lopez de Prado (2014) 論文本体では 0.95 を「規範的推奨」として
+#    明示する箇所はない。論文中の数値は p.16 付近の例示で 95% 信頼水準を
+#    言及しているのみ。
+# 2. しかし DSR の二次資料 (daru.finance, quanterlab.com, metricgate.com 等) では
+#    0.95 が「strong evidence of genuine alpha」の閾値として広く流布している。
+# 3. **本 PJ での 0.95 採用は「95% 信頼水準の統計的慣習を DSR に適用した
+#    本 PJ 独自の設計判断」** として位置づける。
+#
+# 参照: Bailey, D. H. & López de Prado, M. (2014).
 #   "The Deflated Sharpe Ratio: Correcting for Selection Bias, Backtest Overfitting,
 #   and Non-Normality." Journal of Portfolio Management 40(5), 94-107.
-#   - Table 1 (p.96): "DSR p-value threshold" で 0.95 を "Strong evidence" として推奨
-#   - Figure 2 (p.98): 0.95 を推奨ゲート閾値として図示
-#   - §3.2 "Deflated Sharpe Ratio"  本文: "We recommend a minimum DSR of 0.95 for
-#     a strategy to be considered statistically significant after multiple testing."
-#   - Lopez de Prado, M. (2018). "Advances in Financial Machine Learning." Wiley.
-#     §16.3 でも同閾値を引用。
-DSR_REQUIRED_THRESHOLD = 0.95  # Bailey 2014 Table 1 / Figure 2 / §3.2 推奨閾値
+#   doi:10.3905/jpm.2014.40.5.094
+DSR_REQUIRED_THRESHOLD = 0.95  # 本 PJ 独自の設計判断 (95% 信頼水準の慣習)
 
 
 @dataclass

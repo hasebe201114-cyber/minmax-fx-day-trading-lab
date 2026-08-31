@@ -30,6 +30,8 @@
 
 > **2026-08-29追記（Phase 1 マージ: DSR 関数の追加）**: [minmax-fx-eval-framework](https://github.com/hasebe201114-cyber/minmax-fx-eval-framework) v0.2 から DSR (Deflated Sharpe Ratio, Bailey & Lopez de Prado 2014) を `src/minmax_fx_dt/statistics/dsr.py` に追加。**参考値扱い**（必須 KPI 化は Phase 2 マージで対応）。各戦略の DSR 値は本表「DSR (参考値)」列を参照。`scripts/calc_dsr_for_ledger.py` で再計算可能。`tests/test_dsr.py` に 16 件の回帰テスト。**判定結果は DSR 追加によって変更なし**（SYS-FX011 T-13 のみ DSR=0.9985 で真のエッジ保有の可能性を補強、それ以外は DSR でも棄却）。詳細: `research/method-notes/dsr_for_ledger.json`。
 
+> **2026-09-01追記（claude code 環境 C 査読 C-1 訂正）**: 直前 (2026-08-30) の Phase 2 マージコミット (`10f4410`) で本ファイルに「SYS-FX011 T-13 が v0.3 で PASS (p5=0.9961)」と伝播記載したが、これは**誤り**。実測 p5=0.9085 (v0.3 厳密 n_trials=28、月次ランダム化 100 サンプル) で**FAIL**。本表の保守 (n=28) 列「0.8657」/ 緩 (n=13) 列「0.9811」と整合しない「新 PJ の M-R1 分布 p5=0.9961 PASS」の主張は新 PJ 側 (`PHASE2_MERGE_PROPOSAL.md`) でも訂正済。本表の DSR 値自体が `dsr_for_ledger.json` の計算結果 (train+val+test 全体) であり、新 PJ の M-R1 分布結果 (2024 USD/JPY のみランダム化) とは別経路。両者の差異は偶然ではなく、別計算経路 (period coverage 差) に起因。**結論: SYS-FX011 T-13 は v0.3 厳格基準 (p5 ≥ 0.95) では FAIL、本採用候補から脱落**。詳細: `research/フレームワーク再設計/03-過去判定遡及/30-claudecode-c-review.md` §2.1 C-1。
+
 > **2026-08-30追記（Phase 2 マージ: v0.3 必須ゲート化）**: v0.3 で DSR を**参考値 → 必須ゲート**へ格上げ。同時に以下を実装:
 > - **DSR ≥ 0.95 必須** (M-S1): v0.2 の参考値 0.95 を必須化。
 > - **K4m (ペイオフレシオ) ≥ 1.2 必須** (M-S1): v0.2 の参考値 1.5 を 1.2 に緩和して必須化。

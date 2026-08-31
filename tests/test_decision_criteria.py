@@ -73,7 +73,7 @@ def test_evaluate_kpis_covers_all_spec_thresholds() -> None:
     """KPI_THRESHOLDS に定義された全項目 (K1m〜K7m + 統計的有意性) が
     evaluate_kpis() の出力に現れることを保証する (OBS000005 が指摘した
     K5m/K6m/min_n_trades/permutation_p_value 欠落の再発防止)。"""
-    evals = evaluate_kpis(_full_pass_stats())
+    evals = evaluate_kpis(_full_pass_stats(), version="v0.1")
     metrics = {e.metric for e in evals}
     assert "K5m_spread_cost_multiple" in metrics
     assert "K6m_bt_ft_divergence" in metrics
@@ -84,7 +84,7 @@ def test_evaluate_kpis_covers_all_spec_thresholds() -> None:
 
 
 def test_evaluate_kpis_all_pass_when_stats_meet_every_threshold() -> None:
-    evals = evaluate_kpis(_full_pass_stats())
+    evals = evaluate_kpis(_full_pass_stats(), version="v0.1")
     summary = kpi_pass_summary(evals)
     assert summary["applicable"] == summary["total"]  # 全項目が判定対象
     assert summary["all_applicable_pass"] is True
@@ -93,7 +93,7 @@ def test_evaluate_kpis_all_pass_when_stats_meet_every_threshold() -> None:
 
 def test_evaluate_kpis_marks_missing_forward_test_as_not_applicable() -> None:
     """K6m はフォワードテスト未実施なら pass ではなく「判定対象外」."""
-    evals = evaluate_kpis(_full_pass_stats(backtest_forward_divergence_pct=None))
+    evals = evaluate_kpis(_full_pass_stats(backtest_forward_divergence_pct=None), version="v0.1")
     k6 = next(e for e in evals if e.metric == "K6m_bt_ft_divergence")
     assert k6.applicable is False
     summary = kpi_pass_summary(evals)
@@ -103,7 +103,7 @@ def test_evaluate_kpis_marks_missing_forward_test_as_not_applicable() -> None:
 
 
 def test_evaluate_kpis_marks_missing_permutation_as_not_applicable() -> None:
-    evals = evaluate_kpis(_full_pass_stats(permutation_p_value=None))
+    evals = evaluate_kpis(_full_pass_stats(permutation_p_value=None), version="v0.1")
     p = next(e for e in evals if e.metric == "permutation_p_value")
     assert p.applicable is False
 
@@ -111,14 +111,14 @@ def test_evaluate_kpis_marks_missing_permutation_as_not_applicable() -> None:
 def test_evaluate_kpis_marks_unhedged_margin_as_not_applicable() -> None:
     """K7m は両建てロジック未統合なら「判定対象外」(単一ポジションの値は
     K7m が意図する両建て時消費率の検証にならないため)."""
-    evals = evaluate_kpis(_full_pass_stats(hedging_enabled=False))
+    evals = evaluate_kpis(_full_pass_stats(hedging_enabled=False), version="v0.1")
     k7 = next(e for e in evals if e.metric == "K7m_margin_usage")
     assert k7.applicable is False
 
 
 def test_evaluate_kpis_min_n_trades_fails_below_threshold() -> None:
     """OBS000007 追記6 の実測 (最大 n=18) が min_n_trades=300 (2026-08-17 検出力再導出後、旧60) 未達になることを確認."""
-    evals = evaluate_kpis(_full_pass_stats(n_trades=18))
+    evals = evaluate_kpis(_full_pass_stats(n_trades=18), version="v0.1")
     gate = next(e for e in evals if e.metric == "min_n_trades")
     assert gate.pass_ is False
     assert gate.applicable is True
@@ -127,13 +127,13 @@ def test_evaluate_kpis_min_n_trades_fails_below_threshold() -> None:
 def test_evaluate_kpis_k5m_uses_edge_over_spread_multiple() -> None:
     """K5m: 1トレード期待値 > スプレッド往復コスト × 3."""
     # edge=200円, spread往復=20円 → multiple=10倍 >= 3倍 → pass
-    evals = evaluate_kpis(_full_pass_stats(edge_per_trade_jpy=200.0, spread_round_trip_jpy=20.0))
+    evals = evaluate_kpis(_full_pass_stats(edge_per_trade_jpy=200.0, spread_round_trip_jpy=20.0), version="v0.1")
     k5 = next(e for e in evals if e.metric == "K5m_spread_cost_multiple")
     assert k5.pass_ is True
     assert k5.observed == pytest.approx(10.0)
 
     # edge=40円, spread往復=20円 → multiple=2倍 < 3倍 → fail
-    evals = evaluate_kpis(_full_pass_stats(edge_per_trade_jpy=40.0, spread_round_trip_jpy=20.0))
+    evals = evaluate_kpis(_full_pass_stats(edge_per_trade_jpy=40.0, spread_round_trip_jpy=20.0), version="v0.1")
     k5 = next(e for e in evals if e.metric == "K5m_spread_cost_multiple")
     assert k5.pass_ is False
 
@@ -160,6 +160,47 @@ def test_evaluate_rejects_when_applicable_gate_fails() -> None:
     verdict, reason = evaluate(stats)
     assert verdict != Verdict.GO
     assert "min_n_trades" in reason
+
+
+# ---- D-2 (claude code 環境 C 査読) 対応: デフォルト v0.3 + DeprecationWarning ----
+
+
+def test_evaluate_kpis_default_is_v03() -> None:
+    """v0.3 がデフォルト。version 未指定で v0.3 必須ゲート (DSR/K4m/n_hard_floor) が適用される.
+
+    D-2: 新規戦略が v0.3 必須ゲートを無警告で回避できる脆弱性を解消.
+    """
+    # v0.3 出力 (デフォルト) には DSR 評価が含まれる
+    evals = evaluate_kpis(_full_pass_stats())
+    metrics = {e.metric for e in evals}
+    assert "DSR" in metrics, (
+        "デフォルト version で DSR 評価が含まれない (D-2 未対応: "
+        "evaluate_kpis() のデフォルトが v0.1 のまま)"
+    )
+
+
+def test_evaluate_kpis_v01_emits_deprecation_warning() -> None:
+    """v0.1 明示指定で DeprecationWarning 発火 (D-2 修正案 3 採用).
+
+    v0.3 m-S1 対応 (Phase 2 マージで「実装した」と commit メッセージに記載されたが
+    実コードは未実装だった) を claude code 環境 C 査読 D-2 指摘を受けて実コード化.
+    """
+    import warnings as _warnings
+
+    with _warnings.catch_warnings(record=True) as caught:
+        _warnings.simplefilter("always")
+        evaluate_kpis(_full_pass_stats(), version="v0.1")
+    deprecation_warnings = [
+        w for w in caught if issubclass(w.category, DeprecationWarning)
+    ]
+    assert deprecation_warnings, (
+        "evaluate_kpis(version='v0.1') で DeprecationWarning が発火していない"
+        " (D-2 修正案 3 未対応)"
+    )
+    msg = str(deprecation_warnings[0].message)
+    assert "v0.1" in msg and "v0.3" in msg, (
+        f"DeprecationWarning メッセージに v0.1/v0.3 への言及が無い: {msg}"
+    )
 
 
 # ---- permutation_test() ----
@@ -297,7 +338,7 @@ def test_evaluate_kpis_min_n_trades_uses_effective_count_for_pooled_stats() -> N
     """名目n_trades=320 (min_n_trades=300 を上回る) でも、5通貨均等プールの実効値は
     300を大きく下回るため min_n_trades ゲートは fail になるべき."""
     per_currency = {"USD_JPY": 64, "EUR_JPY": 64, "GBP_JPY": 64, "AUD_JPY": 64, "EUR_USD": 64}
-    evals = evaluate_kpis(_full_pass_stats(n_trades=320, n_trades_per_currency=per_currency))
+    evals = evaluate_kpis(_full_pass_stats(n_trades=320, n_trades_per_currency=per_currency), version="v0.1")
     gate = next(e for e in evals if e.metric == "min_n_trades")
     assert gate.pass_ is False
     assert gate.observed < 300
@@ -328,7 +369,7 @@ def test_compute_k3m_scale_invariant_deterministic_with_seed() -> None:
 
 def test_evaluate_kpis_k3m_falls_back_to_legacy_without_win_rate() -> None:
     """win_rate未指定なら旧来の絶対件数判定(≤5)にフォールバックする(後方互換)."""
-    evals = evaluate_kpis(_full_pass_stats(max_consecutive_losses=6))
+    evals = evaluate_kpis(_full_pass_stats(max_consecutive_losses=6), version="v0.1")
     gate = next(e for e in evals if e.metric == "K3m_max_consecutive_losses")
     assert gate.pass_ is False
     assert "旧来の絶対件数判定" in gate.note
@@ -337,7 +378,7 @@ def test_evaluate_kpis_k3m_falls_back_to_legacy_without_win_rate() -> None:
 def test_evaluate_kpis_k3m_scale_invariant_can_pass_where_legacy_fails() -> None:
     """外部レビューの主張通り、observed=6(旧基準では不合格)でもn・勝率次第では
     i.i.d.帰無分布の95パーセンタイル以内に収まり合格になりうる。"""
-    evals = evaluate_kpis(_full_pass_stats(max_consecutive_losses=6, win_rate=0.6, n_trades=524))
+    evals = evaluate_kpis(_full_pass_stats(max_consecutive_losses=6, win_rate=0.6, n_trades=524), version="v0.1")
     gate = next(e for e in evals if e.metric == "K3m_max_consecutive_losses")
     assert gate.pass_ is True
     assert "スケール不変判定(T-08)" in gate.note

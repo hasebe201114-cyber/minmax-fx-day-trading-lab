@@ -28,6 +28,7 @@
 from __future__ import annotations
 
 import json
+import warnings
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from enum import Enum
@@ -860,19 +861,35 @@ def evaluate_kpis_v0_3(stats: Stats) -> list[KPIEvaluation]:
     return evals
 
 
-def evaluate_kpis(stats: Stats, *, version: str = "v0.1") -> list[KPIEvaluation]:
+def evaluate_kpis(stats: Stats, *, version: str = "v0.3") -> list[KPIEvaluation]:
     """KPI 評価（v0.1 / v0.3 切替可能）.
 
     2026-08-30 Phase 2 マージで v0.3 対応.
-    既存呼び出しは version 未指定で v0.1（後方互換）.
+    2026-09-01 デフォルトを v0.1 → v0.3 に変更 (claude code 環境 C 査読 D-2 対応).
+
+    ⚠️ 重要: デフォルト v0.3 化により、新規戦略は明示的に version="v0.1" を指定しない限り
+    必須ゲート (DSR≥0.95, K4m≥1.2, n_hard_floor=60) が全て適用される。
+    既存テストで v0.1 を期待している場合は明示的に `evaluate_kpis(stats, version="v0.1")` を
+    指定すること (D-2 修正案 1 採用)。
+
+    v0.1 を明示指定した呼び出しには DeprecationWarning を発火する
+    (m-S1 「v0.1 deprecation warning」対応・実コード化)。
 
     Args:
         stats: 評価対象の統計量 dict。
-        version: "v0.1" (デフォルト・既存) または "v0.3" (Phase 2 新規).
+        version: "v0.3" (デフォルト・Phase 2 マージ後の必須ゲート) または
+                 "v0.1" (旧版・後方互換用に明示指定可能).
     """
     if version == "v0.3":
         return evaluate_kpis_v0_3(stats)
     elif version == "v0.1":
+        warnings.warn(
+            "evaluate_kpis(version='v0.1') は v0.3 必須ゲートを適用しない"
+            " 旧版 API です。新規戦略の判定には v0.3 (デフォルト) を使用してください。"
+            "明示的な旧版利用は 2026-Q4 までサポート予定 (claude code 環境 C 査読 D-2 対応)。",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         return evaluate_kpis_v0_1(stats)
     else:
         raise ValueError(f"version must be 'v0.1' or 'v0.3', got {version}")
@@ -920,7 +937,7 @@ def evaluate(stats: Stats) -> tuple[Verdict, str]:
         )
 
     # K1m〜K7m 評価
-    kpi_evals = evaluate_kpis(stats)
+    kpi_evals = evaluate_kpis(stats, version="v0.1")  # 高レベルラッパーは v0.1 設計のため明示
     # 判定対象外 (applicable=False) の指標は不合格扱いにしない (OBS000005 差し戻し1)
     failed_kpis = [e.metric for e in kpi_evals if e.applicable and not e.pass_]
 
