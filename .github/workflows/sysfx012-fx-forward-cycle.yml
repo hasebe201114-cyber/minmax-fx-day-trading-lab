@@ -1,6 +1,6 @@
-name: FX Forward Test Cycle (Weekly, SYS-FX012 + SYS-FX026)
+name: FX Forward Test Cycle (Daily, SYS-FX012 + SYS-FX026)
 
-# 00-spec.md §「フォワードテスト仕様」§「監視サイクル」に基づく週次サイクル。
+# 00-spec.md §「フォワードテスト仕様」§「監視サイクル」に基づくサイクル。
 # cutoff 2026-08-15 06:00 JST 以降のデータを毎サイクルで再取得・再計算し、
 # research/method-notes/sysfx012_forward_test_ledger.json を上書き commit/push する。
 # 30/60/90 日チェックポイント (2026-09-14 / 10-14 / 11-13) の集計材料を更新する役割。
@@ -8,7 +8,11 @@ name: FX Forward Test Cycle (Weekly, SYS-FX012 + SYS-FX026)
 # 司令塔判断 (2026-08-22) で先行着手: 必須KPI 13/18 未達・C 品質レビュー未実施の
 # まま、ペーパートレード (実発注なし) で開始。採用GOではない。
 #
-# 注: trading-app-v2 側の sysfx012-fx-forward-sync.yml (月曜 12:00 JST) は
+# 2026-09-12: 司令塔依頼により週次→日次へ変更(「今週の収支」がリアルタイムに
+# 近い頻度で見えるようにするため)。検証プロトコル自体(パラメータ・判定基準・
+# チェックポイント日程)には一切影響しない、更新頻度のみの運用変更。
+#
+# 注: trading-app-v2 側の sysfx012-fx-forward-sync.yml (毎日 12:00 JST) は
 # 本 workflow が commit した ledger を public/data/forward-fx-sysfx012/ へ
 # コピーして公開 Web UI へ反映する役。両者は依存関係にある。
 #
@@ -27,8 +31,8 @@ name: FX Forward Test Cycle (Weekly, SYS-FX012 + SYS-FX026)
 
 on:
   schedule:
-    # 月曜 00:00 UTC = 月曜 09:00 JST (spec §「監視サイクル」)
-    - cron: "0 0 * * 1"
+    # 毎日 00:00 UTC = 毎日 09:00 JST (2026-09-12: 週次から日次へ変更)
+    - cron: "0 0 * * *"
   workflow_dispatch:
     inputs:
       dry_run:
@@ -95,10 +99,10 @@ jobs:
       # (2026-08-29): バーの正本は git 管理の data/raw/ds-1-forward/*.csv。
       # checkout 済みの CSV に対して差分だけを追記する。
       - name: Fetch live M5 OHLCV and merge into forward bars
-        # 過去 9 日分 (週次サイクル 7 日 + 余裕 2 日) を GMO API から取得。
+        # 過去 9 日分を GMO API から取得(日次化後も従来どおり余裕を持たせた値のまま)。
         # 正本の data/raw/ds-1-forward/*.csv にマージし、重複バーは追記しない。
         # 毎時 workflow (update-ds1-forward.yml) が数日止まっていても、この
-        # 週次の取り直しで穴が自動的に埋まる (self-healing) ようにしている。
+        # 日次サイクルの取り直しで穴が自動的に埋まる (self-healing) ようにしている。
         # 公開エンドポイントのみ、API キー不要。
         run: |
           PYTHONPATH=src python3 scripts/live_monitor/fetch_m5_ohlcv.py --all-pairs --lookback-days 9
