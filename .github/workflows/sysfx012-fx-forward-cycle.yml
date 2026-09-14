@@ -116,7 +116,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "raw CSV に変更なし、コミットをスキップ"
           else
-            git commit -m "SYS-FX012 forward M5 OHLCV (weekly cycle fetch): $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git commit -m "SYS-FX012 forward M5 OHLCV (daily cycle fetch): $(date -u +%Y-%m-%dT%H:%M:%SZ)"
             if ! git pull --rebase origin main; then
               git rebase --abort || true
               echo "::warning::git pull --rebase failed (conflict). Aborted raw CSV commit, continuing cycle."
@@ -178,7 +178,7 @@ jobs:
           # ledger だけでなくフォワードバーの正本 CSV も一緒に commit する
           # (2026-08-29 の消失バグ修正: runner 破棄でバーが失われないように)
           git add ${LEDGERS} data/raw/ds-1-forward/
-          git commit -m "chore(forward): FX forward test weekly cycle — closed trades sysfx012=${T12} sysfx026=${T26} (generated ${GEN})"
+          git commit -m "chore(forward): FX forward test daily cycle — closed trades sysfx012=${T12} sysfx026=${T26} (generated ${GEN})"
 
           # rebase して push (他ブランチ/手動 push との競合回避)
           if ! git pull --rebase origin main; then
