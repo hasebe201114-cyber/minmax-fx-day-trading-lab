@@ -45,6 +45,7 @@ from backtest_vol_breakout_dow_theory import (  # noqa: E402
 from backtest_vol_breakout_dow_theory_4pairs import SELECTED_PAIRS  # noqa: E402
 from derive_vol_breakout_entry_params import N_BREAKOUT, to_h1  # noqa: E402
 from price_shock_filter import make_price_shock_check  # noqa: E402
+from minmax_fx_dt.backtest.money_management import is_active, settle_trades  # noqa: E402
 from minmax_fx_dt.backtest.permutation import permutation_test_block, permutation_test_clustered  # noqa: E402
 from minmax_fx_dt.strategy.indicators import atr as atr_ind  # noqa: E402
 
@@ -177,48 +178,19 @@ def run_period(period_name: str, start: str, end: str) -> dict:
         print(f"  [{pair}] トレード={len(trades)}件")
 
     all_trades.sort(key=lambda t: t["entry_time"])
-    events = []
-    for idx, t in enumerate(all_trades):
-        events.append((t["entry_time"], 0, idx, "ENTRY"))
-        events.append((t["exit_time"], 1, idx, "EXIT"))
-    events.sort(key=lambda e: (e[0], e[1]))
-
-    balance = INITIAL_CAPITAL_USD
-    ruined = False
-    equity_curve = [{"time": str(pd.Timestamp(start)), "balance": balance}]
-    for time_, _order, idx, kind in events:
-        t = all_trades[idx]
-        if kind == "ENTRY":
-            if ruined:
-                t["risk_dollars"] = 0.0
-                t["skipped_ruin"] = True
-            else:
-                max_risk_pct = MAX_LEVERAGE / t["leverage_ratio"] if t["leverage_ratio"] > 0 else RISK_PCT_PER_TRADE
-                effective_risk_pct = min(RISK_PCT_PER_TRADE, max_risk_pct)
-                t["risk_dollars"] = balance * effective_risk_pct
-                t["effective_risk_pct"] = effective_risk_pct
-                t["leverage_capped"] = effective_risk_pct < RISK_PCT_PER_TRADE
-                t["skipped_ruin"] = False
-        else:
-            if t.get("skipped_ruin"):
-                t["dollar_pnl"] = 0.0
-            else:
-                t["dollar_pnl"] = t["r_net"] * t["risk_dollars"]
-                balance += t["dollar_pnl"]
-                if balance <= 0:
-                    balance = 0.0
-                    ruined = True
-            t["balance_after"] = balance
-            equity_curve.append({"time": str(time_), "balance": balance})
+    # OBS000015(2026-09-30): 資金管理を共通関数へ集約し、合計レバレッジ上限(既定25倍)を適用
+    balance, equity_curve, mm_info = settle_trades(
+        all_trades, initial_capital=INITIAL_CAPITAL_USD, risk_pct=RISK_PCT_PER_TRADE, start_label=str(pd.Timestamp(start)),
+        per_position_leverage_cap=MAX_LEVERAGE)
 
     n = len(all_trades)
-    n_effective_trades = sum(1 for t in all_trades if not t.get("skipped_ruin"))
-    r_values = [t["r_net"] for t in all_trades if not t.get("skipped_ruin")]
-    pairs_for_perm = [t["pair"] for t in all_trades if not t.get("skipped_ruin")]
+    n_effective_trades = sum(1 for t in all_trades if is_active(t))
+    r_values = [t["r_net"] for t in all_trades if is_active(t)]
+    pairs_for_perm = [t["pair"] for t in all_trades if is_active(t)]
     # T-06: クラスタキー=エントリー日(JST暦日)。同日にエントリーした複数通貨の
     # トレードは同じ符号を引く(=真の依存構造を通貨ペアの固定属性ではなく
     # 実際の共起パターンで捉える)。
-    day_clusters_for_perm = [t["entry_time"].strftime("%Y-%m-%d") for t in all_trades if not t.get("skipped_ruin")]
+    day_clusters_for_perm = [t["entry_time"].strftime("%Y-%m-%d") for t in all_trades if is_active(t)]
 
     n_wins = sum(1 for r in r_values if r > 0)
     win_rate = n_wins / len(r_values) if r_values else None
@@ -250,6 +222,7 @@ def run_period(period_name: str, start: str, end: str) -> dict:
 
     return {
         "period": period_name, "start": start, "end": end,
+        "money_management": mm_info,
         "n_trades": n, "n_effective_trades": n_effective_trades,
         "final_balance_usd": round(final_balance, 2),
         "total_return_pct": round(total_return_pct, 2),

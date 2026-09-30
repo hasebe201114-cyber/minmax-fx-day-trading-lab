@@ -65,6 +65,7 @@ from backtest_vol_continuation_candidates_trendfilter_4pairs_trainonly import ( 
 from derive_vol_breakout_entry_params import N_BREAKOUT, to_h1  # noqa: E402
 from evaluate_vol_breakout_dow_theory_kpi import evaluate_period  # noqa: E402
 from price_shock_filter import make_price_shock_check  # noqa: E402
+from minmax_fx_dt.backtest.money_management import is_active, settle_trades  # noqa: E402
 from minmax_fx_dt.backtest.permutation import (  # noqa: E402
     permutation_test_block, permutation_test_clustered,
 )
@@ -333,46 +334,17 @@ def run_forward_cycle(cfg: dict | None = None) -> dict:
             })
 
     all_trades.sort(key=lambda t: t["entry_time"])
-    events = []
-    for idx, t in enumerate(all_trades):
-        events.append((t["entry_time"], 0, idx, "ENTRY"))
-        events.append((t["exit_time"], 1, idx, "EXIT"))
-    events.sort(key=lambda e: (e[0], e[1]))
-
-    balance = INITIAL_CAPITAL_USD
-    ruined = False
-    equity_curve = [{"time": str(CUTOFF), "balance": balance}]
-    for time_, _order, idx, kind in events:
-        t = all_trades[idx]
-        if kind == "ENTRY":
-            if ruined:
-                t["risk_dollars"] = 0.0
-                t["skipped_ruin"] = True
-            else:
-                risk_pct = cfg["risk_pct"]
-                max_risk_pct = MAX_LEVERAGE / t["leverage_ratio"] if t["leverage_ratio"] > 0 else risk_pct
-                effective_risk_pct = min(risk_pct, max_risk_pct)
-                t["risk_dollars"] = balance * effective_risk_pct
-                t["effective_risk_pct"] = effective_risk_pct
-                t["skipped_ruin"] = False
-        else:
-            if t.get("skipped_ruin"):
-                t["dollar_pnl"] = 0.0
-            else:
-                t["dollar_pnl"] = t["r_net"] * t["risk_dollars"]
-                balance += t["dollar_pnl"]
-                if balance <= 0:
-                    balance = 0.0
-                    ruined = True
-            t["balance_after"] = balance
-            equity_curve.append({"time": str(time_), "balance": balance})
+    # OBS000015(2026-09-30): 資金管理を共通関数へ集約し、合計レバレッジ上限(既定25倍)を適用
+    balance, equity_curve, mm_info = settle_trades(
+        all_trades, initial_capital=INITIAL_CAPITAL_USD, risk_pct=cfg["risk_pct"], start_label=str(CUTOFF),
+        per_position_leverage_cap=MAX_LEVERAGE)
 
     n_closed = len(all_trades)  # data_exhaustedはstill_open_tradesへ既に分離済みなので、残りは全て決着済み
     n_open = len(still_open_trades)
     n = n_closed + n_open
-    r_values = [t["r_net"] for t in all_trades if not t.get("skipped_ruin")]
-    pairs_for_perm = [t["pair"] for t in all_trades if not t.get("skipped_ruin")]
-    day_clusters_for_perm = [t["entry_time"].strftime("%Y-%m-%d") for t in all_trades if not t.get("skipped_ruin")]
+    r_values = [t["r_net"] for t in all_trades if is_active(t)]
+    pairs_for_perm = [t["pair"] for t in all_trades if is_active(t)]
+    day_clusters_for_perm = [t["entry_time"].strftime("%Y-%m-%d") for t in all_trades if is_active(t)]
     perm_result = permutation_test_clustered(r_values, pairs_for_perm, seed=42) if len(r_values) >= 4 else None
     perm_result_block = permutation_test_block(r_values, day_clusters_for_perm, seed=42) if len(r_values) >= 4 else None
     wins = [r for r in r_values if r > 0]
@@ -387,6 +359,7 @@ def run_forward_cycle(cfg: dict | None = None) -> dict:
         "period": "forward_test", "cutoff": str(CUTOFF),
         "n_events_raw": n_raw_total, "n_events_dedup": n_dedup_total,
         "n_events_trendfiltered": n_trendfiltered_total,
+        "money_management": mm_info,
         "n_trades_total": n, "n_trades_closed": n_closed, "n_trades_open": n_open,
         "win_rate": round(win_rate, 4) if win_rate else None,
         "mean_r_net": round(mean_r_net, 4) if mean_r_net else None,

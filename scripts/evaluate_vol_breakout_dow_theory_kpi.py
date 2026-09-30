@@ -49,6 +49,7 @@ from minmax_fx_dt.backtest.metrics import (
     peak_relative_max_dd_pct, peak_relative_monthly_max_dd_pct, profit_factor,
 )
 from minmax_fx_dt.decision.criteria import compute_k3m_scale_invariant, compute_n_trades_effective
+from minmax_fx_dt.backtest.money_management import is_active
 
 # 00-spec.md のKPI閾値
 KPI_THRESHOLDS = {
@@ -139,12 +140,15 @@ def evaluate_period(
     dd_pct = peak_relative_max_dd_pct(eq_curve)
     dd_monthly_pct = peak_relative_monthly_max_dd_pct(eq_curve)
 
-    dollar_pnls = [t["dollar_pnl"] for t in p["trades"]]
+    # OBS000015(2026-09-30): 破産後・合計レバレッジ上限で見送った(実際には建てていない)取引を除く。
+    # 見送りのない従来の評価では結果は変わらない
+    trades = [t for t in p["trades"] if is_active(t)]
+    dollar_pnls = [t["dollar_pnl"] for t in trades]
     pf = profit_factor(dollar_pnls)
     payoff = payoff_ratio(dollar_pnls)
-    max_losses = max_consecutive_losses(p["trades"])
+    max_losses = max_consecutive_losses(trades)
 
-    n_trades_total = len(p["trades"])
+    n_trades_total = len(trades)
     win_rate = (sum(1 for pnl in dollar_pnls if pnl > 0) / n_trades_total) if n_trades_total else 0.0
     if apply_k3m_scale_invariant and n_trades_total > 0:
         k3m_result = compute_k3m_scale_invariant(n_trades_total, win_rate, max_losses)
@@ -159,15 +163,15 @@ def evaluate_period(
     monthly_expectancy_positive = bool(monthly_pnl.mean() > 0) if len(monthly_pnl) > 0 else False
 
     # K5m: スプレッドコスト倍率 (平均粗エッジ ÷ 平均コスト)
-    mean_r_gross = sum(t["r_gross"] for t in p["trades"]) / len(p["trades"])
-    mean_cost = sum(t["cost_r"] + t["commission_r"] for t in p["trades"]) / len(p["trades"])
+    mean_r_gross = sum(t["r_gross"] for t in trades) / len(trades)
+    mean_cost = sum(t["cost_r"] + t["commission_r"] for t in trades) / len(trades)
     spread_cost_multiplier = mean_r_gross / mean_cost if mean_cost > 0 else None
 
     trades_per_currency: dict[str, int] = {}
-    for t in p["trades"]:
+    for t in trades:
         trades_per_currency[t["pair"]] = trades_per_currency.get(t["pair"], 0) + 1
     n_eff = compute_n_trades_effective(
-        trades_per_currency, len(p["trades"]), apply_correlation_discount=apply_n_correlation_discount
+        trades_per_currency, len(trades), apply_correlation_discount=apply_n_correlation_discount
     )
 
     perm_p = p[perm_p_field]

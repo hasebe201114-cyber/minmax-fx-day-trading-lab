@@ -1,0 +1,322 @@
+{
+  "generated_at": "2026-09-30T16:28:45.994897",
+  "obs": "OBS000015",
+  "before": "合計レバレッジ上限なし(従来)",
+  "after": "合計レバレッジ上限 25.0倍(超過分を縮小)",
+  "results": {
+    "SYS-FX012/train": {
+      "before": {
+        "n_trades": 308,
+        "final_balance": 2509.05,
+        "total_return_pct": 150.91,
+        "win_rate": 0.6071,
+        "mean_r_net": 0.3221,
+        "money_management": {
+          "per_position_leverage_cap": 25.0,
+          "aggregate_leverage_cap": null,
+          "cap_mode": "shrink",
+          "n_aggregate_cap_shrunk": 0,
+          "n_aggregate_cap_skipped": 0,
+          "max_aggregate_leverage": 59.499
+        },
+        "monthly_sharpe": 2.656,
+        "max_dd_pct": 8.78,
+        "max_dd_monthly_pct": 8.78,
+        "profit_factor": 1.713,
+        "payoff_ratio": 1.108,
+        "n_trades_effective": 308.0,
+        "permutation_p_clustered": 0.048,
+        "kpi_required_pass_count": "7/9"
+      },
+      "after": {
+        "n_trades": 308,
+        "final_balance": 2072.85,
+        "total_return_pct": 107.28,
+        "win_rate": 0.608,
+        "mean_r_net": 0.3027,
+        "money_management": {
+          "per_position_leverage_cap": 25.0,
+          "aggregate_leverage_cap": 25.0,
+          "cap_mode": "shrink",
+          "n_aggregate_cap_shrunk": 29,
+          "n_aggregate_cap_skipped": 7,
+          "max_aggregate_leverage": 25.0
+        },
+        "monthly_sharpe": 2.352,
+        "max_dd_pct": 8.78,
+        "max_dd_monthly_pct": 8.78,
+        "profit_factor": 1.591,
+        "payoff_ratio": 1.026,
+        "n_trades_effective": 301.0,
+        "permutation_p_clustered": 0.0549,
+        "kpi_required_pass_count": "6/9"
+      }
+    },
+    "SYS-FX011/train": {
+      "before": {
+        "n_trades": 530,
+        "final_balance": 4500.66,
+        "total_return_pct": 350.07,
+        "win_rate": 0.5962,
+        "mean_r_net": 0.3125,
+        "money_management": {
+          "per_position_leverage_cap": 25.0,
+          "aggregate_leverage_cap": null,
+          "cap_mode": "shrink",
+          "n_aggregate_cap_shrunk": 0,
+          "n_aggregate_cap_skipped": 0,
+          "max_aggregate_leverage": 78.781
+        },
+        "monthly_sharpe": 2.767,
+        "max_dd_pct": 15.66,
+        "max_dd_monthly_pct": 15.66,
+        "profit_factor": 1.632,
+        "payoff_ratio": 1.106,
+        "n_trades_effective": 530.0,
+        "permutation_p_clustered": 0.04,
+        "kpi_required_pass_count": "6/9"
+      },
+      "after": {
+        "n_trades": 530,
+        "final_balance": 2842.31,
+        "total_return_pct": 184.23,
+        "win_rate": 0.5944,
+        "mean_r_net": 0.2774,
+        "money_management": {
+          "per_position_leverage_cap": 25.0,
+          "aggregate_leverage_cap": 25.0,
+          "cap_mode": "shrink",
+          "n_aggregate_cap_shrunk": 74,
+          "n_aggregate_cap_skipped": 27,
+          "max_aggregate_leverage": 25.0
+        },
+        "monthly_sharpe": 2.463,
+        "max_dd_pct": 15.66,
+        "max_dd_monthly_pct": 15.66,
+        "profit_factor": 1.477,
+        "payoff_ratio": 1.008,
+        "n_trades_effective": 503.0,
+        "permutation_p_clustered": 0.043,
+        "kpi_required_pass_count": "6/9"
+      }
+    },
+    "SYS-FX018/train": {
+      "before": {
+        "n_trades": 232,
+        "final_balance": 2194.53,
+        "total_return_pct": 119.45,
+        "win_rate": 0.5086,
+        "mean_r_net": 0.3671,
+        "money_management": {
+          "per_position_leverage_cap": 25.0,
+          "aggregate_leverage_cap": null,
+          "cap_mode": "shrink",
+          "n_aggregate_cap_shrunk": 0,
+          "n_aggregate_cap_skipped": 0,
+          "max_aggregate_leverage": 55.223
+        },
+        "monthly_sharpe": 2.306,
+        "max_dd_pct": 10.1,
+        "max_dd_monthly_pct": 10.1,
+        "profit_factor": 1.564,
+        "payoff_ratio": 1.511,
+        "n_trades_effective": 232.0,
+        "permutation_p_clustered": 0.0679,
+        "kpi_required_pass_count": "5/9"
+      },
+      "after": {
+        "n_trades": 232,
+        "final_balance": 1998.44,
+        "total_return_pct": 99.84,
+        "win_rate": 0.511,
+        "mean_r_net": 0.3627,
+        "money_management": {
+          "per_position_leverage_cap": 25.0,
+          "aggregate_leverage_cap": 25.0,
+          "cap_mode": "shrink",
+          "n_aggregate_cap_shrunk": 25,
+          "n_aggregate_cap_skipped": 5,
+          "max_aggregate_leverage": 25.0
+        },
+        "monthly_sharpe": 2.166,
+        "max_dd_pct": 10.1,
+        "max_dd_monthly_pct": 10.1,
+        "profit_factor": 1.526,
+        "payoff_ratio": 1.46,
+        "n_trades_effective": 227.0,
+        "permutation_p_clustered": 0.0659,
+        "kpi_required_pass_count": "4/9"
+      }
+    },
+    "SYS-FX012/validation": {
+      "before": {
+        "n_trades": 83,
+        "final_balance": 1566.04,
+        "total_return_pct": 56.6,
+        "win_rate": 0.6386,
+        "mean_r_net": 0.5574,
+        "money_management": {
+          "per_position_leverage_cap": 25.0,
+          "aggregate_leverage_cap": null,
+          "cap_mode": "shrink",
+          "n_aggregate_cap_shrunk": 0,
+          "n_aggregate_cap_skipped": 0,
+          "max_aggregate_leverage": 28.489
+        },
+        "monthly_sharpe": 1.654,
+        "max_dd_pct": 8.19,
+        "max_dd_monthly_pct": 8.19,
+        "profit_factor": 2.407,
+        "payoff_ratio": 1.362,
+        "n_trades_effective": 83.0,
+        "permutation_p_clustered": 0.0919,
+        "kpi_required_pass_count": "6/9"
+      },
+      "after": {
+        "n_trades": 83,
+        "final_balance": 1570.33,
+        "total_return_pct": 57.03,
+        "win_rate": 0.6386,
+        "mean_r_net": 0.5574,
+        "money_management": {
+          "per_position_leverage_cap": 25.0,
+          "aggregate_leverage_cap": 25.0,
+          "cap_mode": "shrink",
+          "n_aggregate_cap_shrunk": 1,
+          "n_aggregate_cap_skipped": 0,
+          "max_aggregate_leverage": 25.0
+        },
+        "monthly_sharpe": 1.673,
+        "max_dd_pct": 8.19,
+        "max_dd_monthly_pct": 8.19,
+        "profit_factor": 2.428,
+        "payoff_ratio": 1.374,
+        "n_trades_effective": 83.0,
+        "permutation_p_clustered": 0.0919,
+        "kpi_required_pass_count": "6/9"
+      }
+    },
+    "SYS-FX011/validation": {
+      "before": {
+        "n_trades": 129,
+        "final_balance": 1707.16,
+        "total_return_pct": 70.72,
+        "win_rate": 0.6357,
+        "mean_r_net": 0.4288,
+        "money_management": {
+          "per_position_leverage_cap": 25.0,
+          "aggregate_leverage_cap": null,
+          "cap_mode": "shrink",
+          "n_aggregate_cap_shrunk": 0,
+          "n_aggregate_cap_skipped": 0,
+          "max_aggregate_leverage": 28.489
+        },
+        "monthly_sharpe": 1.653,
+        "max_dd_pct": 7.69,
+        "max_dd_monthly_pct": 7.69,
+        "profit_factor": 2.014,
+        "payoff_ratio": 1.155,
+        "n_trades_effective": 129.0,
+        "permutation_p_clustered": 0.0989,
+        "kpi_required_pass_count": "6/9"
+      },
+      "after": {
+        "n_trades": 129,
+        "final_balance": 1715.29,
+        "total_return_pct": 71.53,
+        "win_rate": 0.6357,
+        "mean_r_net": 0.4288,
+        "money_management": {
+          "per_position_leverage_cap": 25.0,
+          "aggregate_leverage_cap": 25.0,
+          "cap_mode": "shrink",
+          "n_aggregate_cap_shrunk": 2,
+          "n_aggregate_cap_skipped": 0,
+          "max_aggregate_leverage": 25.0
+        },
+        "monthly_sharpe": 1.681,
+        "max_dd_pct": 7.51,
+        "max_dd_monthly_pct": 7.51,
+        "profit_factor": 2.034,
+        "payoff_ratio": 1.166,
+        "n_trades_effective": 129.0,
+        "permutation_p_clustered": 0.0989,
+        "kpi_required_pass_count": "6/9"
+      }
+    },
+    "SYS-FX018/validation": {
+      "before": {
+        "n_trades": 63,
+        "final_balance": 1403.62,
+        "total_return_pct": 40.36,
+        "win_rate": 0.4921,
+        "mean_r_net": 0.557,
+        "money_management": {
+          "per_position_leverage_cap": 25.0,
+          "aggregate_leverage_cap": null,
+          "cap_mode": "shrink",
+          "n_aggregate_cap_shrunk": 0,
+          "n_aggregate_cap_skipped": 0,
+          "max_aggregate_leverage": 28.489
+        },
+        "monthly_sharpe": 1.397,
+        "max_dd_pct": 12.56,
+        "max_dd_monthly_pct": 12.56,
+        "profit_factor": 1.912,
+        "payoff_ratio": 1.974,
+        "n_trades_effective": 63.0,
+        "permutation_p_clustered": 0.1568,
+        "kpi_required_pass_count": "6/9"
+      },
+      "after": {
+        "n_trades": 63,
+        "final_balance": 1407.47,
+        "total_return_pct": 40.75,
+        "win_rate": 0.4921,
+        "mean_r_net": 0.557,
+        "money_management": {
+          "per_position_leverage_cap": 25.0,
+          "aggregate_leverage_cap": 25.0,
+          "cap_mode": "shrink",
+          "n_aggregate_cap_shrunk": 1,
+          "n_aggregate_cap_skipped": 0,
+          "max_aggregate_leverage": 25.0
+        },
+        "monthly_sharpe": 1.415,
+        "max_dd_pct": 12.56,
+        "max_dd_monthly_pct": 12.56,
+        "profit_factor": 1.927,
+        "payoff_ratio": 1.989,
+        "n_trades_effective": 63.0,
+        "permutation_p_clustered": 0.1568,
+        "kpi_required_pass_count": "6/9"
+      }
+    },
+    "SYS-FX012/forward": {
+      "before": {
+        "n_trades_closed": 39,
+        "final_balance": 1236.83,
+        "money_management": {
+          "per_position_leverage_cap": 25.0,
+          "aggregate_leverage_cap": null,
+          "cap_mode": "shrink",
+          "n_aggregate_cap_shrunk": 0,
+          "n_aggregate_cap_skipped": 0,
+          "max_aggregate_leverage": 33.981
+        }
+      },
+      "after": {
+        "n_trades_closed": 39,
+        "final_balance": 1216.07,
+        "money_management": {
+          "per_position_leverage_cap": 25.0,
+          "aggregate_leverage_cap": 25.0,
+          "cap_mode": "shrink",
+          "n_aggregate_cap_shrunk": 2,
+          "n_aggregate_cap_skipped": 0,
+          "max_aggregate_leverage": 25.0
+        }
+      }
+    }
+  }
+}

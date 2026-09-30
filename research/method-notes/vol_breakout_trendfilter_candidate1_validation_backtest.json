@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-29T06:18:31.922089",
+  "generated_at": "2026-09-30T16:32:25.237576",
   "design": "N_BREAKOUT単独 + H1ダウ理論トレンド判定不能除外フィルター(zigzag threshold_atr=2.0)",
   "note": "Trainで導出・選定したパラメータをそのまま適用(再学習なし)。6パターン中Trainで最良だったこの1候補のみをValidationで1回だけ確認する(多重比較を避けるための事前登録済み運用方針)",
   "train_reference": {
@@ -45,13 +45,13 @@
   },
   "validation": {
     "period": "validation",
-    "monthly_sharpe": 1.654,
+    "monthly_sharpe": 1.673,
     "max_dd_pct": 8.19,
     "max_dd_monthly_pct": 8.19,
     "max_dd_pct_of_initial_capital_reference": 9.93,
     "max_dd_monthly_pct_of_initial_capital_reference": 5.35,
-    "profit_factor": 2.407,
-    "payoff_ratio": 1.362,
+    "profit_factor": 2.428,
+    "payoff_ratio": 1.374,
     "max_consecutive_losses": 4,
     "k3m_scale_invariant": {
       "n_trades": 83,
@@ -91,6 +91,14 @@
     "n_events_raw": 52,
     "n_events_dedup": 49,
     "n_events_trendfiltered": 31,
+    "money_management": {
+      "per_position_leverage_cap": 25.0,
+      "aggregate_leverage_cap": 25.0,
+      "cap_mode": "shrink",
+      "n_aggregate_cap_shrunk": 1,
+      "n_aggregate_cap_skipped": 0,
+      "max_aggregate_leverage": 25.0
+    },
     "n_trades": 83,
     "win_rate": 0.6386,
     "mean_r_net": 0.5574,
@@ -102,8 +110,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-03 10:05:00+09:00",
-        "exit_time": "2025-04-03 10:50:00+09:00",
+        "entry_time": "2025-04-03 10:05:00",
+        "exit_time": "2025-04-03 10:50:00",
         "entry_price": 148.01,
         "initial_risk": 0.198841,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -114,6 +122,9 @@
         "commission_r": 0.029775,
         "r_net": 1.083849,
         "leverage_ratio": 744.362517,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 7443.625174,
         "risk_dollars": 10.0,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -124,8 +135,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-03 11:10:00+09:00",
-        "exit_time": "2025-04-03 13:00:00+09:00",
+        "entry_time": "2025-04-03 11:10:00",
+        "exit_time": "2025-04-03 13:00:00",
         "entry_price": 147.637,
         "initial_risk": 0.376004,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -136,6 +147,9 @@
         "commission_r": 0.015706,
         "r_net": 0.823845,
         "leverage_ratio": 392.647866,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 3969.035753,
         "risk_dollars": 10.108385,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -146,8 +160,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-03 12:05:00+09:00",
-        "exit_time": "2025-04-03 13:10:00+09:00",
+        "entry_time": "2025-04-03 12:05:00",
+        "exit_time": "2025-04-03 13:10:00",
         "entry_price": 92.642,
         "initial_risk": 0.263509,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -158,6 +172,9 @@
         "commission_r": 0.014063,
         "r_net": 0.612617,
         "leverage_ratio": 351.569963,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 3553.804496,
         "risk_dollars": 10.108385,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -168,8 +185,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-03 14:10:00+09:00",
-        "exit_time": "2025-04-03 14:40:00+09:00",
+        "entry_time": "2025-04-03 14:10:00",
+        "exit_time": "2025-04-03 14:40:00",
         "entry_price": 147.502,
         "initial_risk": 0.20758,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -180,6 +197,9 @@
         "commission_r": 0.028423,
         "r_net": 1.718269,
         "leverage_ratio": 710.579543,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 7285.989882,
         "risk_dollars": 10.253588,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -190,8 +210,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-03 14:45:00+09:00",
-        "exit_time": "2025-04-03 15:15:00+09:00",
+        "entry_time": "2025-04-03 14:45:00",
+        "exit_time": "2025-04-03 15:15:00",
         "entry_price": 147.039,
         "initial_risk": 0.169247,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -202,6 +222,9 @@
         "commission_r": 0.034751,
         "r_net": -1.158831,
         "leverage_ratio": 868.784961,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 9061.229273,
         "risk_dollars": 10.429772,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -212,8 +235,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-03 16:10:00+09:00",
-        "exit_time": "2025-04-03 16:20:00+09:00",
+        "entry_time": "2025-04-03 16:10:00",
+        "exit_time": "2025-04-03 16:20:00",
         "entry_price": 147.261,
         "initial_risk": 0.146217,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -224,6 +247,9 @@
         "commission_r": 0.040286,
         "r_net": -1.183907,
         "leverage_ratio": 1007.138105,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 10382.494926,
         "risk_dollars": 10.308909,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -234,8 +260,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-03 17:20:00+09:00",
-        "exit_time": "2025-04-03 18:00:00+09:00",
+        "entry_time": "2025-04-03 17:20:00",
+        "exit_time": "2025-04-03 18:00:00",
         "entry_price": 147.139,
         "initial_risk": 0.317017,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -246,6 +272,9 @@
         "commission_r": 0.018565,
         "r_net": 0.84953,
         "leverage_ratio": 464.135888,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 4728.087741,
         "risk_dollars": 10.186861,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -256,8 +285,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-03 18:05:00+09:00",
-        "exit_time": "2025-04-03 18:35:00+09:00",
+        "entry_time": "2025-04-03 18:05:00",
+        "exit_time": "2025-04-03 18:35:00",
         "entry_price": 146.655,
         "initial_risk": 0.308515,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -268,6 +297,9 @@
         "commission_r": 0.019014,
         "r_net": 0.094131,
         "leverage_ratio": 475.357872,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 4883.54219,
         "risk_dollars": 10.273401,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -278,8 +310,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-03 18:50:00+09:00",
-        "exit_time": "2025-04-03 19:30:00+09:00",
+        "entry_time": "2025-04-03 18:50:00",
+        "exit_time": "2025-04-03 19:30:00",
         "entry_price": 146.539,
         "initial_risk": 0.165195,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -290,6 +322,9 @@
         "commission_r": 0.035483,
         "r_net": 0.295568,
         "leverage_ratio": 887.068718,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 9121.791283,
         "risk_dollars": 10.283072,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -300,8 +335,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-03 21:10:00+09:00",
-        "exit_time": "2025-04-03 21:40:00+09:00",
+        "entry_time": "2025-04-03 21:10:00",
+        "exit_time": "2025-04-03 21:40:00",
         "entry_price": 146.261,
         "initial_risk": 0.168856,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -312,6 +347,9 @@
         "commission_r": 0.034648,
         "r_net": 0.61363,
         "leverage_ratio": 866.187758,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 8933.39731,
         "risk_dollars": 10.313465,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -322,8 +360,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-03 22:05:00+09:00",
-        "exit_time": "2025-04-03 23:15:00+09:00",
+        "entry_time": "2025-04-03 22:05:00",
+        "exit_time": "2025-04-03 23:15:00",
         "entry_price": 145.785,
         "initial_risk": 0.401862,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -334,6 +372,9 @@
         "commission_r": 0.014511,
         "r_net": 0.226733,
         "leverage_ratio": 362.774239,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 3764.418207,
         "risk_dollars": 10.376752,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -344,8 +385,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-04 07:05:00+09:00",
-        "exit_time": "2025-04-04 07:30:00+09:00",
+        "entry_time": "2025-04-04 07:05:00",
+        "exit_time": "2025-04-04 07:30:00",
         "entry_price": 92.434,
         "initial_risk": 0.062011,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -356,6 +397,9 @@
         "commission_r": 0.059624,
         "r_net": 3.618289,
         "leverage_ratio": 1490.606505,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 15502.723946,
         "risk_dollars": 10.400279,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -366,8 +410,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-04 11:15:00+09:00",
-        "exit_time": "2025-04-04 12:40:00+09:00",
+        "entry_time": "2025-04-04 11:15:00",
+        "exit_time": "2025-04-04 12:40:00",
         "entry_price": 92.173,
         "initial_risk": 0.159571,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -378,6 +422,9 @@
         "commission_r": 0.023105,
         "r_net": 5.952268,
         "leverage_ratio": 577.628986,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 6224.871579,
         "risk_dollars": 10.776591,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -388,8 +435,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-04 12:55:00+09:00",
-        "exit_time": "2025-04-04 13:30:00+09:00",
+        "entry_time": "2025-04-04 12:55:00",
+        "exit_time": "2025-04-04 13:30:00",
         "entry_price": 91.107,
         "initial_risk": 0.215594,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -400,6 +447,9 @@
         "commission_r": 0.016903,
         "r_net": 0.436624,
         "leverage_ratio": 422.586112,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 4825.106393,
         "risk_dollars": 11.418043,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -410,8 +460,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-04 13:40:00+09:00",
-        "exit_time": "2025-04-04 14:05:00+09:00",
+        "entry_time": "2025-04-04 13:40:00",
+        "exit_time": "2025-04-04 14:05:00",
         "entry_price": 90.894,
         "initial_risk": 0.194184,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -422,6 +472,9 @@
         "commission_r": 0.018723,
         "r_net": 0.666432,
         "leverage_ratio": 468.08268,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 5367.923927,
         "risk_dollars": 11.467897,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -432,8 +485,8 @@
       {
         "pair": "EUR_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-04 19:05:00+09:00",
-        "exit_time": "2025-04-04 20:20:00+09:00",
+        "entry_time": "2025-04-04 19:05:00",
+        "exit_time": "2025-04-04 20:20:00",
         "entry_price": 160.338,
         "initial_risk": 0.626471,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -444,6 +497,9 @@
         "commission_r": 0.010238,
         "r_net": 0.126189,
         "leverage_ratio": 255.938511,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 2954.636757,
         "risk_dollars": 11.544323,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -454,8 +510,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-04 19:10:00+09:00",
-        "exit_time": "2025-04-04 19:40:00+09:00",
+        "entry_time": "2025-04-04 19:10:00",
+        "exit_time": "2025-04-04 19:40:00",
         "entry_price": 145.917,
         "initial_risk": 0.51711,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -466,6 +522,9 @@
         "commission_r": 0.011287,
         "r_net": 0.854055,
         "leverage_ratio": 282.177795,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 3257.551522,
         "risk_dollars": 11.544323,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -476,8 +535,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-04 19:10:00+09:00",
-        "exit_time": "2025-04-04 20:00:00+09:00",
+        "entry_time": "2025-04-04 19:10:00",
+        "exit_time": "2025-04-04 20:00:00",
         "entry_price": 90.374,
         "initial_risk": 0.463825,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -488,6 +547,9 @@
         "commission_r": 0.007794,
         "r_net": 2.129011,
         "leverage_ratio": 194.845129,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 2249.355037,
         "risk_dollars": 11.544323,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -498,8 +560,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-04 20:05:00+09:00",
-        "exit_time": "2025-04-04 20:55:00+09:00",
+        "entry_time": "2025-04-04 20:05:00",
+        "exit_time": "2025-04-04 20:55:00",
         "entry_price": 145.004,
         "initial_risk": 0.467245,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -510,6 +572,9 @@
         "commission_r": 0.012414,
         "r_net": -1.057358,
         "leverage_ratio": 310.337975,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 3689.514283,
         "risk_dollars": 11.888697,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -520,8 +585,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-04 20:05:00+09:00",
-        "exit_time": "2025-04-04 20:35:00+09:00",
+        "entry_time": "2025-04-04 20:05:00",
+        "exit_time": "2025-04-04 20:35:00",
         "entry_price": 89.074,
         "initial_risk": 0.489786,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -532,6 +597,9 @@
         "commission_r": 0.007275,
         "r_net": 1.454365,
         "leverage_ratio": 181.863046,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 2162.114732,
         "risk_dollars": 11.888697,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -542,8 +610,8 @@
       {
         "pair": "EUR_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-04 23:25:00+09:00",
-        "exit_time": "2025-04-04 23:50:00+09:00",
+        "entry_time": "2025-04-04 23:25:00",
+        "exit_time": "2025-04-04 23:50:00",
         "entry_price": 159.867,
         "initial_risk": 0.512926,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -554,6 +622,9 @@
         "commission_r": 0.012467,
         "r_net": 0.588705,
         "leverage_ratio": 311.676712,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 3724.681345,
         "risk_dollars": 11.950464,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -564,8 +635,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-04 23:25:00+09:00",
-        "exit_time": "2025-04-04 23:50:00+09:00",
+        "entry_time": "2025-04-04 23:25:00",
+        "exit_time": "2025-04-04 23:50:00",
         "entry_price": 88.259,
         "initial_risk": 0.576969,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -576,6 +647,9 @@
         "commission_r": 0.006119,
         "r_net": 0.462573,
         "leverage_ratio": 152.970033,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 1828.062888,
         "risk_dollars": 11.950464,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -586,8 +660,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-21 16:05:00+09:00",
-        "exit_time": "2025-04-21 17:05:00+09:00",
+        "entry_time": "2025-04-21 16:05:00",
+        "exit_time": "2025-04-21 17:05:00",
         "entry_price": 140.722,
         "initial_risk": 0.167274,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -598,6 +672,9 @@
         "commission_r": 0.033651,
         "r_net": 0.449845,
         "leverage_ratio": 841.264988,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 10159.197333,
         "risk_dollars": 12.076097,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -608,8 +685,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-21 18:25:00+09:00",
-        "exit_time": "2025-04-21 19:00:00+09:00",
+        "entry_time": "2025-04-21 18:25:00",
+        "exit_time": "2025-04-21 19:00:00",
         "entry_price": 140.612,
         "initial_risk": 0.088457,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -620,6 +697,9 @@
         "commission_r": 0.063584,
         "r_net": -1.300989,
         "leverage_ratio": 1589.612361,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 19282.666185,
         "risk_dollars": 12.13042,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -630,8 +710,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-22 12:05:00+09:00",
-        "exit_time": "2025-04-22 17:40:00+09:00",
+        "entry_time": "2025-04-22 12:05:00",
+        "exit_time": "2025-04-22 17:40:00",
         "entry_price": 140.197,
         "initial_risk": 0.412094,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -642,6 +722,9 @@
         "commission_r": 0.013608,
         "r_net": -1.064568,
         "leverage_ratio": 340.206656,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 4073.159905,
         "risk_dollars": 11.972605,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -652,8 +735,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-22 14:10:00+09:00",
-        "exit_time": "2025-04-22 14:40:00+09:00",
+        "entry_time": "2025-04-22 14:10:00",
+        "exit_time": "2025-04-22 14:40:00",
         "entry_price": 90.149,
         "initial_risk": 0.113176,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -664,6 +747,9 @@
         "commission_r": 0.031862,
         "r_net": 0.544236,
         "leverage_ratio": 796.540146,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 9536.660538,
         "risk_dollars": 11.972605,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -674,8 +760,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-22 14:45:00+09:00",
-        "exit_time": "2025-04-22 15:00:00+09:00",
+        "entry_time": "2025-04-22 14:45:00",
+        "exit_time": "2025-04-22 15:00:00",
         "entry_price": 89.982,
         "initial_risk": 0.130005,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -686,6 +772,9 @@
         "commission_r": 0.027686,
         "r_net": -1.23537,
         "leverage_ratio": 692.14337,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 8331.858726,
         "risk_dollars": 12.037764,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -696,8 +785,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-22 18:20:00+09:00",
-        "exit_time": "2025-04-22 19:10:00+09:00",
+        "entry_time": "2025-04-22 18:20:00",
+        "exit_time": "2025-04-22 19:10:00",
         "entry_price": 89.963,
         "initial_risk": 0.129829,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -708,6 +797,9 @@
         "commission_r": 0.027717,
         "r_net": 0.4839,
         "leverage_ratio": 692.937221,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 8150.048219,
         "risk_dollars": 11.761597,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -718,8 +810,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-22 19:20:00+09:00",
-        "exit_time": "2025-04-22 20:25:00+09:00",
+        "entry_time": "2025-04-22 19:20:00",
+        "exit_time": "2025-04-22 20:25:00",
         "entry_price": 89.813,
         "initial_risk": 0.12413,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -730,6 +822,9 @@
         "commission_r": 0.028942,
         "r_net": 0.218538,
         "leverage_ratio": 723.541086,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 8551.178454,
         "risk_dollars": 11.818511,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -740,8 +835,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-04-22 20:30:00+09:00",
-        "exit_time": "2025-04-22 21:20:00+09:00",
+        "entry_time": "2025-04-22 20:30:00",
+        "exit_time": "2025-04-22 21:20:00",
         "entry_price": 89.714,
         "initial_risk": 0.100879,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -752,6 +847,9 @@
         "commission_r": 0.035573,
         "r_net": -1.303221,
         "leverage_ratio": 889.325371,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 10533.471303,
         "risk_dollars": 11.844339,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -762,8 +860,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-05-24 03:05:00+09:00",
-        "exit_time": "2025-05-24 05:55:00+09:00",
+        "entry_time": "2025-05-24 03:05:00",
+        "exit_time": "2025-05-24 05:55:00",
         "entry_price": 142.532,
         "initial_risk": 0.126999,
         "exit_reason": "WEEKEND_NO_TP",
@@ -774,6 +872,9 @@
         "commission_r": 0.044892,
         "r_net": -0.808676,
         "leverage_ratio": 1122.304894,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 13119.72312,
         "risk_dollars": 11.689981,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -784,8 +885,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-05-28 11:50:00+09:00",
-        "exit_time": "2025-05-28 12:15:00+09:00",
+        "entry_time": "2025-05-28 11:50:00",
+        "exit_time": "2025-05-28 12:15:00",
         "entry_price": 93.072,
         "initial_risk": 0.068118,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -796,6 +897,9 @@
         "commission_r": 0.054653,
         "r_net": -1.451023,
         "leverage_ratio": 1366.332024,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 15843.230825,
         "risk_dollars": 11.595447,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -806,8 +910,8 @@
       {
         "pair": "USD_JPY",
         "direction": "UP",
-        "entry_time": "2025-05-29 09:45:00+09:00",
-        "exit_time": "2025-05-29 11:40:00+09:00",
+        "entry_time": "2025-05-29 09:45:00",
+        "exit_time": "2025-05-29 11:40:00",
         "entry_price": 146.047,
         "initial_risk": 0.35737,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -818,6 +922,9 @@
         "commission_r": 0.016347,
         "r_net": -1.075109,
         "leverage_ratio": 408.671276,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 4669.966174,
         "risk_dollars": 11.427195,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -828,8 +935,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-05-30 08:20:00+09:00",
-        "exit_time": "2025-05-30 08:50:00+09:00",
+        "entry_time": "2025-05-30 08:20:00",
+        "exit_time": "2025-05-30 08:50:00",
         "entry_price": 92.85,
         "initial_risk": 0.064961,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -840,6 +947,9 @@
         "commission_r": 0.057173,
         "r_net": 1.309689,
         "leverage_ratio": 1429.323845,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 16157.562261,
         "risk_dollars": 11.30434,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -850,8 +960,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-05-30 08:55:00+09:00",
-        "exit_time": "2025-05-30 09:50:00+09:00",
+        "entry_time": "2025-05-30 08:55:00",
+        "exit_time": "2025-05-30 09:50:00",
         "entry_price": 92.668,
         "initial_risk": 0.100321,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -862,6 +972,9 @@
         "commission_r": 0.036949,
         "r_net": -1.306085,
         "leverage_ratio": 923.716191,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 10578.759341,
         "risk_dollars": 11.452391,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -872,8 +985,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-05-30 10:05:00+09:00",
-        "exit_time": "2025-05-30 21:25:00+09:00",
+        "entry_time": "2025-05-30 10:05:00",
+        "exit_time": "2025-05-30 21:25:00",
         "entry_price": 92.533,
         "initial_risk": 0.258848,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -884,6 +997,9 @@
         "commission_r": 0.014299,
         "r_net": 1.147878,
         "leverage_ratio": 357.479967,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 4040.529361,
         "risk_dollars": 11.302813,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -894,8 +1010,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-05-30 21:30:00+09:00",
-        "exit_time": "2025-05-30 21:45:00+09:00",
+        "entry_time": "2025-05-30 21:30:00",
+        "exit_time": "2025-05-30 21:45:00",
         "entry_price": 92.255,
         "initial_risk": 0.084604,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -906,6 +1022,9 @@
         "commission_r": 0.043617,
         "r_net": -1.36275,
         "leverage_ratio": 1090.428473,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 12466.384505,
         "risk_dollars": 11.432556,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -916,8 +1035,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-06-10 16:00:00+09:00",
-        "exit_time": "2025-06-10 17:30:00+09:00",
+        "entry_time": "2025-06-10 16:00:00",
+        "exit_time": "2025-06-10 17:30:00",
         "entry_price": 94.014,
         "initial_risk": 0.128688,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -928,6 +1047,9 @@
         "commission_r": 0.029222,
         "r_net": -1.239033,
         "leverage_ratio": 730.559655,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 8238.345029,
         "risk_dollars": 11.276759,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -938,8 +1060,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-06-11 22:50:00+09:00",
-        "exit_time": "2025-06-12 00:45:00+09:00",
+        "entry_time": "2025-06-11 22:50:00",
+        "exit_time": "2025-06-12 00:45:00",
         "entry_price": 144.991,
         "initial_risk": 0.297215,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -950,6 +1072,9 @@
         "commission_r": 0.019513,
         "r_net": 1.139036,
         "leverage_ratio": 487.832275,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 5433.005649,
         "risk_dollars": 11.137036,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -960,8 +1085,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-06-12 00:50:00+09:00",
-        "exit_time": "2025-06-12 08:10:00+09:00",
+        "entry_time": "2025-06-12 00:50:00",
+        "exit_time": "2025-06-12 08:10:00",
         "entry_price": 144.515,
         "initial_risk": 0.191315,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -972,6 +1097,9 @@
         "commission_r": 0.030215,
         "r_net": 1.189351,
         "leverage_ratio": 755.378386,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 8508.499746,
         "risk_dollars": 11.263891,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -982,8 +1110,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-06-12 03:05:00+09:00",
-        "exit_time": "2025-06-12 03:25:00+09:00",
+        "entry_time": "2025-06-12 03:05:00",
+        "exit_time": "2025-06-12 03:25:00",
         "entry_price": 94.099,
         "initial_risk": 0.160083,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -994,6 +1122,9 @@
         "commission_r": 0.023513,
         "r_net": 0.606341,
         "leverage_ratio": 587.815133,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 6621.085545,
         "risk_dollars": 11.263891,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -1004,8 +1135,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-06-12 03:30:00+09:00",
-        "exit_time": "2025-06-12 04:30:00+09:00",
+        "entry_time": "2025-06-12 03:30:00",
+        "exit_time": "2025-06-12 04:30:00",
         "entry_price": 94.009,
         "initial_risk": 0.079197,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1016,6 +1147,9 @@
         "commission_r": 0.047481,
         "r_net": -0.388402,
         "leverage_ratio": 1187.025145,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 13451.592675,
         "risk_dollars": 11.332188,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -1026,8 +1160,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-06-12 07:05:00+09:00",
-        "exit_time": "2025-06-12 10:50:00+09:00",
+        "entry_time": "2025-06-12 07:05:00",
+        "exit_time": "2025-06-12 10:50:00",
         "entry_price": 93.925,
         "initial_risk": 0.118304,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1038,6 +1172,9 @@
         "commission_r": 0.031757,
         "r_net": 4.389415,
         "leverage_ratio": 793.931117,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 8962.03258,
         "risk_dollars": 11.288174,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -1048,8 +1185,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-06-12 08:15:00+09:00",
-        "exit_time": "2025-06-12 08:50:00+09:00",
+        "entry_time": "2025-06-12 08:15:00",
+        "exit_time": "2025-06-12 08:50:00",
         "entry_price": 144.294,
         "initial_risk": 0.088612,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1060,6 +1197,9 @@
         "commission_r": 0.065135,
         "r_net": -0.302124,
         "leverage_ratio": 1628.385154,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 18599.645116,
         "risk_dollars": 11.422141,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -1070,8 +1210,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-06-12 09:15:00+09:00",
-        "exit_time": "2025-06-12 09:35:00+09:00",
+        "entry_time": "2025-06-12 09:15:00",
+        "exit_time": "2025-06-12 09:35:00",
         "entry_price": 144.267,
         "initial_risk": 0.138688,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1082,6 +1222,9 @@
         "commission_r": 0.041609,
         "r_net": 0.481358,
         "leverage_ratio": 1040.229663,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 11845.752704,
         "risk_dollars": 11.387632,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -1092,8 +1235,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-06-12 09:50:00+09:00",
-        "exit_time": "2025-06-12 10:30:00+09:00",
+        "entry_time": "2025-06-12 09:50:00",
+        "exit_time": "2025-06-12 10:30:00",
         "entry_price": 144.041,
         "initial_risk": 0.118689,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1104,6 +1247,9 @@
         "commission_r": 0.048544,
         "r_net": 0.892149,
         "leverage_ratio": 1213.60171,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 13886.573764,
         "risk_dollars": 11.442447,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -1114,8 +1260,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-06-12 14:15:00+09:00",
-        "exit_time": "2025-06-12 15:00:00+09:00",
+        "entry_time": "2025-06-12 14:15:00",
+        "exit_time": "2025-06-12 15:00:00",
         "entry_price": 143.954,
         "initial_risk": 0.065698,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1126,6 +1272,9 @@
         "commission_r": 0.087646,
         "r_net": 2.064138,
         "leverage_ratio": 2191.144989,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 26381.420472,
         "risk_dollars": 12.040016,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -1136,8 +1285,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-06-12 16:15:00+09:00",
-        "exit_time": "2025-06-12 17:10:00+09:00",
+        "entry_time": "2025-06-12 16:15:00",
+        "exit_time": "2025-06-12 17:10:00",
         "entry_price": 93.531,
         "initial_risk": 0.047322,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1148,6 +1297,9 @@
         "commission_r": 0.079059,
         "r_net": 4.306001,
         "leverage_ratio": 1976.477301,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 24288.017352,
         "risk_dollars": 12.288538,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -1158,8 +1310,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-06-12 17:25:00+09:00",
-        "exit_time": "2025-06-12 17:40:00+09:00",
+        "entry_time": "2025-06-12 17:25:00",
+        "exit_time": "2025-06-12 17:40:00",
         "entry_price": 93.275,
         "initial_risk": 0.101062,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1170,6 +1322,9 @@
         "commission_r": 0.036918,
         "r_net": -1.304079,
         "leverage_ratio": 922.944375,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 11830.008526,
         "risk_dollars": 12.817683,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -1180,8 +1335,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-06-12 18:10:00+09:00",
-        "exit_time": "2025-06-12 19:55:00+09:00",
+        "entry_time": "2025-06-12 18:10:00",
+        "exit_time": "2025-06-12 19:55:00",
         "entry_price": 143.712,
         "initial_risk": 0.220483,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1192,6 +1347,9 @@
         "commission_r": 0.026072,
         "r_net": 0.536056,
         "leverage_ratio": 651.806833,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 8245.702116,
         "risk_dollars": 12.65053,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -1202,8 +1360,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-06-12 21:15:00+09:00",
-        "exit_time": "2025-06-12 21:45:00+09:00",
+        "entry_time": "2025-06-12 21:15:00",
+        "exit_time": "2025-06-12 21:45:00",
         "entry_price": 143.599,
         "initial_risk": 0.205198,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1214,6 +1372,9 @@
         "commission_r": 0.027992,
         "r_net": 1.289381,
         "leverage_ratio": 699.805798,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 8900.37105,
         "risk_dollars": 12.718344,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -1224,8 +1385,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-06-13 08:10:00+09:00",
-        "exit_time": "2025-06-13 08:50:00+09:00",
+        "entry_time": "2025-06-13 08:10:00",
+        "exit_time": "2025-06-13 08:50:00",
         "entry_price": 143.422,
         "initial_risk": 0.105552,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1236,6 +1397,9 @@
         "commission_r": 0.054351,
         "r_net": 0.29754,
         "leverage_ratio": 1358.784184,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 17504.309184,
         "risk_dollars": 12.882332,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -1246,8 +1410,8 @@
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-06-13 08:55:00+09:00",
-        "exit_time": "2025-06-13 09:10:00+09:00",
+        "entry_time": "2025-06-13 08:55:00",
+        "exit_time": "2025-06-13 09:10:00",
         "entry_price": 143.14,
         "initial_risk": 0.284143,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1258,6 +1422,9 @@
         "commission_r": 0.02015,
         "r_net": 0.428509,
         "leverage_ratio": 503.761064,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 6508.92654,
         "risk_dollars": 12.920662,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -1268,8 +1435,8 @@
       {
         "pair": "GBP_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-07-02 22:50:00+09:00",
-        "exit_time": "2025-07-02 23:10:00+09:00",
+        "entry_time": "2025-07-02 22:50:00",
+        "exit_time": "2025-07-02 23:10:00",
         "entry_price": 195.741,
         "initial_risk": 0.227831,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1280,6 +1447,9 @@
         "commission_r": 0.034366,
         "r_net": 0.501473,
         "leverage_ratio": 859.148098,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 11148.330113,
         "risk_dollars": 12.976028,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
@@ -1290,8 +1460,8 @@
       {
         "pair": "AUD_JPY",
         "direction": "UP",
-        "entry_time": "2025-07-04 01:15:00+09:00",
-        "exit_time": "2025-07-04 04:50:00+09:00",
+        "entry_time": "2025-07-04 01:15:00",
+        "exit_time": "2025-07-04 04:50:00",
         "entry_price": 95.348,
         "initial_risk": 0.085367,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1302,18 +1472,21 @@
         "commission_r": 0.044677,
         "r_net": -1.360959,
         "leverage_ratio": 1116.921519,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 14565.884814,
         "risk_dollars": 13.0411,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
         "dollar_pnl": -17.748404,
-        "balance_after": 1269.109371
+        "balance_after": 1272.585021
       },
       {
         "pair": "GBP_JPY",
         "direction": "UP",
-        "entry_time": "2025-07-04 01:20:00+09:00",
-        "exit_time": "2025-07-04 02:00:00+09:00",
+        "entry_time": "2025-07-04 01:20:00",
+        "exit_time": "2025-07-04 02:00:00",
         "entry_price": 198.039,
         "initial_risk": 0.11434,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1324,18 +1497,21 @@
         "commission_r": 0.06928,
         "r_net": -1.322909,
         "leverage_ratio": 1732.012049,
-        "risk_dollars": 13.0411,
-        "effective_risk_pct": 0.01,
+        "skipped_cap": false,
+        "aggregate_cap_action": "shrink",
+        "notional_usd": 18036.864264,
+        "risk_dollars": 10.413821,
+        "effective_risk_pct": 0.007985,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": -17.252189,
-        "balance_after": 1286.857774
+        "dollar_pnl": -13.776539,
+        "balance_after": 1290.333424
       },
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-08-28 19:10:00+09:00",
-        "exit_time": "2025-08-28 20:10:00+09:00",
+        "entry_time": "2025-08-28 19:10:00",
+        "exit_time": "2025-08-28 20:10:00",
         "entry_price": 147.11,
         "initial_risk": 0.087919,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1346,18 +1522,21 @@
         "commission_r": 0.06693,
         "r_net": 1.968747,
         "leverage_ratio": 1673.241972,
-        "risk_dollars": 12.691094,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 21293.426703,
+        "risk_dollars": 12.72585,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 24.98555,
-        "balance_after": 1294.094921
+        "dollar_pnl": 25.053977,
+        "balance_after": 1297.638997
       },
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-08-29 02:05:00+09:00",
-        "exit_time": "2025-08-29 04:25:00+09:00",
+        "entry_time": "2025-08-29 02:05:00",
+        "exit_time": "2025-08-29 04:25:00",
         "entry_price": 146.684,
         "initial_risk": 0.207405,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1368,18 +1547,21 @@
         "commission_r": 0.028289,
         "r_net": -1.12954,
         "leverage_ratio": 707.23342,
-        "risk_dollars": 12.940949,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 9177.336657,
+        "risk_dollars": 12.97639,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": -14.617324,
-        "balance_after": 1279.477596
+        "dollar_pnl": -14.657356,
+        "balance_after": 1282.981641
       },
       {
         "pair": "GBP_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-09-02 20:05:00+09:00",
-        "exit_time": "2025-09-02 20:25:00+09:00",
+        "entry_time": "2025-09-02 20:05:00",
+        "exit_time": "2025-09-02 20:25:00",
         "entry_price": 198.677,
         "initial_risk": 0.240296,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1390,18 +1572,21 @@
         "commission_r": 0.033072,
         "r_net": -1.153757,
         "leverage_ratio": 826.802095,
-        "risk_dollars": 12.794776,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 10607.719091,
+        "risk_dollars": 12.829816,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": -14.762059,
-        "balance_after": 1264.715538
+        "dollar_pnl": -14.802487,
+        "balance_after": 1268.179155
       },
       {
         "pair": "USD_JPY",
         "direction": "UP",
-        "entry_time": "2025-09-02 21:05:00+09:00",
-        "exit_time": "2025-09-02 21:30:00+09:00",
+        "entry_time": "2025-09-02 21:05:00",
+        "exit_time": "2025-09-02 21:30:00",
         "entry_price": 148.636,
         "initial_risk": 0.151729,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1412,18 +1597,21 @@
         "commission_r": 0.039185,
         "r_net": 0.79956,
         "leverage_ratio": 979.613127,
-        "risk_dollars": 12.647155,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 12423.249469,
+        "risk_dollars": 12.681792,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 10.112162,
-        "balance_after": 1274.8277
+        "dollar_pnl": 10.139856,
+        "balance_after": 1278.319011
       },
       {
         "pair": "USD_JPY",
         "direction": "UP",
-        "entry_time": "2025-09-02 21:35:00+09:00",
-        "exit_time": "2025-09-02 22:05:00+09:00",
+        "entry_time": "2025-09-02 21:35:00",
+        "exit_time": "2025-09-02 22:05:00",
         "entry_price": 148.872,
         "initial_risk": 0.176897,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1434,18 +1622,21 @@
         "commission_r": 0.033663,
         "r_net": -1.152376,
         "leverage_ratio": 841.574136,
-        "risk_dollars": 12.748277,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 10758.002167,
+        "risk_dollars": 12.78319,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": -14.690809,
-        "balance_after": 1260.136891
+        "dollar_pnl": -14.731042,
+        "balance_after": 1263.587968
       },
       {
         "pair": "GBP_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-09-02 22:05:00+09:00",
-        "exit_time": "2025-09-02 22:45:00+09:00",
+        "entry_time": "2025-09-02 22:05:00",
+        "exit_time": "2025-09-02 22:45:00",
         "entry_price": 198.582,
         "initial_risk": 0.222272,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1456,18 +1647,21 @@
         "commission_r": 0.035737,
         "r_net": -1.166207,
         "leverage_ratio": 893.417152,
-        "risk_dollars": 12.748277,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 11420.721294,
+        "risk_dollars": 12.78319,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": -14.867133,
-        "balance_after": 1245.269758
+        "dollar_pnl": -14.907848,
+        "balance_after": 1248.68012
       },
       {
         "pair": "GBP_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-09-02 23:05:00+09:00",
-        "exit_time": "2025-09-02 23:30:00+09:00",
+        "entry_time": "2025-09-02 23:05:00",
+        "exit_time": "2025-09-02 23:30:00",
         "entry_price": 198.703,
         "initial_risk": 0.170673,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1478,18 +1672,21 @@
         "commission_r": 0.046569,
         "r_net": 1.209814,
         "leverage_ratio": 1164.232674,
-        "risk_dollars": 12.452698,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 14537.54195,
+        "risk_dollars": 12.486801,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 15.065444,
-        "balance_after": 1260.335203
+        "dollar_pnl": 15.106703,
+        "balance_after": 1263.786823
       },
       {
         "pair": "GBP_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-09-02 23:55:00+09:00",
-        "exit_time": "2025-09-03 02:40:00+09:00",
+        "entry_time": "2025-09-02 23:55:00",
+        "exit_time": "2025-09-03 02:40:00",
         "entry_price": 198.398,
         "initial_risk": 0.264809,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1500,18 +1697,21 @@
         "commission_r": 0.029968,
         "r_net": -1.139481,
         "leverage_ratio": 749.2121,
-        "risk_dollars": 12.603352,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 9468.443802,
+        "risk_dollars": 12.637868,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": -14.361286,
-        "balance_after": 1245.973917
+        "dollar_pnl": -14.400616,
+        "balance_after": 1249.386207
       },
       {
         "pair": "USD_JPY",
         "direction": "UP",
-        "entry_time": "2025-09-03 16:05:00+09:00",
-        "exit_time": "2025-09-03 16:30:00+09:00",
+        "entry_time": "2025-09-03 16:05:00",
+        "exit_time": "2025-09-03 16:30:00",
         "entry_price": 148.759,
         "initial_risk": 0.185828,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1522,18 +1722,21 @@
         "commission_r": 0.032021,
         "r_net": 1.204118,
         "leverage_ratio": 800.517682,
-        "risk_dollars": 12.459739,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 10001.557501,
+        "risk_dollars": 12.493862,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 15.002995,
-        "balance_after": 1260.976912
+        "dollar_pnl": 15.044083,
+        "balance_after": 1264.43029
       },
       {
         "pair": "USD_JPY",
         "direction": "UP",
-        "entry_time": "2025-09-18 05:20:00+09:00",
-        "exit_time": "2025-09-18 08:10:00+09:00",
+        "entry_time": "2025-09-18 05:20:00",
+        "exit_time": "2025-09-18 08:10:00",
         "entry_price": 147.019,
         "initial_risk": 0.243614,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1544,18 +1747,21 @@
         "commission_r": 0.02414,
         "r_net": -1.110342,
         "leverage_ratio": 603.491235,
-        "risk_dollars": 12.609769,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 7630.725978,
+        "risk_dollars": 12.644303,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": -14.00115,
-        "balance_after": 1246.975762
+        "dollar_pnl": -14.039495,
+        "balance_after": 1250.390796
       },
       {
         "pair": "USD_JPY",
         "direction": "UP",
-        "entry_time": "2025-09-18 10:05:00+09:00",
-        "exit_time": "2025-09-18 15:20:00+09:00",
+        "entry_time": "2025-09-18 10:05:00",
+        "exit_time": "2025-09-18 15:20:00",
         "entry_price": 147.069,
         "initial_risk": 0.272972,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1566,18 +1772,21 @@
         "commission_r": 0.021551,
         "r_net": 1.412012,
         "leverage_ratio": 538.769967,
-        "risk_dollars": 12.469758,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 6736.730078,
+        "risk_dollars": 12.503908,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 17.607445,
-        "balance_after": 1264.583207
+        "dollar_pnl": 17.655666,
+        "balance_after": 1268.046461
       },
       {
         "pair": "USD_JPY",
         "direction": "UP",
-        "entry_time": "2025-09-18 21:20:00+09:00",
-        "exit_time": "2025-09-18 21:40:00+09:00",
+        "entry_time": "2025-09-18 21:20:00",
+        "exit_time": "2025-09-18 21:40:00",
         "entry_price": 147.401,
         "initial_risk": 0.070833,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1588,18 +1797,21 @@
         "commission_r": 0.083239,
         "r_net": 1.787732,
         "leverage_ratio": 2080.971382,
-        "risk_dollars": 12.645832,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 26387.683971,
+        "risk_dollars": 12.680465,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 22.607358,
-        "balance_after": 1287.190564
+        "dollar_pnl": 22.669271,
+        "balance_after": 1290.715732
       },
       {
         "pair": "USD_JPY",
         "direction": "UP",
-        "entry_time": "2025-09-18 22:05:00+09:00",
-        "exit_time": "2025-09-18 22:50:00+09:00",
+        "entry_time": "2025-09-18 22:05:00",
+        "exit_time": "2025-09-18 22:50:00",
         "entry_price": 147.85,
         "initial_risk": 0.119412,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1610,18 +1822,21 @@
         "commission_r": 0.049526,
         "r_net": 2.654527,
         "leverage_ratio": 1238.149529,
-        "risk_dollars": 12.871906,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 15980.990762,
+        "risk_dollars": 12.907157,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 34.168821,
-        "balance_after": 1321.359386
+        "dollar_pnl": 34.262398,
+        "balance_after": 1324.97813
       },
       {
         "pair": "USD_JPY",
         "direction": "UP",
-        "entry_time": "2025-09-19 21:15:00+09:00",
-        "exit_time": "2025-09-19 21:55:00+09:00",
+        "entry_time": "2025-09-19 21:15:00",
+        "exit_time": "2025-09-19 21:55:00",
         "entry_price": 148.059,
         "initial_risk": 0.085892,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1632,18 +1847,21 @@
         "commission_r": 0.068952,
         "r_net": 1.150826,
         "leverage_ratio": 1723.789628,
-        "risk_dollars": 13.213594,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 22839.835591,
+        "risk_dollars": 13.249781,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 15.206541,
-        "balance_after": 1336.565927
+        "dollar_pnl": 15.248186,
+        "balance_after": 1340.226317
       },
       {
         "pair": "GBP_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-09-23 19:05:00+09:00",
-        "exit_time": "2025-09-23 19:15:00+09:00",
+        "entry_time": "2025-09-23 19:05:00",
+        "exit_time": "2025-09-23 19:15:00",
         "entry_price": 199.451,
         "initial_risk": 0.054407,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1654,18 +1872,21 @@
         "commission_r": 0.146637,
         "r_net": -1.679661,
         "leverage_ratio": 3665.935838,
-        "risk_dollars": 9.114766,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 33505.657918,
+        "risk_dollars": 9.139728,
         "effective_risk_pct": 0.00682,
         "leverage_capped": true,
         "skipped_ruin": false,
-        "dollar_pnl": -15.30972,
-        "balance_after": 1321.256207
+        "dollar_pnl": -15.351648,
+        "balance_after": 1324.874669
       },
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-10-10 17:05:00+09:00",
-        "exit_time": "2025-10-10 18:10:00+09:00",
+        "entry_time": "2025-10-10 17:05:00",
+        "exit_time": "2025-10-10 18:10:00",
         "entry_price": 100.176,
         "initial_risk": 0.121381,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1676,18 +1897,21 @@
         "commission_r": 0.033012,
         "r_net": 0.345587,
         "leverage_ratio": 825.303119,
-        "risk_dollars": 13.212562,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 10934.231966,
+        "risk_dollars": 13.248747,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 4.566093,
-        "balance_after": 1325.822299
+        "dollar_pnl": 4.578598,
+        "balance_after": 1329.453266
       },
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-10-10 18:15:00+09:00",
-        "exit_time": "2025-10-10 18:25:00+09:00",
+        "entry_time": "2025-10-10 18:15:00",
+        "exit_time": "2025-10-10 18:25:00",
         "entry_price": 100.037,
         "initial_risk": 0.098384,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1698,18 +1922,21 @@
         "commission_r": 0.040672,
         "r_net": -1.315107,
         "leverage_ratio": 1016.802251,
-        "risk_dollars": 13.258223,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 13517.910735,
+        "risk_dollars": 13.294533,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": -17.435984,
-        "balance_after": 1308.386315
+        "dollar_pnl": -17.483735,
+        "balance_after": 1311.969531
       },
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-10-10 23:05:00+09:00",
-        "exit_time": "2025-10-10 23:25:00+09:00",
+        "entry_time": "2025-10-10 23:05:00",
+        "exit_time": "2025-10-10 23:25:00",
         "entry_price": 99.968,
         "initial_risk": 0.041279,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1720,18 +1947,21 @@
         "commission_r": 0.09687,
         "r_net": 0.714536,
         "leverage_ratio": 2421.751521,
-        "risk_dollars": 13.083863,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 31772.642088,
+        "risk_dollars": 13.119695,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 9.348894,
-        "balance_after": 1317.73521
+        "dollar_pnl": 9.374498,
+        "balance_after": 1321.344029
       },
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-10-10 23:30:00+09:00",
-        "exit_time": "2025-10-11 00:35:00+09:00",
+        "entry_time": "2025-10-10 23:30:00",
+        "exit_time": "2025-10-11 00:35:00",
         "entry_price": 99.853,
         "initial_risk": 0.110008,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1742,18 +1972,21 @@
         "commission_r": 0.036308,
         "r_net": 11.920996,
         "leverage_ratio": 907.689121,
-        "risk_dollars": 13.177352,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 11993.696005,
+        "risk_dollars": 13.21344,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 157.087155,
-        "balance_after": 1474.822365
+        "dollar_pnl": 157.517362,
+        "balance_after": 1478.861392
       },
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-10-11 00:40:00+09:00",
-        "exit_time": "2025-10-11 01:30:00+09:00",
+        "entry_time": "2025-10-11 00:40:00",
+        "exit_time": "2025-10-11 01:30:00",
         "entry_price": 98.745,
         "initial_risk": 0.153906,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1764,18 +1997,21 @@
         "commission_r": 0.025664,
         "r_net": -0.117535,
         "leverage_ratio": 641.594707,
-        "risk_dollars": 14.748224,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 9488.296411,
+        "risk_dollars": 14.788614,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": -1.733433,
-        "balance_after": 1473.088932
+        "dollar_pnl": -1.738181,
+        "balance_after": 1477.123211
       },
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-10-11 04:10:00+09:00",
-        "exit_time": "2025-10-11 04:40:00+09:00",
+        "entry_time": "2025-10-11 04:10:00",
+        "exit_time": "2025-10-11 04:40:00",
         "entry_price": 98.375,
         "initial_risk": 0.115879,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1786,18 +2022,21 @@
         "commission_r": 0.033958,
         "r_net": -0.156761,
         "leverage_ratio": 848.947976,
-        "risk_dollars": 14.730889,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 12540.007608,
+        "risk_dollars": 14.771232,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": -2.309223,
-        "balance_after": 1470.779709
+        "dollar_pnl": -2.315547,
+        "balance_after": 1474.807664
       },
       {
         "pair": "AUD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-10-11 05:45:00+09:00",
-        "exit_time": "2025-10-11 05:55:00+09:00",
+        "entry_time": "2025-10-11 05:45:00",
+        "exit_time": "2025-10-11 05:55:00",
         "entry_price": 98.39,
         "initial_risk": 0.060104,
         "exit_reason": "WEEKEND_NO_TP",
@@ -1808,18 +2047,21 @@
         "commission_r": 0.06548,
         "r_net": 7.37162,
         "leverage_ratio": 1636.993928,
-        "risk_dollars": 14.707797,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 24142.511916,
+        "risk_dollars": 14.748077,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 108.420297,
-        "balance_after": 1579.200006
+        "dollar_pnl": 108.717223,
+        "balance_after": 1583.524887
       },
       {
         "pair": "GBP_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-10-22 16:50:00+09:00",
-        "exit_time": "2025-10-22 17:30:00+09:00",
+        "entry_time": "2025-10-22 16:50:00",
+        "exit_time": "2025-10-22 17:30:00",
         "entry_price": 202.367,
         "initial_risk": 0.149707,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1830,18 +2072,21 @@
         "commission_r": 0.05407,
         "r_net": 1.161359,
         "leverage_ratio": 1351.751824,
-        "risk_dollars": 15.792,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 21405.326545,
+        "risk_dollars": 15.835249,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 18.340174,
-        "balance_after": 1597.54018
+        "dollar_pnl": 18.390401,
+        "balance_after": 1601.915288
       },
       {
         "pair": "GBP_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-10-22 17:35:00+09:00",
-        "exit_time": "2025-10-22 19:35:00+09:00",
+        "entry_time": "2025-10-22 17:35:00",
+        "exit_time": "2025-10-22 19:35:00",
         "entry_price": 202.098,
         "initial_risk": 0.159301,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1852,18 +2097,21 @@
         "commission_r": 0.050746,
         "r_net": 0.338973,
         "leverage_ratio": 1268.65323,
-        "risk_dollars": 15.975402,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 20322.75004,
+        "risk_dollars": 16.019153,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 5.415228,
-        "balance_after": 1602.955408
+        "dollar_pnl": 5.430059,
+        "balance_after": 1607.345347
       },
       {
         "pair": "AUD_JPY",
         "direction": "UP",
-        "entry_time": "2025-11-13 10:50:00+09:00",
-        "exit_time": "2025-11-13 11:00:00+09:00",
+        "entry_time": "2025-11-13 10:50:00",
+        "exit_time": "2025-11-13 11:00:00",
         "entry_price": 101.524,
         "initial_risk": 0.092934,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1874,18 +2122,21 @@
         "commission_r": 0.043697,
         "r_net": -1.334224,
         "leverage_ratio": 1092.42615,
-        "risk_dollars": 16.029554,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 17559.060888,
+        "risk_dollars": 16.073453,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": -21.387023,
-        "balance_after": 1581.568385
+        "dollar_pnl": -21.445595,
+        "balance_after": 1585.899752
       },
       {
         "pair": "AUD_JPY",
         "direction": "UP",
-        "entry_time": "2025-11-13 16:10:00+09:00",
-        "exit_time": "2025-11-13 16:30:00+09:00",
+        "entry_time": "2025-11-13 16:10:00",
+        "exit_time": "2025-11-13 16:30:00",
         "entry_price": 101.701,
         "initial_risk": 0.11458,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1896,18 +2147,21 @@
         "commission_r": 0.035504,
         "r_net": 0.191817,
         "leverage_ratio": 887.594311,
-        "risk_dollars": 15.815684,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 14076.355982,
+        "risk_dollars": 15.858998,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 3.033723,
-        "balance_after": 1584.602108
+        "dollar_pnl": 3.042031,
+        "balance_after": 1588.941783
       },
       {
         "pair": "USD_JPY",
         "direction": "DOWN",
-        "entry_time": "2025-11-14 22:50:00+09:00",
-        "exit_time": "2025-11-14 23:45:00+09:00",
+        "entry_time": "2025-11-14 22:50:00",
+        "exit_time": "2025-11-14 23:45:00",
         "entry_price": 154.098,
         "initial_risk": 0.158651,
         "exit_reason": "SL_INITIAL_NO_TP",
@@ -1918,12 +2172,15 @@
         "commission_r": 0.038852,
         "r_net": -1.171218,
         "leverage_ratio": 971.302663,
-        "risk_dollars": 15.846021,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 15433.433851,
+        "risk_dollars": 15.889418,
         "effective_risk_pct": 0.01,
         "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": -18.559149,
-        "balance_after": 1566.042959
+        "dollar_pnl": -18.609976,
+        "balance_after": 1570.331807
       }
     ],
     "equity_curve": [
@@ -1932,336 +2189,336 @@
         "balance": 1000.0
       },
       {
-        "time": "2025-04-03 10:50:00+09:00",
+        "time": "2025-04-03 10:50:00",
         "balance": 1010.8384878391892
       },
       {
-        "time": "2025-04-03 13:00:00+09:00",
+        "time": "2025-04-03 13:00:00",
         "balance": 1019.1662340347449
       },
       {
-        "time": "2025-04-03 13:10:00+09:00",
+        "time": "2025-04-03 13:10:00",
         "balance": 1025.358801088032
       },
       {
-        "time": "2025-04-03 14:40:00+09:00",
+        "time": "2025-04-03 14:40:00",
         "balance": 1042.9772249534028
       },
       {
-        "time": "2025-04-03 15:15:00+09:00",
+        "time": "2025-04-03 15:15:00",
         "balance": 1030.8908855457091
       },
       {
-        "time": "2025-04-03 16:20:00+09:00",
+        "time": "2025-04-03 16:20:00",
         "balance": 1018.686092125791
       },
       {
-        "time": "2025-04-03 18:00:00+09:00",
+        "time": "2025-04-03 18:00:00",
         "balance": 1027.3401314531743
       },
       {
-        "time": "2025-04-03 18:35:00+09:00",
+        "time": "2025-04-03 18:35:00",
         "balance": 1028.307176368234
       },
       {
-        "time": "2025-04-03 19:30:00+09:00",
+        "time": "2025-04-03 19:30:00",
         "balance": 1031.3465217990893
       },
       {
-        "time": "2025-04-03 21:40:00+09:00",
+        "time": "2025-04-03 21:40:00",
         "balance": 1037.6751705730142
       },
       {
-        "time": "2025-04-03 23:15:00+09:00",
+        "time": "2025-04-03 23:15:00",
         "balance": 1040.0279276182282
       },
       {
-        "time": "2025-04-04 07:30:00+09:00",
+        "time": "2025-04-04 07:30:00",
         "balance": 1077.6591424202918
       },
       {
-        "time": "2025-04-04 12:40:00+09:00",
+        "time": "2025-04-04 12:40:00",
         "balance": 1141.804299387386
       },
       {
-        "time": "2025-04-04 13:30:00+09:00",
+        "time": "2025-04-04 13:30:00",
         "balance": 1146.7896921696954
       },
       {
-        "time": "2025-04-04 14:05:00+09:00",
+        "time": "2025-04-04 14:05:00",
         "balance": 1154.4322683985488
       },
       {
-        "time": "2025-04-04 19:40:00+09:00",
+        "time": "2025-04-04 19:40:00",
         "balance": 1164.2917540109518
       },
       {
-        "time": "2025-04-04 20:00:00+09:00",
+        "time": "2025-04-04 20:00:00",
         "balance": 1188.8697432246597
       },
       {
-        "time": "2025-04-04 20:20:00+09:00",
+        "time": "2025-04-04 20:20:00",
         "balance": 1190.3265131982803
       },
       {
-        "time": "2025-04-04 20:35:00+09:00",
+        "time": "2025-04-04 20:35:00",
         "balance": 1207.6170134878712
       },
       {
-        "time": "2025-04-04 20:55:00+09:00",
+        "time": "2025-04-04 20:55:00",
         "balance": 1195.0464067764906
       },
       {
-        "time": "2025-04-04 23:50:00+09:00",
+        "time": "2025-04-04 23:50:00",
         "balance": 1202.0817037655997
       },
       {
-        "time": "2025-04-04 23:50:00+09:00",
+        "time": "2025-04-04 23:50:00",
         "balance": 1207.6096681996853
       },
       {
-        "time": "2025-04-21 17:05:00+09:00",
+        "time": "2025-04-21 17:05:00",
         "balance": 1213.0420381851459
       },
       {
-        "time": "2025-04-21 19:00:00+09:00",
+        "time": "2025-04-21 19:00:00",
         "balance": 1197.2605001163888
       },
       {
-        "time": "2025-04-22 14:40:00+09:00",
+        "time": "2025-04-22 14:40:00",
         "balance": 1203.7764256994026
       },
       {
-        "time": "2025-04-22 15:00:00+09:00",
+        "time": "2025-04-22 15:00:00",
         "balance": 1188.9053294641349
       },
       {
-        "time": "2025-04-22 17:40:00+09:00",
+        "time": "2025-04-22 17:40:00",
         "balance": 1176.1596826005689
       },
       {
-        "time": "2025-04-22 19:10:00+09:00",
+        "time": "2025-04-22 19:10:00",
         "balance": 1181.8511229536423
       },
       {
-        "time": "2025-04-22 20:25:00+09:00",
+        "time": "2025-04-22 20:25:00",
         "balance": 1184.433914505952
       },
       {
-        "time": "2025-04-22 21:20:00+09:00",
+        "time": "2025-04-22 21:20:00",
         "balance": 1168.9981211957167
       },
       {
-        "time": "2025-05-24 05:55:00+09:00",
+        "time": "2025-05-24 05:55:00",
         "balance": 1159.5447187482262
       },
       {
-        "time": "2025-05-28 12:15:00+09:00",
+        "time": "2025-05-28 12:15:00",
         "balance": 1142.7194529317403
       },
       {
-        "time": "2025-05-29 11:40:00+09:00",
+        "time": "2025-05-29 11:40:00",
         "balance": 1130.433968457099
       },
       {
-        "time": "2025-05-30 08:50:00+09:00",
+        "time": "2025-05-30 08:50:00",
         "balance": 1145.239138157953
       },
       {
-        "time": "2025-05-30 09:50:00+09:00",
+        "time": "2025-05-30 09:50:00",
         "balance": 1130.2813403683735
       },
       {
-        "time": "2025-05-30 21:25:00+09:00",
+        "time": "2025-05-30 21:25:00",
         "balance": 1143.2555925490724
       },
       {
-        "time": "2025-05-30 21:45:00+09:00",
+        "time": "2025-05-30 21:45:00",
         "balance": 1127.6758810903032
       },
       {
-        "time": "2025-06-10 17:30:00+09:00",
+        "time": "2025-06-10 17:30:00",
         "balance": 1113.7036077116697
       },
       {
-        "time": "2025-06-12 00:45:00+09:00",
+        "time": "2025-06-12 00:45:00",
         "balance": 1126.389093089336
       },
       {
-        "time": "2025-06-12 03:25:00+09:00",
+        "time": "2025-06-12 03:25:00",
         "balance": 1133.2188478764108
       },
       {
-        "time": "2025-06-12 04:30:00+09:00",
+        "time": "2025-06-12 04:30:00",
         "balance": 1128.8173987253547
       },
       {
-        "time": "2025-06-12 08:10:00+09:00",
+        "time": "2025-06-12 08:10:00",
         "balance": 1142.21411759759
       },
       {
-        "time": "2025-06-12 08:50:00+09:00",
+        "time": "2025-06-12 08:50:00",
         "balance": 1138.7632101784711
       },
       {
-        "time": "2025-06-12 09:35:00+09:00",
+        "time": "2025-06-12 09:35:00",
         "balance": 1144.244742628199
       },
       {
-        "time": "2025-06-12 10:30:00+09:00",
+        "time": "2025-06-12 10:30:00",
         "balance": 1154.4531107056137
       },
       {
-        "time": "2025-06-12 10:50:00+09:00",
+        "time": "2025-06-12 10:50:00",
         "balance": 1204.001588388558
       },
       {
-        "time": "2025-06-12 15:00:00+09:00",
+        "time": "2025-06-12 15:00:00",
         "balance": 1228.8538473987358
       },
       {
-        "time": "2025-06-12 17:10:00+09:00",
+        "time": "2025-06-12 17:10:00",
         "balance": 1281.7683105016927
       },
       {
-        "time": "2025-06-12 17:40:00+09:00",
+        "time": "2025-06-12 17:40:00",
         "balance": 1265.0530343438634
       },
       {
-        "time": "2025-06-12 19:55:00+09:00",
+        "time": "2025-06-12 19:55:00",
         "balance": 1271.8344259791284
       },
       {
-        "time": "2025-06-12 21:45:00+09:00",
+        "time": "2025-06-12 21:45:00",
         "balance": 1288.2332151124274
       },
       {
-        "time": "2025-06-13 08:50:00+09:00",
+        "time": "2025-06-13 08:50:00",
         "balance": 1292.06622144008
       },
       {
-        "time": "2025-06-13 09:10:00+09:00",
+        "time": "2025-06-13 09:10:00",
         "balance": 1297.6028385081763
       },
       {
-        "time": "2025-07-02 23:10:00+09:00",
+        "time": "2025-07-02 23:10:00",
         "balance": 1304.109963131134
       },
       {
-        "time": "2025-07-04 02:00:00+09:00",
-        "balance": 1286.8577743118656
+        "time": "2025-07-04 02:00:00",
+        "balance": 1290.3334243876357
       },
       {
-        "time": "2025-07-04 04:50:00+09:00",
-        "balance": 1269.109370810683
+        "time": "2025-07-04 04:50:00",
+        "balance": 1272.585020886453
       },
       {
-        "time": "2025-08-28 20:10:00+09:00",
-        "balance": 1294.0949205635488
+        "time": "2025-08-28 20:10:00",
+        "balance": 1297.638997387942
       },
       {
-        "time": "2025-08-29 04:25:00+09:00",
-        "balance": 1279.4775964279734
+        "time": "2025-08-29 04:25:00",
+        "balance": 1282.981641475037
       },
       {
-        "time": "2025-09-02 20:25:00+09:00",
-        "balance": 1264.71553772401
+        "time": "2025-09-02 20:25:00",
+        "balance": 1268.1791546159961
       },
       {
-        "time": "2025-09-02 21:30:00+09:00",
-        "balance": 1274.827700209097
+        "time": "2025-09-02 21:30:00",
+        "balance": 1278.3190108043336
       },
       {
-        "time": "2025-09-02 22:05:00+09:00",
-        "balance": 1260.136890896985
+        "time": "2025-09-02 22:05:00",
+        "balance": 1263.587968464499
       },
       {
-        "time": "2025-09-02 22:45:00+09:00",
-        "balance": 1245.2697583542733
+        "time": "2025-09-02 22:45:00",
+        "balance": 1248.6801200059356
       },
       {
-        "time": "2025-09-02 23:30:00+09:00",
-        "balance": 1260.3352028009738
+        "time": "2025-09-02 23:30:00",
+        "balance": 1263.7868234759612
       },
       {
-        "time": "2025-09-03 02:40:00+09:00",
-        "balance": 1245.9739171174924
+        "time": "2025-09-03 02:40:00",
+        "balance": 1249.386207215603
       },
       {
-        "time": "2025-09-03 16:30:00+09:00",
-        "balance": 1260.9769122527498
+        "time": "2025-09-03 16:30:00",
+        "balance": 1264.4302903471971
       },
       {
-        "time": "2025-09-18 08:10:00+09:00",
-        "balance": 1246.9757617700818
+        "time": "2025-09-18 08:10:00",
+        "balance": 1250.390795572969
       },
       {
-        "time": "2025-09-18 15:20:00+09:00",
-        "balance": 1264.5832066859325
+        "time": "2025-09-18 15:20:00",
+        "balance": 1268.0464611691357
       },
       {
-        "time": "2025-09-18 21:40:00+09:00",
-        "balance": 1287.190564224082
+        "time": "2025-09-18 21:40:00",
+        "balance": 1290.715732412871
       },
       {
-        "time": "2025-09-18 22:50:00+09:00",
-        "balance": 1321.3593856912144
+        "time": "2025-09-18 22:50:00",
+        "balance": 1324.978130422461
       },
       {
-        "time": "2025-09-19 21:55:00+09:00",
-        "balance": 1336.5659265704676
+        "time": "2025-09-19 21:55:00",
+        "balance": 1340.2263167391957
       },
       {
-        "time": "2025-09-23 19:15:00+09:00",
-        "balance": 1321.2562066582673
+        "time": "2025-09-23 19:15:00",
+        "balance": 1324.8746688179547
       },
       {
-        "time": "2025-10-10 18:10:00+09:00",
-        "balance": 1325.8222993939326
+        "time": "2025-10-10 18:10:00",
+        "balance": 1329.453266496793
       },
       {
-        "time": "2025-10-10 18:25:00+09:00",
-        "balance": 1308.3863154490898
+        "time": "2025-10-10 18:25:00",
+        "balance": 1311.9695314437222
       },
       {
-        "time": "2025-10-10 23:25:00+09:00",
-        "balance": 1317.7352097433813
+        "time": "2025-10-10 23:25:00",
+        "balance": 1321.3440291146096
       },
       {
-        "time": "2025-10-11 00:35:00+09:00",
-        "balance": 1474.822364965636
+        "time": "2025-10-11 00:35:00",
+        "balance": 1478.8613915321685
       },
       {
-        "time": "2025-10-11 01:30:00+09:00",
-        "balance": 1473.088931668913
+        "time": "2025-10-11 01:30:00",
+        "balance": 1477.123210963297
       },
       {
-        "time": "2025-10-11 04:40:00+09:00",
-        "balance": 1470.7797089380078
+        "time": "2025-10-11 04:40:00",
+        "balance": 1474.8076640728323
       },
       {
-        "time": "2025-10-11 05:55:00+09:00",
-        "balance": 1579.200006229722
+        "time": "2025-10-11 05:55:00",
+        "balance": 1583.5248869275938
       },
       {
-        "time": "2025-10-22 17:30:00+09:00",
-        "balance": 1597.5401800240925
+        "time": "2025-10-22 17:30:00",
+        "balance": 1601.9152880923582
       },
       {
-        "time": "2025-10-22 19:35:00+09:00",
-        "balance": 1602.9554082714803
+        "time": "2025-10-22 19:35:00",
+        "balance": 1607.3453467703623
       },
       {
-        "time": "2025-11-13 11:00:00+09:00",
-        "balance": 1581.568384994253
+        "time": "2025-11-13 11:00:00",
+        "balance": 1585.8997518595281
       },
       {
-        "time": "2025-11-13 16:30:00+09:00",
-        "balance": 1584.602108049751
+        "time": "2025-11-13 16:30:00",
+        "balance": 1588.9417832295105
       },
       {
-        "time": "2025-11-14 23:45:00+09:00",
-        "balance": 1566.0429591822326
+        "time": "2025-11-14 23:45:00",
+        "balance": 1570.3318072948762
       }
     ]
   }
