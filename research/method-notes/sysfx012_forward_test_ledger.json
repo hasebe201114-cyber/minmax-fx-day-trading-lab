@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-29T05:23:25.454704",
+  "generated_at": "2026-09-30T05:11:29.053176",
   "strategy": "SYS-FX012",
   "design": "SYS-FX012凍結最良候補(候補①N_BREAKOUT単独+H1トレンド判定不能除外フィルター、4通貨)。00-spec.md「フォワードテスト仕様」節に事前登録済み。新規パラメータなし",
   "note": "司令塔の明示指示(2026-08-22)により、必須KPI13/18未達・C品質チーム未レビューのままフォワードテスト(ペーパートレード、実発注なし)を実施中。cutoff以降の全期間を毎回再計算する",
@@ -10,40 +10,40 @@
   },
   "cutoff": "2026-08-15 06:00:00",
   "latest_bar_by_pair": {
-    "USD_JPY": "2026-09-29 14:20:00",
-    "EUR_JPY": "2026-09-29 14:20:00",
-    "GBP_JPY": "2026-09-29 14:20:00",
-    "AUD_JPY": "2026-09-29 14:20:00"
+    "USD_JPY": "2026-09-30 14:10:00",
+    "EUR_JPY": "2026-09-30 14:10:00",
+    "GBP_JPY": "2026-09-30 14:10:00",
+    "AUD_JPY": "2026-09-30 14:10:00"
   },
   "data_coverage": {
     "USD_JPY": {
-      "n_bars": 8957,
+      "n_bars": 9243,
       "first_bar": "2026-08-17 07:00:00",
-      "last_bar": "2026-09-29 14:20:00",
+      "last_bar": "2026-09-30 14:10:00",
       "max_gap_minutes": 2945.0,
       "max_gap_before": "2026-08-24 07:00:00",
       "has_gap": false
     },
     "EUR_JPY": {
-      "n_bars": 8957,
+      "n_bars": 9243,
       "first_bar": "2026-08-17 07:00:00",
-      "last_bar": "2026-09-29 14:20:00",
+      "last_bar": "2026-09-30 14:10:00",
       "max_gap_minutes": 2945.0,
       "max_gap_before": "2026-08-24 07:00:00",
       "has_gap": false
     },
     "GBP_JPY": {
-      "n_bars": 8957,
+      "n_bars": 9243,
       "first_bar": "2026-08-17 07:00:00",
-      "last_bar": "2026-09-29 14:20:00",
+      "last_bar": "2026-09-30 14:10:00",
       "max_gap_minutes": 2945.0,
       "max_gap_before": "2026-08-24 07:00:00",
       "has_gap": false
     },
     "AUD_JPY": {
-      "n_bars": 8957,
+      "n_bars": 9243,
       "first_bar": "2026-08-17 07:00:00",
-      "last_bar": "2026-09-29 14:20:00",
+      "last_bar": "2026-09-30 14:10:00",
       "max_gap_minutes": 2945.0,
       "max_gap_before": "2026-08-24 07:00:00",
       "has_gap": false
@@ -52,8 +52,8 @@
   "backtest": {
     "period": "forward_test",
     "cutoff": "2026-08-15 06:00:00",
-    "n_events_raw": 27,
-    "n_events_dedup": 22,
+    "n_events_raw": 29,
+    "n_events_dedup": 23,
     "n_events_trendfiltered": 13,
     "n_trades_total": 39,
     "n_trades_closed": 39,
