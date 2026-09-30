@@ -41,6 +41,8 @@ SYS-FX018
 
 ## 結果（2026-08-23実施）
 
+> **2026-09-30 注記**: 下表は先読み修正（2026-08-28）前の数値。修正後の再実行結果は [`01-rerun-bar-close-anchored.md`](01-rerun-bar-close-anchored.md) を参照（2.0 は KPI 5/9・permutation_p 0.0679 に後退）。
+
 | breakeven_trigger_r | トレード数 | ペイオフレシオ | 必須KPI | 実効n | permutation_p |
 |---|---|---|---|---|---|
 | 0.5 | 355 | 1.433 | 5/9 | 355(基準クリア) | 0.1339(非有意) |
