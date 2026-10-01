@@ -30,9 +30,7 @@ name: FX Forward Test Cycle (Daily, SYS-FX012 + SYS-FX026)
 # N_BREAKOUTイベント3件を取りこぼしていた(詳細: OBS000009)。
 
 on:
-  schedule:
-    # 毎日 00:00 UTC = 毎日 09:00 JST (2026-09-12: 週次から日次へ変更)
-    - cron: "0 0 * * *"
+  # 2026-10-01 司令塔指示で定期実行を停止（SYS-FX012 不採用・国内から暗号資産戦略に参加不可のため）。再開する場合は schedule を戻す
   workflow_dispatch:
     inputs:
       dry_run:

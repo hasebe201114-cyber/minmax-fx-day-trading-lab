@@ -18,9 +18,7 @@ name: SYS-FX012 Forward M5 OHLCV Live Update (Hourly)
 # 修正: 正本を git 管理の CSV に移し、毎時 commit/push する。
 
 on:
-  schedule:
-    # 毎時 5 分 (rate limit 余裕、Actions runner のジッタ吸収)
-    - cron: "5 * * * *"
+  # 2026-10-01 司令塔指示で定期実行を停止（SYS-FX012 不採用・国内から暗号資産戦略に参加不可のため）。再開する場合は schedule を戻す
   workflow_dispatch: {}
 
 permissions:
