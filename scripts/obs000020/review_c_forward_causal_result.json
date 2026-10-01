@@ -1,0 +1,67 @@
+{
+ "confirm=official|shock=official": {
+  "n_closed": 39,
+  "n_open": 0,
+  "sum_r": 27.56,
+  "final_balance": 1216.07,
+  "perm_p_block": 0.1578,
+  "latest_bar": {
+   "USD_JPY": "2026-10-01 14:25:00",
+   "EUR_JPY": "2026-10-01 14:25:00",
+   "GBP_JPY": "2026-10-01 14:25:00",
+   "AUD_JPY": "2026-10-01 14:25:00"
+  }
+ },
+ "confirm=running|shock=closed": {
+  "n_closed": 40,
+  "n_open": 0,
+  "sum_r": 3.28,
+  "final_balance": 1029.94,
+  "perm_p_block": 0.4176,
+  "latest_bar": {
+   "USD_JPY": "2026-10-01 14:25:00",
+   "EUR_JPY": "2026-10-01 14:25:00",
+   "GBP_JPY": "2026-10-01 14:25:00",
+   "AUD_JPY": "2026-10-01 14:25:00"
+  }
+ },
+ "confirm=running|shock=running": {
+  "n_closed": 39,
+  "n_open": 0,
+  "sum_r": 2.94,
+  "final_balance": 1026.38,
+  "perm_p_block": 0.4176,
+  "latest_bar": {
+   "USD_JPY": "2026-10-01 14:25:00",
+   "EUR_JPY": "2026-10-01 14:25:00",
+   "GBP_JPY": "2026-10-01 14:25:00",
+   "AUD_JPY": "2026-10-01 14:25:00"
+  }
+ },
+ "confirm=closed|shock=closed": {
+  "n_closed": 39,
+  "n_open": 0,
+  "sum_r": -15.58,
+  "final_balance": 890.36,
+  "perm_p_block": 0.7672,
+  "latest_bar": {
+   "USD_JPY": "2026-10-01 14:25:00",
+   "EUR_JPY": "2026-10-01 14:25:00",
+   "GBP_JPY": "2026-10-01 14:25:00",
+   "AUD_JPY": "2026-10-01 14:25:00"
+  }
+ },
+ "confirm=closed_strict|shock=closed": {
+  "n_closed": 35,
+  "n_open": 0,
+  "sum_r": -10.08,
+  "final_balance": 925.3,
+  "perm_p_block": 0.6673,
+  "latest_bar": {
+   "USD_JPY": "2026-10-01 14:25:00",
+   "EUR_JPY": "2026-10-01 14:25:00",
+   "GBP_JPY": "2026-10-01 14:25:00",
+   "AUD_JPY": "2026-10-01 14:25:00"
+  }
+ }
+}

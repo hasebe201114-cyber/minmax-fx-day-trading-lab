@@ -1,0 +1,3572 @@
+{
+ "confirm=running|shock=running": {
+  "train": {
+   "n": 278,
+   "sum_r": 15.26,
+   "mean_r": 0.0549,
+   "win_rate": 0.4453,
+   "pf": 1.107,
+   "perm_p_block": 0.4096,
+   "final_usd": 1102.58,
+   "n_resumed": 207,
+   "sum_r_resumed": -22.28,
+   "sum_r_not_resumed": 37.54,
+   "trades": [
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2023-11-03 23:00:00",
+     "exit_time": "2023-11-03 23:05:00",
+     "entry_price": 149.419,
+     "r_net": -1.195441,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2023-11-15 03:00:00",
+     "exit_time": "2023-11-15 04:40:00",
+     "entry_price": 150.566,
+     "r_net": 1.04251,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2023-11-15 04:50:00",
+     "exit_time": "2023-11-15 05:45:00",
+     "entry_price": 150.382,
+     "r_net": 2.052851,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "UP",
+     "entry_time": "2023-11-15 09:15:00",
+     "exit_time": "2023-11-15 09:50:00",
+     "entry_price": 163.717,
+     "r_net": 0.622353,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2023-11-15 11:55:00",
+     "exit_time": "2023-11-15 12:30:00",
+     "entry_price": 97.977,
+     "r_net": -1.24353,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "UP",
+     "entry_time": "2023-11-15 12:00:00",
+     "exit_time": "2023-11-15 12:25:00",
+     "entry_price": 163.865,
+     "r_net": -1.888211,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "UP",
+     "entry_time": "2023-11-15 14:40:00",
+     "exit_time": "2023-11-15 14:50:00",
+     "entry_price": 163.892,
+     "r_net": -1.936458,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2023-11-15 15:00:00",
+     "exit_time": "2023-11-15 15:35:00",
+     "entry_price": 97.957,
+     "r_net": -0.062426,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2023-11-15 15:40:00",
+     "exit_time": "2023-11-15 16:00:00",
+     "entry_price": 97.998,
+     "r_net": -1.684715,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2023-11-15 16:35:00",
+     "exit_time": "2023-11-15 17:15:00",
+     "entry_price": 98.033,
+     "r_net": 0.099576,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "UP",
+     "entry_time": "2023-11-15 17:15:00",
+     "exit_time": "2023-11-15 17:30:00",
+     "entry_price": 163.863,
+     "r_net": -1.329336,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2023-11-15 17:25:00",
+     "exit_time": "2023-11-15 17:40:00",
+     "entry_price": 98.124,
+     "r_net": -1.350223,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2023-11-15 20:50:00",
+     "exit_time": "2023-11-15 22:35:00",
+     "entry_price": 98.145,
+     "r_net": -0.246739,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2023-11-15 22:35:00",
+     "exit_time": "2023-11-15 22:40:00",
+     "entry_price": 150.71,
+     "r_net": -1.424831,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2023-11-15 23:45:00",
+     "exit_time": "2023-11-16 00:15:00",
+     "entry_price": 151.054,
+     "r_net": 0.377275,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2023-11-15 23:50:00",
+     "exit_time": "2023-11-15 23:55:00",
+     "entry_price": 98.132,
+     "r_net": -1.533877,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2023-11-16 00:30:00",
+     "exit_time": "2023-11-16 01:10:00",
+     "entry_price": 98.296,
+     "r_net": 1.410568,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "UP",
+     "entry_time": "2023-11-16 01:10:00",
+     "exit_time": "2023-11-16 02:45:00",
+     "entry_price": 163.964,
+     "r_net": 0.373059,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2023-11-16 01:25:00",
+     "exit_time": "2023-11-16 07:25:00",
+     "entry_price": 98.506,
+     "r_net": -0.285213,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "UP",
+     "entry_time": "2023-11-16 02:55:00",
+     "exit_time": "2023-11-16 04:05:00",
+     "entry_price": 164.073,
+     "r_net": 0.679861,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2023-11-16 03:25:00",
+     "exit_time": "2023-11-16 04:25:00",
+     "entry_price": 151.248,
+     "r_net": 1.505143,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "UP",
+     "entry_time": "2023-11-16 04:55:00",
+     "exit_time": "2023-11-16 07:05:00",
+     "entry_price": 164.195,
+     "r_net": 0.300076,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2023-11-16 05:05:00",
+     "exit_time": "2023-11-16 05:10:00",
+     "entry_price": 151.391,
+     "r_net": -1.972462,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2023-11-16 05:35:00",
+     "exit_time": "2023-11-16 06:05:00",
+     "entry_price": 151.404,
+     "r_net": -0.172863,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "UP",
+     "entry_time": "2023-11-16 17:35:00",
+     "exit_time": "2023-11-16 17:50:00",
+     "entry_price": 164.235,
+     "r_net": -1.462183,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2023-11-17 17:40:00",
+     "exit_time": "2023-11-17 18:05:00",
+     "entry_price": 185.976,
+     "r_net": 1.662291,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2023-11-17 18:10:00",
+     "exit_time": "2023-11-17 18:45:00",
+     "entry_price": 185.441,
+     "r_net": -1.130996,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2023-11-17 18:55:00",
+     "exit_time": "2023-11-17 19:25:00",
+     "entry_price": 149.618,
+     "r_net": 1.226135,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2023-11-17 19:40:00",
+     "exit_time": "2023-11-17 20:35:00",
+     "entry_price": 149.255,
+     "r_net": -1.101416,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2023-11-17 21:55:00",
+     "exit_time": "2023-11-17 22:15:00",
+     "entry_price": 149.373,
+     "r_net": 0.200843,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2023-12-11 20:05:00",
+     "exit_time": "2023-12-11 20:30:00",
+     "entry_price": 183.884,
+     "r_net": -0.034647,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2023-12-11 21:30:00",
+     "exit_time": "2023-12-11 23:00:00",
+     "entry_price": 146.426,
+     "r_net": -1.133569,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "UP",
+     "entry_time": "2023-12-11 21:30:00",
+     "exit_time": "2023-12-11 22:30:00",
+     "entry_price": 157.58,
+     "r_net": -1.170893,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2023-12-11 21:30:00",
+     "exit_time": "2023-12-11 22:00:00",
+     "entry_price": 184.206,
+     "r_net": -1.26159,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2023-12-12 01:10:00",
+     "exit_time": "2023-12-12 01:45:00",
+     "entry_price": 146.442,
+     "r_net": -0.166448,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2023-12-19 16:05:00",
+     "exit_time": "2023-12-19 18:05:00",
+     "entry_price": 143.882,
+     "r_net": 1.57456,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "UP",
+     "entry_time": "2023-12-19 16:05:00",
+     "exit_time": "2023-12-19 18:20:00",
+     "entry_price": 157.242,
+     "r_net": 2.249755,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2023-12-19 16:05:00",
+     "exit_time": "2023-12-19 18:05:00",
+     "entry_price": 96.608,
+     "r_net": 2.369984,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2023-12-19 18:10:00",
+     "exit_time": "2023-12-19 19:55:00",
+     "entry_price": 97.313,
+     "r_net": 1.423452,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2023-12-19 18:15:00",
+     "exit_time": "2023-12-19 18:25:00",
+     "entry_price": 144.587,
+     "r_net": -1.246612,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2023-12-19 19:20:00",
+     "exit_time": "2023-12-19 19:55:00",
+     "entry_price": 144.736,
+     "r_net": 0.64065,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "UP",
+     "entry_time": "2023-12-19 19:20:00",
+     "exit_time": "2023-12-19 20:25:00",
+     "entry_price": 158.4,
+     "r_net": -1.147401,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2023-12-19 20:05:00",
+     "exit_time": "2023-12-19 20:15:00",
+     "entry_price": 144.813,
+     "r_net": -1.336462,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2023-12-20 17:50:00",
+     "exit_time": "2023-12-20 18:25:00",
+     "entry_price": 181.798,
+     "r_net": 1.38094,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2023-12-20 18:45:00",
+     "exit_time": "2023-12-20 20:05:00",
+     "entry_price": 181.78,
+     "r_net": 2.52919,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2023-12-20 22:00:00",
+     "exit_time": "2023-12-20 22:25:00",
+     "entry_price": 181.573,
+     "r_net": -0.376473,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2023-12-21 08:05:00",
+     "exit_time": "2023-12-21 10:55:00",
+     "entry_price": 181.253,
+     "r_net": 1.638702,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2023-12-21 11:05:00",
+     "exit_time": "2023-12-21 16:05:00",
+     "entry_price": 180.606,
+     "r_net": -1.118929,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2023-12-21 22:35:00",
+     "exit_time": "2023-12-22 01:20:00",
+     "entry_price": 180.438,
+     "r_net": 1.132922,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-01-11 23:45:00",
+     "exit_time": "2024-01-12 00:30:00",
+     "entry_price": 146.022,
+     "r_net": -1.091847,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-02-12 18:45:00",
+     "exit_time": "2024-02-12 20:55:00",
+     "entry_price": 160.612,
+     "r_net": 0.756475,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-02-12 21:00:00",
+     "exit_time": "2024-02-12 22:10:00",
+     "entry_price": 160.46,
+     "r_net": -1.360925,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2024-02-13 17:45:00",
+     "exit_time": "2024-02-13 18:40:00",
+     "entry_price": 189.07,
+     "r_net": 1.957094,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2024-02-13 19:10:00",
+     "exit_time": "2024-02-13 19:30:00",
+     "entry_price": 189.317,
+     "r_net": 0.38315,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2024-02-13 19:55:00",
+     "exit_time": "2024-02-13 20:35:00",
+     "entry_price": 189.424,
+     "r_net": -1.278377,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2024-02-13 22:50:00",
+     "exit_time": "2024-02-14 01:05:00",
+     "entry_price": 189.471,
+     "r_net": 0.955999,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-02-14 00:40:00",
+     "exit_time": "2024-02-14 01:55:00",
+     "entry_price": 150.513,
+     "r_net": 1.002948,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2024-02-14 01:20:00",
+     "exit_time": "2024-02-14 01:45:00",
+     "entry_price": 189.807,
+     "r_net": 0.460663,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2024-02-14 01:55:00",
+     "exit_time": "2024-02-14 04:00:00",
+     "entry_price": 189.968,
+     "r_net": -1.222406,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-02-14 02:10:00",
+     "exit_time": "2024-02-14 04:15:00",
+     "entry_price": 150.752,
+     "r_net": 0.450681,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-02-14 04:20:00",
+     "exit_time": "2024-02-14 05:15:00",
+     "entry_price": 150.855,
+     "r_net": 0.807224,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-03-08 22:45:00",
+     "exit_time": "2024-03-08 22:55:00",
+     "entry_price": 146.78,
+     "r_net": -1.165057,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-03-08 23:30:00",
+     "exit_time": "2024-03-09 00:15:00",
+     "entry_price": 97.662,
+     "r_net": -0.294304,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-03-09 01:20:00",
+     "exit_time": "2024-03-09 03:05:00",
+     "entry_price": 97.553,
+     "r_net": 1.259068,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-03-09 03:10:00",
+     "exit_time": "2024-03-09 03:45:00",
+     "entry_price": 97.377,
+     "r_net": 0.30017,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-12 23:00:00",
+     "exit_time": "2024-03-13 08:00:00",
+     "entry_price": 147.896,
+     "r_net": -1.106596,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-15 00:15:00",
+     "exit_time": "2024-03-15 09:25:00",
+     "entry_price": 148.283,
+     "r_net": 0.613534,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-15 09:35:00",
+     "exit_time": "2024-03-15 10:10:00",
+     "entry_price": 148.523,
+     "r_net": -1.268253,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-15 11:15:00",
+     "exit_time": "2024-03-15 11:45:00",
+     "entry_price": 148.584,
+     "r_net": -1.271952,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-15 17:05:00",
+     "exit_time": "2024-03-15 17:40:00",
+     "entry_price": 148.639,
+     "r_net": 0.608079,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-15 18:05:00",
+     "exit_time": "2024-03-15 20:40:00",
+     "entry_price": 148.74,
+     "r_net": -1.251628,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-15 21:45:00",
+     "exit_time": "2024-03-15 22:45:00",
+     "entry_price": 148.798,
+     "r_net": 0.973694,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-19 18:00:00",
+     "exit_time": "2024-03-19 18:40:00",
+     "entry_price": 150.396,
+     "r_net": 0.90436,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-19 18:45:00",
+     "exit_time": "2024-03-19 20:15:00",
+     "entry_price": 150.628,
+     "r_net": -1.159704,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-19 21:30:00",
+     "exit_time": "2024-03-19 22:10:00",
+     "entry_price": 98.06,
+     "r_net": 0.402774,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-19 22:15:00",
+     "exit_time": "2024-03-20 00:00:00",
+     "entry_price": 98.157,
+     "r_net": 2.925506,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-19 23:05:00",
+     "exit_time": "2024-03-20 00:45:00",
+     "entry_price": 150.666,
+     "r_net": 2.042885,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-20 00:10:00",
+     "exit_time": "2024-03-20 00:45:00",
+     "entry_price": 98.421,
+     "r_net": 0.456243,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-20 01:40:00",
+     "exit_time": "2024-03-20 08:40:00",
+     "entry_price": 150.893,
+     "r_net": 0.235477,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-20 01:40:00",
+     "exit_time": "2024-03-20 09:10:00",
+     "entry_price": 98.542,
+     "r_net": 1.008169,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-20 08:55:00",
+     "exit_time": "2024-03-20 09:10:00",
+     "entry_price": 151.028,
+     "r_net": 2.398047,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-20 09:15:00",
+     "exit_time": "2024-03-20 09:50:00",
+     "entry_price": 151.269,
+     "r_net": -1.289149,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-20 09:15:00",
+     "exit_time": "2024-03-20 09:45:00",
+     "entry_price": 98.651,
+     "r_net": -0.01744,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-20 09:50:00",
+     "exit_time": "2024-03-20 10:25:00",
+     "entry_price": 98.7,
+     "r_net": 0.215722,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-20 10:50:00",
+     "exit_time": "2024-03-20 12:20:00",
+     "entry_price": 98.817,
+     "r_net": 0.786748,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-20 12:30:00",
+     "exit_time": "2024-03-20 12:40:00",
+     "entry_price": 98.931,
+     "r_net": -1.602232,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-20 13:05:00",
+     "exit_time": "2024-03-20 13:50:00",
+     "entry_price": 151.395,
+     "r_net": 0.237164,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-20 14:20:00",
+     "exit_time": "2024-03-20 16:10:00",
+     "entry_price": 151.531,
+     "r_net": -1.295112,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-20 15:15:00",
+     "exit_time": "2024-03-20 16:30:00",
+     "entry_price": 98.973,
+     "r_net": -1.452095,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-20 18:20:00",
+     "exit_time": "2024-03-21 03:00:00",
+     "entry_price": 151.673,
+     "r_net": -1.17131,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-20 23:45:00",
+     "exit_time": "2024-03-21 00:00:00",
+     "entry_price": 98.999,
+     "r_net": -1.63273,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-21 00:45:00",
+     "exit_time": "2024-03-21 03:10:00",
+     "entry_price": 99.029,
+     "r_net": 2.71307,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-21 05:00:00",
+     "exit_time": "2024-03-21 08:20:00",
+     "entry_price": 99.634,
+     "r_net": -1.169226,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-21 10:00:00",
+     "exit_time": "2024-03-21 11:25:00",
+     "entry_price": 99.69,
+     "r_net": -1.178066,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-21 12:50:00",
+     "exit_time": "2024-03-21 13:40:00",
+     "entry_price": 99.674,
+     "r_net": 2.334076,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-21 13:45:00",
+     "exit_time": "2024-03-21 14:45:00",
+     "entry_price": 99.821,
+     "r_net": 1.457213,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-21 14:50:00",
+     "exit_time": "2024-03-21 15:15:00",
+     "entry_price": 99.996,
+     "r_net": -0.068824,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-21 15:35:00",
+     "exit_time": "2024-03-21 16:45:00",
+     "entry_price": 100.091,
+     "r_net": -0.252535,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-03-22 10:40:00",
+     "exit_time": "2024-03-22 11:20:00",
+     "entry_price": 151.8,
+     "r_net": -1.179264,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-04-05 09:15:00",
+     "exit_time": "2024-04-05 13:00:00",
+     "entry_price": 151.026,
+     "r_net": -1.107397,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-04-05 09:15:00",
+     "exit_time": "2024-04-05 16:25:00",
+     "entry_price": 163.691,
+     "r_net": -1.127397,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-04-05 09:15:00",
+     "exit_time": "2024-04-05 17:25:00",
+     "entry_price": 190.939,
+     "r_net": -1.119976,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-04-05 09:20:00",
+     "exit_time": "2024-04-05 10:35:00",
+     "entry_price": 99.472,
+     "r_net": 0.772475,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-04-05 10:45:00",
+     "exit_time": "2024-04-05 13:00:00",
+     "entry_price": 99.3,
+     "r_net": -1.313419,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-04-16 23:55:00",
+     "exit_time": "2024-04-17 02:30:00",
+     "entry_price": 154.595,
+     "r_net": -1.186949,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-04-24 23:00:00",
+     "exit_time": "2024-04-25 01:30:00",
+     "entry_price": 155.011,
+     "r_net": 0.698706,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-04-25 02:30:00",
+     "exit_time": "2024-04-25 14:15:00",
+     "entry_price": 155.333,
+     "r_net": 1.160868,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-04-25 14:25:00",
+     "exit_time": "2024-04-25 14:50:00",
+     "entry_price": 155.719,
+     "r_net": -1.41525,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-04-25 22:00:00",
+     "exit_time": "2024-04-25 22:10:00",
+     "entry_price": 155.648,
+     "r_net": -1.116643,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-04-26 12:25:00",
+     "exit_time": "2024-04-26 16:35:00",
+     "entry_price": 155.854,
+     "r_net": 1.769566,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-04-26 21:30:00",
+     "exit_time": "2024-04-26 23:45:00",
+     "entry_price": 156.895,
+     "r_net": 0.4572,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "UP",
+     "entry_time": "2024-04-26 21:35:00",
+     "exit_time": "2024-04-26 21:45:00",
+     "entry_price": 168.249,
+     "r_net": -1.257447,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2024-04-26 21:35:00",
+     "exit_time": "2024-04-26 21:45:00",
+     "entry_price": 196.392,
+     "r_net": -1.224251,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-04-26 23:55:00",
+     "exit_time": "2024-04-27 01:15:00",
+     "entry_price": 157.27,
+     "r_net": 1.711838,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "UP",
+     "entry_time": "2024-04-27 01:00:00",
+     "exit_time": "2024-04-27 03:25:00",
+     "entry_price": 168.552,
+     "r_net": 0.64483,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2024-04-27 01:05:00",
+     "exit_time": "2024-04-27 03:25:00",
+     "entry_price": 196.806,
+     "r_net": 0.838592,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-04-27 02:40:00",
+     "exit_time": "2024-04-27 03:25:00",
+     "entry_price": 157.719,
+     "r_net": -0.002737,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "UP",
+     "entry_time": "2024-04-27 03:35:00",
+     "exit_time": "2024-04-27 04:15:00",
+     "entry_price": 168.773,
+     "r_net": 0.24161,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2024-04-27 03:35:00",
+     "exit_time": "2024-04-27 04:15:00",
+     "entry_price": 197.104,
+     "r_net": 0.324921,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-04-27 04:40:00",
+     "exit_time": "2024-04-27 05:40:00",
+     "entry_price": 157.87,
+     "r_net": 2.699395,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "UP",
+     "entry_time": "2024-04-27 04:45:00",
+     "exit_time": "2024-04-27 05:10:00",
+     "entry_price": 168.901,
+     "r_net": 0.071746,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2024-04-27 04:50:00",
+     "exit_time": "2024-04-27 05:10:00",
+     "entry_price": 197.264,
+     "r_net": 0.530331,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2024-04-27 05:30:00",
+     "exit_time": "2024-04-27 05:55:00",
+     "entry_price": 197.821,
+     "r_net": 0.139648,
+     "exit_reason": "WEEKEND_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "UP",
+     "entry_time": "2024-04-27 05:40:00",
+     "exit_time": "2024-04-27 05:55:00",
+     "entry_price": 169.21,
+     "r_net": 1.208768,
+     "exit_reason": "WEEKEND_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-04-27 05:45:00",
+     "exit_time": "2024-04-27 05:55:00",
+     "entry_price": 158.278,
+     "r_net": 0.801385,
+     "exit_reason": "WEEKEND_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-05-02 05:00:00",
+     "exit_time": "2024-05-02 05:55:00",
+     "entry_price": 157.578,
+     "r_net": 46.081161,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-05-03 04:20:00",
+     "exit_time": "2024-05-03 05:00:00",
+     "entry_price": 153.291,
+     "r_net": 0.684816,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-05-03 08:15:00",
+     "exit_time": "2024-05-03 08:40:00",
+     "entry_price": 153.096,
+     "r_net": -0.178527,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-05-03 10:35:00",
+     "exit_time": "2024-05-03 15:55:00",
+     "entry_price": 152.811,
+     "r_net": -1.060602,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-05-03 21:35:00",
+     "exit_time": "2024-05-04 05:55:00",
+     "entry_price": 151.899,
+     "r_net": -0.807333,
+     "exit_reason": "WEEKEND_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-05-14 18:55:00",
+     "exit_time": "2024-05-14 19:05:00",
+     "entry_price": 196.125,
+     "r_net": -1.379137,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-05-15 19:10:00",
+     "exit_time": "2024-05-15 19:35:00",
+     "entry_price": 155.852,
+     "r_net": -0.337255,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-05-15 19:45:00",
+     "exit_time": "2024-05-15 20:25:00",
+     "entry_price": 155.808,
+     "r_net": 1.812096,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-05-15 20:30:00",
+     "exit_time": "2024-05-15 20:45:00",
+     "entry_price": 155.68,
+     "r_net": -1.501721,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-05-15 21:10:00",
+     "exit_time": "2024-05-15 21:40:00",
+     "entry_price": 155.58,
+     "r_net": 3.518645,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-05-15 21:45:00",
+     "exit_time": "2024-05-15 22:45:00",
+     "entry_price": 155.249,
+     "r_net": -1.085435,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-05-16 00:45:00",
+     "exit_time": "2024-05-16 01:05:00",
+     "entry_price": 155.019,
+     "r_net": -1.328583,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-05-16 02:30:00",
+     "exit_time": "2024-05-16 03:10:00",
+     "entry_price": 154.755,
+     "r_net": -1.142546,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-05-16 07:10:00",
+     "exit_time": "2024-05-16 08:50:00",
+     "entry_price": 154.715,
+     "r_net": 2.210896,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-05-16 08:40:00",
+     "exit_time": "2024-05-16 09:00:00",
+     "entry_price": 195.788,
+     "r_net": -1.257055,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-05-16 09:30:00",
+     "exit_time": "2024-05-16 10:05:00",
+     "entry_price": 153.973,
+     "r_net": 0.508158,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-05-16 09:30:00",
+     "exit_time": "2024-05-16 17:10:00",
+     "entry_price": 195.462,
+     "r_net": -1.090217,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-06-13 05:35:00",
+     "exit_time": "2024-06-13 05:45:00",
+     "entry_price": 104.503,
+     "r_net": -1.736234,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-06-13 16:40:00",
+     "exit_time": "2024-06-13 17:30:00",
+     "entry_price": 104.637,
+     "r_net": -1.330954,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-06-13 22:35:00",
+     "exit_time": "2024-06-13 22:50:00",
+     "entry_price": 104.672,
+     "r_net": -1.227903,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-06-26 11:55:00",
+     "exit_time": "2024-06-26 13:55:00",
+     "entry_price": 106.618,
+     "r_net": 0.449463,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-06-26 14:25:00",
+     "exit_time": "2024-06-26 14:50:00",
+     "entry_price": 106.775,
+     "r_net": -0.088657,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-06-26 14:55:00",
+     "exit_time": "2024-06-26 15:15:00",
+     "entry_price": 106.821,
+     "r_net": 0.083145,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-06-26 17:50:00",
+     "exit_time": "2024-06-26 18:20:00",
+     "entry_price": 106.789,
+     "r_net": -0.588788,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-06-27 00:00:00",
+     "exit_time": "2024-06-27 05:15:00",
+     "entry_price": 106.832,
+     "r_net": 0.664042,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-06-27 05:55:00",
+     "exit_time": "2024-06-27 06:35:00",
+     "entry_price": 106.958,
+     "r_net": -1.965768,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-06-27 06:50:00",
+     "exit_time": "2024-06-27 07:00:00",
+     "entry_price": 106.936,
+     "r_net": -1.570829,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-06-27 15:40:00",
+     "exit_time": "2024-06-27 16:10:00",
+     "entry_price": 106.978,
+     "r_net": -0.103658,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-06-27 16:20:00",
+     "exit_time": "2024-06-27 17:30:00",
+     "entry_price": 107.031,
+     "r_net": -1.323999,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-06-28 21:35:00",
+     "exit_time": "2024-06-28 22:20:00",
+     "entry_price": 106.982,
+     "r_net": 0.150669,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-06-28 22:25:00",
+     "exit_time": "2024-06-28 23:20:00",
+     "entry_price": 106.993,
+     "r_net": 0.287755,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-06-28 23:50:00",
+     "exit_time": "2024-06-29 05:55:00",
+     "entry_price": 107.453,
+     "r_net": -0.255458,
+     "exit_reason": "WEEKEND_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-12 08:30:00",
+     "exit_time": "2024-07-12 08:55:00",
+     "entry_price": 172.994,
+     "r_net": 1.637565,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-12 08:30:00",
+     "exit_time": "2024-07-12 08:55:00",
+     "entry_price": 205.596,
+     "r_net": 1.596144,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-12 22:15:00",
+     "exit_time": "2024-07-12 22:40:00",
+     "entry_price": 157.706,
+     "r_net": -1.042029,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-12 22:15:00",
+     "exit_time": "2024-07-12 22:40:00",
+     "entry_price": 171.83,
+     "r_net": -1.055103,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-17 17:40:00",
+     "exit_time": "2024-07-17 20:05:00",
+     "entry_price": 156.381,
+     "r_net": -1.06626,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-18 04:00:00",
+     "exit_time": "2024-07-18 05:00:00",
+     "entry_price": 156.114,
+     "r_net": -1.170362,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-18 07:20:00",
+     "exit_time": "2024-07-18 07:40:00",
+     "entry_price": 156.124,
+     "r_net": -1.24922,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-18 08:10:00",
+     "exit_time": "2024-07-18 08:50:00",
+     "entry_price": 155.878,
+     "r_net": 1.002568,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-23 16:35:00",
+     "exit_time": "2024-07-23 17:25:00",
+     "entry_price": 170.116,
+     "r_net": 2.344173,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-23 16:35:00",
+     "exit_time": "2024-07-23 17:25:00",
+     "entry_price": 201.965,
+     "r_net": 2.012894,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-23 17:35:00",
+     "exit_time": "2024-07-23 18:00:00",
+     "entry_price": 169.631,
+     "r_net": -1.303742,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-23 18:40:00",
+     "exit_time": "2024-07-23 19:05:00",
+     "entry_price": 169.531,
+     "r_net": -0.197988,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-23 18:40:00",
+     "exit_time": "2024-07-23 19:25:00",
+     "entry_price": 201.393,
+     "r_net": 0.441612,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-23 19:30:00",
+     "exit_time": "2024-07-23 20:00:00",
+     "entry_price": 201.239,
+     "r_net": -1.228214,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-23 21:50:00",
+     "exit_time": "2024-07-24 00:00:00",
+     "entry_price": 169.406,
+     "r_net": 0.83199,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 01:45:00",
+     "exit_time": "2024-07-24 02:35:00",
+     "entry_price": 169.084,
+     "r_net": 0.53355,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 01:45:00",
+     "exit_time": "2024-07-24 02:35:00",
+     "entry_price": 201.136,
+     "r_net": 0.870307,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 02:40:00",
+     "exit_time": "2024-07-24 03:10:00",
+     "entry_price": 168.868,
+     "r_net": -1.204145,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 02:40:00",
+     "exit_time": "2024-07-24 03:10:00",
+     "entry_price": 200.82,
+     "r_net": -1.197099,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 04:30:00",
+     "exit_time": "2024-07-24 04:45:00",
+     "entry_price": 168.86,
+     "r_net": -1.582019,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 04:30:00",
+     "exit_time": "2024-07-24 04:40:00",
+     "entry_price": 200.779,
+     "r_net": -1.595079,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 10:15:00",
+     "exit_time": "2024-07-24 11:00:00",
+     "entry_price": 168.708,
+     "r_net": 0.92498,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 10:15:00",
+     "exit_time": "2024-07-24 11:00:00",
+     "entry_price": 200.569,
+     "r_net": 0.849242,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 11:15:00",
+     "exit_time": "2024-07-24 12:10:00",
+     "entry_price": 168.468,
+     "r_net": 0.518961,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 11:20:00",
+     "exit_time": "2024-07-24 12:30:00",
+     "entry_price": 200.292,
+     "r_net": 1.693229,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 12:25:00",
+     "exit_time": "2024-07-24 13:20:00",
+     "entry_price": 168.252,
+     "r_net": 1.663954,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 12:50:00",
+     "exit_time": "2024-07-24 13:20:00",
+     "entry_price": 199.897,
+     "r_net": 1.224883,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 13:30:00",
+     "exit_time": "2024-07-24 14:15:00",
+     "entry_price": 199.473,
+     "r_net": 0.95688,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 13:40:00",
+     "exit_time": "2024-07-24 16:15:00",
+     "entry_price": 167.72,
+     "r_net": -1.109818,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 16:00:00",
+     "exit_time": "2024-07-24 16:05:00",
+     "entry_price": 199.27,
+     "r_net": -1.324978,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 17:20:00",
+     "exit_time": "2024-07-24 17:40:00",
+     "entry_price": 167.483,
+     "r_net": -1.110697,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 18:45:00",
+     "exit_time": "2024-07-24 18:55:00",
+     "entry_price": 167.619,
+     "r_net": -1.171642,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 18:45:00",
+     "exit_time": "2024-07-24 18:50:00",
+     "entry_price": 199.518,
+     "r_net": -1.254073,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 20:45:00",
+     "exit_time": "2024-07-24 21:30:00",
+     "entry_price": 167.234,
+     "r_net": 0.721978,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 20:50:00",
+     "exit_time": "2024-07-24 21:10:00",
+     "entry_price": 199.217,
+     "r_net": -0.304054,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 21:20:00",
+     "exit_time": "2024-07-24 23:10:00",
+     "entry_price": 198.853,
+     "r_net": 1.453327,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 21:35:00",
+     "exit_time": "2024-07-24 22:45:00",
+     "entry_price": 167.031,
+     "r_net": 0.467599,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 23:00:00",
+     "exit_time": "2024-07-24 23:10:00",
+     "entry_price": 166.443,
+     "r_net": -1.094699,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 23:55:00",
+     "exit_time": "2024-07-25 00:05:00",
+     "entry_price": 166.365,
+     "r_net": -1.139065,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-24 23:55:00",
+     "exit_time": "2024-07-25 00:00:00",
+     "entry_price": 198.005,
+     "r_net": -1.179879,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-25 09:35:00",
+     "exit_time": "2024-07-25 12:30:00",
+     "entry_price": 165.924,
+     "r_net": 1.199184,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-25 09:35:00",
+     "exit_time": "2024-07-25 12:30:00",
+     "entry_price": 197.419,
+     "r_net": 1.341335,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-25 12:55:00",
+     "exit_time": "2024-07-25 13:55:00",
+     "entry_price": 165.159,
+     "r_net": -1.113738,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-07-25 12:55:00",
+     "exit_time": "2024-07-25 13:55:00",
+     "entry_price": 196.393,
+     "r_net": -1.117266,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2024-08-09 08:15:00",
+     "exit_time": "2024-08-09 09:15:00",
+     "entry_price": 188.149,
+     "r_net": -1.114069,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-08-16 01:15:00",
+     "exit_time": "2024-08-16 02:05:00",
+     "entry_price": 98.763,
+     "r_net": -1.31581,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2024-08-16 01:40:00",
+     "exit_time": "2024-08-16 02:00:00",
+     "entry_price": 191.529,
+     "r_net": -0.571622,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2024-08-16 02:55:00",
+     "exit_time": "2024-08-16 03:20:00",
+     "entry_price": 191.692,
+     "r_net": -1.329024,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2024-08-16 05:25:00",
+     "exit_time": "2024-08-16 06:25:00",
+     "entry_price": 191.854,
+     "r_net": 0.701404,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-08-16 05:55:00",
+     "exit_time": "2024-08-16 06:25:00",
+     "entry_price": 149.348,
+     "r_net": -0.013148,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-08-16 06:55:00",
+     "exit_time": "2024-08-16 07:00:00",
+     "entry_price": 149.378,
+     "r_net": -1.559129,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-08-16 14:30:00",
+     "exit_time": "2024-08-16 14:55:00",
+     "entry_price": 98.824,
+     "r_net": -1.486194,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-08-16 15:40:00",
+     "exit_time": "2024-08-16 16:50:00",
+     "entry_price": 98.849,
+     "r_net": -1.268229,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2024-08-22 21:35:00",
+     "exit_time": "2024-08-22 22:50:00",
+     "entry_price": 191.471,
+     "r_net": 0.287148,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2024-08-22 23:00:00",
+     "exit_time": "2024-08-23 00:15:00",
+     "entry_price": 191.787,
+     "r_net": -1.087316,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2024-08-23 23:00:00",
+     "exit_time": "2024-08-23 23:10:00",
+     "entry_price": 191.661,
+     "r_net": -1.121321,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2024-08-23 23:45:00",
+     "exit_time": "2024-08-24 00:25:00",
+     "entry_price": 191.415,
+     "r_net": -1.167066,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-09-20 20:00:00",
+     "exit_time": "2024-09-20 21:10:00",
+     "entry_price": 144.339,
+     "r_net": -1.107681,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "UP",
+     "entry_time": "2024-09-20 20:00:00",
+     "exit_time": "2024-09-20 21:20:00",
+     "entry_price": 161.084,
+     "r_net": -1.112385,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2024-09-20 20:00:00",
+     "exit_time": "2024-09-20 21:45:00",
+     "entry_price": 191.808,
+     "r_net": -1.091006,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-09-21 00:00:00",
+     "exit_time": "2024-09-21 00:35:00",
+     "entry_price": 144.365,
+     "r_net": -1.099863,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-09-23 17:55:00",
+     "exit_time": "2024-09-23 18:15:00",
+     "entry_price": 159.279,
+     "r_net": -1.117859,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-09-28 02:40:00",
+     "exit_time": "2024-09-28 02:50:00",
+     "entry_price": 98.251,
+     "r_net": -1.221895,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-09-28 03:30:00",
+     "exit_time": "2024-09-28 04:00:00",
+     "entry_price": 98.139,
+     "r_net": -1.176026,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-10-16 16:40:00",
+     "exit_time": "2024-10-16 16:50:00",
+     "entry_price": 194.254,
+     "r_net": -1.357496,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-11-29 09:45:00",
+     "exit_time": "2024-11-29 10:30:00",
+     "entry_price": 150.711,
+     "r_net": 4.236083,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-11-29 10:55:00",
+     "exit_time": "2024-11-29 11:30:00",
+     "entry_price": 149.944,
+     "r_net": -1.070978,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-11-29 13:25:00",
+     "exit_time": "2024-11-29 14:00:00",
+     "entry_price": 149.955,
+     "r_net": -1.219544,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-11-29 16:25:00",
+     "exit_time": "2024-11-29 16:50:00",
+     "entry_price": 149.601,
+     "r_net": -1.084753,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2024-11-30 04:10:00",
+     "exit_time": "2024-11-30 05:50:00",
+     "entry_price": 149.605,
+     "r_net": -1.21845,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-12-11 21:55:00",
+     "exit_time": "2024-12-11 22:30:00",
+     "entry_price": 97.032,
+     "r_net": -0.326952,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-12-12 09:35:00",
+     "exit_time": "2024-12-13 00:35:00",
+     "entry_price": 97.621,
+     "r_net": -1.051314,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2024-12-12 15:45:00",
+     "exit_time": "2024-12-12 16:05:00",
+     "entry_price": 194.7,
+     "r_net": -0.57017,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-12-13 09:55:00",
+     "exit_time": "2024-12-13 10:10:00",
+     "entry_price": 152.826,
+     "r_net": -1.389363,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-12-13 10:40:00",
+     "exit_time": "2024-12-13 10:50:00",
+     "entry_price": 152.829,
+     "r_net": -1.342096,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-12-13 12:15:00",
+     "exit_time": "2024-12-13 12:35:00",
+     "entry_price": 152.989,
+     "r_net": -1.409732,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-12-13 13:30:00",
+     "exit_time": "2024-12-13 13:50:00",
+     "entry_price": 153.077,
+     "r_net": -1.285018,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-12-13 17:45:00",
+     "exit_time": "2024-12-13 19:00:00",
+     "entry_price": 153.142,
+     "r_net": 1.752161,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "UP",
+     "entry_time": "2024-12-13 18:55:00",
+     "exit_time": "2024-12-13 20:30:00",
+     "entry_price": 160.881,
+     "r_net": 0.729862,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-12-13 19:35:00",
+     "exit_time": "2024-12-13 20:30:00",
+     "entry_price": 153.452,
+     "r_net": 0.839014,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "UP",
+     "entry_time": "2024-12-13 20:40:00",
+     "exit_time": "2024-12-13 21:10:00",
+     "entry_price": 161.089,
+     "r_net": -0.022064,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-12-13 21:00:00",
+     "exit_time": "2024-12-13 21:10:00",
+     "entry_price": 153.636,
+     "r_net": -1.273481,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "UP",
+     "entry_time": "2024-12-13 21:45:00",
+     "exit_time": "2024-12-13 22:15:00",
+     "entry_price": 161.261,
+     "r_net": 0.539439,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-12-14 01:00:00",
+     "exit_time": "2024-12-14 02:25:00",
+     "entry_price": 153.662,
+     "r_net": 0.587873,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-12-19 15:40:00",
+     "exit_time": "2024-12-19 16:25:00",
+     "entry_price": 155.823,
+     "r_net": 0.771344,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-12-19 16:55:00",
+     "exit_time": "2024-12-19 17:45:00",
+     "entry_price": 156.48,
+     "r_net": 1.004555,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-12-19 17:55:00",
+     "exit_time": "2024-12-19 22:40:00",
+     "entry_price": 156.879,
+     "r_net": -1.082955,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-12-19 23:20:00",
+     "exit_time": "2024-12-20 00:30:00",
+     "entry_price": 157.144,
+     "r_net": 0.682008,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-12-20 00:40:00",
+     "exit_time": "2024-12-20 01:15:00",
+     "entry_price": 157.505,
+     "r_net": 0.684667,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-12-20 01:20:00",
+     "exit_time": "2024-12-20 02:00:00",
+     "entry_price": 157.645,
+     "r_net": -0.315196,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2024-12-20 09:15:00",
+     "exit_time": "2024-12-20 09:25:00",
+     "entry_price": 157.831,
+     "r_net": -1.253357,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-01-08 21:40:00",
+     "exit_time": "2025-01-08 22:15:00",
+     "entry_price": 195.6,
+     "r_net": 0.272366,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-01-08 22:30:00",
+     "exit_time": "2025-01-09 01:50:00",
+     "entry_price": 195.333,
+     "r_net": -1.083023,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-01-09 12:45:00",
+     "exit_time": "2025-01-09 13:25:00",
+     "entry_price": 195.105,
+     "r_net": 3.033271,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-01-09 16:00:00",
+     "exit_time": "2025-01-09 16:50:00",
+     "entry_price": 194.676,
+     "r_net": 4.600497,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-01-09 19:45:00",
+     "exit_time": "2025-01-09 21:45:00",
+     "entry_price": 193.985,
+     "r_net": 0.788698,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-01-10 19:20:00",
+     "exit_time": "2025-01-10 19:35:00",
+     "entry_price": 157.88,
+     "r_net": -1.233956,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-01-10 23:40:00",
+     "exit_time": "2025-01-11 00:15:00",
+     "entry_price": 193.373,
+     "r_net": 0.951391,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-01-11 00:20:00",
+     "exit_time": "2025-01-11 01:05:00",
+     "entry_price": 157.262,
+     "r_net": -1.049172,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-01-11 00:30:00",
+     "exit_time": "2025-01-11 01:45:00",
+     "entry_price": 192.786,
+     "r_net": 0.828769,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2025-01-18 01:15:00",
+     "exit_time": "2025-01-18 01:35:00",
+     "entry_price": 97.061,
+     "r_net": -0.034064,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2025-01-18 01:50:00",
+     "exit_time": "2025-01-18 01:55:00",
+     "entry_price": 97.083,
+     "r_net": -1.546427,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2025-01-21 11:00:00",
+     "exit_time": "2025-01-21 11:25:00",
+     "entry_price": 155.312,
+     "r_net": -1.159662,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2025-01-23 00:30:00",
+     "exit_time": "2025-01-23 01:10:00",
+     "entry_price": 156.213,
+     "r_net": 1.021612,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2025-01-23 01:45:00",
+     "exit_time": "2025-01-23 05:15:00",
+     "entry_price": 156.612,
+     "r_net": -1.167899,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2025-01-23 14:05:00",
+     "exit_time": "2025-01-23 14:55:00",
+     "entry_price": 156.648,
+     "r_net": 0.249584,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2025-02-04 06:25:00",
+     "exit_time": "2025-02-04 07:10:00",
+     "entry_price": 95.959,
+     "r_net": 2.487006,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2025-02-04 06:35:00",
+     "exit_time": "2025-02-04 08:30:00",
+     "entry_price": 192.695,
+     "r_net": 0.816188,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2025-02-04 08:10:00",
+     "exit_time": "2025-02-04 09:45:00",
+     "entry_price": 96.669,
+     "r_net": -1.157888,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "UP",
+     "entry_time": "2025-02-04 08:45:00",
+     "exit_time": "2025-02-04 09:45:00",
+     "entry_price": 193.155,
+     "r_net": -1.170176,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2025-02-05 01:05:00",
+     "exit_time": "2025-02-05 02:15:00",
+     "entry_price": 96.696,
+     "r_net": -1.206839,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-02-08 00:05:00",
+     "exit_time": "2025-02-08 00:40:00",
+     "entry_price": 151.393,
+     "r_net": -1.072555,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-02-08 01:55:00",
+     "exit_time": "2025-02-08 02:15:00",
+     "entry_price": 151.305,
+     "r_net": -1.13664,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2025-02-13 00:10:00",
+     "exit_time": "2025-02-13 00:40:00",
+     "entry_price": 154.554,
+     "r_net": -1.124305,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2025-02-13 01:20:00",
+     "exit_time": "2025-02-13 02:00:00",
+     "entry_price": 154.775,
+     "r_net": -1.096391,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-03-20 04:50:00",
+     "exit_time": "2025-03-20 05:30:00",
+     "entry_price": 148.906,
+     "r_net": 0.71428,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-03-20 05:40:00",
+     "exit_time": "2025-03-20 06:00:00",
+     "entry_price": 148.75,
+     "r_net": 0.115377,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-03-20 07:45:00",
+     "exit_time": "2025-03-20 08:00:00",
+     "entry_price": 148.648,
+     "r_net": -1.289936,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-03-20 08:45:00",
+     "exit_time": "2025-03-20 09:15:00",
+     "entry_price": 148.551,
+     "r_net": 0.82435,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-03-20 09:25:00",
+     "exit_time": "2025-03-20 10:05:00",
+     "entry_price": 148.51,
+     "r_net": 2.563421,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-03-20 10:20:00",
+     "exit_time": "2025-03-20 16:20:00",
+     "entry_price": 148.319,
+     "r_net": -1.175617,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    }
+   ]
+  },
+  "validation": {
+   "n": 76,
+   "sum_r": 8.11,
+   "mean_r": 0.1067,
+   "win_rate": 0.4079,
+   "pf": 1.188,
+   "perm_p_block": 0.3806,
+   "final_usd": 1053.61,
+   "n_resumed": 53,
+   "sum_r_resumed": 7.42,
+   "sum_r_not_resumed": 0.68,
+   "trades": [
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-03 10:40:00",
+     "exit_time": "2025-04-03 13:00:00",
+     "entry_price": 147.635,
+     "r_net": 0.893837,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-03 13:00:00",
+     "exit_time": "2025-04-03 13:40:00",
+     "entry_price": 92.405,
+     "r_net": -0.00369,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-03 14:35:00",
+     "exit_time": "2025-04-03 15:15:00",
+     "entry_price": 147.11,
+     "r_net": -0.154134,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-03 16:00:00",
+     "exit_time": "2025-04-03 16:05:00",
+     "entry_price": 146.925,
+     "r_net": -1.126075,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-03 17:50:00",
+     "exit_time": "2025-04-03 18:35:00",
+     "entry_price": 146.761,
+     "r_net": 0.455073,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-03 18:50:00",
+     "exit_time": "2025-04-03 19:30:00",
+     "entry_price": 146.539,
+     "r_net": 0.295568,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-03 20:35:00",
+     "exit_time": "2025-04-03 21:05:00",
+     "entry_price": 146.424,
+     "r_net": 1.271306,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-03 21:45:00",
+     "exit_time": "2025-04-03 23:15:00",
+     "entry_price": 145.798,
+     "r_net": 0.234059,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-04 07:20:00",
+     "exit_time": "2025-04-04 08:40:00",
+     "entry_price": 92.138,
+     "r_net": -1.115483,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-04 11:15:00",
+     "exit_time": "2025-04-04 12:40:00",
+     "entry_price": 92.173,
+     "r_net": 5.952268,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-04 12:55:00",
+     "exit_time": "2025-04-04 13:30:00",
+     "entry_price": 91.107,
+     "r_net": 0.436624,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-04 13:40:00",
+     "exit_time": "2025-04-04 14:05:00",
+     "entry_price": 90.894,
+     "r_net": 0.666432,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-04 19:10:00",
+     "exit_time": "2025-04-04 20:00:00",
+     "entry_price": 90.374,
+     "r_net": 2.129011,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-04 19:20:00",
+     "exit_time": "2025-04-04 19:35:00",
+     "entry_price": 160.652,
+     "r_net": -0.176594,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-04 19:45:00",
+     "exit_time": "2025-04-04 20:20:00",
+     "entry_price": 145.233,
+     "r_net": 0.720761,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-04 19:55:00",
+     "exit_time": "2025-04-04 20:15:00",
+     "entry_price": 160.094,
+     "r_net": -0.08828,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-04 20:05:00",
+     "exit_time": "2025-04-04 20:35:00",
+     "entry_price": 89.074,
+     "r_net": 1.454365,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-04 20:25:00",
+     "exit_time": "2025-04-04 20:35:00",
+     "entry_price": 144.727,
+     "r_net": -1.059986,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "EUR_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-04 23:45:00",
+     "exit_time": "2025-04-04 23:55:00",
+     "entry_price": 159.196,
+     "r_net": -1.046153,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-04 23:50:00",
+     "exit_time": "2025-04-05 00:00:00",
+     "entry_price": 88.255,
+     "r_net": -1.097065,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-21 16:30:00",
+     "exit_time": "2025-04-21 18:25:00",
+     "entry_price": 140.632,
+     "r_net": 0.191524,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-21 18:35:00",
+     "exit_time": "2025-04-21 18:45:00",
+     "entry_price": 140.582,
+     "r_net": -1.331973,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-22 12:05:00",
+     "exit_time": "2025-04-22 17:40:00",
+     "entry_price": 140.197,
+     "r_net": -1.064568,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-22 14:45:00",
+     "exit_time": "2025-04-22 15:00:00",
+     "entry_price": 89.982,
+     "r_net": -1.23537,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-22 18:25:00",
+     "exit_time": "2025-04-22 18:40:00",
+     "entry_price": 89.975,
+     "r_net": -0.057914,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-22 18:45:00",
+     "exit_time": "2025-04-22 19:30:00",
+     "entry_price": 89.917,
+     "r_net": 0.292856,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-04-22 20:10:00",
+     "exit_time": "2025-04-22 22:30:00",
+     "entry_price": 89.749,
+     "r_net": -1.279922,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-05-24 03:20:00",
+     "exit_time": "2025-05-24 04:45:00",
+     "entry_price": 142.504,
+     "r_net": -1.531692,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-05-28 11:50:00",
+     "exit_time": "2025-05-28 12:15:00",
+     "entry_price": 93.072,
+     "r_net": -1.451023,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2025-05-29 09:45:00",
+     "exit_time": "2025-05-29 11:40:00",
+     "entry_price": 146.047,
+     "r_net": -1.075109,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-05-30 08:35:00",
+     "exit_time": "2025-05-30 09:05:00",
+     "entry_price": 92.722,
+     "r_net": -0.069752,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-05-30 10:05:00",
+     "exit_time": "2025-05-30 21:25:00",
+     "entry_price": 92.533,
+     "r_net": 1.147878,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-05-30 21:30:00",
+     "exit_time": "2025-05-30 21:45:00",
+     "entry_price": 92.255,
+     "r_net": -1.36275,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-06-10 16:00:00",
+     "exit_time": "2025-06-10 17:30:00",
+     "entry_price": 94.014,
+     "r_net": -1.239033,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-06-11 22:50:00",
+     "exit_time": "2025-06-12 00:45:00",
+     "entry_price": 144.991,
+     "r_net": 1.139036,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-06-12 00:50:00",
+     "exit_time": "2025-06-12 08:10:00",
+     "entry_price": 144.515,
+     "r_net": 1.189351,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-06-12 03:30:00",
+     "exit_time": "2025-06-12 04:30:00",
+     "entry_price": 94.009,
+     "r_net": -0.388402,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-06-12 08:05:00",
+     "exit_time": "2025-06-12 08:35:00",
+     "entry_price": 93.872,
+     "r_net": -1.405185,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-06-12 08:20:00",
+     "exit_time": "2025-06-12 09:05:00",
+     "entry_price": 144.287,
+     "r_net": -0.278831,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-06-12 09:05:00",
+     "exit_time": "2025-06-12 10:50:00",
+     "entry_price": 93.883,
+     "r_net": 8.34225,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-06-12 09:15:00",
+     "exit_time": "2025-06-12 09:35:00",
+     "entry_price": 144.267,
+     "r_net": 0.481358,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-06-12 09:50:00",
+     "exit_time": "2025-06-12 10:30:00",
+     "entry_price": 144.041,
+     "r_net": 0.892149,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-06-12 10:35:00",
+     "exit_time": "2025-06-12 11:00:00",
+     "entry_price": 143.775,
+     "r_net": -1.110607,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-06-12 14:55:00",
+     "exit_time": "2025-06-12 15:10:00",
+     "entry_price": 143.736,
+     "r_net": -1.231333,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-06-12 15:35:00",
+     "exit_time": "2025-06-12 15:40:00",
+     "entry_price": 143.655,
+     "r_net": -1.185774,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-06-12 17:00:00",
+     "exit_time": "2025-06-12 17:40:00",
+     "entry_price": 93.252,
+     "r_net": -1.251902,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-06-12 18:55:00",
+     "exit_time": "2025-06-12 19:40:00",
+     "entry_price": 143.702,
+     "r_net": 1.396276,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-06-12 19:45:00",
+     "exit_time": "2025-06-12 20:35:00",
+     "entry_price": 143.506,
+     "r_net": -1.183271,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-06-12 21:35:00",
+     "exit_time": "2025-06-12 23:20:00",
+     "entry_price": 143.231,
+     "r_net": -1.058276,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-06-13 09:00:00",
+     "exit_time": "2025-06-13 12:15:00",
+     "entry_price": 142.928,
+     "r_net": -1.060624,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-06-13 09:05:00",
+     "exit_time": "2025-06-13 09:45:00",
+     "entry_price": 92.982,
+     "r_net": 0.78492,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-07-02 22:50:00",
+     "exit_time": "2025-07-02 23:10:00",
+     "entry_price": 195.741,
+     "r_net": 0.501473,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-08-28 19:35:00",
+     "exit_time": "2025-08-28 20:10:00",
+     "entry_price": 146.985,
+     "r_net": 0.449898,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-08-28 20:50:00",
+     "exit_time": "2025-08-28 21:30:00",
+     "entry_price": 146.925,
+     "r_net": -1.342338,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-08-29 02:05:00",
+     "exit_time": "2025-08-29 04:25:00",
+     "entry_price": 146.684,
+     "r_net": -1.12954,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2025-09-02 21:20:00",
+     "exit_time": "2025-09-02 22:05:00",
+     "entry_price": 148.84,
+     "r_net": -1.137847,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-09-02 21:45:00",
+     "exit_time": "2025-09-02 22:35:00",
+     "entry_price": 198.687,
+     "r_net": -0.301805,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-09-02 23:20:00",
+     "exit_time": "2025-09-03 05:25:00",
+     "entry_price": 198.373,
+     "r_net": -1.0993,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2025-09-03 16:20:00",
+     "exit_time": "2025-09-03 16:45:00",
+     "entry_price": 149.066,
+     "r_net": -1.073934,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2025-09-18 05:20:00",
+     "exit_time": "2025-09-18 08:10:00",
+     "entry_price": 147.019,
+     "r_net": -1.110342,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2025-09-18 10:20:00",
+     "exit_time": "2025-09-18 11:00:00",
+     "entry_price": 147.103,
+     "r_net": -1.297162,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2025-09-18 13:35:00",
+     "exit_time": "2025-09-18 14:05:00",
+     "entry_price": 147.154,
+     "r_net": -0.022302,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2025-09-18 14:30:00",
+     "exit_time": "2025-09-18 15:20:00",
+     "entry_price": 147.219,
+     "r_net": 3.523239,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2025-09-18 21:35:00",
+     "exit_time": "2025-09-18 22:50:00",
+     "entry_price": 147.534,
+     "r_net": 3.173323,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "UP",
+     "entry_time": "2025-09-19 21:50:00",
+     "exit_time": "2025-09-19 22:00:00",
+     "entry_price": 148.189,
+     "r_net": -1.372796,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-09-23 19:05:00",
+     "exit_time": "2025-09-23 19:15:00",
+     "entry_price": 199.451,
+     "r_net": -1.679661,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-10-10 17:05:00",
+     "exit_time": "2025-10-10 18:10:00",
+     "entry_price": 100.176,
+     "r_net": 0.345587,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-10-10 18:15:00",
+     "exit_time": "2025-10-10 18:25:00",
+     "entry_price": 100.037,
+     "r_net": -1.315107,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-10-10 23:10:00",
+     "exit_time": "2025-10-11 00:35:00",
+     "entry_price": 99.893,
+     "r_net": 11.40492,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-10-11 00:40:00",
+     "exit_time": "2025-10-11 01:30:00",
+     "entry_price": 98.745,
+     "r_net": -0.117535,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-10-11 04:40:00",
+     "exit_time": "2025-10-11 05:05:00",
+     "entry_price": 98.386,
+     "r_net": 0.015348,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-10-22 16:50:00",
+     "exit_time": "2025-10-22 17:30:00",
+     "entry_price": 202.367,
+     "r_net": 1.161359,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "GBP_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-10-22 17:35:00",
+     "exit_time": "2025-10-22 19:35:00",
+     "entry_price": 202.098,
+     "r_net": 0.338973,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2025-11-13 10:50:00",
+     "exit_time": "2025-11-13 11:00:00",
+     "entry_price": 101.524,
+     "r_net": -1.334224,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    },
+    {
+     "pair": "AUD_JPY",
+     "direction": "UP",
+     "entry_time": "2025-11-13 16:15:00",
+     "exit_time": "2025-11-13 16:50:00",
+     "entry_price": 101.721,
+     "r_net": 0.052396,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": true
+    },
+    {
+     "pair": "USD_JPY",
+     "direction": "DOWN",
+     "entry_time": "2025-11-14 22:50:00",
+     "exit_time": "2025-11-14 23:45:00",
+     "entry_price": 154.098,
+     "r_net": -1.171218,
+     "exit_reason": "SL_INITIAL_NO_TP",
+     "resumed": false
+    }
+   ]
+  }
+ }
+}
