@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-30T05:11:29.053176",
+  "generated_at": "2026-10-01T05:25:53.964899",
   "strategy": "SYS-FX012",
   "design": "SYS-FX012凍結最良候補(候補①N_BREAKOUT単独+H1トレンド判定不能除外フィルター、4通貨)。00-spec.md「フォワードテスト仕様」節に事前登録済み。新規パラメータなし",
   "note": "司令塔の明示指示(2026-08-22)により、必須KPI13/18未達・C品質チーム未レビューのままフォワードテスト(ペーパートレード、実発注なし)を実施中。cutoff以降の全期間を毎回再計算する",
@@ -10,40 +10,40 @@
   },
   "cutoff": "2026-08-15 06:00:00",
   "latest_bar_by_pair": {
-    "USD_JPY": "2026-09-30 14:10:00",
-    "EUR_JPY": "2026-09-30 14:10:00",
-    "GBP_JPY": "2026-09-30 14:10:00",
-    "AUD_JPY": "2026-09-30 14:10:00"
+    "USD_JPY": "2026-10-01 14:25:00",
+    "EUR_JPY": "2026-10-01 14:25:00",
+    "GBP_JPY": "2026-10-01 14:25:00",
+    "AUD_JPY": "2026-10-01 14:25:00"
   },
   "data_coverage": {
     "USD_JPY": {
-      "n_bars": 9243,
+      "n_bars": 9534,
       "first_bar": "2026-08-17 07:00:00",
-      "last_bar": "2026-09-30 14:10:00",
+      "last_bar": "2026-10-01 14:25:00",
       "max_gap_minutes": 2945.0,
       "max_gap_before": "2026-08-24 07:00:00",
       "has_gap": false
     },
     "EUR_JPY": {
-      "n_bars": 9243,
+      "n_bars": 9534,
       "first_bar": "2026-08-17 07:00:00",
-      "last_bar": "2026-09-30 14:10:00",
+      "last_bar": "2026-10-01 14:25:00",
       "max_gap_minutes": 2945.0,
       "max_gap_before": "2026-08-24 07:00:00",
       "has_gap": false
     },
     "GBP_JPY": {
-      "n_bars": 9243,
+      "n_bars": 9534,
       "first_bar": "2026-08-17 07:00:00",
-      "last_bar": "2026-09-30 14:10:00",
+      "last_bar": "2026-10-01 14:25:00",
       "max_gap_minutes": 2945.0,
       "max_gap_before": "2026-08-24 07:00:00",
       "has_gap": false
     },
     "AUD_JPY": {
-      "n_bars": 9243,
+      "n_bars": 9534,
       "first_bar": "2026-08-17 07:00:00",
-      "last_bar": "2026-09-30 14:10:00",
+      "last_bar": "2026-10-01 14:25:00",
       "max_gap_minutes": 2945.0,
       "max_gap_before": "2026-08-24 07:00:00",
       "has_gap": false
@@ -55,6 +55,14 @@
     "n_events_raw": 29,
     "n_events_dedup": 23,
     "n_events_trendfiltered": 13,
+    "money_management": {
+      "per_position_leverage_cap": 25.0,
+      "aggregate_leverage_cap": 25.0,
+      "cap_mode": "shrink",
+      "n_aggregate_cap_shrunk": 2,
+      "n_aggregate_cap_skipped": 0,
+      "max_aggregate_leverage": 25.0
+    },
     "n_trades_total": 39,
     "n_trades_closed": 39,
     "n_trades_open": 0,
@@ -64,7 +72,7 @@
     "payoff_ratio": 1.09,
     "perm_p_clustered": 0.3457,
     "perm_p_block": 0.1578,
-    "final_balance": 1236.83,
+    "final_balance": 1216.07,
     "trades": [
       {
         "pair": "EUR_JPY",
@@ -81,8 +89,12 @@
         "commission_r": 0.044379,
         "r_net": -1.194402,
         "leverage_ratio": 1109.482105,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 11094.821053,
         "risk_dollars": 10.0,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
         "dollar_pnl": -11.944017,
         "balance_after": 988.055983
@@ -102,8 +114,12 @@
         "commission_r": 0.050983,
         "r_net": 1.992385,
         "leverage_ratio": 1274.578134,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 12593.545508,
         "risk_dollars": 9.88056,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
         "dollar_pnl": 19.685878,
         "balance_after": 1007.74186
@@ -123,8 +139,12 @@
         "commission_r": 0.048452,
         "r_net": 1.994023,
         "leverage_ratio": 1211.310454,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 11968.425408,
         "risk_dollars": 9.88056,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
         "dollar_pnl": 19.702066,
         "balance_after": 1027.443926
@@ -144,8 +164,12 @@
         "commission_r": 0.022191,
         "r_net": 1.204771,
         "leverage_ratio": 554.765364,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 5699.903041,
         "risk_dollars": 10.274439,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
         "dollar_pnl": 12.378342,
         "balance_after": 1039.822269
@@ -165,8 +189,12 @@
         "commission_r": 0.022035,
         "r_net": 1.831223,
         "leverage_ratio": 550.87133,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 5659.89402,
         "risk_dollars": 10.274439,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
         "dollar_pnl": 18.814793,
         "balance_after": 1058.637061
@@ -186,8 +214,12 @@
         "commission_r": 0.009311,
         "r_net": -1.041343,
         "leverage_ratio": 232.773412,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 2464.225611,
         "risk_dollars": 10.586371,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
         "dollar_pnl": -11.024043,
         "balance_after": 1047.613018
@@ -207,8 +239,12 @@
         "commission_r": 0.009132,
         "r_net": -1.040479,
         "leverage_ratio": 228.294472,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 2416.809894,
         "risk_dollars": 10.586371,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
         "dollar_pnl": -11.014893,
         "balance_after": 1036.598125
@@ -228,8 +264,12 @@
         "commission_r": 0.019074,
         "r_net": 1.008518,
         "leverage_ratio": 476.859408,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 4943.115685,
         "risk_dollars": 10.365981,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
         "dollar_pnl": 10.454277,
         "balance_after": 1047.052402
@@ -249,8 +289,12 @@
         "commission_r": 0.023074,
         "r_net": 1.403521,
         "leverage_ratio": 576.839949,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 5979.512095,
         "risk_dollars": 10.365981,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
         "dollar_pnl": 14.548871,
         "balance_after": 1061.601273
@@ -270,8 +314,12 @@
         "commission_r": 0.022896,
         "r_net": 0.878992,
         "leverage_ratio": 572.402507,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 6076.632297,
         "risk_dollars": 10.616013,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
         "dollar_pnl": 9.33139,
         "balance_after": 1070.932663
@@ -291,8 +339,12 @@
         "commission_r": 0.020281,
         "r_net": 0.373295,
         "leverage_ratio": 507.032116,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 5382.659393,
         "risk_dollars": 10.616013,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
         "dollar_pnl": 3.962905,
         "balance_after": 1087.026097
@@ -312,8 +364,12 @@
         "commission_r": 0.03496,
         "r_net": 1.132707,
         "leverage_ratio": 873.993021,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 9359.876736,
         "risk_dollars": 10.709327,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
         "dollar_pnl": 12.130529,
         "balance_after": 1083.063192
@@ -333,8 +389,12 @@
         "commission_r": 0.026516,
         "r_net": 0.619301,
         "leverage_ratio": 662.910408,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 7206.009135,
         "risk_dollars": 10.870261,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
         "dollar_pnl": 6.731967,
         "balance_after": 1079.806242
@@ -354,8 +414,12 @@
         "commission_r": 0.063707,
         "r_net": -1.283485,
         "leverage_ratio": 1592.667837,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 17312.715022,
         "risk_dollars": 10.870261,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
         "dollar_pnl": -13.951821,
         "balance_after": 1073.074276
@@ -375,8 +439,12 @@
         "commission_r": 0.035234,
         "r_net": 0.708593,
         "leverage_ratio": 880.84162,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 9511.382792,
         "risk_dollars": 10.798062,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
         "dollar_pnl": 7.651429,
         "balance_after": 1087.457671
@@ -396,8 +464,12 @@
         "commission_r": 0.039984,
         "r_net": 0.666764,
         "leverage_ratio": 999.591004,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 10793.646053,
         "risk_dollars": 10.798062,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
         "dollar_pnl": 7.199764,
         "balance_after": 1094.657435
@@ -417,11 +489,15 @@
         "commission_r": 0.037697,
         "r_net": 2.090241,
         "leverage_ratio": 942.435502,
-        "risk_dollars": 10.798062,
-        "effective_risk_pct": 0.01,
+        "skipped_cap": false,
+        "aggregate_cap_action": "shrink",
+        "notional_usd": 6690.127208,
+        "risk_dollars": 7.098764,
+        "effective_risk_pct": 0.006574,
+        "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 22.57055,
-        "balance_after": 1118.920259
+        "dollar_pnl": 14.838126,
+        "balance_after": 1111.187835
       },
       {
         "pair": "USD_JPY",
@@ -438,8 +514,12 @@
         "commission_r": 0.064652,
         "r_net": 0.154594,
         "leverage_ratio": 1616.304869,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 17693.001418,
         "risk_dollars": 10.946574,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
         "dollar_pnl": 1.692275,
         "balance_after": 1096.34971
@@ -459,11 +539,15 @@
         "commission_r": 0.034085,
         "r_net": 1.536515,
         "leverage_ratio": 852.120509,
-        "risk_dollars": 10.946574,
-        "effective_risk_pct": 0.01,
+        "skipped_cap": false,
+        "aggregate_cap_action": "shrink",
+        "notional_usd": 2983.30724,
+        "risk_dollars": 3.501039,
+        "effective_risk_pct": 0.003198,
+        "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 16.819571,
-        "balance_after": 1135.73983
+        "dollar_pnl": 5.379398,
+        "balance_after": 1116.567233
       },
       {
         "pair": "USD_JPY",
@@ -480,11 +564,15 @@
         "commission_r": 0.023401,
         "r_net": 0.629387,
         "leverage_ratio": 585.016744,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 6413.829369,
         "risk_dollars": 10.963497,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
         "dollar_pnl": 6.900283,
-        "balance_after": 1142.640113
+        "balance_after": 1123.467515
       },
       {
         "pair": "USD_JPY",
@@ -501,11 +589,15 @@
         "commission_r": 0.028534,
         "r_net": 0.595881,
         "leverage_ratio": 713.339166,
-        "risk_dollars": 11.426401,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 8014.133807,
+        "risk_dollars": 11.234675,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 6.808777,
-        "balance_after": 1149.44889
+        "dollar_pnl": 6.694531,
+        "balance_after": 1130.162046
       },
       {
         "pair": "EUR_JPY",
@@ -522,11 +614,15 @@
         "commission_r": 0.034013,
         "r_net": 0.449139,
         "leverage_ratio": 850.328249,
-        "risk_dollars": 11.426401,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 9553.161653,
+        "risk_dollars": 11.234675,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 5.132043,
-        "balance_after": 1154.580932
+        "dollar_pnl": 5.045931,
+        "balance_after": 1135.207977
       },
       {
         "pair": "GBP_JPY",
@@ -543,11 +639,15 @@
         "commission_r": 0.035811,
         "r_net": 0.652644,
         "leverage_ratio": 895.2794,
-        "risk_dollars": 11.426401,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 10058.173231,
+        "risk_dollars": 11.234675,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 7.457376,
-        "balance_after": 1162.038308
+        "dollar_pnl": 7.332247,
+        "balance_after": 1142.540224
       },
       {
         "pair": "USD_JPY",
@@ -564,11 +664,15 @@
         "commission_r": 0.028961,
         "r_net": 0.470235,
         "leverage_ratio": 724.027709,
-        "risk_dollars": 11.620383,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 8272.307807,
+        "risk_dollars": 11.425402,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 5.464312,
-        "balance_after": 1167.502621
+        "dollar_pnl": 5.372626,
+        "balance_after": 1147.91285
       },
       {
         "pair": "EUR_JPY",
@@ -585,11 +689,15 @@
         "commission_r": 0.029308,
         "r_net": 0.622809,
         "leverage_ratio": 732.69536,
-        "risk_dollars": 11.620383,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 8371.339211,
+        "risk_dollars": 11.425402,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 7.237279,
-        "balance_after": 1174.7399
+        "dollar_pnl": 7.115843,
+        "balance_after": 1155.028694
       },
       {
         "pair": "GBP_JPY",
@@ -606,11 +714,15 @@
         "commission_r": 0.025295,
         "r_net": 0.496353,
         "leverage_ratio": 632.370009,
-        "risk_dollars": 11.620383,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 7225.081719,
+        "risk_dollars": 11.425402,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 5.767813,
-        "balance_after": 1180.507713
+        "dollar_pnl": 5.671033,
+        "balance_after": 1160.699727
       },
       {
         "pair": "USD_JPY",
@@ -627,11 +739,15 @@
         "commission_r": 0.030244,
         "r_net": -1.133728,
         "leverage_ratio": 756.100025,
-        "risk_dollars": 11.805077,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 8776.050925,
+        "risk_dollars": 11.606997,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": -13.383749,
-        "balance_after": 1167.123964
+        "dollar_pnl": -13.15918,
+        "balance_after": 1147.540547
       },
       {
         "pair": "USD_JPY",
@@ -648,11 +764,15 @@
         "commission_r": 0.034177,
         "r_net": -1.148919,
         "leverage_ratio": 854.430748,
-        "risk_dollars": 11.67124,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 9804.939275,
+        "risk_dollars": 11.475405,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": -13.409314,
-        "balance_after": 1153.714649
+        "dollar_pnl": -13.184317,
+        "balance_after": 1134.35623
       },
       {
         "pair": "GBP_JPY",
@@ -669,11 +789,15 @@
         "commission_r": 0.046238,
         "r_net": -1.206212,
         "leverage_ratio": 1155.960418,
-        "risk_dollars": 11.537146,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 13112.70902,
+        "risk_dollars": 11.343562,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": -13.916239,
-        "balance_after": 1139.79841
+        "dollar_pnl": -13.682736,
+        "balance_after": 1120.673494
       },
       {
         "pair": "USD_JPY",
@@ -690,11 +814,15 @@
         "commission_r": 0.028018,
         "r_net": 0.763974,
         "leverage_ratio": 700.462063,
-        "risk_dollars": 11.397984,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 7849.892671,
+        "risk_dollars": 11.206735,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 8.707763,
-        "balance_after": 1134.645627
+        "dollar_pnl": 8.561654,
+        "balance_after": 1115.607171
       },
       {
         "pair": "GBP_JPY",
@@ -711,11 +839,15 @@
         "commission_r": 0.048427,
         "r_net": -1.216052,
         "leverage_ratio": 1210.676992,
-        "risk_dollars": 11.397984,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 13567.736145,
+        "risk_dollars": 11.206735,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": -13.860546,
-        "balance_after": 1125.937864
+        "dollar_pnl": -13.627977,
+        "balance_after": 1107.045517
       },
       {
         "pair": "GBP_JPY",
@@ -732,11 +864,15 @@
         "commission_r": 0.246026,
         "r_net": 6.76902,
         "leverage_ratio": 6150.63805,
-        "risk_dollars": 4.611902,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 27890.179266,
+        "risk_dollars": 4.534518,
         "effective_risk_pct": 0.004065,
+        "leverage_capped": true,
         "skipped_ruin": false,
-        "dollar_pnl": 31.218057,
-        "balance_after": 1165.863684
+        "dollar_pnl": 30.694243,
+        "balance_after": 1146.301413
       },
       {
         "pair": "GBP_JPY",
@@ -753,11 +889,15 @@
         "commission_r": 0.045032,
         "r_net": -1.201365,
         "leverage_ratio": 1125.795337,
-        "risk_dollars": 11.658637,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 12905.00786,
+        "risk_dollars": 11.463014,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": -14.006282,
-        "balance_after": 1151.857402
+        "dollar_pnl": -13.771268,
+        "balance_after": 1132.530146
       },
       {
         "pair": "USD_JPY",
@@ -774,11 +914,15 @@
         "commission_r": 0.14741,
         "r_net": 5.539765,
         "leverage_ratio": 3685.244265,
-        "risk_dollars": 7.813983,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 28313.25364,
+        "risk_dollars": 7.68287,
         "effective_risk_pct": 0.006784,
+        "leverage_capped": true,
         "skipped_ruin": false,
-        "dollar_pnl": 43.287628,
-        "balance_after": 1195.14503
+        "dollar_pnl": 42.561296,
+        "balance_after": 1175.091441
       },
       {
         "pair": "USD_JPY",
@@ -795,11 +939,15 @@
         "commission_r": 0.050099,
         "r_net": 1.158246,
         "leverage_ratio": 1252.466515,
-        "risk_dollars": 11.95145,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 14717.626824,
+        "risk_dollars": 11.750914,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 13.842716,
-        "balance_after": 1208.987746
+        "dollar_pnl": 13.610446,
+        "balance_after": 1188.701888
       },
       {
         "pair": "USD_JPY",
@@ -816,11 +964,15 @@
         "commission_r": 0.037049,
         "r_net": 1.109958,
         "leverage_ratio": 926.227468,
-        "risk_dollars": 12.089877,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 11010.0834,
+        "risk_dollars": 11.887019,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 13.419253,
-        "balance_after": 1222.406999
+        "dollar_pnl": 13.194088,
+        "balance_after": 1201.895976
       },
       {
         "pair": "USD_JPY",
@@ -837,11 +989,15 @@
         "commission_r": 0.046014,
         "r_net": 0.599687,
         "leverage_ratio": 1150.338159,
-        "risk_dollars": 12.22407,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 13825.868042,
+        "risk_dollars": 12.01896,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 7.330618,
-        "balance_after": 1229.737617
+        "dollar_pnl": 7.207616,
+        "balance_after": 1209.103593
       },
       {
         "pair": "USD_JPY",
@@ -858,11 +1014,15 @@
         "commission_r": 0.045243,
         "r_net": 0.434788,
         "leverage_ratio": 1131.085212,
-        "risk_dollars": 12.297376,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 13675.991936,
+        "risk_dollars": 12.091036,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 5.346749,
-        "balance_after": 1235.084366
+        "dollar_pnl": 5.257035,
+        "balance_after": 1214.360627
       },
       {
         "pair": "USD_JPY",
@@ -879,11 +1039,15 @@
         "commission_r": 0.049997,
         "r_net": 0.141065,
         "leverage_ratio": 1249.926114,
-        "risk_dollars": 12.350844,
+        "skipped_cap": false,
+        "aggregate_cap_action": "none",
+        "notional_usd": 15178.610601,
+        "risk_dollars": 12.143606,
         "effective_risk_pct": 0.01,
+        "leverage_capped": false,
         "skipped_ruin": false,
-        "dollar_pnl": 1.74227,
-        "balance_after": 1236.826636
+        "dollar_pnl": 1.713036,
+        "balance_after": 1216.073663
       }
     ],
     "equity_curve": [
@@ -961,91 +1125,91 @@
       },
       {
         "time": "2026-09-08 09:35:00",
-        "balance": 1118.9202593998566
+        "balance": 1111.1878351907708
       },
       {
         "time": "2026-09-08 09:35:00",
-        "balance": 1135.739830120484
+        "balance": 1116.567232731655
       },
       {
         "time": "2026-09-08 09:35:00",
-        "balance": 1142.6401127509785
+        "balance": 1123.4675153621495
       },
       {
         "time": "2026-09-08 10:40:00",
-        "balance": 1149.4488896819435
+        "balance": 1130.1620464012094
       },
       {
         "time": "2026-09-08 10:40:00",
-        "balance": 1154.5809322118466
+        "balance": 1135.207977316344
       },
       {
         "time": "2026-09-08 10:40:00",
-        "balance": 1162.0383082368328
+        "balance": 1142.5402244695983
       },
       {
         "time": "2026-09-08 11:30:00",
-        "balance": 1167.5026206869654
+        "balance": 1147.9128500784902
       },
       {
         "time": "2026-09-08 11:30:00",
-        "balance": 1174.7399000003177
+        "balance": 1155.0286935688594
       },
       {
         "time": "2026-09-08 11:30:00",
-        "balance": 1180.5077128039768
+        "balance": 1160.6997270353809
       },
       {
         "time": "2026-09-11 23:30:00",
-        "balance": 1167.1239637723722
+        "balance": 1147.5405467274477
       },
       {
         "time": "2026-09-17 08:10:00",
-        "balance": 1153.7146494310741
+        "balance": 1134.356230075498
       },
       {
         "time": "2026-09-23 22:35:00",
-        "balance": 1139.7984099585162
+        "balance": 1120.673494095069
       },
       {
         "time": "2026-09-24 02:30:00",
-        "balance": 1125.9378636831157
+        "balance": 1107.0455168239962
       },
       {
         "time": "2026-09-24 05:55:00",
-        "balance": 1134.645626870436
+        "balance": 1115.6071706319199
       },
       {
         "time": "2026-09-24 09:45:00",
-        "balance": 1165.8636838336708
+        "balance": 1146.301413289374
       },
       {
         "time": "2026-09-24 11:45:00",
-        "balance": 1151.8574018236072
+        "balance": 1132.5301456140048
       },
       {
         "time": "2026-09-24 15:50:00",
-        "balance": 1195.1450297134886
+        "balance": 1175.0914413436647
       },
       {
         "time": "2026-09-24 17:35:00",
-        "balance": 1208.987745922504
+        "balance": 1188.7018877227647
       },
       {
         "time": "2026-09-24 18:30:00",
-        "balance": 1222.4069988137746
+        "balance": 1201.8959761636786
       },
       {
         "time": "2026-09-24 20:55:00",
-        "balance": 1229.737617258977
+        "balance": 1209.1035926290863
       },
       {
         "time": "2026-09-24 23:50:00",
-        "balance": 1235.0843661133756
+        "balance": 1214.3606272664006
       },
       {
         "time": "2026-09-25 00:35:00",
-        "balance": 1236.826636074935
+        "balance": 1216.0736633159497
       }
     ]
   },
@@ -1054,10 +1218,10 @@
     "monthly_sharpe": 0.0,
     "max_dd_pct": 4.62,
     "max_dd_monthly_pct": 4.62,
-    "max_dd_pct_of_initial_capital_reference": 5.46,
+    "max_dd_pct_of_initial_capital_reference": 5.37,
     "max_dd_monthly_pct_of_initial_capital_reference": 0.0,
-    "profit_factor": 3.033,
-    "payoff_ratio": 0.91,
+    "profit_factor": 2.873,
+    "payoff_ratio": 0.862,
     "max_consecutive_losses": 3,
     "k3m_scale_invariant": {
       "n_trades": 39,
